@@ -1,76 +1,125 @@
 import { Dialog, Menu, Transition } from "@headlessui/react";
-import { useProductosContext } from "../../context/ProductosProvider";
 import { Fragment, useEffect, useState } from "react";
+import { useProductosContext } from "../../context/ProductosProvider";
 import { toast } from "react-toastify";
 import client from "../../api/axios";
 import io from "socket.io-client";
 
-export const ModalCrearProductos = ({ isOpen, closeModal }) => {
+export const ModalEditarProducto = ({ isOpen, closeModal, OBTENERID }) => {
+  const { setProductos, productos } = useProductosContext();
+  const { categorias } = useProductosContext();
+
   const [precio_und, setPrecio] = useState("");
   const [detalle, setDetale] = useState("");
-  const [proveedor, setProveedor] = useState("");
   const [categoria, setCategoria] = useState("");
+
   const [socket, setSocket] = useState(null);
 
-  const { categorias, setProductos } = useProductosContext();
-
   useEffect(() => {
-    const newSocket = io(
-      //"https://tecnohouseindustrialbackend-production.up.railway.app",
-      "http://localhost:4000",
-      {
-        withCredentials: true,
-      }
-    );
+    async function loadData() {
+      const res = await client.get(`/producto/${OBTENERID}`);
 
-    setSocket(newSocket);
-
-    // showSuccess();
-
-    newSocket.on("crear-producto", (nuevaSalida) => {
-      setProductos((prevTipos) => [...prevTipos, nuevaSalida]);
-    });
-
-    return () => newSocket.close();
-  }, []);
+      setDetale(res.data.detalle);
+      setCategoria(res.data.categoria);
+      setPrecio(res.data.precio_und);
+    }
+    loadData();
+  }, [OBTENERID]);
 
   const onSubmit = async (e) => {
     e.preventDefault();
 
-    const datosProducto = { precio_und, detalle, proveedor, categoria };
+    const datosProducto = { precio_und, detalle, categoria };
 
-    try {
-      const res = await client.post("/crear-producto", datosProducto);
+    const res = await client.put(
+      `/editar-producto/${OBTENERID}`,
+      datosProducto
+    );
 
-      if (socket) {
-        socket.emit("crear-producto", res.data);
-      }
-      // Limpiar los campos después de enviar los datos
-      setPrecio("");
-      setDetale("");
-      setProveedor("");
-      setCategoria("");
+    const tipoExistenteIndex = productos.findIndex(
+      (tipo) => tipo.id == OBTENERID
+    );
 
-      toast.success("¡Producto creado correctamente!", {
-        position: "top-center",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        theme: "light",
-        style: {
-          padding: "10px",
-          background: "#b8ffb8",
-          color: "#009900",
-        },
-      });
+    setProductos((prevTipos) => {
+      const newTipos = [...prevTipos];
+      const updateRemuneracion = JSON.parse(res.config.data); // Convierte el JSON a objeto
+      newTipos[tipoExistenteIndex] = {
+        id: OBTENERID,
+        precio_und: updateRemuneracion.precio_und,
+        detalle: updateRemuneracion.detalle,
+        categoria: updateRemuneracion.categoria,
+        role_id: updateRemuneracion.role_id,
+        usuario: newTipos[tipoExistenteIndex].usuario,
+        created_at: newTipos[tipoExistenteIndex].created_at,
+        updated_at: newTipos[tipoExistenteIndex].updated_at,
+      };
+      return newTipos;
+    });
 
+    // socket.emit("editar-producto", res);
+
+    toast.success("¡Producto editado correctamente!", {
+      position: "top-center",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      theme: "light",
+      style: {
+        padding: "10px",
+        background: "#b8ffb8",
+        color: "#009900",
+      },
+    });
+
+    setTimeout(() => {
       closeModal();
-    } catch (error) {
-      console.error("Error al enviar el producto:", error);
-    }
+    }, 500);
   };
+
+  //   useEffect(() => {
+  //     const newSocket = io(
+  //       //"https://tecnohouseindustrialbackend-production.up.railway.app",
+  //       "http://localhost:4000",
+  //       {
+  //         withCredentials: true,
+  //       }
+  //     );
+
+  //     setSocket(newSocket);
+
+  //     const handleEditarSalida = (editarSalida) => {
+  //       const updateSalida = JSON.parse(editarSalida?.config?.data);
+
+  //       setProductos((prevSalidas) => {
+  //         const nuevosSalidas = [...prevSalidas];
+  //         const index = nuevosSalidas.findIndex(
+  //           (salida) => salida.id === salida.id
+  //         );
+  //         if (index !== -1) {
+  //           nuevosSalidas[index] = {
+  //             id: nuevosSalidas[index].id,
+  //             detalle: updateSalida.detalle,
+  //             precio_und: updateSalida.precio_und,
+  //             categoria: updateSalida.categoria,
+  //             usuario: nuevosSalidas[index].usuario,
+  //             role_id: nuevosSalidas[index].role_id,
+  //             created_at: nuevosSalidas[index].created_at,
+  //             updated_at: nuevosSalidas[index].updated_at,
+  //           };
+  //         }
+  //         return nuevosSalidas;
+  //       });
+  //     };
+
+  //     newSocket.on("editar-producto", handleEditarSalida);
+
+  //     return () => {
+  //       newSocket.off("editar-producto", handleEditarSalida);
+  //       newSocket.close();
+  //     };
+  //   }, []);
 
   return (
     <Menu as="div" className="z-50">
@@ -105,6 +154,7 @@ export const ModalCrearProductos = ({ isOpen, closeModal }) => {
               <Dialog.Overlay className="fixed inset-0" />
             </Transition.Child>
 
+            {/* This element is to trick the browser into centering the modal contents. */}
             <span
               className="inline-block h-screen align-middle"
               aria-hidden="true"
@@ -120,9 +170,9 @@ export const ModalCrearProductos = ({ isOpen, closeModal }) => {
               leaveFrom="opacity-100 scale-100"
               leaveTo="opacity-0 scale-95"
             >
-              <div className="inline-block w-1/3 max-md:w-full p-6 my-8 overflow-hidden max-md:h-[300px] max-md:overflow-y-scroll text-left align-middle transition-all transform bg-white shadow-xl rounded-2xl">
-                <div className="text-sm text-slate-700 mb-3 border-b-[1px] uppercase">
-                  Crear nuevo producto
+              <div className="inline-block w-[500px] max-md:w-full p-6 my-8 overflow-hidden text-left align-middle transition-all transform bg-white shadow-xl rounded-2xl">
+                <div className="text-lg text-slate-700 mb-3 border-b-[1px] uppercase">
+                  Editar el producto
                 </div>
                 <form onSubmit={onSubmit} className="flex flex-col gap-3">
                   <div className="flex flex-col gap-1">
@@ -157,7 +207,7 @@ export const ModalCrearProductos = ({ isOpen, closeModal }) => {
                     </select>
                   </div>
 
-                  <div className="flex flex-col gap-1">
+                  {/* <div className="flex flex-col gap-1">
                     <label className="text-sm text-slate-700 uppercase">
                       Proveedor
                     </label>
@@ -168,7 +218,7 @@ export const ModalCrearProductos = ({ isOpen, closeModal }) => {
                       className="py-2 px-4 rounded-xl border-slate-300 border-[1px] shadow placeholder:text-slate-300 text-sm"
                       placeholder="DETALLE DEL PRODUCTO"
                     />
-                  </div>
+                  </div> */}
 
                   <div className="flex flex-col gap-1">
                     <label className="text-sm text-slate-700 uppercase">
@@ -199,11 +249,10 @@ export const ModalCrearProductos = ({ isOpen, closeModal }) => {
                       type="submit"
                       className="bg-black py-2 px-6 shadow rounded-xl text-white uppercase text-sm"
                     >
-                      Crear nuevo producto
+                      Editar el producto
                     </button>
                   </div>
                 </form>
-
                 <div className="mt-4">
                   <button
                     type="button"

@@ -3,6 +3,7 @@ import { Fragment, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { useForm } from "react-hook-form";
 import { useProductosContext } from "../../context/ProductosProvider";
+import { ModalEditarCategorias } from "./ModalEditarCategorias";
 import client from "../../api/axios";
 import io from "socket.io-client";
 
@@ -19,6 +20,10 @@ export const ModalCrearCategorias = ({
   } = useForm();
 
   const [socket, setSocket] = useState(null);
+
+  const [OBTENERID, setObtenerId] = useState(null);
+
+  const handleID = (id) => setObtenerId(id);
 
   useEffect(() => {
     const newSocket = io(
@@ -61,6 +66,58 @@ export const ModalCrearCategorias = ({
     }, 500);
   });
 
+  const [isOpenEditar, setIsOpenEditar] = useState(false);
+
+  const openEditar = () => {
+    setIsOpenEditar(true);
+  };
+  const closeEditar = () => {
+    setIsOpenEditar(false);
+  };
+
+  useEffect(() => {
+    const newSocket = io(
+      // "https://tecnohouseindustrialbackend-production.up.railway.app",
+      "http://localhost:4000",
+      {
+        withCredentials: true,
+      }
+    );
+
+    setSocket(newSocket);
+
+    newSocket.on("eliminar-categoria", (salidaEliminada) => {
+      setCategorias((prevSalidas) =>
+        prevSalidas.filter((salida) => salida.id !== salidaEliminada.id)
+      );
+    });
+
+    return () => newSocket.close();
+  }, []);
+
+  const handleEliminarChofer = async (id) => {
+    const res = await client.delete(`/eliminar-categoria/${id}`);
+
+    if (socket) {
+      socket.emit("eliminar-categoria", { id });
+    }
+
+    toast.error("¡Eliminado correctamente!", {
+      position: "top-center",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      theme: "light",
+      style: {
+        padding: "10px",
+        background: "#fee2e2",
+        color: "#991b1b",
+      },
+    });
+  };
+
   return (
     <Menu as="div" className="z-50">
       <Transition appear show={isOpenCategorias} as={Fragment}>
@@ -95,7 +152,7 @@ export const ModalCrearCategorias = ({
             </Transition.Child>
 
             <span
-              className="inline-block h-screen align-middle"
+              className="inline-block h-screen align-middle "
               aria-hidden="true"
             >
               &#8203;
@@ -144,19 +201,22 @@ export const ModalCrearCategorias = ({
                   <div className="py-2 px-0 grid grid-cols-3 gap-3">
                     {categorias.map((c) => (
                       <div
-                        className="border-slate-300 border-[1px] py-1 px-3 rounded-xl flex gap-2 items-center"
+                        className="border-slate-300 border-[1px] py-1 px-3 rounded-xl flex gap-2 items-center justify-center"
                         key={c.id}
                       >
                         <p className="uppercase font-bold text-sm text-slate-600">
                           {c.detalle}
                         </p>
                         <svg
+                          onClick={() => {
+                            handleID(c.id), openEditar();
+                          }}
                           xmlns="http://www.w3.org/2000/svg"
                           fill="none"
                           viewBox="0 0 24 24"
                           strokeWidth={1.5}
                           stroke="currentColor"
-                          className="w-5 h-5 text-blue-500"
+                          className="w-5 h-5 text-blue-500 cursor-pointer"
                         >
                           <path
                             strokeLinecap="round"
@@ -166,12 +226,13 @@ export const ModalCrearCategorias = ({
                         </svg>
 
                         <svg
+                          onClick={() => handleEliminarChofer(c.id)}
                           xmlns="http://www.w3.org/2000/svg"
                           fill="none"
                           viewBox="0 0 24 24"
                           strokeWidth={1.5}
                           stroke="currentColor"
-                          className="w-5 h-5 text-red-500"
+                          className="w-5 h-5 text-red-500 cursor-pointer"
                         >
                           <path
                             strokeLinecap="round"
@@ -183,6 +244,12 @@ export const ModalCrearCategorias = ({
                     ))}
                   </div>
                 </div>
+
+                <ModalEditarCategorias
+                  closeModalEditar={closeEditar}
+                  isOpenEditar={isOpenEditar}
+                  OBTENERID={OBTENERID}
+                />
 
                 <div className="mt-4">
                   <button

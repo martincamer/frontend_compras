@@ -1,14 +1,8 @@
 import { useEffect, useState } from "react";
 import { useProductosContext } from "../../../context/ProductosProvider";
-import { ModalCrearProductos } from "../../../components/Modales/ModalCrearProductos";
-import { ModalCrearCategorias } from "../../../components/Modales/ModalCrearCategorias";
 import { ToastContainer } from "react-toastify";
-import { ModalEditarProducto } from "../../../components/Modales/ModalEditarProducto";
-import { ModalEliminarProducto } from "../../../components/Modales/ModalEliminarProducto";
 
 export const Productos = () => {
-  const { productos, categorias } = useProductosContext();
-
   const fechaActual = new Date();
   const numeroDiaActual = fechaActual.getDay(); // Obtener el día del mes actual
 
@@ -51,63 +45,29 @@ export const Productos = () => {
     setIsOpen(false);
   };
 
-  const [isOpenCategorias, setIsOpenCategorias] = useState(false);
+  //   const [searchTerm, setSearchTerm] = useState("");
+  //   const [selectedCategory, setSelectedCategory] = useState("all");
+  //   const [currentPage, setCurrentPage] = useState(1);
+  //   const [productsPerPage] = useState(5);
 
-  const openModalCategorias = () => {
-    setIsOpenCategorias(true);
-  };
+  //   // Filtrar productos por término de búsqueda y categoría seleccionada
+  //   const filteredProducts = productos.filter((product) => {
+  //     return (
+  //       product.detalle.toLowerCase().includes(searchTerm.toLowerCase()) &&
+  //       (selectedCategory === "all" || product.categoria === selectedCategory)
+  //     );
+  //   });
 
-  const closeModalCategorias = () => {
-    setIsOpenCategorias(false);
-  };
+  //   // Lógica de paginación
+  //   const indexOfLastProduct = currentPage * productsPerPage;
+  //   const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
+  //   const currentProducts = filteredProducts.slice(
+  //     indexOfFirstProduct,
+  //     indexOfLastProduct
+  //   );
 
-  const [searchTerm, setSearchTerm] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState("all");
-  const [currentPage, setCurrentPage] = useState(1);
-  const [productsPerPage] = useState(5);
-
-  // Filtrar productos por término de búsqueda y categoría seleccionada
-  const filteredProducts = productos.filter((product) => {
-    return (
-      product.detalle.toLowerCase().includes(searchTerm.toLowerCase()) &&
-      (selectedCategory === "all" || product.categoria === selectedCategory)
-    );
-  });
-
-  // Lógica de paginación
-  const indexOfLastProduct = currentPage * productsPerPage;
-  const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
-  const currentProducts = filteredProducts.slice(
-    indexOfFirstProduct,
-    indexOfLastProduct
-  );
-
-  // Cambiar de página
-  const paginate = (pageNumber) => setCurrentPage(pageNumber);
-
-  const [editarProducto, setEditarProducto] = useState(false);
-
-  const [OBTENERID, setObtenerId] = useState(null);
-
-  const handleID = (id) => setObtenerId(id);
-
-  const openEditProducto = () => {
-    setEditarProducto(true);
-  };
-
-  const closeEditProducto = () => {
-    setEditarProducto(false);
-  };
-
-  const [isOpenEliminar, setIsEliminar] = useState(false);
-
-  const openEliminar = () => {
-    setIsEliminar(true);
-  };
-
-  const closeEliminar = () => {
-    setIsEliminar(false);
-  };
+  //   // Cambiar de página
+  //   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   return (
     <section className="w-full h-full px-5 max-md:px-4 flex flex-col gap-2 py-16 max-md:gap-5">
@@ -139,16 +99,12 @@ export const Productos = () => {
             </strong>
 
             <p>
-              <span className="text-2xl font-medium text-red-600 max-md:text-base">
-                {productos.lenght}
-              </span>
+              <span className="text-2xl font-medium text-red-600 max-md:text-base"></span>
 
               <span className="text-xs text-gray-500">
                 {" "}
                 total cargados{" "}
-                <span className="font-bold text-slate-700">
-                  {productos.lenght}
-                </span>
+                <span className="font-bold text-slate-700"></span>
               </span>
             </p>
           </div>
@@ -227,16 +183,10 @@ export const Productos = () => {
       </div>
 
       <div className="mx-10 py-2 flex gap-2 items-center max-md:px-0 max-md:py-0 max-md:flex-col max-md:items-start border-b-[1px] border-slate-300 pb-4 max-md:pb-4 max-md:mx-2">
-        <button
-          onClick={() => openModal()}
-          className="bg-white border-slate-300 border-[1px] py-2 px-4 rounded-xl text-sm shadow text-slate-700 uppercase max-md:text-xs"
-        >
+        <button className="bg-white border-slate-300 border-[1px] py-2 px-4 rounded-xl text-sm shadow text-slate-700 uppercase max-md:text-xs">
           Crear nuevo producto
         </button>
-        <button
-          className="bg-white border-slate-300 border-[1px] py-2 px-4 rounded-xl text-sm shadow text-slate-700 uppercase max-md:text-xs"
-          onClick={() => openModalCategorias()}
-        >
+        <button className="bg-white border-slate-300 border-[1px] py-2 px-4 rounded-xl text-sm shadow text-slate-700 uppercase max-md:text-xs">
           Crear nuevas categorias/editar/etc
         </button>
       </div>
@@ -244,12 +194,11 @@ export const Productos = () => {
       <div className="max-md:mt-2 mt-5 ">
         <div className="px-10 max-md:px-2">
           <p className="uppercase text-orange-500 font-semibold text-sm underline">
-            Tabla de productos
+            Tabla de ordenes de compra
           </p>
         </div>
 
-        <div className="mt-5 px-8 flex gap-2">
-          {/* Buscador */}
+        {/* <div className="mt-5 px-8 flex gap-2">
           <input
             type="text"
             placeholder="Buscar por detalle"
@@ -257,7 +206,6 @@ export const Productos = () => {
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
-          {/* Selector de categoría */}
           <select
             className="py-1 px-4 text-slate-700 rounded-xl shadow bg-white border-slate-300 border-[1px]"
             value={selectedCategory}
@@ -268,7 +216,7 @@ export const Productos = () => {
               <option>{c?.detalle}</option>
             ))}
           </select>
-        </div>
+        </div> */}
 
         <div className="overflow-x-auto mt-6 mx-8">
           <table className="min-w-full divide-y-2 divide-gray-200 bg-white text-sm">
@@ -293,7 +241,7 @@ export const Productos = () => {
             </thead>
 
             <tbody className="divide-y divide-gray-200">
-              {currentProducts.map((p) => (
+              {/* {currentProducts.map((p) => (
                 <tr key={p.id}>
                   <td className="whitespace-nowrap px-4 py-4 font-medium text-gray-900 uppercase text-sm">
                     {p.id}
@@ -329,12 +277,12 @@ export const Productos = () => {
                     </span>
                   </td>
                 </tr>
-              ))}
+              ))} */}
             </tbody>
           </table>
         </div>
       </div>
-      <div className="flex justify-center mt-4">
+      {/* <div className="flex justify-center mt-4">
         {filteredProducts.length > productsPerPage && (
           <nav className="pagination">
             <ul className="pagination-list flex gap-2">
@@ -361,23 +309,7 @@ export const Productos = () => {
             </ul>
           </nav>
         )}
-      </div>
-      <ModalCrearProductos isOpen={isOpen} closeModal={closeModal} />
-      <ModalCrearCategorias
-        isOpenCategorias={isOpenCategorias}
-        closeModalCategorias={closeModalCategorias}
-      />
-      <ModalEditarProducto
-        isOpen={editarProducto}
-        closeModal={closeEditProducto}
-        OBTENERID={OBTENERID}
-      />
-
-      <ModalEliminarProducto
-        obtenerId={OBTENERID}
-        closeEliminar={closeEliminar}
-        eliminarModal={isOpenEliminar}
-      />
+      </div> */}
     </section>
   );
 };
