@@ -16,7 +16,7 @@ export const useOrdenesContext = () => {
 
 //
 export const OrdenesProvider = ({ children }) => {
-  const [ordenes, setOrdenes] = useState([]);
+  const [ordenesMensuales, setOrdenesMensuales] = useState([]);
 
   useEffect(() => {
     async function loadData() {
@@ -30,8 +30,8 @@ export const OrdenesProvider = ({ children }) => {
   return (
     <OrdenesContext.Provider
       value={{
-        ordenes,
-        setOrdenes,
+        ordenesMensuales,
+        setOrdenesMensuales,
       }}
     >
       {children}

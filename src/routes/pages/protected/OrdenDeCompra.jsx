@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import { useProductosContext } from "../../../context/ProductosProvider";
 import { ToastContainer } from "react-toastify";
+import { ModalCrearOrden } from "../../../components/Modales/ModalCrearOrden";
 
-export const Productos = () => {
+export const OrdenDeCompra = () => {
   const fechaActual = new Date();
   const numeroDiaActual = fechaActual.getDay(); // Obtener el día del mes actual
 
@@ -183,18 +183,18 @@ export const Productos = () => {
       </div>
 
       <div className="mx-10 py-2 flex gap-2 items-center max-md:px-0 max-md:py-0 max-md:flex-col max-md:items-start border-b-[1px] border-slate-300 pb-4 max-md:pb-4 max-md:mx-2">
-        <button className="bg-white border-slate-300 border-[1px] py-2 px-4 rounded-xl text-sm shadow text-slate-700 uppercase max-md:text-xs">
-          Crear nuevo producto
-        </button>
-        <button className="bg-white border-slate-300 border-[1px] py-2 px-4 rounded-xl text-sm shadow text-slate-700 uppercase max-md:text-xs">
-          Crear nuevas categorias/editar/etc
+        <button
+          onClick={() => openModal()}
+          className="bg-white border-slate-300 border-[1px] py-2 px-4 rounded-xl text-sm shadow text-slate-700 uppercase max-md:text-xs"
+        >
+          Crear nueva orden
         </button>
       </div>
 
       <div className="max-md:mt-2 mt-5 ">
         <div className="px-10 max-md:px-2">
           <p className="uppercase text-orange-500 font-semibold text-sm underline">
-            Tabla de ordenes de compra
+            Ordenes de compra
           </p>
         </div>
 
@@ -217,69 +217,10 @@ export const Productos = () => {
             ))}
           </select>
         </div> */}
-
-        <div className="overflow-x-auto mt-6 mx-8">
-          <table className="min-w-full divide-y-2 divide-gray-200 bg-white text-sm">
-            <thead className="text-left">
-              <tr>
-                <th className="whitespace-nowrap px-4 py-2 text-gray-900 uppercase font-semibold">
-                  Codigo
-                </th>
-                <th className="whitespace-nowrap px-4 py-2 text-gray-900 uppercase font-semibold">
-                  Detalle
-                </th>
-                <th className="whitespace-nowrap px-4 py-2 text-gray-900 uppercase font-semibold">
-                  Categoria
-                </th>
-                <th className="whitespace-nowrap px-4 py-2 text-gray-900 uppercase font-semibold">
-                  Precio Und
-                </th>
-                <th className="whitespace-nowrap px-4 py-2 text-gray-900 uppercase font-semibold">
-                  Acciones
-                </th>
-              </tr>
-            </thead>
-
-            <tbody className="divide-y divide-gray-200">
-              {/* {currentProducts.map((p) => (
-                <tr key={p.id}>
-                  <td className="whitespace-nowrap px-4 py-4 font-medium text-gray-900 uppercase text-sm">
-                    {p.id}
-                  </td>
-                  <td className="whitespace-nowrap px-4 py-4 text-gray-700 uppercase text-sm">
-                    {p.detalle}
-                  </td>
-                  <td className="whitespace-nowrap px-4 py-4 text-gray-700 uppercase text-sm">
-                    {p.categoria}
-                  </td>
-                  <td className="whitespace-nowrap px-4 py-4  uppercase text-sm font-bold text-green-500">
-                    {Number(p.precio_und).toLocaleString("es-AR", {
-                      style: "currency",
-                      currency: "ARS",
-                    })}
-                  </td>
-                  <td className="whitespace-nowrap px-4 py-4 text-gray-700 uppercase text-sm cursor-pointer space-x-2">
-                    <span
-                      onClick={() => {
-                        handleID(p.id), openEditProducto();
-                      }}
-                      className="bg-green-500/20 text-green-600 py-2 px-3 rounded-xl text-sm"
-                    >
-                      EDITAR
-                    </span>
-                    <span
-                      onClick={() => {
-                        handleID(p.id), openEliminar();
-                      }}
-                      className="bg-red-500/10 text-red-800 py-2 px-3 rounded-xl text-sm"
-                    >
-                      ELIMINAR
-                    </span>
-                  </td>
-                </tr>
-              ))} */}
-            </tbody>
-          </table>
+      </div>
+      <div className="border-[1px] border-slate-300 shadow py-3 px-4 rounded-xl mx-8 mt-6 grid grid-cols-3">
+        <div className="shadow border-slate-200 border-[1px] py-4 px-2 rounded-xl">
+          <div></div>
         </div>
       </div>
       {/* <div className="flex justify-center mt-4">
@@ -310,6 +251,8 @@ export const Productos = () => {
           </nav>
         )}
       </div> */}
+
+      <ModalCrearOrden isOpen={isOpen} closeModal={closeModal} />
     </section>
   );
 };

@@ -9,12 +9,13 @@ import { SideBar } from "./components/sidebar/Sidebar";
 import { ProductosProvider } from "./context/ProductosProvider";
 import { Productos } from "./routes/pages/protected/Productos";
 import { NavbarStatick } from "./components/ui/NavbarStatick";
+import { OrdenesProvider } from "./context/OrdenesProvider";
+import { OrdenDeCompra } from "./routes/pages/protected/OrdenDeCompra";
 //import normales
 import { PrimeReactProvider } from "primereact/api";
 import RutaProtegida from "./layouts/RutaProtejida";
 import "react-toastify/dist/ReactToastify.css";
 import "react-toastify/dist/ReactToastify.min.css";
-import { OrdenesProvider } from "./context/OrdenesProvider";
 
 function App() {
   const { isAuth } = useAuth();
@@ -49,6 +50,7 @@ function App() {
             >
               <Route index path="/" element={<Home />} />
               <Route index path="/productos" element={<Productos />} />
+              <Route index path="/ordenes" element={<OrdenDeCompra />} />
             </Route>
           </Route>
           <Route path="*" element={<NotFound />} />
