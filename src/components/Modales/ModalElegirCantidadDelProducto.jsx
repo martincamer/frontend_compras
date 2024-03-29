@@ -12,7 +12,7 @@ export const ModalElegirCantidadDelProducto = ({
 
   const [precio_und, setPrecio] = useState("");
   const [cantidad, setCantidad] = useState("");
-  const [totalFinal, setTotalFinal] = useState("");
+  // const [totalFinal, setTotalFinal] = useState("");
 
   useEffect(() => {
     async function laodData() {
@@ -20,7 +20,7 @@ export const ModalElegirCantidadDelProducto = ({
 
       setProducto(res.data);
       setPrecio(res.data.precio_und);
-      setTotalFinal(precio_und * cantidad);
+      // setTotalFinal(precio_und * cantidad);
     }
 
     setCantidad("");
@@ -128,10 +128,13 @@ export const ModalElegirCantidadDelProducto = ({
                           />
                         </td>
                         <td className="whitespace-nowrap px-4 py-3 font-bold text-gray-900 uppercase">
-                          {Number(totalFinal).toLocaleString("es-AR", {
-                            style: "currency",
-                            currency: "ARS",
-                          })}
+                          {Number(precio_und * cantidad).toLocaleString(
+                            "es-AR",
+                            {
+                              style: "currency",
+                              currency: "ARS",
+                            }
+                          )}
                         </td>
                       </tr>
                     </tbody>

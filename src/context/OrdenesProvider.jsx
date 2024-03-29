@@ -1,6 +1,6 @@
 //imports
 import { createContext, useContext, useEffect, useState } from "react";
-import { obtenerOrdenes } from "../api/ingresos";
+import { obtenerOrdenesMensuales } from "../api/apis";
 
 //context
 export const OrdenesContext = createContext();
@@ -20,12 +20,14 @@ export const OrdenesProvider = ({ children }) => {
 
   useEffect(() => {
     async function loadData() {
-      const respuesta = await obtenerOrdenes();
-      setOrdenes(respuesta.data);
+      const respuesta = await obtenerOrdenesMensuales();
+      setOrdenesMensuales(respuesta.data);
     }
 
     loadData();
   }, []);
+
+  console.log(ordenesMensuales);
 
   return (
     <OrdenesContext.Provider

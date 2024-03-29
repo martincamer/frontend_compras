@@ -1,10 +1,13 @@
 import { useEffect, useState } from "react";
 import { ToastContainer } from "react-toastify";
 import { ModalCrearOrden } from "../../../components/Modales/ModalCrearOrden";
+import { useOrdenesContext } from "../../../context/OrdenesProvider";
 
 export const OrdenDeCompra = () => {
   const fechaActual = new Date();
   const numeroDiaActual = fechaActual.getDay(); // Obtener el día del mes actual
+
+  const { ordenesMensuales } = useOrdenesContext();
 
   const nombresDias = [
     "Domingo",
@@ -68,6 +71,10 @@ export const OrdenDeCompra = () => {
 
   //   // Cambiar de página
   //   const paginate = (pageNumber) => setCurrentPage(pageNumber);
+  const precioTotal = ordenesMensuales.reduce(
+    (total, orden) => total + Number(orden.precio_final),
+    0
+  );
 
   return (
     <section className="w-full h-full px-5 max-md:px-4 flex flex-col gap-2 py-16 max-md:gap-5">
@@ -90,21 +97,34 @@ export const OrdenDeCompra = () => {
               />
             </svg>
 
-            <span className="text-xs font-medium max-md:text-xs"> </span>
+            <span className="text-xs font-medium max-md:text-xs">
+              {Number(precioTotal / 100000).toFixed(2)} %
+            </span>
           </div>
 
           <div>
-            <strong className="block text-sm font-medium text-gray-500 max-md:text-xs">
-              Total productos cargados
+            <strong className="block text-sm font-medium text-gray-500 max-md:text-xs uppercase">
+              Total en compras del mes
             </strong>
 
             <p>
-              <span className="text-2xl font-medium text-red-600 max-md:text-base"></span>
+              <span className="text-xl font-medium text-red-600 max-md:text-base">
+                -{" "}
+                {Number(precioTotal).toLocaleString("es-AR", {
+                  style: "currency",
+                  currency: "ARS",
+                })}
+              </span>
 
-              <span className="text-xs text-gray-500">
+              <span className="text-xs text-gray-500 uppercase">
                 {" "}
-                total cargados{" "}
-                <span className="font-bold text-slate-700"></span>
+                gastado en compras{" "}
+                <span className="font-bold text-slate-700">
+                  {Number(precioTotal).toLocaleString("es-AR", {
+                    style: "currency",
+                    currency: "ARS",
+                  })}
+                </span>
               </span>
             </p>
           </div>
@@ -131,16 +151,16 @@ export const OrdenDeCompra = () => {
           </div>
 
           <div>
-            <strong className="block text-sm font-medium text-gray-500 max-md:text-xs">
+            <strong className="block text-sm font-medium text-gray-500 max-md:text-xs uppercase">
               Fecha Actual
             </strong>
 
             <p>
-              <span className="text-2xl max-md:text-base font-medium text-gray-900">
+              <span className="text-xl max-md:text-base font-medium text-gray-900">
                 {nombreMesActual}
               </span>
 
-              <span className="text-xs text-gray-500">
+              <span className="text-xs text-gray-500 uppercase">
                 {" "}
                 Dia {nombreDiaActual}
               </span>
@@ -218,9 +238,130 @@ export const OrdenDeCompra = () => {
           </select>
         </div> */}
       </div>
-      <div className="border-[1px] border-slate-300 shadow py-3 px-4 rounded-xl mx-8 mt-6 grid grid-cols-3">
-        <div className="shadow border-slate-200 border-[1px] py-4 px-2 rounded-xl">
-          <div></div>
+      <div className="py-3 px-4 rounded-xl mx-8 mt-2">
+        <div className="grid grid-cols-3 h-full w-full gap-4">
+          {ordenesMensuales.map((o) => (
+            <div
+              className="shadow border-slate-200 border-[1px] rounded-xl py-5 px-5 flex justify-between items-center"
+              key={o.id}
+            >
+              <article>
+                <p className="uppercase flex gap-1">
+                  <span className="font-semibold text-sm text-slate-700 underline">
+                    Numero
+                  </span>
+                  <span className="text-normal text-sm text-slate-700">
+                    {o.id}
+                  </span>
+                </p>
+                <p className="uppercase flex gap-1">
+                  <span className="font-semibold text-sm text-slate-700 underline">
+                    Proveedor
+                  </span>
+                  <span className="text-normal text-sm text-slate-700">
+                    {o.proveedor}
+                  </span>
+                </p>
+
+                <p className="uppercase flex gap-1">
+                  <span className="font-semibold text-sm text-slate-700 underline">
+                    Numero Remito/Factura
+                  </span>
+                  <span className="text-normal text-sm text-slate-700">
+                    N° {o.numero_factura}
+                  </span>
+                </p>
+                <p className="uppercase flex gap-1">
+                  <span className="font-semibold text-sm text-slate-700 underline">
+                    Fecha factura/remito
+                  </span>
+                  <span className="text-normal text-sm text-slate-700">
+                    {new Date(o.fecha_factura).toLocaleDateString("es-ES")}
+                  </span>
+                </p>
+                <p className="uppercase flex gap-1">
+                  <span className="font-semibold text-sm text-slate-700 underline">
+                    Total Facturado
+                  </span>
+                  <span className="text-normal text-sm text-red-600">
+                    -{" "}
+                    {Number(o.precio_final).toLocaleString("es-AR", {
+                      style: "currency",
+                      currency: "ARS",
+                    })}
+                  </span>
+                </p>
+              </article>
+              <article>
+                <p className="text-slate-500 uppercase font-semibold text-sm underline">
+                  PRODUCTOS
+                </p>
+                <div className="h-[100px] overflow-y-scroll mt-2">
+                  {ordenesMensuales.map((orden) => (
+                    <div className="flex flex-col gap-2" key={orden.id}>
+                      {orden.datos.productoSeleccionado.map((producto) => (
+                        <div
+                          className="bg-white border-slate-200 border-[1px] py-1 px-2 rounded-xl"
+                          key={producto.id}
+                        >
+                          <p className="text-xs uppercase">
+                            <span className="font-bold text-slate-700">
+                              Detalle:
+                            </span>{" "}
+                            <span className="text-slate-600">
+                              {" "}
+                              {producto.detalle}
+                            </span>
+                          </p>
+                          <p className="text-xs uppercase">
+                            <span className="font-bold text-slate-700">
+                              Categoria:
+                            </span>{" "}
+                            <span className="text-slate-600">
+                              {" "}
+                              {producto.categoria}
+                            </span>
+                          </p>
+
+                          <p className="text-xs uppercase">
+                            <span className="font-bold text-slate-700">
+                              Precio unitario:{" "}
+                            </span>{" "}
+                            <span className="text-slate-600">
+                              {Number(producto.precio_und).toLocaleString(
+                                "es-AR",
+                                { style: "currency", currency: "ARS" }
+                              )}
+                            </span>
+                          </p>
+                          <p className="text-xs uppercase">
+                            <span className="font-bold text-slate-700">
+                              Cantidad:
+                            </span>{" "}
+                            <span className="text-slate-600">
+                              {" "}
+                              {producto.cantidad}
+                            </span>
+                          </p>
+                          <p className="text-xs uppercase">
+                            <span className="font-bold text-slate-700">
+                              Total:
+                            </span>{" "}
+                            <span className="text-slate-900">
+                              {Number(producto.totalFinal).toLocaleString(
+                                "es-AR",
+                                { style: "currency", currency: "ARS" }
+                              )}
+                            </span>
+                          </p>
+                        </div>
+                      ))}
+                    </div>
+                  ))}
+                </div>
+              </article>
+            </div>
+          ))}
         </div>
       </div>
       {/* <div className="flex justify-center mt-4">

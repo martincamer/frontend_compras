@@ -1,26 +1,21 @@
 import { Dialog, Menu, Transition } from "@headlessui/react";
 import { Fragment, useEffect, useState } from "react";
 import { toast } from "react-toastify";
-import { useForm } from "react-hook-form";
 import { useOrdenesContext } from "../../context/OrdenesProvider";
-import client from "../../api/axios";
-import io from "socket.io-client";
 import { ModalSeleccionarProducto } from "./ModalSeleccionarProducto";
 import { ModalEditarProductoSeleccionado } from "./ModalEditarProductoSeleccionado";
+import client from "../../api/axios";
+import io from "socket.io-client";
 
 export const ModalCrearOrden = ({ isOpen, closeModal }) => {
-  const { ordenes, setOrdenes } = useOrdenesContext();
+  const { setOrdenesMensuales } = useOrdenesContext();
 
   const [proveedor, setProveedor] = useState("");
   const [numero_factura, setNumeroFactura] = useState("");
   const [detalle, setDetalle] = useState("");
   const [fecha_factura, setFechaFactura] = useState("");
-
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm();
+  const [localidad, setLocalidad] = useState("");
+  const [provincia, setProvincia] = useState("");
 
   const [socket, setSocket] = useState(null);
 
@@ -82,18 +77,45 @@ export const ModalCrearOrden = ({ isOpen, closeModal }) => {
 
     setSocket(newSocket);
 
-    newSocket.on("nueva-orden", (nuevaSalida) => {
-      setOrdenes((prevTipos) => [...prevTipos, nuevaSalida]);
+    newSocket.on("crear-orden", (nuevaSalida) => {
+      setOrdenesMensuales((prevTipos) => [...prevTipos, nuevaSalida]);
     });
+
+    // newSocket.on("crear-orden-dos", (nuevaSalida) => {
+    //   setOrdenes((prevTipos) => [...prevTipos, nuevaSalida]);
+    // });
 
     return () => newSocket.close();
   }, []);
 
-  const onSubmit = async () => {
-    const res = await client.post("/crear-orden", {});
+  const totalesFinales = productoSeleccionado.reduce((total, producto) => {
+    // Convert the totalFinal property to a number and add it to the accumulator
+    return total + Number(producto?.totalFinal);
+  }, 0); // Start with an initial value of 0
+
+  const onSubmit = async (e) => {
+    e.preventDefault();
+
+    const datosOrden = {
+      proveedor,
+      numero_factura,
+      precio_final: Number(totalesFinales),
+      fecha_factura,
+      localidad,
+      provincia,
+      detalle,
+      datos: { productoSeleccionado },
+    };
+
+    const res = await client.post("/crear-orden-nueva", datosOrden);
+    const resDos = await client.post("/crear-orden-nueva-dos", datosOrden);
 
     if (socket) {
-      socket.emit("nueva-orden", res.data);
+      socket.emit("crear-orden", res.data);
+    }
+
+    if (socket) {
+      socket.emit("crear-orden-dos", resDos.data);
     }
 
     toast.success("¡Orden creada correctamente!", {
@@ -132,7 +154,6 @@ export const ModalCrearOrden = ({ isOpen, closeModal }) => {
     setIsOpenProductoEditar(false);
   };
 
-  console.log(productoSeleccionado);
   return (
     <Menu as="div" className="z-50">
       <Transition appear show={isOpen} as={Fragment}>
@@ -192,8 +213,10 @@ export const ModalCrearOrden = ({ isOpen, closeModal }) => {
                         Proveedor de la orden
                       </label>
                       <input
+                        value={proveedor}
+                        onChange={(e) => setProveedor(e.target.value)}
                         type="text"
-                        className="py-2 px-4 rounded-xl border-slate-300 border-[1px] shadow placeholder:text-slate-300 text-sm"
+                        className="py-2 px-4 rounded-xl border-slate-300 border-[1px] shadow uppercase placeholder:text-slate-300 text-sm"
                         placeholder="PROVEEDOR DE LA ORDEN"
                       />
                     </div>
@@ -202,8 +225,10 @@ export const ModalCrearOrden = ({ isOpen, closeModal }) => {
                         Numero del remito
                       </label>
                       <input
+                        value={numero_factura}
+                        onChange={(e) => setNumeroFactura(e.target.value)}
                         type="text"
-                        className="py-2 px-4 rounded-xl border-slate-300 border-[1px] shadow placeholder:text-slate-300 text-sm"
+                        className="py-2 px-4 rounded-xl border-slate-300 border-[1px] shadow uppercase placeholder:text-slate-300 text-sm"
                         placeholder="NUMERO DE LA FACT O REM"
                       />
                     </div>
@@ -212,8 +237,10 @@ export const ModalCrearOrden = ({ isOpen, closeModal }) => {
                         FECHA DEL REMITO/FACT
                       </label>
                       <input
+                        value={fecha_factura}
+                        onChange={(e) => setFechaFactura(e.target.value)}
                         type="date"
-                        className="py-2 px-4 rounded-xl border-slate-300 border-[1px] shadow placeholder:text-slate-300 text-sm"
+                        className="py-2 px-4 rounded-xl border-slate-300 border-[1px] shadow uppercase placeholder:text-slate-300 text-sm"
                       />
                     </div>
                     <div className="flex flex-col gap-1">
@@ -221,8 +248,10 @@ export const ModalCrearOrden = ({ isOpen, closeModal }) => {
                         LOCALIDAD
                       </label>
                       <input
+                        value={localidad}
+                        onChange={(e) => setLocalidad(e.target.value)}
                         type="text"
-                        className="py-2 px-4 rounded-xl border-slate-300 border-[1px] shadow placeholder:text-slate-300 text-sm"
+                        className="py-2 px-4 rounded-xl border-slate-300 border-[1px] shadow uppercase placeholder:text-slate-300 text-sm"
                         placeholder="LOCALIDAD"
                       />
                     </div>
@@ -231,14 +260,29 @@ export const ModalCrearOrden = ({ isOpen, closeModal }) => {
                         PROVINCIA
                       </label>
                       <input
+                        value={provincia}
+                        onChange={(e) => setProvincia(e.target.value)}
                         type="text"
-                        className="py-2 px-4 rounded-xl border-slate-300 border-[1px] shadow placeholder:text-slate-300 text-sm"
+                        className="py-2 px-4 rounded-xl border-slate-300 border-[1px] shadow uppercase placeholder:text-slate-300 text-sm"
                         placeholder="NUMERO DE LA FACT O REM"
                       />
                     </div>
                   </div>
+                  <div className="flex flex-col gap-1">
+                    <label className="text-sm text-slate-700 uppercase">
+                      Detallar algo mensaje,etc.
+                    </label>
+                    <textarea
+                      value={detalle}
+                      onChange={(e) => setDetalle(e.target.value)}
+                      type="text"
+                      placeholder="ESCRIBIR UN MENSAJE O DETALLAR ALGO."
+                      className="py-2 px-4 rounded-xl border-slate-300 border-[1px] shadow uppercase placeholder:text-slate-300 text-sm"
+                    />
+                  </div>
                   <div>
                     <button
+                      type="button"
                       onClick={() => openProducto()}
                       className="bg-black py-2 px-5 rounded-xl shadow text-white text-sm"
                     >

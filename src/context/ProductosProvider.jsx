@@ -1,6 +1,6 @@
 //imports
 import { createContext, useContext, useEffect, useState } from "react";
-import { obtenerProductos } from "../api/ingresos";
+import { obtenerProductos } from "../api/apis";
 import client from "../api/axios";
 
 //context
