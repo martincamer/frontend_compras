@@ -178,7 +178,7 @@ export const ModalCrearCategorias = ({
                     <input
                       {...register("detalle")}
                       type="text"
-                      className="py-2 px-4 rounded-xl border-slate-300 border-[1px] shadow placeholder:text-slate-300 text-sm"
+                      className="uppercase py-2 px-4 rounded-xl border-slate-300 border-[1px] shadow placeholder:text-slate-300 text-sm"
                       placeholder="DETALLE DE LA CATEGORIA"
                     />
                   </div>

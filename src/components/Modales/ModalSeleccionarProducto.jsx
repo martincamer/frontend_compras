@@ -19,10 +19,10 @@ export const ModalSeleccionarProducto = ({
   const [productsPerPage] = useState(5);
 
   // Filtrar productos por término de búsqueda y categoría seleccionada
-  const filteredProducts = productos.filter((product) => {
+  const filteredProducts = productos?.filter((product) => {
     return (
-      product.detalle.toLowerCase().includes(searchTerm.toLowerCase()) &&
-      (selectedCategory === "all" || product.categoria === selectedCategory)
+      product?.detalle?.toLowerCase().includes(searchTerm?.toLowerCase()) &&
+      (selectedCategory === "all" || product?.categoria === selectedCategory)
     );
   });
 

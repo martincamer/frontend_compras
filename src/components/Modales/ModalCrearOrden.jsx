@@ -30,7 +30,8 @@ export const ModalCrearOrden = ({ isOpen, closeModal }) => {
     categoria,
     precio_und,
     cantidad,
-    totalFinal
+    totalFinal,
+    cantidadFaltante
   ) => {
     const newProducto = {
       id,
@@ -39,6 +40,7 @@ export const ModalCrearOrden = ({ isOpen, closeModal }) => {
       precio_und,
       cantidad,
       totalFinal,
+      cantidadFaltante: 0,
     };
 
     const productoSeleccionadoItem = productoSeleccionado.find((item) => {
@@ -118,17 +120,20 @@ export const ModalCrearOrden = ({ isOpen, closeModal }) => {
       socket.emit("crear-orden-dos", resDos.data);
     }
 
-    toast.success("¡Orden creada correctamente!", {
+    toast.success("¡Producto creado correctamente!", {
       position: "top-center",
-      autoClose: 1500,
+      autoClose: 3000,
       hideProgressBar: false,
       closeOnClick: true,
       pauseOnHover: true,
       draggable: true,
-      progress: undefined,
       theme: "light",
+      style: {
+        padding: "10px",
+        background: "#b8ffb8",
+        color: "#009900",
+      },
     });
-
     setTimeout(() => {
       closeModal();
     }, 500);

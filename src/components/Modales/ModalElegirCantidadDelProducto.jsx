@@ -28,6 +28,11 @@ export const ModalElegirCantidadDelProducto = ({
     laodData();
   }, [OBTENERID]);
 
+  // Función para generar un ID numérico aleatorio
+  function generarID() {
+    return Math.floor(Math.random() * 1000000).toString(); // Genera un número aleatorio de hasta 6 dígitos
+  }
+
   return (
     <Menu as="div" className="z-50">
       <Transition appear show={isOpen} as={Fragment}>
@@ -143,15 +148,16 @@ export const ModalElegirCantidadDelProducto = ({
                 <div className="mt-4">
                   <button
                     onClick={() => {
+                      const randomID = generarID();
                       addToProductos(
-                        producto?.id,
+                        parseInt(`${producto?.id}${randomID}`, 10), // Combina el ID del producto con el ID aleatorio
                         producto?.detalle,
                         producto?.categoria,
                         precio_und,
                         cantidad,
                         precio_und * cantidad
-                      ),
-                        closeModal();
+                      );
+                      closeModal();
                     }}
                     type="button"
                     className="bg-green-500 text-white rounded-xl shadow py-2 px-4 text-sm"

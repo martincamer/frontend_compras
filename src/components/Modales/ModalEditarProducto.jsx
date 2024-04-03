@@ -183,7 +183,7 @@ export const ModalEditarProducto = ({ isOpen, closeModal, OBTENERID }) => {
                       onChange={(e) => setDetale(e.target.value)}
                       value={detalle}
                       type="text"
-                      className="py-2 px-4 rounded-xl border-slate-300 border-[1px] shadow placeholder:text-slate-300 text-sm"
+                      className="py-2 px-4 rounded-xl uppercase border-slate-300 border-[1px] shadow placeholder:text-slate-300 text-sm"
                       placeholder="DETALLE DEL PRODUCTO"
                     />
                   </div>
@@ -194,7 +194,7 @@ export const ModalEditarProducto = ({ isOpen, closeModal, OBTENERID }) => {
                     </label>
                     <select
                       type="text"
-                      className="py-2 px-4 rounded-xl border-slate-300 border-[1px] shadow bg-white placeholder:text-slate-300 text-sm uppercase"
+                      className="py-2 px-4 rounded-xl uppercase border-slate-300 border-[1px] shadow bg-white placeholder:text-slate-300 text-sm uppercase"
                       onChange={(e) => setCategoria(e.target.value)}
                       value={categoria}
                     >
@@ -215,7 +215,7 @@ export const ModalEditarProducto = ({ isOpen, closeModal, OBTENERID }) => {
                       onChange={(e) => setProveedor(e.target.value)}
                       value={proveedor}
                       type="text"
-                      className="py-2 px-4 rounded-xl border-slate-300 border-[1px] shadow placeholder:text-slate-300 text-sm"
+                      className="py-2 px-4 rounded-xl uppercase border-slate-300 border-[1px] shadow placeholder:text-slate-300 text-sm"
                       placeholder="DETALLE DEL PRODUCTO"
                     />
                   </div> */}
@@ -224,7 +224,7 @@ export const ModalEditarProducto = ({ isOpen, closeModal, OBTENERID }) => {
                     <label className="text-sm text-slate-700 uppercase">
                       Precio
                     </label>
-                    <div className="py-2 px-6 rounded-xl border-slate-300 border-[1px] shadow flex gap-4 ">
+                    <div className="py-2 px-6 rounded-xl uppercase border-slate-300 border-[1px] shadow flex gap-4 ">
                       <span className="text-lg text-slate-700">$</span>
                       <input
                         onChange={(e) => setPrecio(e.target.value)}
@@ -235,7 +235,7 @@ export const ModalEditarProducto = ({ isOpen, closeModal, OBTENERID }) => {
                       />
                     </div>
                     <div className="mt-2">
-                      <span className="bg-black text-sm py-2 px-6 rounded-xl shadow text-white">
+                      <span className="bg-black text-sm py-2 px-6 rounded-xl uppercase shadow text-white">
                         {Number(precio_und).toLocaleString("es-AR", {
                           style: "currency",
                           currency: "ARS",
@@ -247,7 +247,7 @@ export const ModalEditarProducto = ({ isOpen, closeModal, OBTENERID }) => {
                   <div>
                     <button
                       type="submit"
-                      className="bg-black py-2 px-6 shadow rounded-xl text-white uppercase text-sm"
+                      className="bg-black py-2 px-6 shadow rounded-xl uppercase text-white uppercase text-sm"
                     >
                       Editar el producto
                     </button>

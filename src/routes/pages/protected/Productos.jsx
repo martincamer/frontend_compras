@@ -69,7 +69,7 @@ export const Productos = () => {
   // Filtrar productos por término de búsqueda y categoría seleccionada
   const filteredProducts = productos.filter((product) => {
     return (
-      product.detalle.toLowerCase().includes(searchTerm.toLowerCase()) &&
+      product?.detalle?.toLowerCase().includes(searchTerm?.toLowerCase()) &&
       (selectedCategory === "all" || product.categoria === selectedCategory)
     );
   });
@@ -113,8 +113,8 @@ export const Productos = () => {
     <section className="w-full h-full px-5 max-md:px-4 flex flex-col gap-2 py-16 max-md:gap-5">
       <ToastContainer />
       <div className="py-5 px-5 rounded-xl grid grid-cols-3 gap-3 mb-2 max-md:grid-cols-1 max-md:border-none max-md:shadow-none max-md:py-0 max-md:px-0">
-        <article className="flex flex-col gap-4 rounded-xl border border-slate-200 shadow bg-white p-6 max-md:p-3">
-          <div className="inline-flex gap-2 self-end rounded bg-red-100 p-1 text-red-600">
+        <article className="flex flex-col items-start justify-center gap-4 rounded-xl border border-slate-200 shadow bg-white p-6 max-md:p-3">
+          {/* <div className="inline-flex gap-2 self-end rounded bg-green-100 p-1 text-green-600">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="h-4 w-4"
@@ -130,24 +130,26 @@ export const Productos = () => {
               />
             </svg>
 
-            <span className="text-xs font-medium max-md:text-xs"> </span>
-          </div>
+            <span className="text-xs font-medium max-md:text-xs uppercase">
+              {" "}
+            </span>
+          </div> */}
 
           <div>
-            <strong className="block text-sm font-medium text-gray-500 max-md:text-xs">
+            <strong className="block text-sm font-medium text-gray-500 max-md:text-xs uppercase">
               Total productos cargados
             </strong>
 
             <p>
-              <span className="text-2xl font-medium text-red-600 max-md:text-base">
-                {productos.lenght}
+              <span className="text-2xl font-medium text-green-600 max-md:text-base uppercase">
+                {productos.length}{" "}
               </span>
 
-              <span className="text-xs text-gray-500">
+              <span className="text-xs text-gray-500 uppercase">
                 {" "}
-                total cargados{" "}
-                <span className="font-bold text-slate-700">
-                  {productos.lenght}
+                total cargados {"  "}
+                <span className="font-bold text-slate-700 uppercase">
+                  {productos.length}
                 </span>
               </span>
             </p>
@@ -171,56 +173,25 @@ export const Productos = () => {
               />
             </svg>
 
-            <span className="text-xs font-medium">MARZO</span>
+            <span className="text-xs font-medium uppercase">
+              {nombreMesActual}
+            </span>
           </div>
 
           <div>
-            <strong className="block text-sm font-medium text-gray-500 max-md:text-xs">
+            <strong className="block text-sm font-medium text-gray-500 max-md:text-xs uppercase">
               Fecha Actual
             </strong>
 
             <p>
-              <span className="text-2xl max-md:text-base font-medium text-gray-900">
+              <span className="text-2xl max-md:text-base font-medium text-gray-900 uppercase">
                 {nombreMesActual}
               </span>
 
-              <span className="text-xs text-gray-500">
+              <span className="text-xs text-gray-500 uppercase">
                 {" "}
                 Dia {nombreDiaActual}
               </span>
-            </p>
-          </div>
-        </article>
-
-        <article className="flex flex-col gap-4 rounded-xl border border-slate-200 shadow bg-white p-6 max-md:p-3">
-          <div className="inline-flex gap-2 self-end rounded bg-green-100 p-1 text-green-600">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-4 w-4"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"
-              />
-            </svg>
-
-            <span className="text-xs font-medium"> </span>
-          </div>
-
-          <div>
-            <strong className="block text-sm font-medium text-gray-500 max-md:text-sm">
-              Total stock - cargado
-            </strong>
-
-            <p>
-              <span className="text-2xl font-medium text-gray-900 max-md:text-base"></span>
-
-              <span className="text-xs text-gray-500"></span>
             </p>
           </div>
         </article>
@@ -253,13 +224,13 @@ export const Productos = () => {
           <input
             type="text"
             placeholder="Buscar por detalle"
-            className="rounded-xl py-2 px-5 border-slate-300 bg-white text-slate-700 border-[1px]"
+            className="rounded-xl py-2 px-5 border-slate-300 bg-white text-slate-700 border-[1px] uppercase"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
           {/* Selector de categoría */}
           <select
-            className="py-1 px-4 text-slate-700 rounded-xl shadow bg-white border-slate-300 border-[1px]"
+            className="py-1 px-4 text-slate-700 rounded-xl shadow bg-white border-slate-300 border-[1px] uppercase"
             value={selectedCategory}
             onChange={(e) => setSelectedCategory(e.target.value)}
           >

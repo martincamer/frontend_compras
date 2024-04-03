@@ -1,16 +1,13 @@
 import { Dialog, Menu, Transition } from "@headlessui/react";
 import { Fragment, useState, useEffect } from "react";
+import { useOrdenesContext } from "../../context/OrdenesProvider";
 import { toast } from "react-toastify";
-import { useProductosContext } from "../../context/ProductosProvider";
 import client from "../../api/axios";
 import io from "socket.io-client";
 
-export const ModalEliminarProducto = ({
-  eliminarModal,
-  closeEliminar,
-  obtenerId,
-}) => {
-  const { setProductos } = useProductosContext();
+export const ModalEliminar = ({ eliminarModal, closeEliminar, obtenerId }) => {
+  const { setOrdenesMensuales } = useOrdenesContext();
+
   const [socket, setSocket] = useState(null);
 
   useEffect(() => {
@@ -24,8 +21,8 @@ export const ModalEliminarProducto = ({
 
     setSocket(newSocket);
 
-    newSocket.on("eliminar-producto", (salidaEliminada) => {
-      setProductos((prevSalidas) =>
+    newSocket.on("eliminar-orden", (salidaEliminada) => {
+      setOrdenesMensuales((prevSalidas) =>
         prevSalidas.filter((salida) => salida.id !== salidaEliminada.id)
       );
     });
@@ -33,15 +30,15 @@ export const ModalEliminarProducto = ({
     return () => newSocket.close();
   }, []);
 
-  const handleEliminarChofer = async (id) => {
+  const handleEliminarOrden = async (id) => {
     try {
-      await client.delete(`/eliminar-producto/${id}`);
+      await client.delete(`/eliminar-orden/${id}`);
 
       if (socket) {
-        socket.emit("eliminar-producto", { id });
+        socket.emit("eliminar-orden", { id });
       }
 
-      toast.error("¡Producto eliminado correctamente!", {
+      toast.error("¡Orden eliminada correctamente!", {
         position: "top-center",
         autoClose: 3000,
         hideProgressBar: false,
@@ -55,9 +52,10 @@ export const ModalEliminarProducto = ({
           color: "#de0202",
         },
       });
+
       closeEliminar();
     } catch (error) {
-      console.error("Error al eliminar la salida:", error);
+      console.error("Error al eliminar la orden:", error);
     }
   };
 
@@ -110,21 +108,21 @@ export const ModalEliminarProducto = ({
               leaveTo="opacity-0 scale-95"
             >
               <div className="inline-block w-1/3 max-md:w-full p-6 my-8 overflow-hidden text-left align-middle transition-all transform bg-white shadow-xl rounded-2xl">
-                <div className="text-sm text-slate-700 mb-3 border-b-[1px] max-md:text-sm uppercase">
-                  Elimar el producto
+                <div className="text-lg text-slate-700 mb-3 border-b-[1px] capitalize max-md:text-sm max-md:uppercase">
+                  ELIMINAR LA ORDEN
                 </div>
 
                 <div className="flex gap-2">
                   <button
-                    onClick={() => handleEliminarChofer(obtenerId)}
-                    className="bg-red-100 text-red-800 py-2 px-4 rounded-xl w-full max-md:py-1 text-sm"
+                    onClick={() => handleEliminarOrden(obtenerId)}
+                    className="bg-red-100 text-red-800 py-2 px-4 rounded-xl w-full max-md:py-1 max-md:text-sm"
                     type="button"
                   >
                     ELIMINAR
                   </button>
                   <button
                     onClick={closeEliminar}
-                    className="bg-green-500/10 text-green-600 py-2 px-4 rounded-xl w-full max-md:py-1 text-sm"
+                    className="bg-green-500 text-white py-2 px-4 rounded-xl w-full max-md:py-1 max-md:text-sm"
                     type="button"
                   >
                     CERRAR

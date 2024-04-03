@@ -68,12 +68,10 @@ export const SideBar = () => {
       </div>
       <div
         className={`${
-          !click
-            ? "hidden max-h-full min-h-full h-full"
-            : "block fixed z-[100] shadow-black/10 shadow-md h-full max-h-full min-h-full"
-        } flex transition-all ease-in-out duration-300 z-50`}
+          click ? "translate-x-0" : "-translate-x-full"
+        } fixed left-0 top-0 z-[100] w-20 bg-white h-full shadow-lg transition-transform duration-300 ease-in-out`}
       >
-        <div className="flex w-16  max-md:w-14 flex-col justify-between border-e bg-white h-full max-h-full min-h-full">
+        <div className="flex max-md:w-14 flex-col justify-between border-e bg-white h-full max-h-full min-h-full">
           <div className="">
             <div className="border-t border-slate-300 ">
               <div className="px-2">
@@ -190,6 +188,38 @@ export const SideBar = () => {
 
                       <span className="invisible absolute start-full top-1/2 ms-4 -translate-y-1/2 rounded bg-gray-900 px-2 py-1.5 text-xs font-medium text-white group-hover:visible">
                         Ordenes
+                      </span>
+                    </a>
+                  </Link>
+                  <Link
+                    to={"/ordenes-checkout"}
+                    onClick={() => toggleSidebar()}
+                  >
+                    <a
+                      href="#"
+                      className={`${
+                        location.pathname === "/ordenes-checkout"
+                          ? "bg-slate-100 text-black-500"
+                          : "bg-white"
+                      } group relative flex justify-center rounded px-2 py-1.5 text-gray-500 hover:bg-slate-200 hover:text-gray-700 text-center`}
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        strokeWidth={1.5}
+                        stroke="currentColor"
+                        className="w-6 h-6"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M11.35 3.836c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 0 0 .75-.75 2.25 2.25 0 0 0-.1-.664m-5.8 0A2.251 2.251 0 0 1 13.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m8.9-4.414c.376.023.75.05 1.124.08 1.131.094 1.976 1.057 1.976 2.192V16.5A2.25 2.25 0 0 1 18 18.75h-2.25m-7.5-10.5H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V18.75m-7.5-10.5h6.375c.621 0 1.125.504 1.125 1.125v9.375m-8.25-3 1.5 1.5 3-3.75"
+                        />
+                      </svg>
+
+                      <span className="invisible absolute start-full top-1/2 ms-4 -translate-y-1/2 rounded bg-gray-900 px-2 py-1.5 text-xs font-medium text-white group-hover:visible w-[200px]">
+                        Ordenes Pendientes/Finalizadas
                       </span>
                     </a>
                   </Link>
