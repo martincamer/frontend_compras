@@ -25,7 +25,7 @@ export const ModalCrearCategorias = ({
 
   const handleID = (id) => setObtenerId(id);
 
-  const baseURL = import.meta.env.BACKEND_URL;
+  // const baseURL = import.meta.env.BACKEND_URL;
 
   useEffect(() => {
     const newSocket = io(
