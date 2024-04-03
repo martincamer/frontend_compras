@@ -31,7 +31,7 @@ export const ModalCrearCategorias = ({
     const newSocket = io(
       // "https://backendcompras-production.up.railway.app",
       // "http://localhost:4000",
-      baseURL,
+      `${baseURL}`,
       {
         withCredentials: true,
       }
@@ -82,7 +82,7 @@ export const ModalCrearCategorias = ({
     const newSocket = io(
       // "https://backendcompras-production.up.railway.app",
       // "http://localhost:4000",
-      baseURL,
+      `${baseURL}`,
       {
         withCredentials: true,
       }
