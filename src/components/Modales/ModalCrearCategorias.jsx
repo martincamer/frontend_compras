@@ -25,11 +25,13 @@ export const ModalCrearCategorias = ({
 
   const handleID = (id) => setObtenerId(id);
 
+  const baseURL = import.meta.env.BACKEND_URL;
+
   useEffect(() => {
     const newSocket = io(
       //"https://tecnohouseindustrialbackend-production.up.railway.app",
       // "http://localhost:4000",
-      `${import.meta.env.BACKEND_URL}`,
+      baseURL,
       {
         withCredentials: true,
       }
