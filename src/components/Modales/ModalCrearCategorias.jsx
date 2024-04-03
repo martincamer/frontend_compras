@@ -29,9 +29,9 @@ export const ModalCrearCategorias = ({
 
   useEffect(() => {
     const newSocket = io(
-      //"https://tecnohouseindustrialbackend-production.up.railway.app",
+      "https://backendcompras-production.up.railway.app",
       // "http://localhost:4000",
-      baseURL,
+      // baseURL,
       {
         withCredentials: true,
       }
