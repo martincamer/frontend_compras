@@ -194,7 +194,7 @@ export const ModalEditarProducto = ({ isOpen, closeModal, OBTENERID }) => {
                     </label>
                     <select
                       type="text"
-                      className="py-2 px-4 rounded-xl uppercase border-slate-300 border-[1px] shadow bg-white placeholder:text-slate-300 text-sm uppercase"
+                      className="py-2 px-4 rounded-xl border-slate-300 border-[1px] shadow bg-white placeholder:text-slate-300 text-sm uppercase"
                       onChange={(e) => setCategoria(e.target.value)}
                       value={categoria}
                     >

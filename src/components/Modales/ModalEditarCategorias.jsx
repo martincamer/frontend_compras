@@ -20,7 +20,7 @@ export const ModalEditarCategorias = ({
 
   useEffect(() => {
     const newSocket = io(
-      /*"http://localhost:4000"¨*/ import.meta.env.BACKEND_URL,
+      /*"http://localhost:4000"¨*/ "https://backendcompras-production.up.railway.app",
       {
         withCredentials: true,
       }
