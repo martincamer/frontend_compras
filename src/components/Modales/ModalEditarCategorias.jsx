@@ -19,9 +19,12 @@ export const ModalEditarCategorias = ({
   const [datos, setDatos] = useState([]);
 
   useEffect(() => {
-    const newSocket = io("http://localhost:4000", {
-      withCredentials: true,
-    });
+    const newSocket = io(
+      /*"http://localhost:4000"¨*/ import.meta.env.BACKEND_URL,
+      {
+        withCredentials: true,
+      }
+    );
 
     setSocket(newSocket);
 
