@@ -22,6 +22,7 @@ import { PrimeReactProvider } from "primereact/api";
 import RutaProtegida from "./layouts/RutaProtejida";
 import "react-toastify/dist/ReactToastify.css";
 import "react-toastify/dist/ReactToastify.min.css";
+import { ViewPdfProducto } from "./routes/pages/protected/ViewPdfProducto";
 
 function App() {
   const { isAuth } = useAuth();
@@ -58,6 +59,11 @@ function App() {
               <Route index path="/productos" element={<Productos />} />
               <Route index path="/ordenes" element={<OrdenDeCompra />} />
               <Route index path="/orden/:id" element={<ViewOrden />} />
+              <Route
+                index
+                path="/pdf-productos"
+                element={<ViewPdfProducto />}
+              />
               <Route
                 index
                 path="/ordenes-checkout"

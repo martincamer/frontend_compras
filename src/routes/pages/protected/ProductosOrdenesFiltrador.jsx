@@ -2,7 +2,9 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import { SyncLoader } from "react-spinners";
+import { PDFDownloadLink } from "@react-pdf/renderer";
 import client from "../../../api/axios";
+import { ImprirmirProductosPDF } from "../../../components/pdf/ImprirmirProductosPDF";
 
 export const ProductosOrdenesFiltrador = () => {
   const [ordenesBuscadas, setOrdenesBuscadas] = useState([]);
@@ -171,7 +173,7 @@ export const ProductosOrdenesFiltrador = () => {
         </h4>
       </div>
 
-      <div className="mx-6">
+      <div className="mx-6 flex gap-4 items-center">
         <div className="flex gap-6 items-center max-md:flex-col max-md:items-start">
           <div className="flex gap-2 items-center">
             <label className="text-base uppercase text-slate-700">
@@ -215,6 +217,18 @@ export const ProductosOrdenesFiltrador = () => {
               </svg>
             </button>
           </div>
+        </div>
+
+        <div>
+          <PDFDownloadLink
+            className="bg-green-500 text-white py-2 px-5 shadow rounded-xl uppercase"
+            fileName="productos_filtrados"
+            target="_blank"
+            download={false}
+            document={<ImprirmirProductosPDF datos={currentProducts} />}
+          >
+            Descargar productos filtrados
+          </PDFDownloadLink>
         </div>
       </div>
 

@@ -84,10 +84,13 @@ export const AuthProvider = ({ children }) => {
           setUser(null);
           setIsAuth(false);
         });
+    } else {
+      Cookies.remove("token"); // Aquí se borra la cookie
     }
   }, [isAuth]);
 
   const signout = async () => {
+    Cookies.remove("token"); // Aquí se borra la cookie
     const res = await axios.post("/signout");
     setUser(null);
     setIsAuth(false);
