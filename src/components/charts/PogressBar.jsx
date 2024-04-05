@@ -15,7 +15,7 @@ const ProgressBar = ({ ordenesMensuales }) => {
   }, 0);
 
   const porcentajeTotal = Math.min(
-    (Number(totalFinalAcumulado) / 5000000) * 100,
+    (Number(totalFinalAcumulado) / 10000000000) * 100,
     100
   ).toFixed(2);
 

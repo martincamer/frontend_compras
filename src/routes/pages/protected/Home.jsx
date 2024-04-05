@@ -276,7 +276,7 @@ export const Home = () => {
                   <div
                     className="bg-orange-500 h-full rounded-xl"
                     style={{
-                      width: `${(category.total / 1000000) * 100}%`,
+                      width: `${(category.total / 1000000000) * 100}%`,
                     }}
                   ></div>
                 </div>
@@ -285,7 +285,9 @@ export const Home = () => {
                     {`${category.total.toLocaleString("es-AR", {
                       style: "currency",
                       currency: "ARS",
-                    })} (${((category.total / 1000000) * 100).toFixed(2)}%)`}
+                    })} (${((category.total / 10000000000) * 100).toFixed(
+                      2
+                    )}%)`}
                   </p>
                 </div>
               </div>
