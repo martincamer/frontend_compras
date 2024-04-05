@@ -353,13 +353,14 @@ export const OrdenDeCompraCheckout = () => {
       <div className="py-3 px-4 rounded-xl mx-8 mt-2">
         <div className="grid grid-cols-3 h-full w-full gap-4">
           {currentProducts
-            .filter((o) =>
-              o.datos.productoSeleccionado.every(
+            .filter((order) => {
+              // Verifica si la orden está pendiente
+              return order.datos.productoSeleccionado.some(
                 (producto) =>
                   parseInt(producto.cantidad) !==
                   parseInt(producto.cantidadFaltante)
-              )
-            )
+              );
+            })
             .map((o, index) => (
               <div
                 className="shadow border-slate-200 border-[1px] rounded-xl pt-14 pb-6 px-5 flex justify-between items-center relative"
