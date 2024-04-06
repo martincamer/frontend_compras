@@ -17,12 +17,14 @@ import { ViewOrden } from "./routes/pages/protected/ViewOrden";
 import { OrdenDeCompraCheckout } from "./routes/pages/protected/OrdenDeCompraCheckout";
 import { ViewOrdenCheckout } from "./routes/pages/protected/ViewOrdenCheckout";
 import { OrdenDeCompraRegistrosDos } from "./routes/pages/protected/OrdenDeCompraRegistrosDos";
+import { ViewPdfProducto } from "./routes/pages/protected/ViewPdfProducto";
+import { Proveedores } from "./routes/pages/protected/Proveedores";
+import { Proveedor } from "./routes/pages/protected/Proveedor";
 //import normales
 import { PrimeReactProvider } from "primereact/api";
 import RutaProtegida from "./layouts/RutaProtejida";
 import "react-toastify/dist/ReactToastify.css";
 import "react-toastify/dist/ReactToastify.min.css";
-import { ViewPdfProducto } from "./routes/pages/protected/ViewPdfProducto";
 
 function App() {
   const { isAuth } = useAuth();
@@ -59,6 +61,9 @@ function App() {
               <Route index path="/productos" element={<Productos />} />
               <Route index path="/ordenes" element={<OrdenDeCompra />} />
               <Route index path="/orden/:id" element={<ViewOrden />} />
+              <Route index path="/proveedores" element={<Proveedores />} />
+              <Route index path="/proveedores/:id" element={<Proveedor />} />
+
               <Route
                 index
                 path="/pdf-productos"

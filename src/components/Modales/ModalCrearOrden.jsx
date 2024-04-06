@@ -6,9 +6,12 @@ import { ModalSeleccionarProducto } from "./ModalSeleccionarProducto";
 import { ModalEditarProductoSeleccionado } from "./ModalEditarProductoSeleccionado";
 import client from "../../api/axios";
 import io from "socket.io-client";
+import { useProductosContext } from "../../context/ProductosProvider";
 
 export const ModalCrearOrden = ({ isOpen, closeModal }) => {
   const { setOrdenesMensuales } = useOrdenesContext();
+
+  const { proveedores, setProveedores } = useProductosContext();
 
   const [proveedor, setProveedor] = useState("");
   const [numero_factura, setNumeroFactura] = useState("");
@@ -84,9 +87,9 @@ export const ModalCrearOrden = ({ isOpen, closeModal }) => {
       setOrdenesMensuales((prevTipos) => [...prevTipos, nuevaSalida]);
     });
 
-    // newSocket.on("crear-orden-dos", (nuevaSalida) => {
-    //   setOrdenes((prevTipos) => [...prevTipos, nuevaSalida]);
-    // });
+    newSocket.on("crear-orden-dos", (nuevaSalida) => {
+      setOrdenes((prevTipos) => [...prevTipos, nuevaSalida]);
+    });
 
     return () => newSocket.close();
   }, []);
@@ -110,8 +113,16 @@ export const ModalCrearOrden = ({ isOpen, closeModal }) => {
       datos: { productoSeleccionado },
     };
 
+    const datos = {
+      proveedor,
+      total: Number(totalesFinales),
+    };
+
     const res = await client.post("/crear-orden-nueva", datosOrden);
     const resDos = await client.post("/crear-orden-nueva-dos", datosOrden);
+    const resProveedor = await client.put(`actualizar-proveedor-compra`, datos);
+
+    console.log(resProveedor);
 
     if (socket) {
       socket.emit("crear-orden", res.data);
@@ -120,6 +131,27 @@ export const ModalCrearOrden = ({ isOpen, closeModal }) => {
     if (socket) {
       socket.emit("crear-orden-dos", resDos.data);
     }
+
+    if (socket) {
+      socket.emit("proveedor-orden-editar", resProveedor.data);
+    }
+
+    const tipoExistenteIndex = proveedores.findIndex(
+      (tipo) => tipo.proveedor == proveedor
+    );
+
+    setProveedores((prevTipos) => {
+      const newTipos = [...prevTipos];
+      const updateRemuneracion = JSON.parse(resProveedor.config.data); // Convierte el JSON a objeto
+      newTipos[tipoExistenteIndex] = {
+        id: newTipos[tipoExistenteIndex].id,
+        proveedor: updateRemuneracion.proveedor,
+        total:
+          Number(newTipos[tipoExistenteIndex].total) +
+          Number(updateRemuneracion.total),
+      };
+      return newTipos;
+    });
 
     toast.success("¡Producto creado correctamente!", {
       position: "top-center",
@@ -218,13 +250,17 @@ export const ModalCrearOrden = ({ isOpen, closeModal }) => {
                       <label className="text-sm text-slate-700 uppercase">
                         Proveedor de la orden
                       </label>
-                      <input
+                      <select
                         value={proveedor}
                         onChange={(e) => setProveedor(e.target.value)}
                         type="text"
-                        className="py-2 px-4 rounded-xl border-slate-300 border-[1px] shadow uppercase placeholder:text-slate-300 text-sm"
+                        className="py-2 px-4 rounded-xl border-slate-300 border-[1px] shadow uppercase placeholder:text-slate-300 text-sm bg-white"
                         placeholder="PROVEEDOR DE LA ORDEN"
-                      />
+                      >
+                        {proveedores.map((p) => (
+                          <option key={p.id}>{p.proveedor}</option>
+                        ))}
+                      </select>
                     </div>
                     <div className="flex flex-col gap-1">
                       <label className="text-sm text-slate-700 uppercase">

@@ -19,6 +19,7 @@ export const useProductosContext = () => {
 export const ProductosProvider = ({ children }) => {
   const [productos, setProductos] = useState([]);
   const [categorias, setCategorias] = useState([]);
+  const [proveedores, setProveedores] = useState([]);
 
   useEffect(() => {
     async function loadData() {
@@ -38,9 +39,25 @@ export const ProductosProvider = ({ children }) => {
     loadData();
   }, []);
 
+  useEffect(() => {
+    async function loadData() {
+      const respuesta = await client.get("/proveedores");
+      setProveedores(respuesta.data);
+    }
+
+    loadData();
+  }, []);
+
   return (
     <ProductosContext.Provider
-      value={{ productos, setProductos, categorias, setCategorias }}
+      value={{
+        productos,
+        setProductos,
+        categorias,
+        setCategorias,
+        proveedores,
+        setProveedores,
+      }}
     >
       {children}
     </ProductosContext.Provider>

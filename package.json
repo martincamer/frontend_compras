@@ -10,6 +10,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@cloudinary/react": "^1.13.0",
+    "@cloudinary/url-gen": "^1.19.0",
     "@emailjs/browser": "^3.11.0",
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.0",
@@ -19,6 +21,7 @@
     "apexcharts": "^3.47.0",
     "axios": "^1.5.1",
     "class-variance-authority": "^0.7.0",
+    "cloudinary": "^2.1.0",
     "clsx": "^2.1.0",
     "date-fns": "^3.3.1",
     "handsontable": "^14.2.0",
