@@ -107,6 +107,10 @@ export const Proveedor = () => {
   // Cambiar de página
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
+  const totalEnComprobantes = comprobantes.reduce((acc, comprobante) => {
+    return acc + parseFloat(comprobante.total);
+  }, 0);
+
   return (
     <section className="w-full h-full px-5 max-md:px-4 flex flex-col gap-2 py-16 max-md:gap-5">
       <ToastContainer />
@@ -118,8 +122,37 @@ export const Proveedor = () => {
         </p>
       </div>
       <div className="py-5 px-5 rounded-xl grid grid-cols-3 gap-3 mb-2 max-md:grid-cols-1 max-md:border-none max-md:shadow-none max-md:py-0 max-md:px-0">
-        <article className="flex flex-col gap-4 rounded-xl border border-slate-200 shadow bg-white p-6 max-md:p-3">
-          <div className="inline-flex gap-2 self-end rounded bg-red-100 p-1 text-red-600">
+        <article className="flex items-center justify-between gap-4 rounded-xl shadow border border-slate-200 bg-white p-6">
+          <div className="flex gap-4 items-center">
+            <span className="rounded-full bg-green-100 p-3 text-green-700">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor"
+                className="w-9 h-9"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M9 8.25H7.5a2.25 2.25 0 0 0-2.25 2.25v9a2.25 2.25 0 0 0 2.25 2.25h9a2.25 2.25 0 0 0 2.25-2.25v-9a2.25 2.25 0 0 0-2.25-2.25H15m0-3-3-3m0 0-3 3m3-3V15"
+                />
+              </svg>
+            </span>
+
+            <div>
+              <p className="text-2xl font-medium text-green-700">
+                {Number(comprobantes.length)}
+              </p>
+
+              <p className="text-sm text-gray-500 uppercase underline">
+                Total comprobantes cargados
+              </p>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-2 self-end rounded-xl bg-green-100 py-2 px-2 text-green-600">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="h-4 w-4"
@@ -131,38 +164,48 @@ export const Proveedor = () => {
                 strokeLinecap="round"
                 strokeLinejoin="round"
                 strokeWidth="2"
-                d="M13 17h8m0 0V9m0 8l-8-8-4 4-6-6"
+                d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"
               />
             </svg>
 
-            <span className="text-xs font-medium max-md:text-xs">
-              {Number(comprobantes?.length / 10 || 0).toFixed(2)} %
+            <span className="text-xs font-medium">
+              {" "}
+              {Number(comprobantes.length / 1).toFixed(2)} %{" "}
             </span>
-          </div>
-
-          <div>
-            <strong className="block text-sm font-medium text-gray-500 max-md:text-xs uppercase">
-              Total pagos cargados
-            </strong>
-
-            <p>
-              <span className="text-xl font-medium text-red-600 max-md:text-base">
-                {Number(comprobantes?.length || 0)}
-              </span>
-
-              <span className="text-xs text-gray-500 uppercase">
-                {" "}
-                total final{" "}
-                <span className="font-bold text-slate-700">
-                  {Number(comprobantes?.length || 0)}
-                </span>
-              </span>
-            </p>
           </div>
         </article>
 
-        <article className="flex flex-col gap-4 rounded-xl border border-slate-200 shadow bg-white p-6 max-md:p-3">
-          <div className="inline-flex gap-2 self-end rounded bg-green-100 p-1 text-green-600">
+        <article className="flex justify-between items-center rounded-2xl border border-gray-200 bg-white p-8 shadow">
+          <div className="flex gap-4 items-center">
+            <span className="rounded-full bg-green-100 p-3 text-green-700">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor"
+                className="w-9 h-9"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 11.25v7.5"
+                />
+              </svg>
+            </span>
+
+            <div>
+              <p className="text-2xl font-medium text-green-700 uppercase">
+                {nombreMesActual}
+              </p>
+
+              <p className="text-sm text-gray-500 uppercase underline">
+                MES ACTUAL
+              </p>
+            </div>
+          </div>
+
+          <div className="inline-flex gap-2 rounded-xl bg-green-100 py-2 px-4 text-green-600">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -179,30 +222,46 @@ export const Proveedor = () => {
             </svg>
 
             <span className="text-xs font-medium uppercase">
-              {nombreMesActual}
+              {" "}
+              {nombreDiaActual}{" "}
             </span>
-          </div>
-
-          <div>
-            <strong className="block text-sm font-medium text-gray-500 max-md:text-xs uppercase">
-              Fecha Actual
-            </strong>
-
-            <p>
-              <span className="text-xl max-md:text-base font-medium text-gray-900 uppercase">
-                {nombreMesActual}
-              </span>
-
-              <span className="text-xs text-gray-500 uppercase">
-                {" "}
-                Dia {nombreDiaActual}
-              </span>
-            </p>
           </div>
         </article>
 
-        <article className="flex flex-col gap-4 rounded-xl border border-slate-200 shadow bg-white p-6 max-md:p-3">
-          <div className="inline-flex gap-2 self-end rounded bg-red-100 p-1 text-red-600">
+        <article className="flex justify-between items-center rounded-2xl border border-gray-200 bg-white p-8 shadow">
+          <div className="flex gap-4 items-center">
+            <span className="rounded-full bg-red-100 p-3 text-red-700">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor"
+                className="w-9 h-9"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M12 6v12m-3-2.818.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.003-.659-1.106-.879-1.106-2.303 0-3.182s2.9-.879 4.006 0l.415.33M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+                />
+              </svg>
+            </span>
+
+            <div>
+              <p className="text-2xl font-medium text-red-700">
+                {Number(datos.total).toLocaleString("es-AR", {
+                  style: "currency",
+                  currency: "ARS",
+                })}
+              </p>
+
+              <p className="text-sm text-gray-500 uppercase underline">
+                Total deuda proveedor
+              </p>
+            </div>
+          </div>
+
+          <div className="inline-flex gap-2 rounded-xl bg-red-100 p-2 text-red-600">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="h-4 w-4"
@@ -214,40 +273,70 @@ export const Proveedor = () => {
                 strokeLinecap="round"
                 strokeLinejoin="round"
                 strokeWidth="2"
-                d="M13 17h8m0 0V9m0 8l-8-8-4 4-6-6"
+                d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"
               />
             </svg>
 
-            <span className="text-xs font-medium max-md:text-xs">
-              {Number(datos?.total / 100000).toFixed(2)} %
+            <span className="text-xs font-medium">
+              {" "}
+              {Number(datos.total / 100000).toFixed(2)} %
             </span>
           </div>
+        </article>
 
-          <div>
-            <strong className="block text-sm font-medium text-gray-500 max-md:text-xs uppercase">
-              Total deuda
-            </strong>
+        <article className="flex justify-between items-center rounded-2xl border border-gray-200 bg-white p-8 shadow">
+          <div className="flex gap-4 items-center">
+            <span className="rounded-full bg-green-100 p-3 text-green-700">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor"
+                className="w-9 h-9"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M12 21v-8.25M15.75 21v-8.25M8.25 21v-8.25M3 9l9-6 9 6m-1.5 12V10.332A48.36 48.36 0 0 0 12 9.75c-2.551 0-5.056.2-7.5.582V21M3 21h18M12 6.75h.008v.008H12V6.75Z"
+                />
+              </svg>
+            </span>
 
-            <p>
-              <span className="text-xl font-medium text-red-600 max-md:text-base">
-                {" "}
-                {Number(datos?.total).toLocaleString("es-AR", {
+            <div>
+              <p className="text-2xl font-medium text-green-700">
+                {Number(totalEnComprobantes).toLocaleString("es-AR", {
                   style: "currency",
                   currency: "ARS",
                 })}
-              </span>
+              </p>
 
-              <span className="text-xs text-gray-500 uppercase">
-                {" "}
-                total final deuda{" "}
-                <span className="font-bold text-slate-700">
-                  {Number(datos?.total).toLocaleString("es-AR", {
-                    style: "currency",
-                    currency: "ARS",
-                  })}
-                </span>
-              </span>
-            </p>
+              <p className="text-sm text-gray-500 uppercase underline">
+                Total en comprobantes a favor
+              </p>
+            </div>
+          </div>
+
+          <div className="inline-flex gap-2 rounded-xl bg-green-100 p-2 text-green-600">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-4 w-4"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"
+              />
+            </svg>
+
+            <span className="text-xs font-medium">
+              {" "}
+              {Number(totalEnComprobantes / 100000).toFixed(2)} %
+            </span>
           </div>
         </article>
       </div>
@@ -273,7 +362,7 @@ export const Proveedor = () => {
             />
           </svg>
         </button>
-        <button className="bg-white border-slate-300 border-[1px] py-2 px-4 rounded-xl text-sm shadow text-slate-700 uppercase max-md:text-xs flex gap-2 items-center">
+        {/* <button className="bg-white border-slate-300 border-[1px] py-2 px-4 rounded-xl text-sm shadow text-slate-700 uppercase max-md:text-xs flex gap-2 items-center">
           Ver resumenes de los comprobantes
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -289,7 +378,7 @@ export const Proveedor = () => {
               d="M17.25 8.25 21 12m0 0-3.75 3.75M21 12H3"
             />
           </svg>
-        </button>
+        </button> */}
       </div>
 
       <div className="mx-8 mt-6">
@@ -353,7 +442,8 @@ export const Proveedor = () => {
                   </span> */}
                 </td>
                 <td className="whitespace-nowrap px-4 py-6 font-medium text-gray-900 uppercase text-sm">
-                  {p.created_at.split("T")[0]}
+                  {p.created_at.split("T")[0]} / <strong>HORA:</strong>{" "}
+                  {p.created_at.split("T")[1]}
                 </td>
               </tr>
             ))}

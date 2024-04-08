@@ -2,16 +2,47 @@ import React, { Fragment, useEffect, useState } from "react";
 import { Dialog, Transition, Menu } from "@headlessui/react";
 import { toast } from "react-toastify";
 import client from "../../api/axios"; // Asegúrate de importar tu cliente Axios configurado para tu API
+import axios from "axios";
 
 export const ModalComprobante = ({ isOpen, closeModal, datos, setDatos }) => {
   const [params, setParams] = useState("");
   const [proveedor, setProveedor] = useState("");
   const [total, setTotal] = useState("");
+  const [imagen, setImagen] = useState(null);
 
   useEffect(() => {
     setParams(datos.id);
     setProveedor(datos.proveedor);
   }, [datos.id]);
+
+  // const [imageSelected, setImageSelected] = useState("");  // const uploadImage = () => {
+
+  //   const formData = new FormData();
+
+  //   // Append the image file and upload preset to the FormData object
+  //   formData.append("file", imageSelected);
+  //   // Append the image file and upload preset to the FormData object
+  //   formData.append("upload_preset", "ngluxncg"); // Reemplaza "xxxxxx2" con tu preset de carga de Cloudinary
+
+  //   // Realizar una solicitud POST a la API de Cloudinary
+  //   axios
+  //     .post(
+  //       "https://api.cloudinary.com/v1_1/de4aqqalo/image/upload", // URL de carga de Cloudinary
+  //       formData // Objeto FormData que contiene el archivo de imagen y el preset de carga
+  //     )
+  //     .then((response) => {
+  //       // Manejar la respuesta
+  //       console.log("Image uploaded successfully!");
+  //       // Obtener la URL segura de la imagen cargada desde la respuesta
+  //       const secureUrl = response;
+  //       console.log("Secure URL:", secureUrl);
+  //       // Aquí puedes hacer lo que necesites con la URL de la imagen, como mostrarla en tu aplicación o enviarla al backend
+  //     })
+  //     .catch((error) => {
+  //       // Manejar errores
+  //       console.error("Error uploading image:", error); // Registrar cualquier error que ocurra durante el proceso de carga
+  //     });
+  // };
 
   const onSubmit = async (e) => {
     e.preventDefault();
@@ -20,7 +51,7 @@ export const ModalComprobante = ({ isOpen, closeModal, datos, setDatos }) => {
       params,
       proveedor,
       total,
-      imagen: "",
+      imagen: imagen,
     };
 
     try {
@@ -173,32 +204,24 @@ export const ModalComprobante = ({ isOpen, closeModal, datos, setDatos }) => {
                     </div>
                   </div>
 
-                  {/* <div className="flex flex-col gap-2">
-                  <label
-                    className="uppercase text-slate-700 text-sm"
-                    htmlFor=""
-                  >
-                    Imagen
-                  </label>
                   <input
                     type="file"
                     accept="image/*"
-                    className="border-slate-300 border-[1px] shadow rounded-xl w-full uppercase py-2 px-4"
-                    onChange={handleImageUpload}
+                    onChange={(event) => setImagen(event.target.files[0])}
                   />
-                </div> */}
-
-                  {/* {imageUrl && (
-                  <div className="flex flex-col gap-2">
-                    <label
-                      className="uppercase text-slate-700 text-sm"
-                      htmlFor=""
-                    >
-                      Imagen Subida
-                    </label>
-                    <AdvancedImage cldImg={imageUrl} />
-                  </div>
-                )} */}
+                  {/* 
+                  <div>
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={(event) =>
+                        setImageSelected(event.target.files[0])
+                      } // Obtener el archivo seleccionado, no la ruta de archivo
+                    />
+                    <button type="button" onClick={uploadImage}>
+                      ENVIAR IMAGEN
+                    </button>
+                  </div> */}
 
                   <div className="mt-3">
                     <button
