@@ -64,7 +64,7 @@ export const ViewOrdenCheckout = () => {
     <section className="w-full h-full px-5 max-md:px-4 flex flex-col gap-2 py-16 max-md:gap-5">
       <ToastContainer />
       <div className="py-5 px-5 rounded-xl grid grid-cols-2 gap-3 mb-2 max-md:grid-cols-1 max-md:border-none max-md:shadow-none max-md:py-0 max-md:px-0">
-        <article className="flex flex-col gap-4 rounded-xl border border-slate-200 shadow bg-white p-6 max-md:p-3">
+        <article className="flex flex-col gap-4 rounded-2xl border border-slate-200 shadow bg-white p-6 max-md:p-3">
           <div className="inline-flex gap-2 self-end rounded bg-red-100 p-1 text-red-600">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -114,7 +114,7 @@ export const ViewOrdenCheckout = () => {
           </div>
         </article>
 
-        <article className="flex flex-col gap-4 rounded-xl border border-slate-200 shadow bg-white p-6 max-md:p-3">
+        <article className="flex flex-col gap-4 rounded-2xl border border-slate-200 shadow bg-white p-6 max-md:p-3">
           <div className="inline-flex gap-2 self-end rounded bg-green-100 p-1 text-green-600">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -157,7 +157,7 @@ export const ViewOrdenCheckout = () => {
 
       <div className="mt-4 border-slate-200 shadow border-[1px] py-5 px-5 rounded-xl mx-4">
         <div>
-          <h5 className="underline text-orange-500 text-lg">
+          <h5 className="underline text-indigo-500 text-lg">
             DATOS DE LA COMPRA
           </h5>
         </div>
@@ -195,7 +195,7 @@ export const ViewOrdenCheckout = () => {
 
       <div className="mt-4 border-slate-200 shadow border-[1px] py-5 px-5 rounded-xl mx-4">
         <div>
-          <h5 className="underline text-orange-500 text-lg">PRODUCTOS</h5>
+          <h5 className="underline text-indigo-500 text-lg">PRODUCTOS</h5>
 
           {/*
   Heads up! 👋
@@ -203,7 +203,7 @@ export const ViewOrdenCheckout = () => {
   This component comes with some `rtl` classes. Please remove them if they are not needed in your project.
 */}
 
-          <div className="overflow-x-auto rounded-xl border border-slate-300 shadow mt-5">
+          <div className="overflow-x-auto rounded-2xl border border-slate-300 mt-5">
             <table className="min-w-full divide-y-2 divide-gray-200 bg-white text-sm">
               <thead className="ltr:text-left rtl:text-right">
                 <tr>
@@ -254,7 +254,7 @@ export const ViewOrdenCheckout = () => {
                         onClick={() => {
                           handleID(p.id), openEntrega();
                         }}
-                        className="text-xs font-bold py-2 px-4 rounded-xl bg-green-500 text-white"
+                        className="text-xs font-bold py-2 px-4 rounded-xl bg-green-100 text-green-600"
                         type="button"
                       >
                         EDITAR/ENTREGADA
@@ -266,7 +266,7 @@ export const ViewOrdenCheckout = () => {
                         EDITAR/PRODUCTO
                       </button> */}
                       <button
-                        className="text-xs font-bold py-2 px-4 rounded-xl bg-red-500 text-white"
+                        className="text-xs font-bold py-2 px-4 rounded-xl bg-red-100 text-red-700"
                         type="button"
                       >
                         ELIMINAR
@@ -278,8 +278,8 @@ export const ViewOrdenCheckout = () => {
                       <span
                         className={`${
                           p.cantidad === p.cantidadFaltante
-                            ? " bg-green-500 py-2 font-semibold px-4 rounded-xl shadow text-white text-sm"
-                            : "bg-red-500 py-2 font-semibold px-4 rounded-xl shadow text-white text-sm"
+                            ? " bg-green-100 py-2 font-semibold px-4 rounded-xl  text-green-600 text-sm"
+                            : "bg-red-100 py-2 font-semibold px-4 rounded-xl  text-red-700 text-sm"
                         }`}
                       >
                         {p.cantidad === p.cantidadFaltante

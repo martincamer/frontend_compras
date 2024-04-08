@@ -6,17 +6,17 @@ import client from "../../api/axios";
 import io from "socket.io-client";
 import { useProductosContext } from "../../context/ProductosProvider";
 
-export const ModalEditarCategorias = ({
+export const ModalEditarCategoriasDos = ({
   isOpenEditar,
   closeModalEditar,
   OBTENERID,
 }) => {
   const { register, handleSubmit, setValue } = useForm();
 
-  const { setCategorias } = useProductosContext();
+  const { setProveedores, proveedores } = useProductosContext();
 
   const [socket, setSocket] = useState(null);
-  const [datos, setDatos] = useState([]);
+  // const [datos, setDatos] = useState("");
 
   useEffect(() => {
     const newSocket = io(
@@ -33,23 +33,24 @@ export const ModalEditarCategorias = ({
 
   useEffect(() => {
     async function loadData() {
-      const res = await client.get(`/categoria/${OBTENERID}`);
+      const res = await client.get(`/proveedor/${OBTENERID}`);
 
-      setValue("detalle", res.data.detalle);
+      setValue("proveedor", res.data.proveedor);
+      setValue("total", res.data.total);
 
-      setDatos(res.data.id);
+      setValue(res.data.id);
     }
     loadData();
   }, [OBTENERID]);
 
   const onSubmit = handleSubmit(async (data) => {
-    const res = await client.put(`/editar-categoria/${datos}`, data);
+    const res = await client.put(`/editar-proveedor/${OBTENERID}`, data);
 
     if (socket) {
-      socket.emit("editar-categoria", res);
+      socket.emit("editar-proveedor", res);
     }
 
-    toast.success("¡Categoria editada correctamente!", {
+    toast.success("¡Proveedor editada correctamente!", {
       position: "top-center",
       autoClose: 3000,
       hideProgressBar: true,
@@ -84,30 +85,30 @@ export const ModalEditarCategorias = ({
     const handleEditarSalida = (editarSalida) => {
       const updateSalida = JSON.parse(editarSalida?.config?.data);
 
-      setCategorias((prevSalidas) => {
-        const nuevosSalidas = [...prevSalidas];
-        const index = nuevosSalidas.findIndex(
-          (salida) => salida.id === salida.id
+      setProveedores((prevSalidas) => {
+        const nuevosDatos = [...prevSalidas];
+
+        const index = nuevosDatos.findIndex(
+          (salida) => salida.id === OBTENERID
         );
-        nuevosSalidas[index] = {
-          id: datos,
-          detalle: updateSalida.detalle,
-          usuario: updateSalida.usuario,
-          role_id: updateSalida.role_id,
-          created_at: nuevosSalidas[index].created_at,
-          updated_at: nuevosSalidas[index].updated_at,
+        nuevosDatos[index] = {
+          id: nuevosDatos[index]?.id,
+          proveedor: updateSalida?.proveedor,
+          total: nuevosDatos[index]?.total,
+          created_at: nuevosDatos[index]?.created_at,
+          updated_at: nuevosDatos[index]?.updated_at,
         };
-        return nuevosSalidas;
+        return nuevosDatos;
       });
     };
 
-    newSocket.on("editar-categoria", handleEditarSalida);
+    newSocket.on("editar-proveedor", handleEditarSalida);
 
     return () => {
-      newSocket.off("editar-categoria", handleEditarSalida);
+      newSocket.off("editar-proveedor", handleEditarSalida);
       newSocket.close();
     };
-  }, [datos]);
+  }, []);
 
   return (
     <Transition appear show={isOpenEditar} as={Fragment}>
@@ -169,18 +170,18 @@ export const ModalEditarCategorias = ({
               </div>
 
               <div className="text-sm text-slate-700 mb-3 border-b-[1px] uppercase font-bold">
-                Editar categoría
+                Editar Proveedor
               </div>
               <form onSubmit={onSubmit} className="flex flex-col gap-3">
                 <div className="flex flex-col gap-1">
                   <label className="text-sm text-slate-700 uppercase">
-                    Categoria
+                    Proveedor
                   </label>
                   <input
-                    {...register("detalle")}
+                    {...register("proveedor")}
                     type="text"
                     className="uppercase py-2 px-4 rounded-xl border-slate-300 border-[1px] shadow placeholder:text-slate-300 text-sm"
-                    placeholder="DETALLE DE LA CATEGORIA"
+                    placeholder="NOMBRE Y APELLIDO DEL PROVEEDOR"
                   />
                 </div>
                 <div>

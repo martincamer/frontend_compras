@@ -204,7 +204,7 @@ export const OrdenDeCompraRegistrosDos = () => {
         </ol>
       </nav>
       <div className="py-5 px-5 rounded-xl grid grid-cols-3 gap-3 mb-2 max-md:grid-cols-1 max-md:border-none max-md:shadow-none max-md:py-0 max-md:px-0">
-        <article className="flex flex-col gap-4 rounded-xl border border-slate-200 shadow bg-white p-6 max-md:p-3">
+        <article className="flex flex-col gap-4 rounded-2xl border border-slate-200 shadow bg-white p-6 max-md:p-3">
           <div className="inline-flex gap-2 self-end rounded bg-red-100 p-1 text-red-600">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -254,7 +254,7 @@ export const OrdenDeCompraRegistrosDos = () => {
           </div>
         </article>
 
-        <article className="flex flex-col gap-4 rounded-xl border border-slate-200 shadow bg-white p-6 max-md:p-3">
+        <article className="flex flex-col gap-4 rounded-2xl border border-slate-200 shadow bg-white p-6 max-md:p-3">
           <div className="inline-flex gap-2 self-end rounded bg-green-100 p-1 text-green-600">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -294,7 +294,7 @@ export const OrdenDeCompraRegistrosDos = () => {
           </div>
         </article>
 
-        <article className="flex flex-col gap-4 rounded-xl border border-slate-200 shadow bg-white p-6 max-md:p-3">
+        <article className="flex flex-col gap-4 rounded-2xl border border-slate-200 shadow bg-white p-6 max-md:p-3">
           {/* <div className="inline-flex gap-2 self-end rounded bg-green-100 p-1 text-green-600">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -393,7 +393,7 @@ export const OrdenDeCompraRegistrosDos = () => {
 
       <div className="max-md:mt-2 mt-4 px-6">
         <div className="px-10 max-md:px-2">
-          <p className="uppercase text-orange-500 font-semibold text-sm underline">
+          <p className="uppercase text-indigo-500 font-semibold text-sm underline">
             Ordenes de compra registradas del mes
           </p>
         </div>
@@ -435,7 +435,7 @@ export const OrdenDeCompraRegistrosDos = () => {
                   <Link
                     target="_blank"
                     to={`/orden-checkout/${o.id}`}
-                    className="py-2 px-4 rounded-xl text-white text-xs bg-black cursor-pointer flex items-center gap-1"
+                    className="py-2 px-4 rounded-xl text-indigo-500 text-xs bg-indigo-100 cursor-pointer flex items-center gap-1"
                   >
                     VER ORDEN CHECKOUT
                     <svg
@@ -461,9 +461,9 @@ export const OrdenDeCompraRegistrosDos = () => {
                           parseInt(producto.cantidad) ===
                           parseInt(producto.cantidadFaltante)
                       )
-                        ? "bg-green-500"
-                        : "bg-red-500"
-                    } py-2 px-4 rounded-xl text-white text-xs cursor-pointer flex items-center gap-1`}
+                        ? "bg-green-100 text-green-700"
+                        : "bg-red-100 text-red-700"
+                    } py-2 px-4 rounded-xl text-xs cursor-pointer flex items-center gap-1`}
                   >
                     {o.datos.productoSeleccionado.every(
                       (producto) =>

@@ -11,8 +11,8 @@ import { useProductosContext } from "../../context/ProductosProvider";
 export const ModalCrearOrden = ({ isOpen, closeModal }) => {
   const { setOrdenesMensuales } = useOrdenesContext();
 
-  // const { proveedores, setProveedores } = useProductosContext();
-  const [proveedores, setProveedores] = useState([]);
+  const { proveedores, setProveedores } = useProductosContext();
+  // const [proveedores, setProveedores] = useState([]);
 
   useEffect(() => {
     async function loadData() {
@@ -143,31 +143,36 @@ export const ModalCrearOrden = ({ isOpen, closeModal }) => {
       socket.emit("crear-orden-dos", resDos.data);
     }
 
-    if (socket) {
-      socket.emit("proveedor-orden-editar", resProveedor.data);
-    }
+    // if (socket) {
+    //   socket.emit("proveedor-orden-editar", resProveedor.data);
+    // }
 
     const tipoExistenteIndex = proveedores.findIndex(
-      (tipo) => tipo.proveedor == proveedor
+      (p) => p.proveedor === proveedor
     );
 
     setProveedores((prevTipos) => {
       const newTipos = [...prevTipos];
       const updateRemuneracion = JSON.parse(resProveedor.config.data); // Convierte el JSON a objeto
+
       newTipos[tipoExistenteIndex] = {
         id: newTipos[tipoExistenteIndex].id,
         proveedor: updateRemuneracion.proveedor,
         total:
           Number(newTipos[tipoExistenteIndex].total) +
           Number(updateRemuneracion.total),
+        comprobantes: newTipos[tipoExistenteIndex].comprobantes,
+        created_at: newTipos[tipoExistenteIndex].created_at,
+        updated_at: newTipos[tipoExistenteIndex].updated_at,
       };
+
       return newTipos;
     });
 
-    toast.success("¡Producto creado correctamente!", {
+    toast.success("¡Orden de compra creada correctamente!", {
       position: "top-center",
       autoClose: 3000,
-      hideProgressBar: false,
+      hideProgressBar: true,
       closeOnClick: true,
       pauseOnHover: true,
       draggable: true,
@@ -176,6 +181,8 @@ export const ModalCrearOrden = ({ isOpen, closeModal }) => {
         padding: "10px",
         background: "#b8ffb8",
         color: "#009900",
+        borderRadius: "15px",
+        boxShadow: "none",
       },
     });
     setTimeout(() => {
@@ -220,7 +227,7 @@ export const ModalCrearOrden = ({ isOpen, closeModal }) => {
             leaveFrom="opacity-100"
             leaveTo="opacity-0"
           >
-            <div className="fixed inset-0 bg-black bg-opacity-25" />
+            <div className="fixed inset-0 bg-black bg-opacity-10" />
           </Transition.Child>
 
           <div className="min-h-screen px-4 text-center">
@@ -251,8 +258,31 @@ export const ModalCrearOrden = ({ isOpen, closeModal }) => {
               leaveFrom="opacity-100 scale-100"
               leaveTo="opacity-0 scale-95"
             >
-              <div className="inline-block w-1/2 max-md:w-full p-6 my-8 overflow-hidden max-md:h-[300px] max-md:overflow-y-scroll text-left align-middle transition-all transform bg-white shadow-xl rounded-2xl">
-                <div className="text-sm text-slate-700 mb-3 border-b-[1px] uppercase">
+              <div className="inline-block w-1/2 max-md:w-full p-6 my-8 overflow-hidden max-md:h-[300px] max-md:overflow-y-scroll text-left align-middle transition-all transform bg-white shadow-xl rounded-3xl">
+                <div className="flex justify-end">
+                  <button
+                    type="button"
+                    className="inline-flex justify-center px-2 py-2 text-sm text-red-900 bg-red-100 border border-transparent rounded-xl hover:bg-red-200 duration-300 cursor-pointer max-md:text-xs"
+                    onClick={closeModal}
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      strokeWidth={1.5}
+                      stroke="currentColor"
+                      className="w-6 h-6"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M6 18 18 6M6 6l12 12"
+                      />
+                    </svg>
+                  </button>
+                </div>
+
+                <div className="text-sm text-slate-700 mb-3 border-b-[1px] uppercase font-bold">
                   ORDEN DE COMPRA NUEVA
                 </div>
                 <form onSubmit={onSubmit} className="flex flex-col gap-3">
@@ -338,7 +368,7 @@ export const ModalCrearOrden = ({ isOpen, closeModal }) => {
                     <button
                       type="button"
                       onClick={() => openProducto()}
-                      className="bg-black py-2 px-5 rounded-xl shadow text-white text-sm"
+                      className="bg-green-200 py-2 px-5 rounded-xl text-green-600 text-sm"
                     >
                       CARGAR PRODUCTO
                     </button>
@@ -412,9 +442,23 @@ export const ModalCrearOrden = ({ isOpen, closeModal }) => {
                   <div>
                     <button
                       type="submit"
-                      className="bg-slate-800 text-white font-bold uppercase text-sm py-2 px-4 rounded-xl shadow"
+                      class="group relative hover:bg-indigo-500 hover:text-white transition-all ease-in-out bg-indigo-100 text-indigo-600 font-normal uppercase text-sm py-2 px-4 rounded-xl flex items-center justify-center"
                     >
-                      CREAR NUEVA ORDEN
+                      CREAR ORDEN NUEVA
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        strokeWidth={1.5}
+                        stroke="currentColor"
+                        class="w-6 h-6 ml-2 icon opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M8.25 7.5V6.108c0-1.135.845-2.098 1.976-2.192.373-.03.748-.057 1.123-.08M15.75 18H18a2.25 2.25 0 0 0 2.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 0 0-1.123-.08M15.75 18.75v-1.875a3.375 3.375 0 0 0-3.375-3.375h-1.5a1.125 1.125 0 0 1-1.125-1.125v-1.5A3.375 3.375 0 0 0 6.375 7.5H5.25m11.9-3.664A2.251 2.251 0 0 0 15 2.25h-1.5a2.251 2.251 0 0 0-2.15 1.586m5.8 0c.065.21.1.433.1.664v.75h-6V4.5c0-.231.035-.454.1-.664M6.75 7.5H4.875c-.621 0-1.125.504-1.125 1.125v12c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V16.5a9 9 0 0 0-9-9Z"
+                        />
+                      </svg>
                     </button>
                   </div>
                 </form>
@@ -434,7 +478,7 @@ export const ModalCrearOrden = ({ isOpen, closeModal }) => {
                   closeModal={closeProductoEditar}
                   OBTENERID={OBTENERID}
                 />
-                <div className="mt-4">
+                {/* <div className="mt-4">
                   <button
                     type="button"
                     className="inline-flex justify-center px-4 py-2 text-sm text-red-900 bg-red-100 border border-transparent rounded-xl hover:bg-red-200 duration-300 cursor-pointer max-md:text-xs"
@@ -442,7 +486,7 @@ export const ModalCrearOrden = ({ isOpen, closeModal }) => {
                   >
                     Cerrar Ventana
                   </button>
-                </div>
+                </div> */}
               </div>
             </Transition.Child>
           </div>

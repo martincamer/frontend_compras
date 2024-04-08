@@ -255,22 +255,50 @@ export const Proveedor = () => {
       <div className="mx-10 py-2 flex gap-2 items-center max-md:px-0 max-md:py-0 max-md:flex-col max-md:items-start border-b-[1px] border-slate-300 pb-4 max-md:pb-4 max-md:mx-2">
         <button
           onClick={() => openComprobante()}
-          className="bg-white border-slate-300 border-[1px] py-2 px-4 rounded-xl text-sm shadow text-slate-700 uppercase max-md:text-xs"
+          className="bg-green-100 py-2 px-4 rounded-xl text-sm text-green-700 uppercase max-md:text-xs flex gap-2 items-center hover:bg-green-500 hover:text-white transition-all ease-linear"
         >
           Cargar nuevo comprobante de pago
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth={1.5}
+            stroke="currentColor"
+            className="w-6 h-6"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M3.75 9.776c.112-.017.227-.026.344-.026h15.812c.117 0 .232.009.344.026m-16.5 0a2.25 2.25 0 0 0-1.883 2.542l.857 6a2.25 2.25 0 0 0 2.227 1.932H19.05a2.25 2.25 0 0 0 2.227-1.932l.857-6a2.25 2.25 0 0 0-1.883-2.542m-16.5 0V6A2.25 2.25 0 0 1 6 3.75h3.879a1.5 1.5 0 0 1 1.06.44l2.122 2.12a1.5 1.5 0 0 0 1.06.44H18A2.25 2.25 0 0 1 20.25 9v.776"
+            />
+          </svg>
         </button>
-        <button className="bg-white border-slate-300 border-[1px] py-2 px-4 rounded-xl text-sm shadow text-slate-700 uppercase max-md:text-xs">
-          Ver resumenes de los comprobantess
+        <button className="bg-white border-slate-300 border-[1px] py-2 px-4 rounded-xl text-sm shadow text-slate-700 uppercase max-md:text-xs flex gap-2 items-center">
+          Ver resumenes de los comprobantes
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth={1.5}
+            stroke="currentColor"
+            className="w-6 h-6"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M17.25 8.25 21 12m0 0-3.75 3.75M21 12H3"
+            />
+          </svg>
         </button>
       </div>
 
-      <div className="mx-6 mt-6">
-        <p className="underline text-orange-500 uppercase font-semibold">
+      <div className="mx-8 mt-6">
+        <p className="underline text-indigo-500 uppercase font-semibold">
           Tabla de comprobantes cargados del mes
         </p>
       </div>
 
-      <div className="overflow-x-auto mt-6 mx-8 rounded-xl border-slate-300 border-[1px] shadow">
+      <div className="overflow-x-auto mt-6 mx-8 rounded-xl border-slate-300 border-[1px]">
         <table className="min-w-full divide-y-2 divide-gray-200 bg-white text-sm">
           <thead className="text-left">
             <tr>

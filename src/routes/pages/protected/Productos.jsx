@@ -113,30 +113,90 @@ export const Productos = () => {
     <section className="w-full h-full px-5 max-md:px-4 flex flex-col gap-2 py-16 max-md:gap-5">
       <ToastContainer />
       <div className="py-5 px-5 rounded-xl grid grid-cols-3 gap-3 mb-2 max-md:grid-cols-1 max-md:border-none max-md:shadow-none max-md:py-0 max-md:px-0">
-        <article className="flex flex-col items-start justify-center gap-4 rounded-xl border border-slate-200 shadow bg-white p-6 max-md:p-3">
-          <div>
-            <strong className="block text-sm font-medium text-gray-500 max-md:text-xs uppercase">
-              Total productos cargados
-            </strong>
+        <article className="flex justify-between items-start rounded-xl border border-gray-200 bg-white p-8 shadow">
+          <div className="flex gap-4 items-center">
+            <span className="rounded-full bg-indigo-100 p-3 text-indigo-700">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor"
+                className="w-9 h-9"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M3.75 3v11.25A2.25 2.25 0 0 0 6 16.5h2.25M3.75 3h-1.5m1.5 0h16.5m0 0h1.5m-1.5 0v11.25A2.25 2.25 0 0 1 18 16.5h-2.25m-7.5 0h7.5m-7.5 0-1 3m8.5-3 1 3m0 0 .5 1.5m-.5-1.5h-9.5m0 0-.5 1.5M9 11.25v1.5M12 9v3.75m3-6v6"
+                />
+              </svg>
+            </span>
 
-            <p>
-              <span className="text-2xl font-medium text-green-600 max-md:text-base uppercase">
-                {productos.length}{" "}
-              </span>
+            <div>
+              <p className="text-2xl font-medium text-indigo-700">
+                {Number(productos.length)}
+              </p>
 
-              <span className="text-xs text-gray-500 uppercase">
-                {" "}
-                total cargados {"  "}
-                <span className="font-bold text-slate-700 uppercase">
-                  {productos.length}
-                </span>
-              </span>
-            </p>
+              <p className="text-sm text-gray-500 uppercase underline">
+                Productos cargados hasta el momento
+              </p>
+            </div>
+          </div>
+
+          <div className="inline-flex gap-2 rounded-xl bg-indigo-100 p-2 text-indigo-600">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-4 w-4"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"
+              />
+            </svg>
+
+            <span className="text-xs font-medium">
+              {" "}
+              {Number(productos.length / 1).toFixed(2)} %{" "}
+            </span>
           </div>
         </article>
 
-        <article className="flex flex-col gap-4 rounded-xl border border-slate-200 shadow bg-white p-6 max-md:p-3">
-          <div className="inline-flex gap-2 self-end rounded bg-green-100 p-1 text-green-600">
+        <article className="flex justify-between items-start rounded-xl border border-gray-200 bg-white p-8 shadow">
+          <div className="flex gap-4 items-center">
+            <span className="rounded-full bg-green-100 p-3 text-green-700">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor"
+                className="w-9 h-9"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 11.25v7.5"
+                />
+              </svg>
+            </span>
+
+            <div>
+              <p className="text-2xl font-medium text-green-700 uppercase">
+                {nombreMesActual}
+              </p>
+
+              <p className="text-sm text-gray-500 uppercase underline">
+                MES ACTUAL
+              </p>
+            </div>
+          </div>
+
+          <div className="inline-flex gap-2 rounded-xl bg-green-100 py-2 px-4 text-green-600">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -153,25 +213,9 @@ export const Productos = () => {
             </svg>
 
             <span className="text-xs font-medium uppercase">
-              {nombreMesActual}
+              {" "}
+              {nombreDiaActual}{" "}
             </span>
-          </div>
-
-          <div>
-            <strong className="block text-sm font-medium text-gray-500 max-md:text-xs uppercase">
-              Fecha Actual
-            </strong>
-
-            <p>
-              <span className="text-2xl max-md:text-base font-medium text-gray-900 uppercase">
-                {nombreMesActual}
-              </span>
-
-              <span className="text-xs text-gray-500 uppercase">
-                {" "}
-                Dia {nombreDiaActual}
-              </span>
-            </p>
           </div>
         </article>
       </div>
@@ -193,7 +237,7 @@ export const Productos = () => {
 
       <div className="max-md:mt-2 mt-5 ">
         <div className="px-10 max-md:px-2">
-          <p className="uppercase text-orange-500 font-semibold text-sm underline">
+          <p className="uppercase text-indigo-600 font-semibold text-sm underline">
             Tabla de productos
           </p>
         </div>
@@ -220,23 +264,23 @@ export const Productos = () => {
           </select>
         </div>
 
-        <div className="overflow-x-auto mt-6 mx-8">
+        <div className="overflow-x-auto mt-6 mx-8 border-slate-300 border-[1px]  rounded-2xl">
           <table className="min-w-full divide-y-2 divide-gray-200 bg-white text-sm">
             <thead className="text-left">
               <tr>
-                <th className="whitespace-nowrap px-4 py-2 text-gray-900 uppercase font-semibold">
+                <th className="whitespace-nowrap px-4 py-4 text-indigo-500 uppercase font-normal">
                   Codigo
                 </th>
-                <th className="whitespace-nowrap px-4 py-2 text-gray-900 uppercase font-semibold">
+                <th className="whitespace-nowrap px-4 py-4 text-indigo-500 uppercase font-normal">
                   Detalle
                 </th>
-                <th className="whitespace-nowrap px-4 py-2 text-gray-900 uppercase font-semibold">
+                <th className="whitespace-nowrap px-4 py-4 text-indigo-500 uppercase font-normal">
                   Categoria
                 </th>
-                <th className="whitespace-nowrap px-4 py-2 text-gray-900 uppercase font-semibold">
+                <th className="whitespace-nowrap px-4 py-4 text-indigo-500 uppercase font-normal">
                   Precio Und
                 </th>
-                <th className="whitespace-nowrap px-4 py-2 text-gray-900 uppercase font-semibold">
+                <th className="whitespace-nowrap px-4 py-4 text-indigo-500 uppercase font-normal">
                   Acciones
                 </th>
               </tr>
@@ -254,7 +298,7 @@ export const Productos = () => {
                   <td className="whitespace-nowrap px-4 py-4 text-gray-700 uppercase text-sm">
                     {p.categoria}
                   </td>
-                  <td className="whitespace-nowrap px-4 py-4  uppercase text-sm font-bold text-green-500">
+                  <td className="whitespace-nowrap px-4 py-4  uppercase text-sm font-bold text-indigo-500">
                     {Number(p.precio_und).toLocaleString("es-AR", {
                       style: "currency",
                       currency: "ARS",

@@ -142,8 +142,41 @@ export const OrdenDeCompra = () => {
     <section className="w-full h-full px-5 max-md:px-4 flex flex-col gap-2 py-16 max-md:gap-5">
       <ToastContainer />
       <div className="py-5 px-5 rounded-xl grid grid-cols-3 gap-3 mb-2 max-md:grid-cols-1 max-md:border-none max-md:shadow-none max-md:py-0 max-md:px-0">
-        <article className="flex flex-col gap-4 rounded-xl border border-slate-200 shadow bg-white p-6 max-md:p-3">
-          <div className="inline-flex gap-2 self-end rounded bg-red-100 p-1 text-red-600">
+        <article className="flex justify-between items-center rounded-2xl border border-gray-200 bg-white p-8 shadow">
+          <div className="flex gap-4 items-center">
+            <span className="rounded-full bg-red-100 p-3 text-red-700">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor"
+                className="w-9 h-9"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M12 6v12m-3-2.818.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.003-.659-1.106-.879-1.106-2.303 0-3.182s2.9-.879 4.006 0l.415.33M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+                />
+              </svg>
+            </span>
+
+            <div>
+              <p className="text-2xl font-medium text-red-700">
+                -{" "}
+                {Number(precioTotal).toLocaleString("es-AR", {
+                  style: "currency",
+                  currency: "ARS",
+                })}
+              </p>
+
+              <p className="text-sm text-gray-500 uppercase underline">
+                Total en compras del mes
+              </p>
+            </div>
+          </div>
+
+          <div className="inline-flex gap-2 rounded-xl bg-red-100 p-2 text-red-600">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="h-4 w-4"
@@ -155,45 +188,48 @@ export const OrdenDeCompra = () => {
                 strokeLinecap="round"
                 strokeLinejoin="round"
                 strokeWidth="2"
-                d="M13 17h8m0 0V9m0 8l-8-8-4 4-6-6"
+                d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"
               />
             </svg>
 
-            <span className="text-xs font-medium max-md:text-xs">
+            <span className="text-xs font-medium">
+              {" "}
               {Number(precioTotal / 100000).toFixed(2)} %
             </span>
           </div>
-
-          <div>
-            <strong className="block text-sm font-medium text-gray-500 max-md:text-xs uppercase">
-              Total en compras del mes
-            </strong>
-
-            <p>
-              <span className="text-xl font-medium text-red-600 max-md:text-base">
-                -{" "}
-                {Number(precioTotal).toLocaleString("es-AR", {
-                  style: "currency",
-                  currency: "ARS",
-                })}
-              </span>
-
-              <span className="text-xs text-gray-500 uppercase">
-                {" "}
-                gastado en compras{" "}
-                <span className="font-bold text-slate-700">
-                  {Number(precioTotal).toLocaleString("es-AR", {
-                    style: "currency",
-                    currency: "ARS",
-                  })}
-                </span>
-              </span>
-            </p>
-          </div>
         </article>
 
-        <article className="flex flex-col gap-4 rounded-xl border border-slate-200 shadow bg-white p-6 max-md:p-3">
-          <div className="inline-flex gap-2 self-end rounded bg-green-100 p-1 text-green-600">
+        <article className="flex justify-between items-center rounded-2xl border border-gray-200 bg-white p-8 shadow">
+          <div className="flex gap-4 items-center">
+            <span className="rounded-full bg-green-100 p-3 text-green-700">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor"
+                className="w-9 h-9"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 11.25v7.5"
+                />
+              </svg>
+            </span>
+
+            <div>
+              <p className="text-2xl font-medium text-green-700 uppercase">
+                {nombreMesActual}
+              </p>
+
+              <p className="text-sm text-gray-500 uppercase underline">
+                MES ACTUAL
+              </p>
+            </div>
+          </div>
+
+          <div className="inline-flex gap-2 rounded-xl bg-green-100 py-2 px-4 text-green-600">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -210,48 +246,12 @@ export const OrdenDeCompra = () => {
             </svg>
 
             <span className="text-xs font-medium uppercase">
-              {nombreMesActual}
+              {" "}
+              {nombreDiaActual}{" "}
             </span>
           </div>
-
-          <div>
-            <strong className="block text-sm font-medium text-gray-500 max-md:text-xs uppercase">
-              Fecha Actual
-            </strong>
-
-            <p>
-              <span className="text-xl max-md:text-base font-medium text-gray-900 uppercase">
-                {nombreMesActual}
-              </span>
-
-              <span className="text-xs text-gray-500 uppercase">
-                {" "}
-                Dia {nombreDiaActual}
-              </span>
-            </p>
-          </div>
         </article>
-
-        <article className="flex flex-col gap-4 rounded-xl border border-slate-200 shadow bg-white p-6 max-md:p-3">
-          <div className="inline-flex gap-2 self-end rounded bg-green-100 p-1 text-green-600">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-4 w-4"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"
-              />
-            </svg>
-
-            <span className="text-xs font-medium"> </span>
-          </div>
-
+        <article className="flex flex-col gap-4 rounded-2xl border border-slate-200 shadow bg-white p-6 max-md:p-3">
           <div>
             <strong className="block text-sm font-medium text-gray-500 max-md:text-sm uppercase">
               Materiales/categorias gastos totales
@@ -285,9 +285,23 @@ export const OrdenDeCompra = () => {
       <div className="mx-10 py-2 flex gap-2 items-center max-md:px-0 max-md:py-0 max-md:flex-col max-md:items-start border-b-[1px] border-slate-300 pb-4 max-md:pb-4 max-md:mx-2">
         <button
           onClick={() => openModal()}
-          className="bg-white border-slate-300 border-[1px] py-2 px-4 rounded-xl text-sm shadow text-slate-700 uppercase max-md:text-xs"
+          className="bg-green-200  py-2 px-4 rounded-xl text-sm text-green-700 uppercase max-md:text-xs flex gap-2 items-center hover:bg-green-500 hover:text-white transition-all ease-in-out"
         >
           Crear nueva orden
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth={1.5}
+            stroke="currentColor"
+            className="w-6 h-6"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 0 0 2.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 0 0-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 0 0 .75-.75 2.25 2.25 0 0 0-.1-.664m-5.8 0A2.251 2.251 0 0 1 13.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25ZM6.75 12h.008v.008H6.75V12Zm0 3h.008v.008H6.75V15Zm0 3h.008v.008H6.75V18Z"
+            />
+          </svg>
         </button>
 
         <Link
@@ -335,7 +349,7 @@ export const OrdenDeCompra = () => {
 
       <div className="max-md:mt-2 mt-4 px-6">
         <div className="px-10 max-md:px-2">
-          <p className="uppercase text-orange-500 font-semibold text-sm underline">
+          <p className="uppercase text-indigo-500 font-semibold text-sm underline">
             Ordenes de compra
           </p>
         </div>
@@ -370,7 +384,7 @@ export const OrdenDeCompra = () => {
               <div className="absolute top-2 right-5 flex items-center gap-2">
                 <Link
                   to={`/orden/${o.id}`}
-                  className="py-2 px-4 rounded-xl text-white text-xs bg-black cursor-pointer flex items-center gap-1"
+                  className="py-2 px-4 rounded-xl text-indigo-500 text-xs bg-indigo-100 cursor-pointer flex items-center gap-1"
                 >
                   VER ORDEN
                   <svg
@@ -422,7 +436,7 @@ export const OrdenDeCompra = () => {
               </div>
               <article>
                 <p className="uppercase flex gap-1">
-                  <span className="font-semibold text-sm text-slate-700 underline">
+                  <span className="font-semibold text-sm text-indigo-500 underline">
                     Numero
                   </span>
                   <span className="text-normal text-sm text-slate-700">
@@ -430,7 +444,7 @@ export const OrdenDeCompra = () => {
                   </span>
                 </p>
                 <p className="uppercase flex gap-1">
-                  <span className="font-semibold text-sm text-slate-700 underline">
+                  <span className="font-semibold text-sm text-indigo-500 underline">
                     Proveedor
                   </span>
                   <span className="text-normal text-sm text-slate-700">
@@ -439,7 +453,7 @@ export const OrdenDeCompra = () => {
                 </p>
 
                 <p className="uppercase flex gap-1">
-                  <span className="font-semibold text-sm text-slate-700 underline">
+                  <span className="font-semibold text-sm text-indigo-500 underline">
                     Numero Remito/Factura
                   </span>
                   <span className="text-normal text-sm text-slate-700">
@@ -447,7 +461,7 @@ export const OrdenDeCompra = () => {
                   </span>
                 </p>
                 <p className="uppercase flex gap-1">
-                  <span className="font-semibold text-sm text-slate-700 underline">
+                  <span className="font-semibold text-sm text-indigo-500 underline">
                     Fecha factura/remito
                   </span>
                   <span className="text-normal text-sm text-slate-700">
@@ -455,7 +469,7 @@ export const OrdenDeCompra = () => {
                   </span>
                 </p>
                 <p className="uppercase flex gap-1">
-                  <span className="font-semibold text-sm text-slate-700 underline">
+                  <span className="font-semibold text-sm text-indigo-500 underline">
                     Total Facturado
                   </span>
                   <span className="text-normal text-sm text-red-600">
@@ -468,7 +482,7 @@ export const OrdenDeCompra = () => {
                 </p>
               </article>
               <article>
-                <p className="text-slate-500 uppercase font-semibold text-sm underline">
+                <p className="text-slate-800 uppercase font-semibold text-sm underline">
                   PRODUCTOS
                 </p>
                 <div className="h-[100px] overflow-y-scroll mt-2">

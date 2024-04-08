@@ -8,19 +8,6 @@ export const OrdenDeCompraCheckout = () => {
   const fechaActual = new Date();
   const numeroDiaActual = fechaActual.getDay(); // Obtener el día del mes actual
 
-  // const [isOpenEliminar, setIsOpenEliminar] = useState(false);
-  // const [obtenerId, setObtenerId] = useState(null);
-
-  // const openEliminar = () => {
-  //   setIsOpenEliminar(true);
-  // };
-
-  // const closeEliminar = () => {
-  //   setIsOpenEliminar(false);
-  // };
-
-  // const handleID = (id) => setObtenerId(id);
-
   const { ordenesMensuales } = useOrdenesContext();
   const { categorias } = useProductosContext();
 
@@ -53,16 +40,6 @@ export const OrdenDeCompraCheckout = () => {
 
   const nombreDiaActual = nombresDias[numeroDiaActual]; // Obtener el nombre del día actual
 
-  // const [isOpen, setIsOpen] = useState(false);
-
-  // const openModal = () => {
-  //   setIsOpen(true);
-  // };
-
-  // const closeModal = () => {
-  //   setIsOpen(false);
-  // };
-
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [currentPage, setCurrentPage] = useState(1);
@@ -92,7 +69,7 @@ export const OrdenDeCompraCheckout = () => {
   // Cambiar de página
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
-  const precioTotal = ordenesMensuales.reduce(
+  const precioTotal = currentProducts.reduce(
     (total, orden) => total + Number(orden.precio_final),
     0
   );
@@ -102,7 +79,7 @@ export const OrdenDeCompraCheckout = () => {
     const categoryTotals = {};
 
     // Iterate through invoices
-    ordenesMensuales.forEach((invoice) => {
+    currentProducts.forEach((invoice) => {
       // Extract product details
       const products = invoice.datos.productoSeleccionado;
 
@@ -160,8 +137,41 @@ export const OrdenDeCompraCheckout = () => {
       <ToastContainer />
 
       <div className="py-5 px-5 rounded-xl grid grid-cols-3 gap-3 mb-2 max-md:grid-cols-1 max-md:border-none max-md:shadow-none max-md:py-0 max-md:px-0">
-        <article className="flex flex-col gap-4 rounded-xl border border-slate-200 shadow bg-white p-6 max-md:p-3">
-          <div className="inline-flex gap-2 self-end rounded bg-red-100 p-1 text-red-600">
+        <article className="flex justify-between items-center rounded-2xl border border-gray-200 bg-white p-8 shadow">
+          <div className="flex gap-4 items-center">
+            <span className="rounded-full bg-red-100 p-3 text-red-700">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor"
+                className="w-9 h-9"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M12 6v12m-3-2.818.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.003-.659-1.106-.879-1.106-2.303 0-3.182s2.9-.879 4.006 0l.415.33M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+                />
+              </svg>
+            </span>
+
+            <div>
+              <p className="text-2xl font-medium text-red-700">
+                -{" "}
+                {Number(precioTotal).toLocaleString("es-AR", {
+                  style: "currency",
+                  currency: "ARS",
+                })}
+              </p>
+
+              <p className="text-sm text-gray-500 uppercase underline">
+                Total en compras del mes
+              </p>
+            </div>
+          </div>
+
+          <div className="inline-flex gap-2 rounded-xl bg-red-100 p-2 text-red-600">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="h-4 w-4"
@@ -173,45 +183,48 @@ export const OrdenDeCompraCheckout = () => {
                 strokeLinecap="round"
                 strokeLinejoin="round"
                 strokeWidth="2"
-                d="M13 17h8m0 0V9m0 8l-8-8-4 4-6-6"
+                d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"
               />
             </svg>
 
-            <span className="text-xs font-medium max-md:text-xs">
+            <span className="text-xs font-medium">
+              {" "}
               {Number(precioTotal / 100000).toFixed(2)} %
             </span>
           </div>
-
-          <div>
-            <strong className="block text-sm font-medium text-gray-500 max-md:text-xs uppercase">
-              Total en compras del mes finalizadas/os
-            </strong>
-
-            <p>
-              <span className="text-xl font-medium text-red-600 max-md:text-base">
-                -{" "}
-                {Number(precioTotal).toLocaleString("es-AR", {
-                  style: "currency",
-                  currency: "ARS",
-                })}
-              </span>
-
-              <span className="text-xs text-gray-500 uppercase">
-                {" "}
-                gastado en compras finalizadas/os{" "}
-                <span className="font-bold text-slate-700">
-                  {Number(precioTotal).toLocaleString("es-AR", {
-                    style: "currency",
-                    currency: "ARS",
-                  })}
-                </span>
-              </span>
-            </p>
-          </div>
         </article>
 
-        <article className="flex flex-col gap-4 rounded-xl border border-slate-200 shadow bg-white p-6 max-md:p-3">
-          <div className="inline-flex gap-2 self-end rounded bg-green-100 p-1 text-green-600">
+        <article className="flex justify-between items-center rounded-2xl border border-gray-200 bg-white p-8 shadow">
+          <div className="flex gap-4 items-center">
+            <span className="rounded-full bg-green-100 p-3 text-green-700">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor"
+                className="w-9 h-9"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 11.25v7.5"
+                />
+              </svg>
+            </span>
+
+            <div>
+              <p className="text-2xl font-medium text-green-700 uppercase">
+                {nombreMesActual}
+              </p>
+
+              <p className="text-sm text-gray-500 uppercase underline">
+                MES ACTUAL
+              </p>
+            </div>
+          </div>
+
+          <div className="inline-flex gap-2 rounded-xl bg-green-100 py-2 px-4 text-green-600">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -228,48 +241,13 @@ export const OrdenDeCompraCheckout = () => {
             </svg>
 
             <span className="text-xs font-medium uppercase">
-              {nombreMesActual}
+              {" "}
+              {nombreDiaActual}{" "}
             </span>
-          </div>
-
-          <div>
-            <strong className="block text-sm font-medium text-gray-500 max-md:text-xs uppercase">
-              Fecha Actual
-            </strong>
-
-            <p>
-              <span className="text-xl max-md:text-base font-medium text-gray-900 uppercase">
-                {nombreMesActual}
-              </span>
-
-              <span className="text-xs text-gray-500 uppercase">
-                {" "}
-                Dia {nombreDiaActual}
-              </span>
-            </p>
           </div>
         </article>
 
         <article className="flex flex-col gap-4 rounded-xl border border-slate-200 shadow bg-white p-6 max-md:p-3">
-          <div className="inline-flex gap-2 self-end rounded bg-green-100 p-1 text-green-600">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-4 w-4"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"
-              />
-            </svg>
-
-            <span className="text-xs font-medium"> </span>
-          </div>
-
           <div>
             <strong className="block text-sm font-medium text-gray-500 max-md:text-sm uppercase">
               Materiales/categorias gastos totales
@@ -303,9 +281,9 @@ export const OrdenDeCompraCheckout = () => {
       <div className="mx-10 py-2 flex gap-2 items-center max-md:px-0 max-md:py-0 max-md:flex-col max-md:items-start border-b-[1px] border-slate-300 pb-4 max-md:pb-4 max-md:mx-2">
         <Link
           to={"/registro-ordenes-checkout"}
-          className="flex items-center gap-1 bg-white border-slate-300 border-[1px] py-2 px-4 rounded-xl text-sm shadow text-slate-700 uppercase max-md:text-xs"
+          className="hover:bg-indigo-500 hover:text-white transition-all ease-linear flex items-center gap-1 bg-indigo-100 py-2 px-4 rounded-xl text-sm text-indigo-500 uppercase max-md:text-xs"
         >
-          Ver registros de ordenes finalizadas/os
+          Ver registros de ordenes finalizadas
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -325,7 +303,7 @@ export const OrdenDeCompraCheckout = () => {
 
       <div className="max-md:mt-2 mt-4 px-6">
         <div className="px-10 max-md:px-2">
-          <p className="uppercase text-orange-500 font-semibold text-sm underline">
+          <p className="uppercase text-indigo-500 font-semibold text-sm underline">
             Ordenes de compra finalizadas/os checkouts
           </p>
         </div>
@@ -369,7 +347,7 @@ export const OrdenDeCompraCheckout = () => {
                 <div className="absolute top-2 right-5 flex items-center gap-2">
                   <Link
                     to={`/orden-checkout/${o.id}`}
-                    className="py-2 px-4 rounded-xl text-white text-xs bg-black cursor-pointer flex items-center gap-1"
+                    className="py-2 px-4 rounded-xl text-indigo-500 text-xs bg-indigo-100 cursor-pointer flex items-center gap-1"
                   >
                     VER ORDEN CHECKOUT
                     <svg
@@ -395,9 +373,9 @@ export const OrdenDeCompraCheckout = () => {
                           parseInt(producto.cantidad) ===
                           parseInt(producto.cantidadFaltante)
                       )
-                        ? "bg-green-500"
-                        : "bg-red-500"
-                    } py-2 px-4 rounded-xl text-white text-xs cursor-pointer flex items-center gap-1`}
+                        ? "bg-green-100 text-green-600"
+                        : "bg-red-100  text-red-700"
+                    } py-2 px-4 rounded-xl text-xs cursor-pointer flex items-center gap-1`}
                   >
                     {o.datos.productoSeleccionado.every(
                       (producto) =>

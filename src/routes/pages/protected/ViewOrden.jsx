@@ -186,7 +186,7 @@ export const ViewOrden = () => {
 
       <div className="mt-4 border-slate-200 shadow border-[1px] py-5 px-5 rounded-xl mx-4">
         <div>
-          <h5 className="underline text-orange-500 text-lg">
+          <h5 className="underline text-indigo-500 text-lg">
             DATOS DE LA COMPRA
           </h5>
         </div>
@@ -224,7 +224,7 @@ export const ViewOrden = () => {
 
       <div className="mt-4 border-slate-200 shadow border-[1px] py-5 px-5 rounded-xl mx-4">
         <div>
-          <h5 className="underline text-orange-500 text-lg">PRODUCTOS</h5>
+          <h5 className="underline text-indigo-500 text-lg">PRODUCTOS</h5>
         </div>
         <div className="mt-2 grid grid-cols-5 gap-2">
           {orden?.datos?.productoSeleccionado?.map((producto) => (

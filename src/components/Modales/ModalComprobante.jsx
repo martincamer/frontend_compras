@@ -32,7 +32,7 @@ export const ModalComprobante = ({ isOpen, closeModal, datos, setDatos }) => {
       toast.success("¡Comprobante creado correctamente espera 3 segundos!", {
         position: "top-center",
         autoClose: 3000,
-        hideProgressBar: false,
+        hideProgressBar: true,
         closeOnClick: true,
         pauseOnHover: true,
         draggable: true,
@@ -41,6 +41,8 @@ export const ModalComprobante = ({ isOpen, closeModal, datos, setDatos }) => {
           padding: "10px",
           background: "#b8ffb8",
           color: "#009900",
+          borderRadius: "15px",
+          boxShadow: "none",
         },
       });
 
@@ -54,7 +56,7 @@ export const ModalComprobante = ({ isOpen, closeModal, datos, setDatos }) => {
       toast.error("Error al crear el comprobante", {
         position: "top-center",
         autoClose: 3000,
-        hideProgressBar: false,
+        hideProgressBar: true,
         closeOnClick: true,
         pauseOnHover: true,
         draggable: true,
@@ -63,6 +65,7 @@ export const ModalComprobante = ({ isOpen, closeModal, datos, setDatos }) => {
           padding: "10px",
           background: "#ffb8b8",
           color: "#990000",
+          borderRadius: "15px",
         },
       });
     }
@@ -85,7 +88,7 @@ export const ModalComprobante = ({ isOpen, closeModal, datos, setDatos }) => {
             leaveFrom="opacity-100"
             leaveTo="opacity-0"
           >
-            <div className="fixed inset-0 bg-black bg-opacity-5" />
+            <div className="fixed inset-0 bg-black bg-opacity-10" />
           </Transition.Child>
 
           <div className="min-h-screen px-4 text-center">
@@ -117,7 +120,30 @@ export const ModalComprobante = ({ isOpen, closeModal, datos, setDatos }) => {
               leaveFrom="opacity-100 scale-100"
               leaveTo="opacity-0 scale-95"
             >
-              <div className="inline-block w-[500px] max-md:w-full p-6 my-8 overflow-hidden text-left align-middle transition-all transform bg-white shadow-xl rounded-2xl border-slate-300 border-[1px]">
+              <div className="inline-block w-[500px] max-md:w-full p-6 my-8 overflow-hidden text-left align-middle transition-all transform bg-white shadow-xl rounded-3xl ">
+                <div className="flex justify-end">
+                  <button
+                    type="button"
+                    className="inline-flex justify-center px-2 py-2 text-sm text-red-900 bg-red-100 border border-transparent rounded-xl hover:bg-red-200 duration-300 cursor-pointer max-md:text-xs"
+                    onClick={closeModal}
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      strokeWidth={1.5}
+                      stroke="currentColor"
+                      className="w-6 h-6"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M6 18 18 6M6 6l12 12"
+                      />
+                    </svg>
+                  </button>
+                </div>
+
                 <div className="text-sm font-bold text-slate-700 mb-3 border-b-[1px] uppercase">
                   CARGAR NUEVO COMPROBANTE DE PAGO
                 </div>
@@ -128,7 +154,7 @@ export const ModalComprobante = ({ isOpen, closeModal, datos, setDatos }) => {
                       className="uppercase text-slate-700 text-sm"
                       htmlFor=""
                     >
-                      Total Entrega
+                      Total del comprobante/entrega
                     </label>
                     <input
                       onChange={(e) => setTotal(e.target.value)}
@@ -136,13 +162,15 @@ export const ModalComprobante = ({ isOpen, closeModal, datos, setDatos }) => {
                       className="border-slate-300 border-[1px] shadow rounded-xl w-full uppercase py-2 px-4"
                       placeholder="PONER EL TOTAL"
                     />
-                    <p className="bg-orange-500 py-2 px-5 rounded-xl text-white font-bold">
-                      {Number(total || 0).toLocaleString("es-AR", {
-                        style: "currency",
-                        currency: "ARS",
-                      })}{" "}
-                      - TOTAL FINAL
-                    </p>
+                    <div className="flex">
+                      <p className="bg-orange-100 py-2 px-5 rounded-xl text-orange-600 font-bold">
+                        {Number(total || 0).toLocaleString("es-AR", {
+                          style: "currency",
+                          currency: "ARS",
+                        })}{" "}
+                        - TOTAL FINAL
+                      </p>
+                    </div>
                   </div>
 
                   {/* <div className="flex flex-col gap-2">
@@ -174,15 +202,29 @@ export const ModalComprobante = ({ isOpen, closeModal, datos, setDatos }) => {
 
                   <div className="mt-3">
                     <button
-                      className="bg-black py-2 px-4 rounded-xl shadow text-white uppercase text-sm"
+                      className="bg-indigo-100 py-2 px-4 rounded-xl text-indigo-700 uppercase text-sm flex gap-2 items-center"
                       type="submit"
                     >
                       CREAR COMPROBANTE
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        strokeWidth={1.5}
+                        stroke="currentColor"
+                        className="w-6 h-6"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M13.19 8.688a4.5 4.5 0 0 1 1.242 7.244l-4.5 4.5a4.5 4.5 0 0 1-6.364-6.364l1.757-1.757m13.35-.622 1.757-1.757a4.5 4.5 0 0 0-6.364-6.364l-4.5 4.5a4.5 4.5 0 0 0 1.242 7.244"
+                        />
+                      </svg>
                     </button>
                   </div>
                 </form>
 
-                <div className="mt-4">
+                {/* <div className="mt-4">
                   <button
                     type="button"
                     className="inline-flex justify-center px-4 py-2 text-sm text-red-900 bg-red-100 border border-transparent rounded-xl hover:bg-red-200 duration-300 cursor-pointer max-md:text-xs"
@@ -190,7 +232,7 @@ export const ModalComprobante = ({ isOpen, closeModal, datos, setDatos }) => {
                   >
                     Cerrar Ventana
                   </button>
-                </div>
+                </div> */}
               </div>
             </Transition.Child>
           </div>

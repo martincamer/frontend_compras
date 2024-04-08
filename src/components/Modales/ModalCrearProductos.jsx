@@ -55,7 +55,7 @@ export const ModalCrearProductos = ({ isOpen, closeModal }) => {
       toast.success("¡Producto creado correctamente!", {
         position: "top-center",
         autoClose: 3000,
-        hideProgressBar: false,
+        hideProgressBar: true,
         closeOnClick: true,
         pauseOnHover: true,
         draggable: true,
@@ -64,6 +64,8 @@ export const ModalCrearProductos = ({ isOpen, closeModal }) => {
           padding: "10px",
           background: "#b8ffb8",
           color: "#009900",
+          boxShadow: "none",
+          borderRadius: "15px",
         },
       });
 
@@ -90,7 +92,7 @@ export const ModalCrearProductos = ({ isOpen, closeModal }) => {
             leaveFrom="opacity-100"
             leaveTo="opacity-0"
           >
-            <div className="fixed inset-0 bg-black bg-opacity-25" />
+            <div className="fixed inset-0 bg-black bg-opacity-10" />
           </Transition.Child>
 
           <div className="min-h-screen px-4 text-center">
@@ -121,8 +123,31 @@ export const ModalCrearProductos = ({ isOpen, closeModal }) => {
               leaveFrom="opacity-100 scale-100"
               leaveTo="opacity-0 scale-95"
             >
-              <div className="inline-block w-1/3 max-md:w-full p-6 my-8 overflow-hidden max-md:h-[300px] max-md:overflow-y-scroll text-left align-middle transition-all transform bg-white shadow-xl rounded-2xl">
-                <div className="text-sm text-slate-700 mb-3 border-b-[1px] uppercase">
+              <div className="inline-block w-1/3 max-md:w-full p-6 my-8 overflow-hidden text-left align-middle transition-all transform bg-white shadow-xl rounded-3xl">
+                <div className="flex justify-end">
+                  <button
+                    type="button"
+                    className="inline-flex justify-center px-2 py-2 text-sm text-red-900 bg-red-100 border border-transparent rounded-xl hover:bg-red-200 duration-300 cursor-pointer max-md:text-xs"
+                    onClick={closeModal}
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      strokeWidth={1.5}
+                      stroke="currentColor"
+                      className="w-6 h-6"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M6 18 18 6M6 6l12 12"
+                      />
+                    </svg>
+                  </button>
+                </div>
+
+                <div className="text-sm font-bold text-slate-700 mb-3 border-b-[1px] uppercase">
                   Crear nuevo producto
                 </div>
                 <form onSubmit={onSubmit} className="flex flex-col gap-3">
@@ -175,7 +200,7 @@ export const ModalCrearProductos = ({ isOpen, closeModal }) => {
                     <label className="text-sm text-slate-700 uppercase">
                       Precio
                     </label>
-                    <div className="py-2 px-6 rounded-xl uppercase border-slate-300 border-[1px] shadow flex gap-4 ">
+                    <div className="py-1 px-6 rounded-xl uppercase border-slate-300 border-[1px] shadow flex gap-4">
                       <span className="text-lg text-slate-700">$</span>
                       <input
                         onChange={(e) => setPrecio(e.target.value)}
@@ -186,7 +211,7 @@ export const ModalCrearProductos = ({ isOpen, closeModal }) => {
                       />
                     </div>
                     <div className="mt-2">
-                      <span className="bg-black text-sm py-2 px-6 rounded-xl uppercase shadow text-white">
+                      <span className="bg-indigo-100 text-sm py-2 px-6 rounded-xl uppercase  text-indigo-600">
                         {Number(precio_und).toLocaleString("es-AR", {
                           style: "currency",
                           currency: "ARS",
@@ -198,22 +223,12 @@ export const ModalCrearProductos = ({ isOpen, closeModal }) => {
                   <div>
                     <button
                       type="submit"
-                      className="bg-black py-2 px-6 shadow rounded-xl text-white uppercase text-sm"
+                      className="bg-indigo-500 py-2 px-6 shadow rounded-xl text-white uppercase text-sm"
                     >
                       Crear nuevo producto
                     </button>
                   </div>
                 </form>
-
-                <div className="mt-4">
-                  <button
-                    type="button"
-                    className="inline-flex justify-center px-4 py-2 text-sm text-red-900 bg-red-100 border border-transparent rounded-xl hover:bg-red-200 duration-300 cursor-pointer max-md:text-xs"
-                    onClick={closeModal}
-                  >
-                    Cerrar Ventana
-                  </button>
-                </div>
               </div>
             </Transition.Child>
           </div>

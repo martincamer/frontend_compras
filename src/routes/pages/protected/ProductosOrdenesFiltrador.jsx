@@ -5,8 +5,10 @@ import { SyncLoader } from "react-spinners";
 import { PDFDownloadLink } from "@react-pdf/renderer";
 import client from "../../../api/axios";
 import { ImprirmirProductosPDF } from "../../../components/pdf/ImprirmirProductosPDF";
+import { useProductosContext } from "../../../context/ProductosProvider";
 
 export const ProductosOrdenesFiltrador = () => {
+  const { categorias } = useProductosContext();
   const [ordenesBuscadas, setOrdenesBuscadas] = useState([]);
   const [fechaInicio, setFechaInicio] = useState("");
   const [fechaFin, setFechaFin] = useState("");
@@ -62,11 +64,14 @@ export const ProductosOrdenesFiltrador = () => {
     orden.datos.productoSeleccionado
       .map((producto) => ({
         ...producto,
-        proveedor: orden.proveedor, // Agregar la información del proveedor al producto
+        proveedor: orden.proveedor, // Add proveedor (supplier) information to each product
       }))
       .filter(
         (producto) =>
-          producto.detalle.toLowerCase().includes(searchTerm.toLowerCase()) &&
+          (producto.detalle.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            producto.proveedor
+              .toLowerCase()
+              .includes(searchTerm.toLowerCase())) && // Search by product detail or supplier
           (selectedCategory === "all" ||
             producto.categoria === selectedCategory)
       )
@@ -168,7 +173,7 @@ export const ProductosOrdenesFiltrador = () => {
       </nav>
 
       <div className="mt-5 mx-6 mb-2">
-        <h4 className="underline text-orange-500 font-semibold text-lg">
+        <h4 className="underline text-indigo-500 font-semibold text-lg">
           BUSCAR POR LOS PRODUCTOS/COMPARAR PRECIOS/ETC
         </h4>
       </div>
@@ -221,13 +226,27 @@ export const ProductosOrdenesFiltrador = () => {
 
         <div>
           <PDFDownloadLink
-            className="bg-green-500 text-white py-2 px-5 shadow rounded-xl uppercase"
+            className="bg-green-100 text-green-600 py-2 px-5 rounded-xl uppercase flex gap-2 items-center hover:bg-green-500 hover:text-white transition-all ease-linear"
             fileName="productos_filtrados"
             target="_blank"
             download={false}
             document={<ImprirmirProductosPDF datos={currentProducts} />}
           >
             Descargar productos filtrados
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={1.5}
+              stroke="currentColor"
+              className="w-6 h-6"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m.75 12 3 3m0 0 3-3m-3 3v-6m-1.5-9H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z"
+              />
+            </svg>
           </PDFDownloadLink>
         </div>
       </div>
@@ -248,6 +267,9 @@ export const ProductosOrdenesFiltrador = () => {
         >
           <option value="all">Todas las categorías</option>
           {/* Aquí puedes insertar opciones de categorías si las tienes */}
+          {categorias.map((c) => (
+            <option key={c.id}>{c.detalle}</option>
+          ))}
         </select>
 
         <div className="border-slate-300 border-[1px] text-red-600 font-semibold py-3 px-5 rounded-xl shadow">

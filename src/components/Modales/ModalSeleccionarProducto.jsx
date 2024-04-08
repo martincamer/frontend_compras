@@ -65,7 +65,7 @@ export const ModalSeleccionarProducto = ({
             leaveFrom="opacity-100"
             leaveTo="opacity-0"
           >
-            <div className="fixed inset-0 bg-black bg-opacity-25" />
+            <div className="fixed inset-0 bg-black bg-opacity-10" />
           </Transition.Child>
 
           <div className="min-h-screen px-4 text-center">
@@ -96,8 +96,31 @@ export const ModalSeleccionarProducto = ({
               leaveFrom="opacity-100 scale-100"
               leaveTo="opacity-0 scale-95"
             >
-              <div className="inline-block w-2/3 max-md:w-full p-6 my-8 overflow-hidden max-md:h-[300px] max-md:overflow-y-scroll text-left align-middle transition-all transform bg-white shadow-xl rounded-2xl">
-                <div className="text-sm text-slate-700 mb-3 border-b-[1px] uppercase">
+              <div className="inline-block w-2/3 max-md:w-full p-6 my-8 overflow-hidden max-md:h-[300px] max-md:overflow-y-scroll text-left align-middle transition-all transform bg-white shadow-xl rounded-3xl">
+                <div className="flex justify-end">
+                  <button
+                    type="button"
+                    className="inline-flex justify-center px-2 py-2 text-sm text-red-900 bg-red-100 border border-transparent rounded-xl hover:bg-red-200 duration-300 cursor-pointer max-md:text-xs"
+                    onClick={closeModal}
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      strokeWidth={1.5}
+                      stroke="currentColor"
+                      className="w-6 h-6"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M6 18 18 6M6 6l12 12"
+                      />
+                    </svg>
+                  </button>
+                </div>
+
+                <div className="text-sm text-slate-700 mb-3 border-b-[1px] uppercase font-bold">
                   SELECCIONAR PRODUCTO/COMPRA
                 </div>
 
@@ -165,7 +188,7 @@ export const ModalSeleccionarProducto = ({
                                 handleID(p.id), openModalProductoSeleccionado();
                               }}
                               type="button"
-                              className="bg-green-500 py-2 px-4 rounded-xl shadow uppercase text-white"
+                              className="bg-green-100 py-2 px-4 rounded-xl uppercase text-green-600 hover:text-white hover:bg-green-500 transition-all ease-linear"
                             >
                               Seleccionar producto
                             </button>
@@ -207,7 +230,7 @@ export const ModalSeleccionarProducto = ({
                   )}
                 </div>
 
-                <div className="mt-4">
+                {/* <div className="mt-4">
                   <button
                     type="button"
                     className="inline-flex justify-center px-4 py-2 text-sm text-red-900 bg-red-100 border border-transparent rounded-xl hover:bg-red-200 duration-300 cursor-pointer max-md:text-xs"
@@ -215,7 +238,7 @@ export const ModalSeleccionarProducto = ({
                   >
                     Cerrar Ventana
                   </button>
-                </div>
+                </div> */}
 
                 <ModalElegirCantidadDelProducto
                   addToProductos={addToProductos}
