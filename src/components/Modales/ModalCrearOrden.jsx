@@ -11,7 +11,21 @@ import { useProductosContext } from "../../context/ProductosProvider";
 export const ModalCrearOrden = ({ isOpen, closeModal }) => {
   const { setOrdenesMensuales } = useOrdenesContext();
 
-  const { proveedores, setProveedores } = useProductosContext();
+  // const { proveedores, setProveedores } = useProductosContext();
+  const [proveedores, setProveedores] = useState([]);
+
+  useEffect(() => {
+    async function loadData() {
+      const respuesta = await client.get("/proveedores");
+      setProveedores(respuesta.data);
+      // Establecer el primer proveedor como valor predeterminado
+      if (respuesta.data.length > 0) {
+        setProveedor(respuesta.data[0].proveedor);
+      }
+    }
+
+    loadData();
+  }, []);
 
   const [proveedor, setProveedor] = useState("");
   const [numero_factura, setNumeroFactura] = useState("");
@@ -95,9 +109,8 @@ export const ModalCrearOrden = ({ isOpen, closeModal }) => {
   }, []);
 
   const totalesFinales = productoSeleccionado.reduce((total, producto) => {
-    // Convert the totalFinal property to a number and add it to the accumulator
     return total + Number(producto?.totalFinal);
-  }, 0); // Start with an initial value of 0
+  }, 0);
 
   const onSubmit = async (e) => {
     e.preventDefault();
@@ -121,8 +134,6 @@ export const ModalCrearOrden = ({ isOpen, closeModal }) => {
     const res = await client.post("/crear-orden-nueva", datosOrden);
     const resDos = await client.post("/crear-orden-nueva-dos", datosOrden);
     const resProveedor = await client.put(`actualizar-proveedor-compra`, datos);
-
-    console.log(resProveedor);
 
     if (socket) {
       socket.emit("crear-orden", res.data);
@@ -253,12 +264,13 @@ export const ModalCrearOrden = ({ isOpen, closeModal }) => {
                       <select
                         value={proveedor}
                         onChange={(e) => setProveedor(e.target.value)}
-                        type="text"
                         className="py-2 px-4 rounded-xl border-slate-300 border-[1px] shadow uppercase placeholder:text-slate-300 text-sm bg-white"
                         placeholder="PROVEEDOR DE LA ORDEN"
                       >
-                        {proveedores.map((p) => (
-                          <option key={p.id}>{p.proveedor}</option>
+                        {proveedores.map((p, index) => (
+                          <option key={index} value={p.proveedor}>
+                            {p.proveedor}
+                          </option>
                         ))}
                       </select>
                     </div>

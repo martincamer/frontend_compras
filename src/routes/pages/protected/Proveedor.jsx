@@ -6,6 +6,7 @@ import { ModalComprobante } from "../../../components/Modales/ModalComprobante";
 
 export const Proveedor = () => {
   const [datos, setDatos] = useState([]);
+  const [comprobantes, setComprobantes] = useState([]);
 
   const [isOpenComprobante, setOpenComprobante] = useState(false);
 
@@ -71,7 +72,40 @@ export const Proveedor = () => {
     loadData();
   }, [params.id]);
 
-  console.log(datos);
+  useEffect(() => {
+    async function loadData() {
+      const res = await client.get(
+        `/comprobantes${params.id ? `?params=${params.id}` : ""}`
+      );
+
+      setComprobantes(res.data);
+    }
+
+    loadData();
+  }, []);
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const [productsPerPage] = useState(15);
+
+  // Lógica de paginación
+  const indexOfLastProduct = currentPage * productsPerPage;
+  const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
+
+  // Ordenar los comprobantes por fecha de creación de manera descendente
+  const sortedComprobantes = comprobantes?.sort((a, b) => {
+    const dateA = new Date(a.created_at).getTime();
+    const dateB = new Date(b.created_at).getTime();
+    return dateB - dateA;
+  });
+
+  // Obtener los productos actuales para la página actual
+  const currentProducts = sortedComprobantes?.slice(
+    indexOfFirstProduct,
+    indexOfLastProduct
+  );
+
+  // Cambiar de página
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   return (
     <section className="w-full h-full px-5 max-md:px-4 flex flex-col gap-2 py-16 max-md:gap-5">
@@ -102,7 +136,7 @@ export const Proveedor = () => {
             </svg>
 
             <span className="text-xs font-medium max-md:text-xs">
-              {Number(datos?.comprobantes?.length / 100 || 0).toFixed(2)} %
+              {Number(comprobantes?.length / 10 || 0).toFixed(2)} %
             </span>
           </div>
 
@@ -113,14 +147,14 @@ export const Proveedor = () => {
 
             <p>
               <span className="text-xl font-medium text-red-600 max-md:text-base">
-                {Number(datos?.comprobantes?.length || 0)}
+                {Number(comprobantes?.length || 0)}
               </span>
 
               <span className="text-xs text-gray-500 uppercase">
                 {" "}
                 total final{" "}
                 <span className="font-bold text-slate-700">
-                  {Number(datos?.comprobantes?.length || 0)}
+                  {Number(comprobantes?.length || 0)}
                 </span>
               </span>
             </p>
@@ -196,7 +230,7 @@ export const Proveedor = () => {
 
             <p>
               <span className="text-xl font-medium text-red-600 max-md:text-base">
-                -{" "}
+                {" "}
                 {Number(datos?.total).toLocaleString("es-AR", {
                   style: "currency",
                   currency: "ARS",
@@ -240,39 +274,39 @@ export const Proveedor = () => {
         <table className="min-w-full divide-y-2 divide-gray-200 bg-white text-sm">
           <thead className="text-left">
             <tr>
-              <th className="whitespace-nowrap px-4 py-4 text-gray-900 uppercase font-semibold">
+              {/* <th className="whitespace-nowrap px-4 py-4 text-gray-900 uppercase font-semibold">
                 Numero °
-              </th>
+              </th> */}
               <th className="whitespace-nowrap px-4 py-4 text-gray-900 uppercase font-semibold">
                 Total del comprobante
               </th>
               <th className="whitespace-nowrap px-4 py-4 text-gray-900 uppercase font-semibold">
-                Total final
-              </th>
-              <th className="whitespace-nowrap px-4 py-4 text-gray-900 uppercase font-semibold">
-                Descargar comprobante
+                Total del comprobante final
               </th>
               <th className="whitespace-nowrap px-4 py-4 text-gray-900 uppercase font-semibold">
                 Acciones
+              </th>
+              <th className="whitespace-nowrap px-4 py-4 text-gray-900 uppercase font-semibold">
+                Fecha de creación
               </th>
             </tr>
           </thead>
 
           <tbody className="divide-y divide-gray-200">
-            {/* {proveedores.map((p) => (
+            {currentProducts.map((p) => (
               <tr key={p.id}>
-                <td className="whitespace-nowrap px-4 py-6 font-medium text-gray-900 uppercase text-sm">
-                  {p.proveedor}
-                </td>
+                {/* <td className="whitespace-nowrap px-4 py-6 font-medium text-gray-900 uppercase text-sm">
+                  {p.id}
+                </td> */}
                 <td className="whitespace-nowrap px-4 py-6 text-gray-700 uppercase text-sm">
                   {Number(p.total).toLocaleString("es-AR", {
                     style: "currency",
                     currency: "ARS",
                   })}
                 </td>
-                <td className="whitespace-nowrap px-4 py-6 text-red-800 uppercase text-sm font-bold">
+                <td className="whitespace-nowrap px-4 py-6 text-green-800 uppercase text-sm font-bold">
                   {" "}
-                  <span className="bg-red-50 py-3 px-5 rounded-xl">
+                  <span className="bg-green-100 py-3 px-5 rounded-xl">
                     {Number(p.total).toLocaleString("es-AR", {
                       style: "currency",
                       currency: "ARS",
@@ -281,19 +315,50 @@ export const Proveedor = () => {
                 </td>
                 <td className="whitespace-nowrap px-4 py-6 text-gray-700 uppercase text-sm cursor-pointer space-x-2">
                   <Link
-                    to={`/proveedores/${p.id}`}
+                    // to={`/proveedores/${p.id}`}
                     className="bg-green-500/20 text-green-600 py-2 px-3 rounded-xl text-sm"
                   >
-                    CARGAR COMPROBANTES/DINERO
+                    DESCARGAR COMPROBANTE
                   </Link>
-                  <span className="bg-red-500/10 text-red-800 py-2 px-3 rounded-xl text-sm">
+                  {/* <span className="bg-red-500/10 text-red-800 py-2 px-3 rounded-xl text-sm">
                     ELIMINAR
-                  </span>
+                  </span> */}
+                </td>
+                <td className="whitespace-nowrap px-4 py-6 font-medium text-gray-900 uppercase text-sm">
+                  {p.created_at.split("T")[0]}
                 </td>
               </tr>
-            ))} */}
+            ))}
           </tbody>
         </table>
+      </div>
+      <div className="flex justify-center mt-4">
+        {comprobantes.length > productsPerPage && (
+          <nav className="pagination">
+            <ul className="pagination-list flex gap-2">
+              {Array.from({
+                length: Math.ceil(comprobantes.length / productsPerPage),
+              }).map(
+                (_, index) =>
+                  index >= currentPage - 2 &&
+                  index <= currentPage + 2 && ( // Mostrar solo 5 páginas a la vez
+                    <li key={index} className="pagination-item">
+                      <button
+                        onClick={() => paginate(index + 1)}
+                        className={`pagination-link ${
+                          currentPage === index + 1
+                            ? "text-white bg-green-500 px-3 py-1 rounded-xl"
+                            : "text-slate-600 bg-white border-[1px] border-slate-300 px-2 py-1 rounded-xl"
+                        }`}
+                      >
+                        {index + 1}
+                      </button>
+                    </li>
+                  )
+              )}
+            </ul>
+          </nav>
+        )}
       </div>
       <ModalComprobante
         isOpen={isOpenComprobante}

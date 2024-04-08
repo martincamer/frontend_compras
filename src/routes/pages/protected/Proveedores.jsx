@@ -49,26 +49,26 @@ export const Proveedores = () => {
     setOpen(false);
   };
 
-  // const [searchTerm, setSearchTerm] = useState("");
-  // const [selectedCategory, setSelectedCategory] = useState("all");
-  // const [currentPage, setCurrentPage] = useState(1);
-  // const [productsPerPage] = useState(9);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("all");
+  const [currentPage, setCurrentPage] = useState(1);
+  const [productsPerPage] = useState(10);
 
-  // // Lógica de paginación
-  // const indexOfLastProduct = currentPage * productsPerPage;
-  // const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
-  // const currentProducts = filteredProducts.slice(
-  //   indexOfFirstProduct,
-  //   indexOfLastProduct
-  // );
+  // Lógica de paginación
+  const indexOfLastProduct = currentPage * productsPerPage;
+  const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
+  const currentProducts = proveedores?.slice(
+    indexOfFirstProduct,
+    indexOfLastProduct
+  );
 
-  // // Cambiar de página
-  // const paginate = (pageNumber) => setCurrentPage(pageNumber);
+  // Cambiar de página
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
-  // const precioTotal = ordenesMensuales.reduce(
-  //   (total, orden) => total + Number(orden.precio_final),
-  //   0
-  // );
+  const precioTotal = proveedores.reduce(
+    (total, orden) => total + Number(orden.total),
+    0
+  );
 
   return (
     <section className="w-full h-full px-5 max-md:px-4 flex flex-col gap-2 py-16 max-md:gap-5">
@@ -92,7 +92,7 @@ export const Proveedores = () => {
             </svg>
 
             <span className="text-xs font-medium max-md:text-xs">
-              {/* {Number(precioTotal / 100000).toFixed(2)} % */}
+              {Number(precioTotal / 10000000).toFixed(2)} %
             </span>
           </div>
 
@@ -103,21 +103,20 @@ export const Proveedores = () => {
 
             <p>
               <span className="text-xl font-medium text-red-600 max-md:text-base">
-                {/* -{" "}
                 {Number(precioTotal).toLocaleString("es-AR", {
                   style: "currency",
                   currency: "ARS",
-                })} */}
+                })}
               </span>
 
               <span className="text-xs text-gray-500 uppercase">
                 {" "}
                 deuda final{" "}
                 <span className="font-bold text-slate-700">
-                  {/* {Number(precioTotal).toLocaleString("es-AR", {
+                  {Number(precioTotal).toLocaleString("es-AR", {
                     style: "currency",
                     currency: "ARS",
-                  })} */}
+                  })}
                 </span>
               </span>
             </p>
@@ -163,6 +162,49 @@ export const Proveedores = () => {
             </p>
           </div>
         </article>
+
+        <article className="flex flex-col gap-4 rounded-xl border border-slate-200 shadow bg-white p-6 max-md:p-3">
+          <div className="inline-flex gap-2 self-end rounded bg-red-100 p-1 text-red-600">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-4 w-4"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M13 17h8m0 0V9m0 8l-8-8-4 4-6-6"
+              />
+            </svg>
+
+            <span className="text-xs font-medium max-md:text-xs">
+              {Number(proveedores.length).toFixed(2)} %
+            </span>
+          </div>
+
+          <div>
+            <strong className="block text-sm font-medium text-gray-500 max-md:text-xs uppercase">
+              Total proveedores cargados
+            </strong>
+
+            <p>
+              <span className="text-xl font-medium text-red-600 max-md:text-base">
+                {Number(proveedores.length)}
+              </span>
+
+              <span className="text-xs text-gray-500 uppercase">
+                {" "}
+                total cargados{" "}
+                <span className="font-bold text-slate-700">
+                  {Number(proveedores.length)}
+                </span>
+              </span>
+            </p>
+          </div>
+        </article>
       </div>
 
       <div className="mx-10 py-2 flex gap-2 items-center max-md:px-0 max-md:py-0 max-md:flex-col max-md:items-start border-b-[1px] border-slate-300 pb-4 max-md:pb-4 max-md:mx-2">
@@ -170,11 +212,11 @@ export const Proveedores = () => {
           onClick={() => openModal()}
           className="bg-white border-slate-300 border-[1px] py-2 px-4 rounded-xl text-sm shadow text-slate-700 uppercase max-md:text-xs"
         >
-          Creear nuevo proveedor
+          Crear nuevo proveedor
         </button>
-        <button className="bg-white border-slate-300 border-[1px] py-2 px-4 rounded-xl text-sm shadow text-slate-700 uppercase max-md:text-xs">
+        {/* <button className="bg-white border-slate-300 border-[1px] py-2 px-4 rounded-xl text-sm shadow text-slate-700 uppercase max-md:text-xs">
           Ver resumenes de los proveedores
-        </button>
+        </button> */}
       </div>
 
       <div className="mx-6 mt-6">
@@ -204,7 +246,7 @@ export const Proveedores = () => {
           </thead>
 
           <tbody className="divide-y divide-gray-200">
-            {proveedores.map((p) => (
+            {currentProducts.map((p) => (
               <tr key={p.id}>
                 <td className="whitespace-nowrap px-4 py-6 font-medium text-gray-900 uppercase text-sm">
                   {p.proveedor}
@@ -239,6 +281,35 @@ export const Proveedores = () => {
             ))}
           </tbody>
         </table>
+      </div>
+
+      <div className="flex justify-center mt-4">
+        {proveedores.length > productsPerPage && (
+          <nav className="pagination">
+            <ul className="pagination-list flex gap-2">
+              {Array.from({
+                length: Math.ceil(proveedores.length / productsPerPage),
+              }).map(
+                (_, index) =>
+                  index >= currentPage - 2 &&
+                  index <= currentPage + 2 && ( // Mostrar solo 5 páginas a la vez
+                    <li key={index} className="pagination-item">
+                      <button
+                        onClick={() => paginate(index + 1)}
+                        className={`pagination-link ${
+                          currentPage === index + 1
+                            ? "text-white bg-green-500 px-3 py-1 rounded-xl"
+                            : "text-slate-600 bg-white border-[1px] border-slate-300 px-2 py-1 rounded-xl"
+                        }`}
+                      >
+                        {index + 1}
+                      </button>
+                    </li>
+                  )
+              )}
+            </ul>
+          </nav>
+        )}
       </div>
 
       <ModalCrearProveedor isOpen={isOpen} closeModal={closeModal} />

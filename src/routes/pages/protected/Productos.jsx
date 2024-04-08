@@ -64,7 +64,7 @@ export const Productos = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [currentPage, setCurrentPage] = useState(1);
-  const [productsPerPage] = useState(5);
+  const [productsPerPage] = useState(10);
 
   // Filtrar productos por término de búsqueda y categoría seleccionada
   const filteredProducts = productos.filter((product) => {
@@ -114,27 +114,6 @@ export const Productos = () => {
       <ToastContainer />
       <div className="py-5 px-5 rounded-xl grid grid-cols-3 gap-3 mb-2 max-md:grid-cols-1 max-md:border-none max-md:shadow-none max-md:py-0 max-md:px-0">
         <article className="flex flex-col items-start justify-center gap-4 rounded-xl border border-slate-200 shadow bg-white p-6 max-md:p-3">
-          {/* <div className="inline-flex gap-2 self-end rounded bg-green-100 p-1 text-green-600">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-4 w-4"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M13 17h8m0 0V9m0 8l-8-8-4 4-6-6"
-              />
-            </svg>
-
-            <span className="text-xs font-medium max-md:text-xs uppercase">
-              {" "}
-            </span>
-          </div> */}
-
           <div>
             <strong className="block text-sm font-medium text-gray-500 max-md:text-xs uppercase">
               Total productos cargados
