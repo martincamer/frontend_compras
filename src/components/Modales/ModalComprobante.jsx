@@ -10,56 +10,45 @@ export const ModalComprobante = ({ isOpen, closeModal, datos, setDatos }) => {
   const [total, setTotal] = useState("");
   const [imagen, setImagen] = useState(null);
 
+  const uploadFile = async (type) => {
+    const data = new FormData();
+    data.append("file", type === "image" ? imagen : "");
+    data.append("upload_preset", type === "image" ? "imagenes" : "-");
+
+    try {
+      // let cloudName = process.env.REACT_APP_CLOUDINARY_CLOUD_NAME;
+      let resourceType = type === "image" ? "image" : "video";
+      let api = `https://api.cloudinary.com/v1_1/de4aqqalo/${resourceType}/upload`;
+
+      const res = await axios.post(api, data);
+      const { secure_url } = res.data;
+      console.log(secure_url);
+      return secure_url;
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   useEffect(() => {
     setParams(datos.id);
     setProveedor(datos.proveedor);
   }, [datos.id]);
 
-  // const [imageSelected, setImageSelected] = useState("");  // const uploadImage = () => {
-
-  //   const formData = new FormData();
-
-  //   // Append the image file and upload preset to the FormData object
-  //   formData.append("file", imageSelected);
-  //   // Append the image file and upload preset to the FormData object
-  //   formData.append("upload_preset", "ngluxncg"); // Reemplaza "xxxxxx2" con tu preset de carga de Cloudinary
-
-  //   // Realizar una solicitud POST a la API de Cloudinary
-  //   axios
-  //     .post(
-  //       "https://api.cloudinary.com/v1_1/de4aqqalo/image/upload", // URL de carga de Cloudinary
-  //       formData // Objeto FormData que contiene el archivo de imagen y el preset de carga
-  //     )
-  //     .then((response) => {
-  //       // Manejar la respuesta
-  //       console.log("Image uploaded successfully!");
-  //       // Obtener la URL segura de la imagen cargada desde la respuesta
-  //       const secureUrl = response;
-  //       console.log("Secure URL:", secureUrl);
-  //       // Aquí puedes hacer lo que necesites con la URL de la imagen, como mostrarla en tu aplicación o enviarla al backend
-  //     })
-  //     .catch((error) => {
-  //       // Manejar errores
-  //       console.error("Error uploading image:", error); // Registrar cualquier error que ocurra durante el proceso de carga
-  //     });
-  // };
-
   const onSubmit = async (e) => {
     e.preventDefault();
+
+    const imgUrl = await uploadFile("image");
 
     const data = {
       params,
       proveedor,
       total,
-      imagen: imagen,
+      imagen: imgUrl,
     };
 
     try {
       // Enviar el formulario con la URL de la imagen actualizada
       const res = await client.post(`/crear-comprobante`, data);
-
-      console.log(res.data);
-
       toast.success("¡Comprobante creado correctamente espera 3 segundos!", {
         position: "top-center",
         autoClose: 3000,
@@ -179,7 +168,11 @@ export const ModalComprobante = ({ isOpen, closeModal, datos, setDatos }) => {
                   CARGAR NUEVO COMPROBANTE DE PAGO
                 </div>
 
-                <form onSubmit={onSubmit} className="px-4 py-4">
+                <form
+                  encType="multipart/form-data"
+                  onSubmit={onSubmit}
+                  className="px-4 py-4"
+                >
                   <div className="flex flex-col gap-2">
                     <label
                       className="uppercase text-slate-700 text-sm"
@@ -204,11 +197,16 @@ export const ModalComprobante = ({ isOpen, closeModal, datos, setDatos }) => {
                     </div>
                   </div>
 
-                  <input
-                    type="file"
-                    accept="image/*"
-                    onChange={(event) => setImagen(event.target.files[0])}
-                  />
+                  <div>
+                    <label htmlFor="img">Comprobante:</label>
+                    <br />
+                    <input
+                      type="file"
+                      accept="image/*"
+                      id="img"
+                      onChange={(e) => setImagen((prev) => e.target.files[0])}
+                    />
+                  </div>
                   {/* 
                   <div>
                     <input

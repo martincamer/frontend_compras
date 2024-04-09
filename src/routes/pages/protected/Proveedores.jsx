@@ -95,7 +95,7 @@ export const Proveedores = () => {
 
             <div>
               <p className="text-2xl font-medium text-red-700">
-                -{" "}
+                {" "}
                 {Number(precioTotal).toLocaleString("es-AR", {
                   style: "currency",
                   currency: "ARS",

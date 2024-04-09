@@ -20,8 +20,8 @@ import { OrdenDeCompraRegistrosDos } from "./routes/pages/protected/OrdenDeCompr
 import { ViewPdfProducto } from "./routes/pages/protected/ViewPdfProducto";
 import { Proveedores } from "./routes/pages/protected/Proveedores";
 import { Proveedor } from "./routes/pages/protected/Proveedor";
+import { ViewComprobantePdf } from "./routes/pages/protected/ViewComprobantePdf";
 //import normales
-import { PrimeReactProvider } from "primereact/api";
 import RutaProtegida from "./layouts/RutaProtejida";
 import "react-toastify/dist/ReactToastify.css";
 import "react-toastify/dist/ReactToastify.min.css";
@@ -45,16 +45,14 @@ function App() {
           >
             <Route
               element={
-                <PrimeReactProvider>
-                  <ProductosProvider>
-                    <OrdenesProvider>
-                      <SideBar />
-                      <main className="min-h-full max-h-full h-full">
-                        <Outlet />
-                      </main>
-                    </OrdenesProvider>
-                  </ProductosProvider>
-                </PrimeReactProvider>
+                <ProductosProvider>
+                  <OrdenesProvider>
+                    <SideBar />
+                    <main className="min-h-full max-h-full h-full">
+                      <Outlet />
+                    </main>
+                  </OrdenesProvider>
+                </ProductosProvider>
               }
             >
               <Route index path="/" element={<Home />} />
@@ -68,6 +66,12 @@ function App() {
                 index
                 path="/pdf-productos"
                 element={<ViewPdfProducto />}
+              />
+
+              <Route
+                index
+                path="/pdf-comprobante/:id"
+                element={<ViewComprobantePdf />}
               />
               <Route
                 index

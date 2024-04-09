@@ -3,6 +3,7 @@ import { ToastContainer } from "react-toastify";
 import { Link, useParams } from "react-router-dom";
 import client from "../../../api/axios";
 import { ModalComprobante } from "../../../components/Modales/ModalComprobante";
+import { ModalObtenerCompra } from "../../../components/Modales/ModalObtenerCompra";
 
 export const Proveedor = () => {
   const [datos, setDatos] = useState([]);
@@ -110,6 +111,19 @@ export const Proveedor = () => {
   const totalEnComprobantes = comprobantes.reduce((acc, comprobante) => {
     return acc + parseFloat(comprobante.total);
   }, 0);
+
+  const [isComprobante, setIsComprobante] = useState(false);
+  const [obtenerId, setObtenerId] = useState("");
+
+  const openComprobanteModal = () => {
+    setIsComprobante(true);
+  };
+
+  const closeComprobanteModal = () => {
+    setIsComprobante(false);
+  };
+
+  const handleID = (id) => setObtenerId(id);
 
   return (
     <section className="w-full h-full px-5 max-md:px-4 flex flex-col gap-2 py-16 max-md:gap-5">
@@ -362,23 +376,6 @@ export const Proveedor = () => {
             />
           </svg>
         </button>
-        {/* <button className="bg-white border-slate-300 border-[1px] py-2 px-4 rounded-xl text-sm shadow text-slate-700 uppercase max-md:text-xs flex gap-2 items-center">
-          Ver resumenes de los comprobantes
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth={1.5}
-            stroke="currentColor"
-            className="w-6 h-6"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M17.25 8.25 21 12m0 0-3.75 3.75M21 12H3"
-            />
-          </svg>
-        </button> */}
       </div>
 
       <div className="mx-8 mt-6">
@@ -391,14 +388,17 @@ export const Proveedor = () => {
         <table className="min-w-full divide-y-2 divide-gray-200 bg-white text-sm">
           <thead className="text-left">
             <tr>
-              {/* <th className="whitespace-nowrap px-4 py-4 text-gray-900 uppercase font-semibold">
+              <th className="whitespace-nowrap px-4 py-4 text-gray-900 uppercase font-semibold">
                 Numero °
-              </th> */}
+              </th>
               <th className="whitespace-nowrap px-4 py-4 text-gray-900 uppercase font-semibold">
                 Total del comprobante
               </th>
               <th className="whitespace-nowrap px-4 py-4 text-gray-900 uppercase font-semibold">
                 Total del comprobante final
+              </th>
+              <th className="whitespace-nowrap px-4 py-4 text-gray-900 uppercase font-semibold">
+                Ver Comprobante
               </th>
               <th className="whitespace-nowrap px-4 py-4 text-gray-900 uppercase font-semibold">
                 Acciones
@@ -412,9 +412,9 @@ export const Proveedor = () => {
           <tbody className="divide-y divide-gray-200">
             {currentProducts.map((p) => (
               <tr key={p.id}>
-                {/* <td className="whitespace-nowrap px-4 py-6 font-medium text-gray-900 uppercase text-sm">
+                <td className="whitespace-nowrap px-4 py-6 text-gray-700 uppercase text-sm">
                   {p.id}
-                </td> */}
+                </td>
                 <td className="whitespace-nowrap px-4 py-6 text-gray-700 uppercase text-sm">
                   {Number(p.total).toLocaleString("es-AR", {
                     style: "currency",
@@ -433,18 +433,31 @@ export const Proveedor = () => {
                 <td className="whitespace-nowrap px-4 py-6 text-gray-700 uppercase text-sm cursor-pointer space-x-2">
                   <Link
                     // to={`/proveedores/${p.id}`}
+                    onClick={() => {
+                      handleID(p.id), openComprobanteModal();
+                    }}
+                    className="bg-indigo-500/20 text-indigo-600 py-2 px-3 rounded-xl text-sm hover:bg-indigo-500 hover:text-white transition-all ease-linear"
+                  >
+                    VER COMPROBANTE
+                  </Link>
+                </td>
+                <td className="whitespace-nowrap px-4 py-6 text-gray-700 uppercase text-sm cursor-pointer space-x-2">
+                  <Link
+                    target="_blank"
+                    to={`/pdf-comprobante/${p.id}`}
                     className="bg-green-500/20 text-green-600 py-2 px-3 rounded-xl text-sm"
                   >
                     DESCARGAR COMPROBANTE
                   </Link>
-                  {/* <span className="bg-red-500/10 text-red-800 py-2 px-3 rounded-xl text-sm">
-                    ELIMINAR
-                  </span> */}
                 </td>
                 <td className="whitespace-nowrap px-4 py-6 font-medium text-gray-900 uppercase text-sm">
-                  {p.created_at.split("T")[0]} / <strong>HORA:</strong>{" "}
-                  {p.created_at.split("T")[1]}
+                  {p?.created_at?.split("T")[0]} / <strong>HORA:</strong>{" "}
+                  {p?.created_at?.split("T")[1]}
                 </td>
+                {/* 
+                <td className="whitespace-nowrap px-4 py-6 text-gray-700 uppercase text-sm">
+                  <img src={p.imagen} alt="" />
+                </td> */}
               </tr>
             ))}
           </tbody>
@@ -483,6 +496,11 @@ export const Proveedor = () => {
         closeModal={closeComprobante}
         OBTENERID={params.id}
         datos={datos}
+      />
+      <ModalObtenerCompra
+        isOpen={isComprobante}
+        closeModal={closeComprobanteModal}
+        obtenerId={obtenerId}
       />
     </section>
   );

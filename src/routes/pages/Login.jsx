@@ -38,13 +38,13 @@ export const Login = () => {
       </div>
       <form
         onSubmit={onSubmit}
-        className="flex w-1/3 flex-col gap-4 bg-white border-[1px] border-slate-300 px-10 py-10 rounded-xl  shadow max-md:w-full"
+        className="flex w-1/3 flex-col gap-4 bg-white border-[1px] border-slate-300 px-10 py-12 rounded-2xl  shadow max-md:w-full"
       >
         {
           <div>
             <div className="flex flex-col gap-1">
               {error?.map((e) => (
-                <span className="bg-red-500/10 rounded-lg px-2 py-1 text-red-600 text-sm border-[1px] border-red-500/30">
+                <span className="bg-red-100 rounded-xl px-3 text-center uppercase py-3 text-red-800 text-sm">
                   {e}
                 </span>
               ))}

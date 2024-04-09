@@ -1,4 +1,3 @@
-import OrdenesColumnChart from "../../../components/charts/OrdenesColumnChart";
 import PogressBar from "../../../components/charts/PogressBar";
 import { useOrdenesContext } from "../../../context/OrdenesProvider";
 import { useProductosContext } from "../../../context/ProductosProvider";
