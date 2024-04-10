@@ -197,29 +197,22 @@ export const ModalComprobante = ({ isOpen, closeModal, datos, setDatos }) => {
                     </div>
                   </div>
 
-                  <div>
-                    <label htmlFor="img">Comprobante:</label>
+                  <div className="border-slate-200 border-[1px] py-2 px-2 mt-2 rounded-xl hover:shadow-md transition-all ease-linear space-y-1">
+                    <label
+                      className="uppercase text-slate-700 text-sm"
+                      htmlFor="img"
+                    >
+                      Comprobante:
+                    </label>
                     <br />
                     <input
                       type="file"
                       accept="image/*"
                       id="img"
                       onChange={(e) => setImagen((prev) => e.target.files[0])}
+                      className="bg-slate-100 text-slate-800 py-1 px-2 rounded-xl uppercase font-bold text-sm"
                     />
                   </div>
-                  {/* 
-                  <div>
-                    <input
-                      type="file"
-                      accept="image/*"
-                      onChange={(event) =>
-                        setImageSelected(event.target.files[0])
-                      } // Obtener el archivo seleccionado, no la ruta de archivo
-                    />
-                    <button type="button" onClick={uploadImage}>
-                      ENVIAR IMAGEN
-                    </button>
-                  </div> */}
 
                   <div className="mt-3">
                     <button
@@ -244,16 +237,6 @@ export const ModalComprobante = ({ isOpen, closeModal, datos, setDatos }) => {
                     </button>
                   </div>
                 </form>
-
-                {/* <div className="mt-4">
-                  <button
-                    type="button"
-                    className="inline-flex justify-center px-4 py-2 text-sm text-red-900 bg-red-100 border border-transparent rounded-xl hover:bg-red-200 duration-300 cursor-pointer max-md:text-xs"
-                    onClick={closeModal}
-                  >
-                    Cerrar Ventana
-                  </button>
-                </div> */}
               </div>
             </Transition.Child>
           </div>
