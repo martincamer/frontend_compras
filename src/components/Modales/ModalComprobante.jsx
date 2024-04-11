@@ -197,12 +197,12 @@ export const ModalComprobante = ({ isOpen, closeModal, datos, setDatos }) => {
                     </div>
                   </div>
 
-                  <div className="border-slate-200 border-[1px] py-2 px-2 mt-2 rounded-xl hover:shadow-md transition-all ease-linear space-y-1">
+                  <div className="mt-2 rounded-xl hover:shadow-md transition-all ease-linear space-y-1 cursor-pointer">
                     <label
                       className="uppercase text-slate-700 text-sm"
                       htmlFor="img"
                     >
-                      Comprobante:
+                      Comprobante
                     </label>
                     <br />
                     <input
@@ -210,7 +210,7 @@ export const ModalComprobante = ({ isOpen, closeModal, datos, setDatos }) => {
                       accept="image/*"
                       id="img"
                       onChange={(e) => setImagen((prev) => e.target.files[0])}
-                      className="bg-slate-100 text-slate-800 py-1 px-2 rounded-xl uppercase font-bold text-sm"
+                      className="w-full bg-slate-100 text-slate-800 py-4 px-4 rounded-xl uppercase font-bold text-sm file:bg-slate-700 file:text-white file:py-2 file:border-none file:px-3 file:rounded-xl file:shadow-md cursor-pointer"
                     />
                   </div>
 

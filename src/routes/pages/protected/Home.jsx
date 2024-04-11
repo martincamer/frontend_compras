@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import PogressBar from "../../../components/charts/PogressBar";
 import { useOrdenesContext } from "../../../context/OrdenesProvider";
 import { useProductosContext } from "../../../context/ProductosProvider";
@@ -89,15 +90,72 @@ export const Home = () => {
     return categoryTotalsArray;
   };
 
-  // Call the function to get category totals
+  // Call the function to gsssssssssssssset category totals
   const categoryTotalsData = calculateCategoryTotals();
 
-  console.log(ordenesMensuales);
+  const [isLoading, setIsLoading] = useState(true);
 
-  return (
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 1500);
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  return isLoading ? (
     <section className="w-full h-full min-h-full max-h-full px-12 max-md:px-4 flex flex-col gap-12 max-md:gap-8 py-24">
       <div className="rounded-xl bg-white grid grid-cols-3 gap-3 max-md:grid-cols-1 max-md:border-none max-md:shadow-none max-md:py-2 max-md:px-0">
-        <article className="flex items-center justify-between gap-4 rounded-xl shadow border border-slate-200 bg-white p-6">
+        {[1, 2, 3, 4, 5].map((index) => (
+          <article
+            key={index}
+            className="animate-pulse flex items-center justify-between gap-4 rounded-xl border-[1px] border-slate-300 bg-white p-8 hover:shadow-md transition-all ease-linear cursor-pointer"
+          >
+            <div className="flex gap-4 items-center">
+              <div className="rounded-full bg-gray-200 animate-pulse w-9 h-9"></div>
+              <div>
+                <div className="bg-gray-200 animate-pulse h-8 w-24"></div>
+                <div className="bg-gray-200 animate-pulse h-4 w-20"></div>
+              </div>
+            </div>
+            <div className="flex items-center gap-2 self-end rounded-xl bg-gray-200 py-2 px-2 text-gray-200 animate-pulse">
+              <div className="w-4 h-4 rounded-full bg-gray-300 animate-pulse"></div>
+              <div className="w-10 h-4 bg-gray-300 animate-pulse"></div>
+            </div>
+          </article>
+        ))}
+      </div>
+
+      <div className="grid grid-cols-2 items-start gap-5 overflow-y-scroll pb-4">
+        <div className="h-[500px] border-slate-300 border-[1px] py-5 px-5 rounded-xl flex flex-col gap-12 hover:shadow-md transition-all ease-linear cursor-pointer">
+          {[1, 2, 3].map((index) => (
+            <div key={index} className="animate-pulse flex flex-col gap-5">
+              <div className="bg-gray-200 rounded-xl h-3"></div>
+              <div className="bg-gray-200 rounded-xl h-3"></div>
+              <div className="bg-gray-200 rounded-xl h-3"></div>
+            </div>
+          ))}
+        </div>
+        <div className="flex flex-col gap-4">
+          {[1, 2, 3].map((index) => (
+            <div
+              key={index}
+              className="animate-pulse flex items-center justify-between gap-4 rounded-xl border border-slate-300 bg-white p-6 hover:shadow-md transition-all ease-linear cursor-pointer"
+            >
+              <div className="rounded-full bg-gray-200 animate-pulse w-9 h-9"></div>
+              <div>
+                <div className="bg-gray-200 animate-pulse h-8 w-24"></div>
+                <div className="bg-gray-200 animate-pulse h-4 w-20"></div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  ) : (
+    <section className="w-full h-full min-h-full max-h-full px-12 max-md:px-4 flex flex-col gap-12 max-md:gap-8 py-24">
+      <div className="rounded-xl bg-white grid grid-cols-3 gap-3 max-md:grid-cols-1 max-md:border-none max-md:shadow-none max-md:py-2 max-md:px-0">
+        <article className="flex items-center justify-between gap-4 rounded-xl border border-slate-300 bg-white p-6 hover:shadow-md transition-all ease-linear cursor-pointer">
           <div className="flex gap-4 items-center">
             <span className="rounded-full bg-red-100 p-3 text-red-700">
               <svg
@@ -154,7 +212,7 @@ export const Home = () => {
           </div>
         </article>
 
-        <article className="flex items-center justify-between gap-4 rounded-xl shadow border border-slate-200 bg-white p-6">
+        <article className="flex items-center justify-between gap-4 rounded-xl border border-slate-300 bg-white p-6 hover:shadow-md transition-all ease-linear cursor-pointer">
           <div className="flex gap-4 items-center">
             <span className="rounded-full bg-green-100 p-3 text-green-700">
               <svg
@@ -207,7 +265,7 @@ export const Home = () => {
           </div>
         </article>
 
-        <article className="flex flex-col gap-4 rounded-xl border border-slate-200 shadow bg-white p-6 max-md:p-3">
+        <article className="flex items-center justify-between gap-4 rounded-xl border border-slate-300 bg-white p-6 hover:shadow-md transition-all ease-linear cursor-pointer">
           <div className="mt-2 h-[50px] overflow-y-scroll">
             <p className="">
               <span className="text-2xl font-medium text-gray-900 max-md:text-base">
@@ -233,7 +291,7 @@ export const Home = () => {
           </div>
         </article>
 
-        <article className="flex items-center justify-between gap-4 rounded-xl shadow border border-slate-200 bg-white p-6">
+        <article className="flex items-center justify-between gap-4 rounded-xl border border-slate-300 bg-white p-6 hover:shadow-md transition-all ease-linear cursor-pointer">
           <div className="flex gap-4 items-center">
             <span className="rounded-full bg-indigo-100 p-3 text-indigo-700">
               <svg
@@ -286,7 +344,7 @@ export const Home = () => {
           </div>
         </article>
 
-        <article className="flex items-center justify-between gap-4 rounded-xl shadow border border-slate-200 bg-white p-6">
+        <article className="flex items-center justify-between gap-4 rounded-xl border border-slate-300 bg-white p-6 hover:shadow-md transition-all ease-linear cursor-pointer">
           <div className="flex gap-4 items-center">
             <span className="rounded-full bg-red-100 p-3 text-red-700">
               <svg
@@ -344,8 +402,8 @@ export const Home = () => {
         </article>
       </div>
 
-      <div className="grid grid-cols-2 items-start gap-5 overflow-y-scroll">
-        <div className="h-[300px] border-slate-200 border-[1px] shadow py-5 px-5 rounded-xl flex flex-col gap-12">
+      <div className="grid grid-cols-2 items-start gap-5 overflow-y-scroll pb-4">
+        <div className="h-[500px] border-slate-300 border-[1px] py-5 px-5 rounded-xl flex flex-col gap-12 hover:shadow-md transition-all ease-linear cursor-pointer">
           <div className="text-2xl font-medium text-gray-900 max-md:text-base flex flex-col gap-5">
             {categoryTotalsData.map((category) => (
               <div key={category.category}>
@@ -376,18 +434,8 @@ export const Home = () => {
         </div>
         <div className="flex flex-col gap-4">
           <PogressBar ordenesMensuales={ordenesMensuales} />
-          {/* <PogressBar ordenesMensuales={ordenesMensuales} /> */}
         </div>
       </div>
-
-      {/* <div className="border-slate-200 border-[1px] shadow rounded-xl py-5 px-5 flex flex-col gap-5">
-        <div className="px-5">
-          <p className="text-lg text-slate-600 underline">
-            ORDENES ESTADISTICA SEMANAL
-          </p>
-        </div>
-        <OrdenesColumnChart ordenesMensuales={ordenesMensuales} />
-      </div> */}
     </section>
   );
 };

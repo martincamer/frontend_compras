@@ -138,11 +138,111 @@ export const OrdenDeCompra = () => {
 
   console.log(categoryTotalsData);
 
-  return (
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 1500);
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  return isLoading ? (
+    <section className="w-full h-full px-5 max-md:px-4 flex flex-col gap-2 py-16 max-md:gap-5">
+      {/* ToastContainer */}
+      <div className="py-5 px-5 rounded-xl grid grid-cols-3 gap-3 mb-2 max-md:grid-cols-1 max-md:border-none max-md:shadow-none max-md:py-0 max-md:px-0 animate-pulse">
+        {/* Primer artículo */}
+        <article className="flex justify-between items-center rounded-2xl border border-gray-200 bg-white p-8 shadow">
+          {/* Icono y detalles */}
+          <div className="flex gap-4 items-center">
+            {/* Placeholder para el icono */}
+            <div className="rounded-full bg-slate-200 p-3 text-slate-700">
+              <div className="w-9 h-9 rounded-full bg-gray-300"></div>
+            </div>
+            <div className="space-y-2">
+              {/* Placeholder para el texto */}
+              <p className="text-2xl font-medium bg-slate-200 py-4 px-16 rounded-xl"></p>
+              <p className="text-sm bg-slate-200 uppercase underline py-4 px-16 rounded-xl"></p>
+            </div>
+          </div>
+          {/* Placeholder para el porcentaje */}
+          <div className="inline-flex gap-2 rounded-xl bg-slate-200 py-4 px-10"></div>
+        </article>
+        {/* Segundo artículo */}
+        <article className="flex justify-between items-center rounded-2xl border border-gray-200 bg-white p-8 shadow">
+          {/* Icono y detalles */}
+          <div className="flex gap-4 items-center">
+            {/* Placeholder para el icono */}
+            <div className="rounded-full bg-slate-200 p-3 text-slate-700">
+              <div className="w-9 h-9 rounded-full bg-gray-200"></div>
+            </div>
+            <div className="space-y-2">
+              {/* Placeholder para el texto */}
+              <p className="text-2xl font-medium bg-slate-200 py-4 px-16 rounded-xl"></p>
+              <p className="text-sm bg-slate-200 uppercase underline py-4 px-16 rounded-xl"></p>
+            </div>
+          </div>
+          {/* Placeholder para el porcentaje */}
+          <div className="inline-flex gap-2 rounded-xl bg-slate-200 py-4 px-10"></div>
+        </article>
+
+        <article className="flex justify-between items-center rounded-2xl border border-gray-200 bg-white p-8 shadow">
+          {/* Icono y detalles */}
+          <div className="flex gap-4 items-center">
+            {/* Placeholder para el icono */}
+            <div className="rounded-full bg-slate-200 p-3 text-slate-700">
+              <div className="w-9 h-9 rounded-full bg-gray-200"></div>
+            </div>
+            <div className="space-y-2">
+              {/* Placeholder para el texto */}
+              <p className="text-2xl font-medium bg-slate-200 py-4 px-16 rounded-xl"></p>
+              <p className="text-sm bg-slate-200 uppercase underline py-4 px-16 rounded-xl"></p>
+            </div>
+          </div>
+          {/* Placeholder para el porcentaje */}
+          <div className="inline-flex gap-2 rounded-xl bg-slate-200 py-4 px-10"></div>
+        </article>
+        {/* Tercer artículo */}
+      </div>
+      {/* Botones */}
+      <div className="mx-10 py-2 flex gap-2 items-center max-md:px-0 max-md:py-0 max-md:flex-col max-md:items-start border-b-[1px] border-slate-200 pb-4 max-md:pb-4 max-md:mx-2 animate-pulse">
+        {/* Placeholder para el botón */}
+        <button className="bg-slate-200  py-5 px-20 rounded-xl"></button>
+        {/* Placeholder para el enlace */}
+        <button className="bg-slate-200  py-5 px-20 rounded-xl"></button>
+        {/* Placeholder para el enlace */}
+        <button className="bg-slate-200  py-5 px-20 rounded-xl"></button>
+      </div>
+      {/* Placeholder para la sección de órdenes de compra */}
+      <div className="max-md:mt-2 mt-4 px-6 animate-pulse">
+        {/* Placeholder para el título */}
+        <div className="px-10 max-md:px-2">
+          <button className="bg-slate-200  py-5 px-20 rounded-xl"></button>
+        </div>
+        {/* Placeholder para la barra de búsqueda */}
+        <div className="mt-5 px-8 flex gap-2">
+          {/* Placeholder para el campo de búsqueda */}
+          <div className="w-1/4 rounded-xl py-2 px-5 border-slate-200 bg-white text-slate-700 border-[1px] uppercase"></div>
+          {/* Placeholder para el select */}
+          <div className="py-5 px-32 text-slate-700 rounded-xl shadow bg-white border-slate-200 border-[1px] uppercase"></div>
+        </div>
+        {/* Placeholder para las órdenes de compra */}
+        <div className="mt-8 grid grid-cols-3 gap-5">
+          {[...Array(ordenesMensuales.length)].map((_, index) => (
+            <div className="border-slate-200 border-[1px] w-full h-[20vh] rounded-2xl shadow flex gap-6 py-6 px-6">
+              <div className="h-full w-full bg-slate-200 py-2 px-2 rounded-2xl"></div>
+              <div className="h-full w-full bg-slate-200 py-2 px-2 rounded-2xl"></div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  ) : (
     <section className="w-full h-full px-5 max-md:px-4 flex flex-col gap-2 py-16 max-md:gap-5">
       <ToastContainer />
       <div className="py-5 px-5 rounded-xl grid grid-cols-3 gap-3 mb-2 max-md:grid-cols-1 max-md:border-none max-md:shadow-none max-md:py-0 max-md:px-0">
-        <article className="flex justify-between items-center rounded-2xl border border-gray-200 bg-white p-8 shadow">
+        <article className="flex justify-between items-center rounded-2xl border border-gray-200 bg-white p-8 hover:shadow-md cursor-pointer transition-all ease-linear">
           <div className="flex gap-4 items-center">
             <span className="rounded-full bg-red-100 p-3 text-red-700">
               <svg
@@ -199,7 +299,7 @@ export const OrdenDeCompra = () => {
           </div>
         </article>
 
-        <article className="flex justify-between items-center rounded-2xl border border-gray-200 bg-white p-8 shadow">
+        <article className="flex justify-between items-center rounded-2xl border border-gray-200 bg-white p-8 hover:shadow-md cursor-pointer transition-all ease-linear">
           <div className="flex gap-4 items-center">
             <span className="rounded-full bg-green-100 p-3 text-green-700">
               <svg
@@ -251,7 +351,7 @@ export const OrdenDeCompra = () => {
             </span>
           </div>
         </article>
-        <article className="flex flex-col gap-4 rounded-2xl border border-slate-200 shadow bg-white p-6 max-md:p-3">
+        <article className="flex justify-between items-center rounded-2xl border border-gray-200 bg-white p-8 hover:shadow-md cursor-pointer transition-all ease-linear">
           <div>
             <strong className="block text-sm font-medium text-gray-500 max-md:text-sm uppercase">
               Materiales/categorias gastos totales
@@ -378,7 +478,7 @@ export const OrdenDeCompra = () => {
         <div className="grid grid-cols-3 h-full w-full gap-4">
           {currentProducts.map((o) => (
             <div
-              className="shadow border-slate-200 border-[1px] rounded-xl pt-14 pb-6 px-5 flex justify-between items-center relative"
+              className="hover:shadow-md transition-all ease-linear cursor-pointer border-slate-200 border-[1px] rounded-xl pt-14 pb-6 px-5 flex justify-between items-center relative"
               key={o.id}
             >
               <div className="absolute top-2 right-5 flex items-center gap-2">

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ToastContainer } from "react-toastify";
 import { useProductosContext } from "../../../context/ProductosProvider";
 import { ModalCrearProveedor } from "../../../components/Modales/ModalCrearProveedor";
@@ -70,7 +70,119 @@ export const Proveedores = () => {
     0
   );
 
-  return (
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 1500);
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  return isLoading ? (
+    <section className="w-full h-full px-5 max-md:px-4 flex flex-col gap-2 py-16 max-md:gap-5">
+      {/* ToastContainer */}
+      <div className="py-5 px-5 rounded-xl grid grid-cols-3 gap-3 mb-2 max-md:grid-cols-1 max-md:border-none max-md:shadow-none max-md:py-0 max-md:px-0 animate-pulse">
+        {/* Primer artículo */}
+        <article className="flex justify-between items-center rounded-2xl border border-gray-200 bg-white p-8 shadow">
+          {/* Icono y detalles */}
+          <div className="flex gap-4 items-center">
+            {/* Placeholder para el icono */}
+            <div className="rounded-full bg-slate-200 p-3 text-slate-700">
+              <div className="w-9 h-9 rounded-full bg-gray-300"></div>
+            </div>
+            <div className="space-y-2">
+              {/* Placeholder para el texto */}
+              <p className="text-2xl font-medium bg-slate-200 py-4 px-16 rounded-xl"></p>
+              <p className="text-sm bg-slate-200 uppercase underline py-4 px-16 rounded-xl"></p>
+            </div>
+          </div>
+          {/* Placeholder para el porcentaje */}
+          <div className="inline-flex gap-2 rounded-xl bg-slate-200 py-4 px-10"></div>
+        </article>
+        {/* Segundo artículo */}
+        <article className="flex justify-between items-center rounded-2xl border border-gray-200 bg-white p-8 shadow">
+          {/* Icono y detalles */}
+          <div className="flex gap-4 items-center">
+            {/* Placeholder para el icono */}
+            <div className="rounded-full bg-slate-200 p-3 text-slate-700">
+              <div className="w-9 h-9 rounded-full bg-gray-200"></div>
+            </div>
+            <div className="space-y-2">
+              {/* Placeholder para el texto */}
+              <p className="text-2xl font-medium bg-slate-200 py-4 px-16 rounded-xl"></p>
+              <p className="text-sm bg-slate-200 uppercase underline py-4 px-16 rounded-xl"></p>
+            </div>
+          </div>
+          {/* Placeholder para el porcentaje */}
+          <div className="inline-flex gap-2 rounded-xl bg-slate-200 py-4 px-10"></div>
+        </article>
+
+        <article className="flex justify-between items-center rounded-2xl border border-gray-200 bg-white p-8 shadow">
+          {/* Icono y detalles */}
+          <div className="flex gap-4 items-center">
+            {/* Placeholder para el icono */}
+            <div className="rounded-full bg-slate-200 p-3 text-slate-700">
+              <div className="w-9 h-9 rounded-full bg-gray-200"></div>
+            </div>
+            <div className="space-y-2">
+              {/* Placeholder para el texto */}
+              <p className="text-2xl font-medium bg-slate-200 py-4 px-16 rounded-xl"></p>
+              <p className="text-sm bg-slate-200 uppercase underline py-4 px-16 rounded-xl"></p>
+            </div>
+          </div>
+          {/* Placeholder para el porcentaje */}
+          <div className="inline-flex gap-2 rounded-xl bg-slate-200 py-4 px-10"></div>
+        </article>
+        {/* Tercer artículo */}
+      </div>
+      {/* Botones */}
+      <div className="mx-10 py-2 flex gap-2 items-center max-md:px-0 max-md:py-0 max-md:flex-col max-md:items-start border-b-[1px] border-slate-200 pb-4 max-md:pb-4 max-md:mx-2 animate-pulse">
+        {/* Placeholder para el botón */}
+        <button className="bg-slate-200  py-5 px-20 rounded-xl"></button>
+      </div>
+      {/* Placeholder para la sección de órdenes de compra */}
+      <div className="max-md:mt-2 mt-4 px-6 animate-pulse">
+        {/* Placeholder para el título */}
+        <div className="px-10 max-md:px-2">
+          <button className="bg-slate-200  py-5 px-20 rounded-xl"></button>
+        </div>
+        {/* Placeholder para la barra de búsqueda */}
+        <div className="mt-5 px-8 flex gap-2">
+          {/* Placeholder para el campo de búsqueda */}
+          <div className="w-1/4 rounded-xl py-2 px-5 border-slate-200 bg-white text-slate-700 border-[1px] uppercase"></div>
+          {/* Placeholder para el select */}
+          <div className="py-5 px-32 text-slate-700 rounded-xl shadow bg-white border-slate-200 border-[1px] uppercase"></div>
+        </div>
+        {/* Placeholder para las órdenes de compra */}
+        <div className="overflow-x-auto mt-6 mx-8 border-slate-300 border-[1px] rounded-2xl animate-pulse">
+          <table className="min-w-full divide-y-2 divide-gray-200 bg-white text-sm">
+            <thead className="text-left">
+              <tr>
+                <th className="whitespace-nowrap px-4 py-6 text-indigo-500 uppercase font-normal"></th>
+                <th className="whitespace-nowrap px-4 py-6 text-indigo-500 uppercase font-normal"></th>
+                <th className="whitespace-nowrap px-4 py-6 text-indigo-500 uppercase font-normal"></th>
+                <th className="whitespace-nowrap px-4 py-6 text-indigo-500 uppercase font-normal"></th>
+                <th className="whitespace-nowrap px-4 py-6 text-indigo-500 uppercase font-normal"></th>
+              </tr>
+            </thead>
+
+            <tbody className="divide-y divide-gray-200">
+              {/* Placeholder para 10 filas de datos */}
+              {[...Array(proveedores.length)].map((_, index) => (
+                <tr key={index}>
+                  <td className="whitespace-nowrap px-4 py-10 font-medium text-gray-900 uppercase text-sm animate-pulse">
+                    {/* Placeholder para el código */}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+  ) : (
     <section className="w-full h-full px-5 max-md:px-4 flex flex-col gap-2 py-16 max-md:gap-5">
       <ToastContainer />
       <div className="py-5 px-5 rounded-xl grid grid-cols-3 gap-3 mb-2 max-md:grid-cols-1 max-md:border-none max-md:shadow-none max-md:py-0 max-md:px-0">

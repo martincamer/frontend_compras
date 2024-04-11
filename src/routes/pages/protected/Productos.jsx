@@ -109,11 +109,120 @@ export const Productos = () => {
     setIsEliminar(false);
   };
 
-  return (
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 1500);
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  return isLoading ? (
+    <section className="w-full h-full px-5 max-md:px-4 flex flex-col gap-2 py-16 max-md:gap-5">
+      <div className="py-5 px-5 rounded-xl grid grid-cols-3 gap-3 mb-2 max-md:grid-cols-1 max-md:border-none max-md:shadow-none max-md:py-0 max-md:px-0">
+        {/* Placeholder para el primer artículo */}
+        <article className="flex justify-between items-start rounded-xl border border-gray-200 bg-white p-8 shadow animate-pulse">
+          <div className="flex gap-4 items-center">
+            <span className="rounded-full bg-indigo-100 p-3 text-slate-700 animate-pulse"></span>
+            <div>
+              <div
+                className="bg-gray-200 h-8 w-20 animate-pulse
+              "
+              ></div>
+              <div className="bg-gray-200 h-5 w-32 animate-pulse"></div>
+            </div>
+          </div>
+          <div className="inline-flex gap-2 rounded-xl bg-indigo-100 p-2 text-indigo-600 animate-pulse">
+            <div className="w-4 h-4 bg-gray-200 rounded-full animate-pulse"></div>
+            <div className="w-12 h-4 bg-gray-200 animate-pulse"></div>
+          </div>
+        </article>
+
+        {/* Placeholder para el segundo artículo */}
+        <article className="flex justify-between items-start rounded-xl border border-gray-200 bg-white p-8 shadow animate-pulse">
+          <div className="flex gap-4 items-center">
+            <span className="rounded-full bg-green-100 p-3 text-green-700 animate-pulse"></span>
+            <div>
+              <div className="bg-gray-200 h-8 w-32 animate-pulse"></div>
+              <div className="bg-gray-200 h-5 w-24 animate-pulse"></div>
+            </div>
+          </div>
+          <div className="inline-flex gap-2 rounded-xl bg-green-100 py-2 px-4 text-green-600 animate-pulse">
+            <div className="w-6 h-6 bg-gray-200 rounded-full animate-pulse"></div>
+            <div className="w-14 h-4 bg-gray-200 animate-pulse"></div>
+          </div>
+        </article>
+      </div>
+
+      {/* Placeholder para los botones */}
+      <div className="mx-10 py-2 flex gap-2 items-center max-md:px-0 max-md:py-0 max-md:flex-col max-md:items-start border-b-[1px] border-slate-300 pb-4 max-md:pb-4 max-md:mx-2">
+        <button className="bg-white border-slate-300 border-[1px] py-5 px-40 rounded-xl text-sm shadow text-slate-700 uppercase max-md:text-xs animate-pulse"></button>
+        <button className="bg-white border-slate-300 border-[1px] py-5 px-40 rounded-xl text-sm shadow text-slate-700 uppercase max-md:text-xs animate-pulse"></button>
+      </div>
+
+      {/* Placeholder para la tabla de productos */}
+      <div className="max-md:mt-2 mt-5 ">
+        <div className="px-10 max-md:px-2">
+          <p className="uppercase text-indigo-600 font-semibold text-sm underline animate-pulse"></p>
+        </div>
+
+        <div className="mt-5 px-8 flex gap-2">
+          {/* Placeholder para el buscador */}
+          <input
+            type="text"
+            placeholder="Buscar por detalle"
+            className="rounded-xl py-2 px-5 border-slate-300 bg-white text-slate-700 border-[1px] uppercase animate-pulse w-1/4"
+          />
+          {/* Placeholder para el selector de categoría */}
+          <select className="py-1 px-32 text-slate-700 rounded-xl shadow bg-white border-slate-300 border-[1px] uppercase animate-pulse"></select>
+        </div>
+
+        {/* Placeholder para la tabla de productos */}
+        <div className="overflow-x-auto mt-6 mx-8 border-slate-300 border-[1px] rounded-2xl animate-pulse">
+          <table className="min-w-full divide-y-2 divide-gray-200 bg-white text-sm">
+            <thead className="text-left">
+              <tr>
+                <th className="whitespace-nowrap px-4 py-6 text-indigo-500 uppercase font-normal"></th>
+                <th className="whitespace-nowrap px-4 py-6 text-indigo-500 uppercase font-normal"></th>
+                <th className="whitespace-nowrap px-4 py-6 text-indigo-500 uppercase font-normal"></th>
+                <th className="whitespace-nowrap px-4 py-6 text-indigo-500 uppercase font-normal"></th>
+                <th className="whitespace-nowrap px-4 py-6 text-indigo-500 uppercase font-normal"></th>
+              </tr>
+            </thead>
+
+            <tbody className="divide-y divide-gray-200">
+              {/* Placeholder para 10 filas de datos */}
+              {[...Array(productos.length)].map((_, index) => (
+                <tr key={index}>
+                  <td className="whitespace-nowrap px-4 py-6 font-medium text-gray-900 uppercase text-sm animate-pulse">
+                    {/* Placeholder para el código */}
+                  </td>
+                  <td className="whitespace-nowrap px-4 py-6 text-gray-700 uppercase text-sm animate-pulse">
+                    {/* Placeholder para el detalle */}
+                  </td>
+                  <td className="whitespace-nowrap px-4 py-6 text-gray-700 uppercase text-sm animate-pulse">
+                    {/* Placeholder para la categoría */}
+                  </td>
+                  <td className="whitespace-nowrap px-4 py-6  uppercase text-sm font-bold text-indigo-500 animate-pulse">
+                    {/* Placeholder para el precio */}
+                  </td>
+                  <td className="whitespace-nowrap px-4 py-6 text-gray-700 uppercase text-sm cursor-pointer space-x-2 animate-pulse">
+                    {/* Placeholder para las acciones */}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+  ) : (
     <section className="w-full h-full px-5 max-md:px-4 flex flex-col gap-2 py-16 max-md:gap-5">
       <ToastContainer />
       <div className="py-5 px-5 rounded-xl grid grid-cols-3 gap-3 mb-2 max-md:grid-cols-1 max-md:border-none max-md:shadow-none max-md:py-0 max-md:px-0">
-        <article className="flex justify-between items-start rounded-xl border border-gray-200 bg-white p-8 shadow">
+        <article className="flex items-center justify-between gap-4 rounded-xl border border-slate-300 bg-white p-6 hover:shadow-md transition-all ease-linear cursor-pointer">
           <div className="flex gap-4 items-center">
             <span className="rounded-full bg-indigo-100 p-3 text-indigo-700">
               <svg
@@ -166,7 +275,7 @@ export const Productos = () => {
           </div>
         </article>
 
-        <article className="flex justify-between items-start rounded-xl border border-gray-200 bg-white p-8 shadow">
+        <article className="flex items-center justify-between gap-4 rounded-xl border border-slate-300 bg-white p-6 hover:shadow-md transition-all ease-linear cursor-pointer">
           <div className="flex gap-4 items-center">
             <span className="rounded-full bg-green-100 p-3 text-green-700">
               <svg
@@ -223,15 +332,43 @@ export const Productos = () => {
       <div className="mx-10 py-2 flex gap-2 items-center max-md:px-0 max-md:py-0 max-md:flex-col max-md:items-start border-b-[1px] border-slate-300 pb-4 max-md:pb-4 max-md:mx-2">
         <button
           onClick={() => openModal()}
-          className="bg-white border-slate-300 border-[1px] py-2 px-4 rounded-xl text-sm shadow text-slate-700 uppercase max-md:text-xs"
+          className="bg-indigo-100 py-2 px-4 rounded-xl text-sm text-indigo-700 uppercase max-md:text-xs flex gap-2 items-center hover:shadow-md transition-all hover:bg-indigo-200"
         >
           Crear nuevo producto
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth={1.5}
+            stroke="currentColor"
+            className="w-6 h-6"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+            />
+          </svg>
         </button>
         <button
-          className="bg-white border-slate-300 border-[1px] py-2 px-4 rounded-xl text-sm shadow text-slate-700 uppercase max-md:text-xs"
+          className="bg-green-100 py-2 px-4 rounded-xl text-sm text-green-800 uppercase max-md:text-xs flex gap-2 items-center hover:shadow-md transition-all hover:bg-green-300"
           onClick={() => openModalCategorias()}
         >
           Crear nuevas categorias/editar/etc
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth={1.5}
+            stroke="currentColor"
+            className="w-6 h-6"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="m4.5 15.75 7.5-7.5 7.5 7.5"
+            />
+          </svg>
         </button>
       </div>
 
@@ -247,7 +384,7 @@ export const Productos = () => {
           <input
             type="text"
             placeholder="Buscar por detalle"
-            className="rounded-xl py-2 px-5 border-slate-300 bg-white text-slate-700 border-[1px] uppercase"
+            className="rounded-xl py-2 px-5 border-slate-300 bg-white text-slate-700 border-[1px] uppercase w-1/4"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
@@ -264,7 +401,7 @@ export const Productos = () => {
           </select>
         </div>
 
-        <div className="overflow-x-auto mt-6 mx-8 border-slate-300 border-[1px]  rounded-2xl">
+        <div className="overflow-x-auto mt-6 mx-8 border-slate-300 border-[1px]  rounded-2xl hover:shadow-md transition-all ease-linear cursor-pointer">
           <table className="min-w-full divide-y-2 divide-gray-200 bg-white text-sm">
             <thead className="text-left">
               <tr>
