@@ -221,16 +221,6 @@ export const ModalEditarProductoSeleccionado = ({
                     </svg>
                   </button>
                 </div>
-
-                {/* <div className="mt-4">
-                  <button
-                    type="button"
-                    className="inline-flex justify-center px-4 py-2 text-sm text-red-900 bg-red-100 border border-transparent rounded-xl hover:bg-red-200 duration-300 cursor-pointer max-md:text-xs"
-                    onClick={closeModal}
-                  >
-                    Cerrar Ventana
-                  </button>
-                </div> */}
               </div>
             </Transition.Child>
           </div>
