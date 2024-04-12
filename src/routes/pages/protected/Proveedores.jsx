@@ -383,9 +383,6 @@ export const Proveedores = () => {
             />
           </svg>
         </button>
-        {/* <button className="bg-white border-slate-300 border-[1px] py-2 px-4 rounded-xl text-sm shadow text-slate-700 uppercase max-md:text-xs">
-          Ver resumenes de los proveedores
-        </button> */}
       </div>
 
       <div className="mx-8 mt-6">
