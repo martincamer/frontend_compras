@@ -94,7 +94,7 @@ export const ModalCrearProveedor = ({ isOpen, closeModal }) => {
     setSocket(newSocket);
 
     newSocket.on("eliminar-proveedor", (salidaEliminada) => {
-      proveedores((prevSalidas) =>
+      setProveedores((prevSalidas) =>
         prevSalidas.filter((salida) => salida.id !== salidaEliminada.id)
       );
     });
