@@ -3,10 +3,10 @@ import { Fragment, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { useForm } from "react-hook-form";
 import { useProductosContext } from "../../context/ProductosProvider";
+import { ModalEditarCategoriasDos } from "./ModalEditarCategoriasDos";
 import { ModalEditarCategorias } from "./ModalEditarCategorias";
 import client from "../../api/axios";
 import io from "socket.io-client";
-import { ModalEditarCategoriasDos } from "./ModalEditarCategoriasDos";
 
 export const ModalCrearProveedor = ({ isOpen, closeModal }) => {
   const { proveedores, setProveedores } = useProductosContext();
