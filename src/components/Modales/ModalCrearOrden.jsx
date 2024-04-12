@@ -4,24 +4,19 @@ import { toast } from "react-toastify";
 import { useOrdenesContext } from "../../context/OrdenesProvider";
 import { ModalSeleccionarProducto } from "./ModalSeleccionarProducto";
 import { ModalEditarProductoSeleccionado } from "./ModalEditarProductoSeleccionado";
+import { useProductosContext } from "../../context/ProductosProvider";
 import client from "../../api/axios";
 import io from "socket.io-client";
-import { useProductosContext } from "../../context/ProductosProvider";
 
 export const ModalCrearOrden = ({ isOpen, closeModal }) => {
   const { setOrdenesMensuales } = useOrdenesContext();
 
   const { proveedores, setProveedores } = useProductosContext();
-  // const [proveedores, setProveedores] = useState([]);
 
   useEffect(() => {
     async function loadData() {
       const respuesta = await client.get("/proveedores");
       setProveedores(respuesta.data);
-      // Establecer el primer proveedor como valor predeterminado
-      // if (respuesta.data.length > 0) {
-      //   setProveedor(respuesta.data[0].proveedor);
-      // }
     }
 
     loadData();
@@ -86,14 +81,9 @@ export const ModalCrearOrden = ({ isOpen, closeModal }) => {
   };
 
   useEffect(() => {
-    const newSocket = io(
-      "https://backendcompras-production.up.railway.app",
-      // "http://localhost:4000",
-      // import.meta.env.BACKEND_URL,
-      {
-        withCredentials: true,
-      }
-    );
+    const newSocket = io("https://backendcompras-production.up.railway.app", {
+      withCredentials: true,
+    });
 
     setSocket(newSocket);
 
@@ -150,10 +140,6 @@ export const ModalCrearOrden = ({ isOpen, closeModal }) => {
     if (socket) {
       socket.emit("crear-orden-dos", resDos.data);
     }
-
-    // if (socket) {
-    //   socket.emit("proveedor-orden-editar", resProveedor.data);
-    // }
 
     const tipoExistenteIndex = proveedores.findIndex(
       (p) => p.proveedor === proveedor
