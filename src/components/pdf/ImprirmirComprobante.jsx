@@ -178,21 +178,12 @@ export const ImprimirComprobante = ({ datos }) => {
             </Text>
           </Text>
 
-          <View
-            style={{
-              border: "1px solid #000",
-              padding: "10px",
-              marginTop: "10px",
-              borderRadius: "15px",
-            }}
-          >
+          <View>
             <Image
               src={datos.imagen}
               style={{
                 width: "400px",
                 height: "500px",
-                borderRadius: "15px",
-                objectFit: "cover",
               }}
             />
           </View>

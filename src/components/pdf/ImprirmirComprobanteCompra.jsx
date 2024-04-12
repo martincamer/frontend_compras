@@ -1,6 +1,7 @@
 import { Document, Text, View, Page, Image, Font } from "@react-pdf/renderer";
 import logo from "../../../public/logo.png";
 import normal from "../../fonts/Montserrat-Light.ttf";
+import medium from "../../fonts/Montserrat-Medium.ttf";
 import semibold from "../../fonts/Montserrat-SemiBold.ttf";
 import bold from "../../fonts/Montserrat-Bold.ttf";
 import React from "react";
@@ -10,6 +11,10 @@ Font.register({
   fonts: [
     {
       src: normal,
+    },
+    {
+      src: medium,
+      fontWeight: "medium",
     },
     {
       src: semibold,
@@ -77,14 +82,93 @@ export const ImprirmirComprobanteCompra = ({ datos }) => {
       <Page
         size="A4"
         style={{
-          padding: "10px 20px",
+          padding: "20px 40px",
           flexDirection: "column",
           display: "flex",
           gap: "10px",
         }}
       >
-        <View>
-          <Text>{datos.proveedor}</Text>
+        <View
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "space-between",
+          }}
+        >
+          <View
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              gap: "5px",
+            }}
+          >
+            <Text
+              style={{
+                fontSize: "8px",
+                fontWeight: "medium",
+                fontFamily: "Montserrat",
+                textTransform: "uppercase",
+              }}
+            >
+              {datos.proveedor}
+            </Text>
+            <View
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                gap: "1px",
+              }}
+            >
+              <Text
+                style={{
+                  fontSize: "8px",
+                  fontWeight: "medium",
+                  fontFamily: "Montserrat",
+                  textTransform: "uppercase",
+                }}
+              >
+                <Text
+                  style={{
+                    fontWeight: "bold",
+                  }}
+                >
+                  Provincia
+                </Text>{" "}
+                {datos.provincia}
+              </Text>
+              <Text
+                style={{
+                  fontSize: "8px",
+                  fontWeight: "medium",
+                  fontFamily: "Montserrat",
+                  textTransform: "uppercase",
+                }}
+              >
+                <Text
+                  style={{
+                    fontWeight: "bold",
+                  }}
+                >
+                  Localidad
+                </Text>{" "}
+                {datos.localidad}
+              </Text>
+            </View>
+          </View>
+
+          <View>
+            <Text
+              style={{
+                fontSize: "10px",
+                fontWeight: "bold",
+                fontFamily: "Montserrat",
+                textTransform: "uppercase",
+              }}
+            >
+              ORDEN DE COMPRA
+            </Text>
+            <View></View>
+          </View>
         </View>
       </Page>
     </Document>

@@ -441,7 +441,7 @@ export const Proveedor = () => {
         </div>
       </div>
 
-      <div className="overflow-x-auto mt-6 mx-8 rounded-xl border-slate-300 border-[1px]">
+      <div className="overflow-x-auto mt-6 mx-8 rounded-2xl border-slate-300 border-[1px] transition-all hover:shadow-md ease-linear cursor-pointer">
         <table className="min-w-full divide-y-2 divide-gray-200 bg-white text-sm">
           <thead className="text-left">
             <tr>
@@ -456,6 +456,9 @@ export const Proveedor = () => {
               </th>
               <th className="whitespace-nowrap px-4 py-4 text-gray-900 uppercase font-semibold">
                 Ver Comprobante
+              </th>
+              <th className="whitespace-nowrap px-4 py-4 text-gray-900 uppercase font-semibold">
+                Ver Imagen
               </th>
               <th className="whitespace-nowrap px-4 py-4 text-gray-900 uppercase font-semibold">
                 Acciones
@@ -498,6 +501,10 @@ export const Proveedor = () => {
                     VER COMPROBANTE
                   </Link>
                 </td>
+                <td>
+                  <ImagenModal imagen={p.imagen} />
+                </td>
+
                 <td className="whitespace-nowrap px-4 py-6 text-gray-700 uppercase text-sm cursor-pointer space-x-2">
                   <Link
                     target="_blank"
@@ -556,5 +563,46 @@ export const Proveedor = () => {
         obtenerId={obtenerId}
       />
     </section>
+  );
+};
+
+const ImagenModal = ({ imagen }) => {
+  const [showModal, setShowModal] = useState(false);
+
+  return (
+    <>
+      <td
+        className="bg-orange-100 text-orange-700 py-2 px-5 rounded-xl"
+        onClick={() => setShowModal(true)}
+      >
+        VER IMAGEN
+      </td>
+      {showModal && (
+        <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-gray-800 bg-opacity-75 z-50">
+          <div className="bg-white rounded-lg p-8 max-w-lg w-full relative">
+            <button
+              className="absolute top-0 right-0 m-4 text-red-700 bg-red-100 py-2 px-2 rounded-xl hover:bg-red-200 transition-all ease-linear"
+              onClick={() => setShowModal(false)}
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor"
+                className="w-6 h-6"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M6 18 18 6M6 6l12 12"
+                />
+              </svg>
+            </button>
+            <img src={imagen} alt="Imagen" className="w-full h-auto" />
+          </div>
+        </div>
+      )}
+    </>
   );
 };

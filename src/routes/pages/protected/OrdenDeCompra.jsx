@@ -6,6 +6,7 @@ import { useProductosContext } from "../../../context/ProductosProvider";
 import { Link } from "react-router-dom";
 import { ModalEliminar } from "../../../components/Modales/ModalEliminar";
 import { ModalVerProductos } from "../../../components/Modales/ModalVerProductos";
+import { ModalEditarOrdenTotal } from "../../../components/Modales/ModalEditarOrdenTotal";
 
 export const OrdenDeCompra = () => {
   const fechaActual = new Date();
@@ -163,7 +164,11 @@ export const OrdenDeCompra = () => {
     return () => clearTimeout(timer);
   }, []);
 
-  console.log(ordenesMensuales);
+  const [isModalEditarOrden, setOpenModalEditarOrden] = useState(false);
+
+  const openModalEditarOrden = () => setOpenModalEditarOrden(true);
+
+  const closeModalEditarOrden = () => setOpenModalEditarOrden(false);
 
   return isLoading ? (
     <section className="w-full h-full px-5 max-md:px-4 flex flex-col gap-2 py-16 max-md:gap-5">
@@ -593,9 +598,9 @@ export const OrdenDeCompra = () => {
                       />
                     </svg>
                   </span>
-                  {/* <span
+                  <span
                     onClick={() => {
-                      handleID(p.id), edi();
+                      handleID(p.id), openModalEditarOrden();
                     }}
                     className="bg-green-500/20 text-green-600 py-2 px-3 rounded-xl text-sm flex gap-1 items-center"
                   >
@@ -614,7 +619,7 @@ export const OrdenDeCompra = () => {
                         d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10"
                       />
                     </svg>
-                  </span> */}
+                  </span>
                   <Link
                     to={`/orden/${p.id}`}
                     className="bg-indigo-500/20 text-indigo-700 py-2 px-3 rounded-xl text-sm flex gap-1 items-center"
@@ -705,6 +710,12 @@ export const OrdenDeCompra = () => {
       <ModalVerProductos
         isOpen={isProductos}
         closeModal={closeProductos}
+        obtenerId={obtenerId}
+      />
+
+      <ModalEditarOrdenTotal
+        isOpen={isModalEditarOrden}
+        closeModal={closeModalEditarOrden}
         obtenerId={obtenerId}
       />
     </section>

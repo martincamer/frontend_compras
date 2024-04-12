@@ -39,6 +39,7 @@ export const ModalEditarProductoSeleccionado = ({
       categoria,
       precio_und,
       cantidad,
+      cantidadFaltante: 0,
       totalFinal,
     };
 

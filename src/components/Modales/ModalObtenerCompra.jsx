@@ -115,7 +115,7 @@ export const ModalObtenerCompra = ({ isOpen, closeModal, obtenerId }) => {
                 <div className="h-[300px] overflow-y-scroll">
                   <img
                     src={datos.imagen}
-                    className="h-[600px] w-full rounded-2xl shadow object-cover"
+                    className="h-[600px] w-full rounded-2xl shadow"
                   />
                 </div>
 
@@ -125,7 +125,7 @@ export const ModalObtenerCompra = ({ isOpen, closeModal, obtenerId }) => {
                       <img
                         src={datos.imagen}
                         alt="Imagen ampliada"
-                        className="absolute inset-0 w-full h-full object-cover"
+                        className="absolute inset-0 w-full h-full"
                       />
                     </div>
                     <button

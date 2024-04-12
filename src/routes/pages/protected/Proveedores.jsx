@@ -198,7 +198,7 @@ export const Proveedores = () => {
     <section className="w-full h-full px-5 max-md:px-4 flex flex-col gap-2 py-16 max-md:gap-5">
       <ToastContainer />
       <div className="py-5 px-5 rounded-xl grid grid-cols-3 gap-3 mb-2 max-md:grid-cols-1 max-md:border-none max-md:shadow-none max-md:py-0 max-md:px-0">
-        <article className="flex justify-between items-center rounded-2xl border border-gray-200 bg-white p-8 shadow">
+        <article className="flex items-center justify-between gap-4 rounded-2xl hover:shadow-md transition-all ease-linear cursor-pointer border border-slate-300 bg-white py-9 px-6">
           <div className="flex gap-4 items-center">
             <span className="rounded-full bg-red-100 p-3 text-red-700">
               <svg
@@ -255,7 +255,7 @@ export const Proveedores = () => {
           </div>
         </article>
 
-        <article className="flex justify-between items-center rounded-2xl border border-gray-200 bg-white p-8 shadow">
+        <article className="flex items-center justify-between gap-4 rounded-2xl hover:shadow-md transition-all ease-linear cursor-pointer border border-slate-300 bg-white py-9 px-6">
           <div className="flex gap-4 items-center">
             <span className="rounded-full bg-green-100 p-3 text-green-700">
               <svg
@@ -308,7 +308,7 @@ export const Proveedores = () => {
           </div>
         </article>
 
-        <article className="flex items-center justify-between gap-4 rounded-xl shadow border border-slate-200 bg-white p-6">
+        <article className="flex items-center justify-between gap-4 rounded-2xl hover:shadow-md transition-all ease-linear cursor-pointer border border-slate-300 bg-white py-9 px-6">
           <div className="flex gap-4 items-center">
             <span className="rounded-full bg-green-100 p-3 text-green-700">
               <svg
@@ -394,7 +394,7 @@ export const Proveedores = () => {
         </p>
       </div>
 
-      <div className="overflow-x-auto mt-6 mx-8 rounded-xl border-slate-300 border-[1px]">
+      <div className="overflow-x-auto mt-6 mx-8 rounded-2xl border-slate-300 border-[1px] transition-all hover:shadow-md ease-linear cursor-pointer">
         <table className="min-w-full divide-y-2 divide-gray-200 bg-white text-sm">
           <thead className="text-left">
             <tr>

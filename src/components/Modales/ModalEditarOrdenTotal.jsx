@@ -4,24 +4,18 @@ import { toast } from "react-toastify";
 import { useOrdenesContext } from "../../context/OrdenesProvider";
 import { ModalSeleccionarProducto } from "./ModalSeleccionarProducto";
 import { ModalEditarProductoSeleccionado } from "./ModalEditarProductoSeleccionado";
-import client from "../../api/axios";
-import io from "socket.io-client";
 import { useProductosContext } from "../../context/ProductosProvider";
+import client from "../../api/axios";
 
-export const ModalCrearOrden = ({ isOpen, closeModal }) => {
+export const ModalEditarOrdenTotal = ({ isOpen, closeModal, obtenerId }) => {
   const { setOrdenesMensuales } = useOrdenesContext();
 
   const { proveedores, setProveedores } = useProductosContext();
-  // const [proveedores, setProveedores] = useState([]);
 
   useEffect(() => {
     async function loadData() {
       const respuesta = await client.get("/proveedores");
       setProveedores(respuesta.data);
-      // Establecer el primer proveedor como valor predeterminado
-      // if (respuesta.data.length > 0) {
-      //   setProveedor(respuesta.data[0].proveedor);
-      // }
     }
 
     loadData();
@@ -33,11 +27,34 @@ export const ModalCrearOrden = ({ isOpen, closeModal }) => {
   const [fecha_factura, setFechaFactura] = useState("");
   const [localidad, setLocalidad] = useState("");
   const [provincia, setProvincia] = useState("");
-  const [socket, setSocket] = useState(null);
   const [iva, setIva] = useState(1.21);
+  const [datos, setDatos] = useState([]);
 
   const [OBTENERID, setObtenerId] = useState(null);
   const [productoSeleccionado, setProductoSeleccionado] = useState([]);
+
+  useEffect(() => {
+    async function loadData() {
+      const respuesta = await client.get(`/orden/${obtenerId}`);
+
+      const fecha = new Date(respuesta.data.fecha_factura);
+      const formattedDate = fecha.toISOString().split("T")[0]; // Extracting only the date part
+
+      setIva(respuesta.data.iva);
+      setProveedor(respuesta.data.proveedor);
+      setLocalidad(respuesta.data.localidad);
+      setProvincia(respuesta.data.provincia);
+      setDetalle(respuesta.data.detalle);
+      setFechaFactura(formattedDate);
+      setNumeroFactura(respuesta.data.numero_factura);
+      setDetalle(respuesta.data.detalle);
+      setProductoSeleccionado(respuesta.data.datos.productoSeleccionado);
+
+      console.log("Datos", productoSeleccionado);
+    }
+
+    loadData();
+  }, [obtenerId]);
 
   const handleID = (id) => setObtenerId(id);
 
@@ -85,29 +102,6 @@ export const ModalCrearOrden = ({ isOpen, closeModal }) => {
     }
   };
 
-  useEffect(() => {
-    const newSocket = io(
-      "https://backendcompras-production.up.railway.app",
-      // "http://localhost:4000",
-      // import.meta.env.BACKEND_URL,
-      {
-        withCredentials: true,
-      }
-    );
-
-    setSocket(newSocket);
-
-    newSocket.on("crear-orden", (nuevaSalida) => {
-      setOrdenesMensuales((prevTipos) => [...prevTipos, nuevaSalida]);
-    });
-
-    newSocket.on("crear-orden-dos", (nuevaSalida) => {
-      setOrdenes((prevTipos) => [...prevTipos, nuevaSalida]);
-    });
-
-    return () => newSocket.close();
-  }, []);
-
   const totalesFinales = productoSeleccionado.reduce((total, producto) => {
     return total + Number(producto?.totalFinal);
   }, 0);
@@ -139,43 +133,27 @@ export const ModalCrearOrden = ({ isOpen, closeModal }) => {
       total: Number(totalFinalSumSinIva * iva || totalFinalSumSinIva),
     };
 
-    const res = await client.post("/crear-orden-nueva", datosOrden);
-    const resDos = await client.post("/crear-orden-nueva-dos", datosOrden);
-    const resProveedor = await client.put(`actualizar-proveedor-compra`, datos);
+    const res = await client.put(`/editar-orden/${obtenerId}`, datosOrden);
 
-    if (socket) {
-      socket.emit("crear-orden", res.data);
-    }
+    // const resProveedor = await client.put(`actualizar-proveedor-compra`, datos);
 
-    if (socket) {
-      socket.emit("crear-orden-dos", resDos.data);
-    }
+    // setProveedores((prevTipos) => {
+    //   const newTipos = [...prevTipos];
+    //   const updateRemuneracion = JSON.parse(resProveedor.config.data); // Convierte el JSON a objeto
 
-    // if (socket) {
-    //   socket.emit("proveedor-orden-editar", resProveedor.data);
-    // }
+    //   newTipos[tipoExistenteIndex] = {
+    //     id: newTipos[tipoExistenteIndex].id,
+    //     proveedor: updateRemuneracion.proveedor,
+    //     total: Number(totalFinalSumSinIva * iva || totalFinalSumSinIva),
+    //     comprobantes: newTipos[tipoExistenteIndex].comprobantes,
+    //     created_at: newTipos[tipoExistenteIndex].created_at,
+    //     updated_at: newTipos[tipoExistenteIndex].updated_at,
+    //   };
 
-    const tipoExistenteIndex = proveedores.findIndex(
-      (p) => p.proveedor === proveedor
-    );
+    //   return newTipos;
+    // });
 
-    setProveedores((prevTipos) => {
-      const newTipos = [...prevTipos];
-      const updateRemuneracion = JSON.parse(resProveedor.config.data); // Convierte el JSON a objeto
-
-      newTipos[tipoExistenteIndex] = {
-        id: newTipos[tipoExistenteIndex].id,
-        proveedor: updateRemuneracion.proveedor,
-        total: Number(totalFinalSumSinIva * iva || totalFinalSumSinIva),
-        comprobantes: newTipos[tipoExistenteIndex].comprobantes,
-        created_at: newTipos[tipoExistenteIndex].created_at,
-        updated_at: newTipos[tipoExistenteIndex].updated_at,
-      };
-
-      return newTipos;
-    });
-
-    toast.success("¡Orden de compra creada correctamente!", {
+    toast.success("¡Orden de editada correctamente, espera 3 segundos!", {
       position: "top-center",
       autoClose: 3000,
       hideProgressBar: true,
@@ -194,6 +172,7 @@ export const ModalCrearOrden = ({ isOpen, closeModal }) => {
 
     setTimeout(() => {
       closeModal();
+      location.reload();
     }, 500);
   };
 
@@ -425,72 +404,7 @@ export const ModalCrearOrden = ({ isOpen, closeModal }) => {
                       CARGAR PRODUCTO
                     </button>
                   </div>
-                  {/* <div className="grid grid-cols-3 gap-2">
-                    {productoSeleccionado.map((p) => (
-                      <div className="border-slate-300 border-[1px] shadow py-2 px-5 rounded-xl relative">
-                        <div>
-                          <p className="uppercase font-bold text-slate-700 underline">
-                            {p.detalle}
-                          </p>
-                          <p className="uppercase font-normal text-slate-700 text-sm">
-                            {p.categoria}
-                          </p>
-                          <p className="uppercase font-bold text-slate-700 text-sm">
-                            {Number(p.precio_und).toLocaleString("es-AR", {
-                              style: "currency",
-                              currency: "ARS",
-                            })}
-                          </p>
-                          <p className="uppercase font-bold text-green-500  text-sm">
-                            {p.cantidad}
-                          </p>
-                          <p className="uppercase font-normal text-slate-700 text-sm">
-                            <span className="uppercase font-bold text-slate-800">
-                              Total final:
-                            </span>{" "}
-                            {Number(p.totalFinal).toLocaleString("es-AR", {
-                              style: "currency",
-                              currency: "ARS",
-                            })}
-                          </p>
-                          <div className="flex gap-2 absolute top-0 right-0 py-2 px-2">
-                            <svg
-                              onClick={() => {
-                                handleID(p.id), openProductoEditar();
-                              }}
-                              xmlns="http://www.w3.org/2000/svg"
-                              fill="none"
-                              viewBox="0 0 24 24"
-                              strokeWidth={1.5}
-                              stroke="currentColor"
-                              className="w-6 h-6 text-slate-500 cursor-pointer"
-                            >
-                              <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10"
-                              />
-                            </svg>
-                            <svg
-                              onClick={() => deleteProducto(p.id)}
-                              xmlns="http://www.w3.org/2000/svg"
-                              fill="none"
-                              viewBox="0 0 24 24"
-                              strokeWidth={1.5}
-                              stroke="currentColor"
-                              className="w-6 h-6 text-red-800 cursor-pointer"
-                            >
-                              <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                d="m9.75 9.75 4.5 4.5m0-4.5-4.5 4.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
-                              />
-                            </svg>
-                          </div>
-                        </div>
-                      </div>
-                    ))}
-                  </div> */}
+
                   <div className="border-[1px] border-slate-300 rounded-2xl hover:shadow-md transition-all ease-linear">
                     <table className="min-w-full divide-y-2 divide-gray-200 text-sm cursor-pointer">
                       <thead className="text-left">
@@ -613,21 +527,21 @@ export const ModalCrearOrden = ({ isOpen, closeModal }) => {
                   <div>
                     <button
                       type="submit"
-                      class="group relative hover:bg-indigo-500 hover:text-white transition-all ease-in-out bg-indigo-100 text-indigo-600 font-normal uppercase text-sm py-2 px-4 rounded-xl flex items-center justify-center"
+                      class="group relative hover:bg-indigo-500 hover:text-white transition-all ease-in-out bg-indigo-100 text-indigo-600 font-normal uppercase text-sm py-2 px-4 rounded-xl flex items-center justify-center gap-2"
                     >
-                      CREAR ORDEN NUEVA
+                      EDITAR ORDEN PARA GUARDAR CAMBIOS
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         fill="none"
                         viewBox="0 0 24 24"
                         strokeWidth={1.5}
                         stroke="currentColor"
-                        class="w-6 h-6 ml-2 icon opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                        className="w-6 h-6"
                       >
                         <path
                           strokeLinecap="round"
                           strokeLinejoin="round"
-                          d="M8.25 7.5V6.108c0-1.135.845-2.098 1.976-2.192.373-.03.748-.057 1.123-.08M15.75 18H18a2.25 2.25 0 0 0 2.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 0 0-1.123-.08M15.75 18.75v-1.875a3.375 3.375 0 0 0-3.375-3.375h-1.5a1.125 1.125 0 0 1-1.125-1.125v-1.5A3.375 3.375 0 0 0 6.375 7.5H5.25m11.9-3.664A2.251 2.251 0 0 0 15 2.25h-1.5a2.251 2.251 0 0 0-2.15 1.586m5.8 0c.065.21.1.433.1.664v.75h-6V4.5c0-.231.035-.454.1-.664M6.75 7.5H4.875c-.621 0-1.125.504-1.125 1.125v12c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V16.5a9 9 0 0 0-9-9Z"
+                          d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0 1 11.186 0Z"
                         />
                       </svg>
                     </button>
