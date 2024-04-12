@@ -66,8 +66,6 @@ export const ModalComprobante = ({ isOpen, closeModal, datos, setDatos }) => {
         },
       });
 
-      closeModal();
-
       setTimeout(() => {
         location.reload();
       }, 1500);
@@ -218,6 +216,7 @@ export const ModalComprobante = ({ isOpen, closeModal, datos, setDatos }) => {
                     <button
                       className="bg-indigo-100 py-2 px-4 rounded-xl text-indigo-700 uppercase text-sm flex gap-2 items-center"
                       type="submit"
+                      onClick={() => closeModal()}
                     >
                       CREAR COMPROBANTE
                       <svg

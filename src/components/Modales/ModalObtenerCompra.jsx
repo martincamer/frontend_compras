@@ -56,7 +56,7 @@ export const ModalObtenerCompra = ({ isOpen, closeModal, obtenerId }) => {
             leaveFrom="opacity-100 scale-100"
             leaveTo="opacity-0 scale-95"
           >
-            <div className="inline-block w-1/3 max-md:w-full p-6 my-8 text-left align-middle transition-all transform bg-white shadow-xl rounded-3xl">
+            <div className=" inline-block w-1/3 max-md:w-full p-6 my-8 text-left align-middle transition-all transform bg-white shadow-xl rounded-3xl">
               <div className="flex justify-end">
                 <button
                   type="button"
@@ -120,12 +120,14 @@ export const ModalObtenerCompra = ({ isOpen, closeModal, obtenerId }) => {
                 </div>
 
                 {imagenAmpliada ? (
-                  <div className="fixed left-[-103%] top-[-43%] flex items-center justify-center w-screen h-screen bg-black bg-opacity-50 z-50">
-                    <img
-                      src={datos.imagen}
-                      alt="Imagen ampliada"
-                      className="max-w-full max-h-full"
-                    />
+                  <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <img
+                        src={datos.imagen}
+                        alt="Imagen ampliada"
+                        className="absolute inset-0 w-full h-full object-cover"
+                      />
+                    </div>
                     <button
                       className="absolute top-4 right-4 bg-red-100 text-red-800 py-3 px-5 rounded-xl text-xl focus:outline-none"
                       onClick={handleToggleImagenAmpliada}
@@ -147,7 +149,6 @@ export const ModalObtenerCompra = ({ isOpen, closeModal, obtenerId }) => {
                     </button>
                   </div>
                 ) : null}
-
                 <div>
                   <button
                     onClick={handleToggleImagenAmpliada}

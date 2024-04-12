@@ -20,7 +20,7 @@ const ProgressBar = ({ ordenesMensuales }) => {
   ).toFixed(2);
 
   return (
-    <div className="bg-white border-slate-300 border-[1px] py-8 px-5 rounded-xl hover:shadow-md transition-all ease-linear cursor-pointer w-full max-md:py-3">
+    <div className="bg-white border-slate-300 border-[1px] py-8 px-5 rounded-2xl hover:shadow-md transition-all ease-linear cursor-pointer w-full max-md:py-3">
       <div className="flex items-center justify-between max-md:flex-col max-md:items-start">
         <p className="text-slate-700 text-sm font-bold mb-3 uppercase max-md:text-sm">
           Total en compras del mes

@@ -38,7 +38,7 @@ export const ModalCrearProductos = ({ isOpen, closeModal }) => {
   const onSubmit = async (e) => {
     e.preventDefault();
 
-    const datosProducto = { precio_und, detalle, proveedor, categoria };
+    const datosProducto = { precio_und, detalle, proveedor: "", categoria };
 
     try {
       const res = await client.post("/crear-producto", datosProducto);
@@ -181,19 +181,6 @@ export const ModalCrearProductos = ({ isOpen, closeModal }) => {
                         <option key={c.id}>{c.detalle}</option>
                       ))}
                     </select>
-                  </div>
-
-                  <div className="flex flex-col gap-1">
-                    <label className="text-sm text-slate-700 uppercase">
-                      Proveedor
-                    </label>
-                    <input
-                      onChange={(e) => setProveedor(e.target.value)}
-                      value={proveedor}
-                      type="text"
-                      className="py-2 px-4 rounded-xl uppercase border-slate-300 border-[1px] shadow placeholder:text-slate-300 text-sm"
-                      placeholder="DETALLE DEL PRODUCTO"
-                    />
                   </div>
 
                   <div className="flex flex-col gap-1">

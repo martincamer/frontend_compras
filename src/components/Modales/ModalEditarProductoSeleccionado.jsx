@@ -13,6 +13,8 @@ export const ModalEditarProductoSeleccionado = ({
   const [detalle, setDetalle] = useState("");
   const [cantidad, setCantidad] = useState("");
 
+  console.log(productoSeleccionado);
+
   useEffect(() => {
     // Buscar el cliente seleccionado dentro de datosCliente
     const clienteEncontrado = productoSeleccionado.find(
@@ -32,6 +34,7 @@ export const ModalEditarProductoSeleccionado = ({
     const totalFinal = precio_und * cantidad;
     // Crear un nuevo objeto de cliente con los datos actualizados
     const clienteActualizado = {
+      id: OBTENERID,
       detalle,
       categoria,
       precio_und,

@@ -5,12 +5,14 @@ import { useOrdenesContext } from "../../../context/OrdenesProvider";
 import { useProductosContext } from "../../../context/ProductosProvider";
 import { Link } from "react-router-dom";
 import { ModalEliminar } from "../../../components/Modales/ModalEliminar";
+import { ModalVerProductos } from "../../../components/Modales/ModalVerProductos";
 
 export const OrdenDeCompra = () => {
   const fechaActual = new Date();
   const numeroDiaActual = fechaActual.getDay(); // Obtener el día del mes actual
 
   const [isOpenEliminar, setIsOpenEliminar] = useState(false);
+  const [isProductos, setIsProductos] = useState(false);
   const [obtenerId, setObtenerId] = useState(null);
 
   const openEliminar = () => {
@@ -19,6 +21,14 @@ export const OrdenDeCompra = () => {
 
   const closeEliminar = () => {
     setIsOpenEliminar(false);
+  };
+
+  const openProductos = () => {
+    setIsProductos(true);
+  };
+
+  const closeProductos = () => {
+    setIsProductos(false);
   };
 
   const handleID = (id) => setObtenerId(id);
@@ -83,10 +93,17 @@ export const OrdenDeCompra = () => {
         ))
     );
   });
+
   // Lógica de paginación
   const indexOfLastProduct = currentPage * productsPerPage;
   const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
-  const currentProducts = filteredProducts.slice(
+
+  // Ordenar los productos por fecha de creación de manera descendente
+  const sortedProducts = filteredProducts.sort((a, b) => {
+    return new Date(b.created_at) - new Date(a.created_at);
+  });
+
+  const currentProducts = sortedProducts.slice(
     indexOfFirstProduct,
     indexOfLastProduct
   );
@@ -98,8 +115,6 @@ export const OrdenDeCompra = () => {
     (total, orden) => total + Number(orden.precio_final),
     0
   );
-
-  console.log(ordenesMensuales);
 
   // Function to calculate category totals
   const calculateCategoryTotals = () => {
@@ -147,6 +162,8 @@ export const OrdenDeCompra = () => {
 
     return () => clearTimeout(timer);
   }, []);
+
+  console.log(ordenesMensuales);
 
   return isLoading ? (
     <section className="w-full h-full px-5 max-md:px-4 flex flex-col gap-2 py-16 max-md:gap-5">
@@ -228,13 +245,41 @@ export const OrdenDeCompra = () => {
           <div className="py-5 px-32 text-slate-700 rounded-xl shadow bg-white border-slate-200 border-[1px] uppercase"></div>
         </div>
         {/* Placeholder para las órdenes de compra */}
-        <div className="mt-8 grid grid-cols-3 gap-5">
-          {[...Array(ordenesMensuales.length)].map((_, index) => (
-            <div className="border-slate-200 border-[1px] w-full h-[20vh] rounded-2xl shadow flex gap-6 py-6 px-6">
-              <div className="h-full w-full bg-slate-200 py-2 px-2 rounded-2xl"></div>
-              <div className="h-full w-full bg-slate-200 py-2 px-2 rounded-2xl"></div>
-            </div>
-          ))}
+        <div className="overflow-x-auto mt-6 mx-0 border-slate-300 border-[1px] rounded-2xl animate-pulse">
+          <table className="min-w-full divide-y-2 divide-gray-200 bg-white text-sm">
+            <thead className="text-left">
+              <tr>
+                <th className="whitespace-nowrap px-4 py-7 bg-slate-300"></th>
+                <th className="whitespace-nowrap px-4 py-7 bg-slate-300"></th>
+                <th className="whitespace-nowrap px-4 py-7 bg-slate-300"></th>
+                <th className="whitespace-nowrap px-4 py-7 bg-slate-300"></th>
+                <th className="whitespace-nowrap px-4 py-7 bg-slate-300"></th>
+              </tr>
+            </thead>
+
+            <tbody className="divide-y divide-gray-200">
+              {/* Placeholder para 10 filas de datos */}
+              {[...Array(ordenesMensuales.length)].map((_, index) => (
+                <tr key={index}>
+                  <td className="whitespace-nowrap px-4 bg-slate-100/30 py-8 font-medium text-gray-900 uppercase text-sm animate-pulse">
+                    {/* Placeholder para el código */}
+                  </td>
+                  <td className="whitespace-nowrap px-4 bg-slate-100/30 py-8 text-gray-700 uppercase text-sm animate-pulse">
+                    {/* Placeholder para el detalle */}
+                  </td>
+                  <td className="whitespace-nowrap px-4 bg-slate-100/30 py-8 text-gray-700 uppercase text-sm animate-pulse">
+                    {/* Placeholder para la categoría */}
+                  </td>
+                  <td className="whitespace-nowrap px-4 bg-slate-100/30 py-8  uppercase text-sm font-bold text-indigo-500 animate-pulse">
+                    {/* Placeholder para el precio */}
+                  </td>
+                  <td className="whitespace-nowrap px-4 bg-slate-100/30 py-8 text-gray-700 uppercase text-sm cursor-pointer space-x-2 animate-pulse">
+                    {/* Placeholder para las acciones */}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
       </div>
     </section>
@@ -474,182 +519,149 @@ export const OrdenDeCompra = () => {
           </select>
         </div>
       </div>
-      <div className="py-3 px-4 rounded-xl mx-8 mt-2">
-        <div className="grid grid-cols-3 h-full w-full gap-4">
-          {currentProducts.map((o) => (
-            <div
-              className="hover:shadow-md transition-all ease-linear cursor-pointer border-slate-200 border-[1px] rounded-xl pt-14 pb-6 px-5 flex justify-between items-center relative"
-              key={o.id}
-            >
-              <div className="absolute top-2 right-5 flex items-center gap-2">
-                <Link
-                  to={`/orden/${o.id}`}
-                  className="py-2 px-4 rounded-xl text-indigo-500 text-xs bg-indigo-100 cursor-pointer flex items-center gap-1"
-                >
-                  VER ORDEN
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    strokeWidth={1.5}
-                    stroke="currentColor"
-                    className="w-4 h-4"
+
+      <div className="border-[1px] border-slate-300 rounded-2xl hover:shadow-md transition-all ease-linear mt-6 mx-5">
+        <table className="min-w-full divide-y-2 divide-gray-200 text-sm cursor-pointer">
+          <thead className="text-left">
+            <tr>
+              <th className="whitespace-nowrap px-4 py-4 text-slate-700 uppercase font-bold">
+                Numero
+              </th>
+              <th className="whitespace-nowrap px-4 py-4 text-slate-700 uppercase font-bold">
+                Proveedor
+              </th>
+              <th className="whitespace-nowrap px-4 py-4 text-slate-700 uppercase font-bold">
+                Numero Factura
+              </th>
+              <th className="whitespace-nowrap px-4 py-4 text-slate-700 uppercase font-bold">
+                Fecha de la factura
+              </th>
+              <th className="whitespace-nowrap px-4 py-4 text-slate-700 uppercase font-bold">
+                Total Facturado
+              </th>
+              <th className="whitespace-nowrap px-4 py-4 text-slate-700 uppercase font-bold">
+                Acciones
+              </th>
+            </tr>
+          </thead>
+          <tbody className="divide-y divide-gray-200">
+            {currentProducts.map((p) => (
+              <tr key={p.id}>
+                <td className="whitespace-nowrap px-4 py-4 text-gray-700 uppercase text-sm">
+                  {p.id}
+                </td>
+                <td className="whitespace-nowrap px-4 py-4 text-gray-700 uppercase text-sm">
+                  {p.proveedor}
+                </td>
+                <td className="whitespace-nowrap px-4 py-4  uppercase text-sm">
+                  N° {p.numero_factura}
+                </td>
+                <td className="whitespace-nowrap px-4 py-4  uppercase text-sm">
+                  {new Date(p.fecha_factura).toLocaleDateString("ars")}
+                </td>
+                <td className="whitespace-nowrap px-4 py-4  uppercase text-sm font-bold text-indigo-500">
+                  {Number(p.precio_final).toLocaleString("es-AR", {
+                    style: "currency",
+                    currency: "ARS",
+                  })}
+                </td>
+                <td className="whitespace-nowrap px-4 py-4 text-gray-700 uppercase text-sm cursor-pointer space-x-2 flex">
+                  <span
+                    onClick={() => {
+                      handleID(p.id), openProductos();
+                    }}
+                    className="bg-orange-500/20 text-orange-600 py-2 px-3 rounded-xl text-sm flex gap-1 items-center"
                   >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="m8.25 4.5 7.5 7.5-7.5 7.5"
-                    />
-                  </svg>
-                </Link>
-                {/* <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth={1.5}
-                  stroke="currentColor"
-                  className="w-8 h-8 text-blue-600 bg-blue-100 p-1 rounded-xl cursor-pointer"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10"
-                  />
-                </svg> */}
-                <svg
-                  onClick={() => {
-                    handleID(o.id), openEliminar();
-                  }}
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth={1.5}
-                  stroke="currentColor"
-                  className="w-8 h-8 text-red-600 bg-red-100 p-1 rounded-xl cursor-pointer"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="m9.75 9.75 4.5 4.5m0-4.5-4.5 4.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
-                  />
-                </svg>
-              </div>
-              <article>
-                <p className="uppercase flex gap-1">
-                  <span className="font-semibold text-sm text-indigo-500 underline">
-                    Numero
+                    Ver Productos
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      strokeWidth={1.5}
+                      stroke="currentColor"
+                      className="w-5 h-5"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z"
+                      />
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
+                      />
+                    </svg>
                   </span>
-                  <span className="text-normal text-sm text-slate-700">
-                    {o.id}
+                  {/* <span
+                    onClick={() => {
+                      handleID(p.id), edi();
+                    }}
+                    className="bg-green-500/20 text-green-600 py-2 px-3 rounded-xl text-sm flex gap-1 items-center"
+                  >
+                    EDITAR
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      strokeWidth={1.5}
+                      stroke="currentColor"
+                      className="w-5 h-5"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10"
+                      />
+                    </svg>
+                  </span> */}
+                  <Link
+                    to={`/orden/${p.id}`}
+                    className="bg-indigo-500/20 text-indigo-700 py-2 px-3 rounded-xl text-sm flex gap-1 items-center"
+                  >
+                    VER ORDEN
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      strokeWidth={1.5}
+                      stroke="currentColor"
+                      className="w-6 h-6"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M17.25 8.25 21 12m0 0-3.75 3.75M21 12H3"
+                      />
+                    </svg>
+                  </Link>
+                  <span
+                    onClick={() => {
+                      handleID(p.id), openEliminar();
+                    }}
+                    className="bg-red-500/10 text-red-800 py-2 px-3 rounded-xl text-sm flex items-center gap-1"
+                  >
+                    ELIMINAR
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      strokeWidth={1.5}
+                      stroke="currentColor"
+                      className="w-5 h-5"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0"
+                      />
+                    </svg>
                   </span>
-                </p>
-                <p className="uppercase flex gap-1">
-                  <span className="font-semibold text-sm text-indigo-500 underline">
-                    Proveedor
-                  </span>
-                  <span className="text-normal text-sm text-slate-700">
-                    {o.proveedor}
-                  </span>
-                </p>
-
-                <p className="uppercase flex gap-1">
-                  <span className="font-semibold text-sm text-indigo-500 underline">
-                    Numero Remito/Factura
-                  </span>
-                  <span className="text-normal text-sm text-slate-700">
-                    N° {o.numero_factura}
-                  </span>
-                </p>
-                <p className="uppercase flex gap-1">
-                  <span className="font-semibold text-sm text-indigo-500 underline">
-                    Fecha factura/remito
-                  </span>
-                  <span className="text-normal text-sm text-slate-700">
-                    {new Date(o.fecha_factura).toLocaleDateString("es-ES")}
-                  </span>
-                </p>
-                <p className="uppercase flex gap-1">
-                  <span className="font-semibold text-sm text-indigo-500 underline">
-                    Total Facturado
-                  </span>
-                  <span className="text-normal text-sm text-red-600">
-                    -{" "}
-                    {Number(o.precio_final).toLocaleString("es-AR", {
-                      style: "currency",
-                      currency: "ARS",
-                    })}
-                  </span>
-                </p>
-              </article>
-              <article>
-                <p className="text-slate-800 uppercase font-semibold text-sm underline">
-                  PRODUCTOS
-                </p>
-                <div className="h-[100px] overflow-y-scroll mt-2">
-                  <div className="flex flex-col gap-2">
-                    {o.datos.productoSeleccionado.map((producto) => (
-                      <div
-                        className="bg-white border-slate-200 border-[1px] py-1 px-2 rounded-xl"
-                        key={producto.id}
-                      >
-                        <p className="text-xs uppercase">
-                          <span className="font-bold text-slate-700">
-                            Detalle:
-                          </span>{" "}
-                          <span className="text-slate-600">
-                            {" "}
-                            {producto.detalle}
-                          </span>
-                        </p>
-                        <p className="text-xs uppercase">
-                          <span className="font-bold text-slate-700">
-                            Categoria:
-                          </span>{" "}
-                          <span className="text-slate-600">
-                            {" "}
-                            {producto.categoria}
-                          </span>
-                        </p>
-
-                        <p className="text-xs uppercase">
-                          <span className="font-bold text-slate-700">
-                            Precio unitario:{" "}
-                          </span>{" "}
-                          <span className="text-slate-600">
-                            {Number(producto.precio_und).toLocaleString(
-                              "es-AR",
-                              { style: "currency", currency: "ARS" }
-                            )}
-                          </span>
-                        </p>
-                        <p className="text-xs uppercase">
-                          <span className="font-bold text-slate-700">
-                            Cantidad:
-                          </span>{" "}
-                          <span className="text-slate-600">
-                            {" "}
-                            {producto.cantidad}
-                          </span>
-                        </p>
-                        <p className="text-xs uppercase">
-                          <span className="font-bold text-slate-700">
-                            Total:
-                          </span>{" "}
-                          <span className="text-slate-900">
-                            {Number(producto.totalFinal).toLocaleString(
-                              "es-AR",
-                              { style: "currency", currency: "ARS" }
-                            )}
-                          </span>
-                        </p>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </article>
-            </div>
-          ))}
-        </div>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
       <div className="flex justify-center mt-4">
         {filteredProducts.length > productsPerPage && (
@@ -680,10 +692,19 @@ export const OrdenDeCompra = () => {
         )}
       </div>
 
-      <ModalCrearOrden isOpen={isOpen} closeModal={closeModal} />
+      <ModalCrearOrden
+        obtenerId={obtenerId}
+        isOpen={isOpen}
+        closeModal={closeModal}
+      />
       <ModalEliminar
         eliminarModal={isOpenEliminar}
         closeEliminar={closeEliminar}
+        obtenerId={obtenerId}
+      />
+      <ModalVerProductos
+        isOpen={isProductos}
+        closeModal={closeProductos}
         obtenerId={obtenerId}
       />
     </section>

@@ -123,9 +123,9 @@ export const Productos = () => {
     <section className="w-full h-full px-5 max-md:px-4 flex flex-col gap-2 py-16 max-md:gap-5">
       <div className="py-5 px-5 rounded-xl grid grid-cols-3 gap-3 mb-2 max-md:grid-cols-1 max-md:border-none max-md:shadow-none max-md:py-0 max-md:px-0">
         {/* Placeholder para el primer artículo */}
-        <article className="flex justify-between items-start rounded-xl border border-gray-200 bg-white p-8 shadow animate-pulse">
+        <article className="flex items-center justify-between gap-4 rounded-2xl hover:shadow-md transition-all ease-linear cursor-pointer border border-slate-300 bg-white py-9 px-6">
           <div className="flex gap-4 items-center">
-            <span className="rounded-full bg-indigo-100 p-3 text-slate-700 animate-pulse"></span>
+            <span className="rounded-full bg-slate-300 p-3 text-slate-700 animate-pulse py-8 px-8"></span>
             <div>
               <div
                 className="bg-gray-200 h-8 w-20 animate-pulse
@@ -134,24 +134,27 @@ export const Productos = () => {
               <div className="bg-gray-200 h-5 w-32 animate-pulse"></div>
             </div>
           </div>
-          <div className="inline-flex gap-2 rounded-xl bg-indigo-100 p-2 text-indigo-600 animate-pulse">
+          <div className="inline-flex gap-2 rounded-xl bg-slate-300 p-2 text-slate-100 animate-pulse">
             <div className="w-4 h-4 bg-gray-200 rounded-full animate-pulse"></div>
             <div className="w-12 h-4 bg-gray-200 animate-pulse"></div>
           </div>
         </article>
 
         {/* Placeholder para el segundo artículo */}
-        <article className="flex justify-between items-start rounded-xl border border-gray-200 bg-white p-8 shadow animate-pulse">
+        <article className="flex items-center justify-between gap-4 rounded-2xl hover:shadow-md transition-all ease-linear cursor-pointer border border-slate-300 bg-white py-9 px-6">
           <div className="flex gap-4 items-center">
-            <span className="rounded-full bg-green-100 p-3 text-green-700 animate-pulse"></span>
+            <span className="rounded-full bg-slate-300 p-3 text-slate-700 animate-pulse py-8 px-8"></span>
             <div>
-              <div className="bg-gray-200 h-8 w-32 animate-pulse"></div>
-              <div className="bg-gray-200 h-5 w-24 animate-pulse"></div>
+              <div
+                className="bg-gray-200 h-8 w-20 animate-pulse
+              "
+              ></div>
+              <div className="bg-gray-200 h-5 w-32 animate-pulse"></div>
             </div>
           </div>
-          <div className="inline-flex gap-2 rounded-xl bg-green-100 py-2 px-4 text-green-600 animate-pulse">
-            <div className="w-6 h-6 bg-gray-200 rounded-full animate-pulse"></div>
-            <div className="w-14 h-4 bg-gray-200 animate-pulse"></div>
+          <div className="inline-flex gap-2 rounded-xl bg-slate-300 p-2 text-slate-100 animate-pulse">
+            <div className="w-4 h-4 bg-gray-200 rounded-full animate-pulse"></div>
+            <div className="w-12 h-4 bg-gray-200 animate-pulse"></div>
           </div>
         </article>
       </div>
@@ -184,11 +187,11 @@ export const Productos = () => {
           <table className="min-w-full divide-y-2 divide-gray-200 bg-white text-sm">
             <thead className="text-left">
               <tr>
-                <th className="whitespace-nowrap px-4 py-6 text-indigo-500 uppercase font-normal"></th>
-                <th className="whitespace-nowrap px-4 py-6 text-indigo-500 uppercase font-normal"></th>
-                <th className="whitespace-nowrap px-4 py-6 text-indigo-500 uppercase font-normal"></th>
-                <th className="whitespace-nowrap px-4 py-6 text-indigo-500 uppercase font-normal"></th>
-                <th className="whitespace-nowrap px-4 py-6 text-indigo-500 uppercase font-normal"></th>
+                <th className="whitespace-nowrap px-4 py-7 bg-slate-300 uppercase font-normal"></th>
+                <th className="whitespace-nowrap px-4 py-7 bg-slate-300 uppercase font-normal"></th>
+                <th className="whitespace-nowrap px-4 py-7 bg-slate-300 uppercase font-normal"></th>
+                <th className="whitespace-nowrap px-4 py-7 bg-slate-300 uppercase font-normal"></th>
+                <th className="whitespace-nowrap px-4 py-7 bg-slate-300 uppercase font-normal"></th>
               </tr>
             </thead>
 
@@ -196,19 +199,19 @@ export const Productos = () => {
               {/* Placeholder para 10 filas de datos */}
               {[...Array(productos.length)].map((_, index) => (
                 <tr key={index}>
-                  <td className="whitespace-nowrap px-4 py-6 font-medium text-gray-900 uppercase text-sm animate-pulse">
+                  <td className="whitespace-nowrap px-4 py-8 font-medium text-gray-900 uppercase text-sm animate-pulse bg-slate-100/20">
                     {/* Placeholder para el código */}
                   </td>
-                  <td className="whitespace-nowrap px-4 py-6 text-gray-700 uppercase text-sm animate-pulse">
+                  <td className="whitespace-nowrap px-4 py-8 text-gray-700 uppercase text-sm animate-pulse bg-slate-100/20">
                     {/* Placeholder para el detalle */}
                   </td>
-                  <td className="whitespace-nowrap px-4 py-6 text-gray-700 uppercase text-sm animate-pulse">
+                  <td className="whitespace-nowrap px-4 py-8 text-gray-700 uppercase text-sm animate-pulse bg-slate-100/20">
                     {/* Placeholder para la categoría */}
                   </td>
-                  <td className="whitespace-nowrap px-4 py-6  uppercase text-sm font-bold text-indigo-500 animate-pulse">
+                  <td className="whitespace-nowrap px-4 py-8  uppercase text-sm font-bold text-indigo-500 animate-pulse bg-slate-100/20">
                     {/* Placeholder para el precio */}
                   </td>
-                  <td className="whitespace-nowrap px-4 py-6 text-gray-700 uppercase text-sm cursor-pointer space-x-2 animate-pulse">
+                  <td className="whitespace-nowrap px-4 py-8 text-gray-700 uppercase text-sm cursor-pointer space-x-2 animate-pulse bg-slate-100/20">
                     {/* Placeholder para las acciones */}
                   </td>
                 </tr>
@@ -222,7 +225,7 @@ export const Productos = () => {
     <section className="w-full h-full px-5 max-md:px-4 flex flex-col gap-2 py-16 max-md:gap-5">
       <ToastContainer />
       <div className="py-5 px-5 rounded-xl grid grid-cols-3 gap-3 mb-2 max-md:grid-cols-1 max-md:border-none max-md:shadow-none max-md:py-0 max-md:px-0">
-        <article className="flex items-center justify-between gap-4 rounded-xl border border-slate-300 bg-white p-6 hover:shadow-md transition-all ease-linear cursor-pointer">
+        <article className="flex items-center justify-between gap-4 rounded-2xl hover:shadow-md transition-all ease-linear cursor-pointer border border-slate-300 bg-white py-9 px-6">
           <div className="flex gap-4 items-center">
             <span className="rounded-full bg-indigo-100 p-3 text-indigo-700">
               <svg
@@ -275,7 +278,7 @@ export const Productos = () => {
           </div>
         </article>
 
-        <article className="flex items-center justify-between gap-4 rounded-xl border border-slate-300 bg-white p-6 hover:shadow-md transition-all ease-linear cursor-pointer">
+        <article className="flex items-center justify-between gap-4 rounded-2xl hover:shadow-md transition-all ease-linear cursor-pointer border border-slate-300 bg-white py-9 px-6">
           <div className="flex gap-4 items-center">
             <span className="rounded-full bg-green-100 p-3 text-green-700">
               <svg

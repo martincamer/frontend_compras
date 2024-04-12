@@ -156,24 +156,36 @@ export const Proveedores = () => {
           <div className="py-5 px-32 text-slate-700 rounded-xl shadow bg-white border-slate-200 border-[1px] uppercase"></div>
         </div>
         {/* Placeholder para las órdenes de compra */}
-        <div className="overflow-x-auto mt-6 mx-8 border-slate-300 border-[1px] rounded-2xl animate-pulse">
+        <div className="overflow-x-auto mt-6 mx-6 border-slate-300 border-[1px] rounded-2xl animate-pulse">
           <table className="min-w-full divide-y-2 divide-gray-200 bg-white text-sm">
             <thead className="text-left">
               <tr>
-                <th className="whitespace-nowrap px-4 py-6 text-indigo-500 uppercase font-normal"></th>
-                <th className="whitespace-nowrap px-4 py-6 text-indigo-500 uppercase font-normal"></th>
-                <th className="whitespace-nowrap px-4 py-6 text-indigo-500 uppercase font-normal"></th>
-                <th className="whitespace-nowrap px-4 py-6 text-indigo-500 uppercase font-normal"></th>
-                <th className="whitespace-nowrap px-4 py-6 text-indigo-500 uppercase font-normal"></th>
+                <th className="whitespace-nowrap px-4 py-7 bg-slate-300"></th>
+                <th className="whitespace-nowrap px-4 py-7 bg-slate-300"></th>
+                <th className="whitespace-nowrap px-4 py-7 bg-slate-300"></th>
+                <th className="whitespace-nowrap px-4 py-7 bg-slate-300"></th>
+                <th className="whitespace-nowrap px-4 py-7 bg-slate-300"></th>
               </tr>
             </thead>
 
-            <tbody className="divide-y divide-gray-200">
+            <tbody className="divide-y divide-gray-200 ">
               {/* Placeholder para 10 filas de datos */}
               {[...Array(proveedores.length)].map((_, index) => (
                 <tr key={index}>
-                  <td className="whitespace-nowrap px-4 py-10 font-medium text-gray-900 uppercase text-sm animate-pulse">
+                  <td className="whitespace-nowrap px-4 bg-slate-100/30 py-10 font-medium text-gray-900 uppercase text-sm animate-pulse">
                     {/* Placeholder para el código */}
+                  </td>
+                  <td className="whitespace-nowrap px-4 bg-slate-100/30 py-10 text-gray-700 uppercase text-sm animate-pulse">
+                    {/* Placeholder para el detalle */}
+                  </td>
+                  <td className="whitespace-nowrap px-4 bg-slate-100/30 py-10 text-gray-700 uppercase text-sm animate-pulse">
+                    {/* Placeholder para la categoría */}
+                  </td>
+                  <td className="whitespace-nowrap px-4 bg-slate-100/30 py-10  uppercase text-sm font-bold text-indigo-500 animate-pulse">
+                    {/* Placeholder para el precio */}
+                  </td>
+                  <td className="whitespace-nowrap px-4 bg-slate-100/30 py-10 text-gray-700 uppercase text-sm cursor-pointer space-x-2 animate-pulse">
+                    {/* Placeholder para las acciones */}
                   </td>
                 </tr>
               ))}

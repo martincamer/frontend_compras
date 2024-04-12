@@ -176,7 +176,6 @@ export const Home = () => {
 
             <div>
               <p className="text-2xl font-medium text-red-700">
-                -{" "}
                 {Number(totalFinalAcumulado).toLocaleString("es-AR", {
                   style: "currency",
                   currency: "ARS",
@@ -212,7 +211,7 @@ export const Home = () => {
           </div>
         </article>
 
-        <article className="flex items-center justify-between gap-4 rounded-xl border border-slate-300 bg-white p-6 hover:shadow-md transition-all ease-linear cursor-pointer">
+        <article className="flex items-center justify-between gap-4 rounded-2xl hover:shadow-md transition-all ease-linear cursor-pointer border border-slate-300 bg-white py-9 px-6">
           <div className="flex gap-4 items-center">
             <span className="rounded-full bg-green-100 p-3 text-green-700">
               <svg
@@ -265,7 +264,7 @@ export const Home = () => {
           </div>
         </article>
 
-        <article className="flex items-center justify-between gap-4 rounded-xl border border-slate-300 bg-white p-6 hover:shadow-md transition-all ease-linear cursor-pointer">
+        <article className="flex items-center justify-between gap-4 rounded-2xl hover:shadow-md transition-all ease-linear cursor-pointer border border-slate-300 bg-white py-9 px-6">
           <div className="mt-2 h-[50px] overflow-y-scroll">
             <p className="">
               <span className="text-2xl font-medium text-gray-900 max-md:text-base">
@@ -291,7 +290,7 @@ export const Home = () => {
           </div>
         </article>
 
-        <article className="flex items-center justify-between gap-4 rounded-xl border border-slate-300 bg-white p-6 hover:shadow-md transition-all ease-linear cursor-pointer">
+        <article className="flex items-center justify-between gap-4 rounded-2xl hover:shadow-md transition-all ease-linear cursor-pointer border border-slate-300 bg-white py-9 px-6">
           <div className="flex gap-4 items-center">
             <span className="rounded-full bg-indigo-100 p-3 text-indigo-700">
               <svg
@@ -344,7 +343,7 @@ export const Home = () => {
           </div>
         </article>
 
-        <article className="flex items-center justify-between gap-4 rounded-xl border border-slate-300 bg-white p-6 hover:shadow-md transition-all ease-linear cursor-pointer">
+        <article className="flex items-center justify-between gap-4 rounded-2xl hover:shadow-md transition-all ease-linear cursor-pointer border border-slate-300 bg-white py-9 px-6">
           <div className="flex gap-4 items-center">
             <span className="rounded-full bg-red-100 p-3 text-red-700">
               <svg
@@ -403,7 +402,7 @@ export const Home = () => {
       </div>
 
       <div className="grid grid-cols-2 items-start gap-5 overflow-y-scroll pb-4">
-        <div className="h-[500px] border-slate-300 border-[1px] py-5 px-5 rounded-xl flex flex-col gap-12 hover:shadow-md transition-all ease-linear cursor-pointer">
+        <div className="h-[500px] border-slate-300 border-[1px] py-5 px-5 rounded-2xl flex flex-col gap-12 hover:shadow-md transition-all ease-linear cursor-pointer">
           <div className="text-2xl font-medium text-gray-900 max-md:text-base flex flex-col gap-5">
             {categoryTotalsData.map((category) => (
               <div key={category.category}>

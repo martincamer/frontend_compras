@@ -63,9 +63,9 @@ export const ViewOrdenCheckout = () => {
   return (
     <section className="w-full h-full px-5 max-md:px-4 flex flex-col gap-2 py-16 max-md:gap-5">
       <ToastContainer />
-      <div className="py-5 px-5 rounded-xl grid grid-cols-2 gap-3 mb-2 max-md:grid-cols-1 max-md:border-none max-md:shadow-none max-md:py-0 max-md:px-0">
-        <article className="flex flex-col gap-4 rounded-2xl border border-slate-200 shadow bg-white p-6 max-md:p-3">
-          <div className="inline-flex gap-2 self-end rounded bg-red-100 p-1 text-red-600">
+      <div className="py-5 px-5 rounded-xl grid grid-cols-4 gap-3 mb-2 max-md:grid-cols-1 max-md:border-none max-md:shadow-none max-md:py-0 max-md:px-0">
+        <article className="flex flex-col gap-4 rounded-2xl border border-slate-300 cursor-pointer hover:shadow-md transition-all ease-linear bg-white p-6 max-md:p-3">
+          <div className="inline-flex gap-2 self-end rounded-xl bg-red-100 py-3 px-4 text-red-600">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="h-4 w-4"
@@ -93,7 +93,6 @@ export const ViewOrdenCheckout = () => {
 
             <p>
               <span className="text-xl font-medium text-red-600 max-md:text-base">
-                -{" "}
                 {Number(orden.precio_final).toLocaleString("es-AR", {
                   style: "currency",
                   currency: "ARS",
@@ -114,8 +113,8 @@ export const ViewOrdenCheckout = () => {
           </div>
         </article>
 
-        <article className="flex flex-col gap-4 rounded-2xl border border-slate-200 shadow bg-white p-6 max-md:p-3">
-          <div className="inline-flex gap-2 self-end rounded bg-green-100 p-1 text-green-600">
+        <article className="flex flex-col gap-4 rounded-2xl border border-slate-300 cursor-pointer hover:shadow-md transition-all ease-linear bg-white p-6 max-md:p-3">
+          <div className="inline-flex gap-2 self-end rounded-xl bg-green-100 py-3 px-4 text-green-600">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -155,7 +154,7 @@ export const ViewOrdenCheckout = () => {
         </article>
       </div>
 
-      <div className="mt-4 border-slate-200 shadow border-[1px] py-5 px-5 rounded-xl mx-4">
+      <div className="mt-4 border-slate-300 hover:shadow-md transition-all ease-linear cursor-pointer border-[1px] py-5 px-5 rounded-xl mx-4">
         <div>
           <h5 className="underline text-indigo-500 text-lg">
             DATOS DE LA COMPRA
@@ -193,17 +192,10 @@ export const ViewOrdenCheckout = () => {
         </div>
       </div>
 
-      <div className="mt-4 border-slate-200 shadow border-[1px] py-5 px-5 rounded-xl mx-4">
+      <div className="mt-4 py-5 px-5 mx-0">
         <div>
           <h5 className="underline text-indigo-500 text-lg">PRODUCTOS</h5>
-
-          {/*
-  Heads up! 👋
-
-  This component comes with some `rtl` classes. Please remove them if they are not needed in your project.
-*/}
-
-          <div className="overflow-x-auto rounded-2xl border border-slate-300 mt-5">
+          <div className="overflow-x-auto rounded-2xl border border-slate-300 mt-5 hover:shadow-md transition-all ease-linear cursor-pointer">
             <table className="min-w-full divide-y-2 divide-gray-200 bg-white text-sm">
               <thead className="ltr:text-left rtl:text-right">
                 <tr>
@@ -246,7 +238,7 @@ export const ViewOrdenCheckout = () => {
                     <td className="whitespace-nowrap px-4 py-4 text-gray-700 uppercase text-sm">
                       {p.cantidad}
                     </td>
-                    <td className="whitespace-nowrap px-4 py-4 text-gray-700 uppercase text-sm">
+                    <td className="whitespace-nowrap px-4 py-4 text-gray-700 font-bold uppercase text-sm">
                       {p.cantidadFaltante}
                     </td>
                     <td className="whitespace-nowrap px-4 py-4 text-gray-700 uppercase text-sm flex gap-2">
@@ -254,22 +246,10 @@ export const ViewOrdenCheckout = () => {
                         onClick={() => {
                           handleID(p.id), openEntrega();
                         }}
-                        className="text-xs font-bold py-2 px-4 rounded-xl bg-green-100 text-green-600"
+                        className="text-sm font-normal py-2 px-4 rounded-xl bg-green-100 text-green-700"
                         type="button"
                       >
                         EDITAR/ENTREGADA
-                      </button>
-                      {/* <button
-                        className="text-xs font-bold py-2 px-4 rounded-xl bg-orange-500 text-white"
-                        type="button"
-                      >
-                        EDITAR/PRODUCTO
-                      </button> */}
-                      <button
-                        className="text-xs font-bold py-2 px-4 rounded-xl bg-red-100 text-red-700"
-                        type="button"
-                      >
-                        ELIMINAR
                       </button>
                     </td>
                     <td
@@ -279,7 +259,7 @@ export const ViewOrdenCheckout = () => {
                         className={`${
                           p.cantidad === p.cantidadFaltante
                             ? " bg-green-100 py-2 font-semibold px-4 rounded-xl  text-green-600 text-sm"
-                            : "bg-red-100 py-2 font-semibold px-4 rounded-xl  text-red-700 text-sm"
+                            : "bg-orange-100 py-2 font-semibold px-4 rounded-xl  text-orange-700 text-sm"
                         }`}
                       >
                         {p.cantidad === p.cantidadFaltante

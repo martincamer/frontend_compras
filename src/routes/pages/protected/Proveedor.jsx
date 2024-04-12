@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { ToastContainer } from "react-toastify";
 import { Link, useParams } from "react-router-dom";
-import client from "../../../api/axios";
 import { ModalComprobante } from "../../../components/Modales/ModalComprobante";
 import { ModalObtenerCompra } from "../../../components/Modales/ModalObtenerCompra";
+import client from "../../../api/axios";
 
 export const Proveedor = () => {
   const [datos, setDatos] = useState([]);
@@ -125,6 +125,34 @@ export const Proveedor = () => {
 
   const handleID = (id) => setObtenerId(id);
 
+  // Agrega los estados para las fechas inicial y final
+  const [fechaInicial, setFechaInicial] = useState("");
+  const [fechaFinal, setFechaFinal] = useState("");
+
+  // Función para filtrar productos por rango de fechas
+  const filtrarPorFecha = (producto) => {
+    if (!fechaInicial || !fechaFinal) {
+      return true; // Si alguna de las fechas no está establecida, no se aplica el filtro
+    }
+
+    const fechaProducto = new Date(producto.created_at).getTime();
+    const fechaInicialTimestamp = new Date(fechaInicial).getTime();
+    const fechaFinalTimestamp = new Date(fechaFinal).getTime();
+
+    return (
+      fechaProducto >= fechaInicialTimestamp &&
+      fechaProducto <= fechaFinalTimestamp
+    );
+  };
+
+  // Filtrar productos por fecha
+  const productosFiltrados = currentProducts.filter(filtrarPorFecha);
+
+  const resetFechas = () => {
+    setFechaFinal("");
+    setFechaInicial("");
+  };
+
   return (
     <section className="w-full h-full px-5 max-md:px-4 flex flex-col gap-2 py-16 max-md:gap-5">
       <ToastContainer />
@@ -136,7 +164,7 @@ export const Proveedor = () => {
         </p>
       </div>
       <div className="py-5 px-5 rounded-xl grid grid-cols-3 gap-3 mb-2 max-md:grid-cols-1 max-md:border-none max-md:shadow-none max-md:py-0 max-md:px-0">
-        <article className="flex items-center justify-between gap-4 rounded-xl shadow border border-slate-200 bg-white p-6">
+        <article className="flex items-center justify-between gap-4 rounded-2xl hover:shadow-md transition-all ease-linear cursor-pointer border border-slate-300 bg-white py-9 px-6">
           <div className="flex gap-4 items-center">
             <span className="rounded-full bg-green-100 p-3 text-green-700">
               <svg
@@ -189,7 +217,7 @@ export const Proveedor = () => {
           </div>
         </article>
 
-        <article className="flex justify-between items-center rounded-2xl border border-gray-200 bg-white p-8 shadow">
+        <article className="flex items-center justify-between gap-4 rounded-2xl hover:shadow-md transition-all ease-linear cursor-pointer border border-slate-300 bg-white py-9 px-6">
           <div className="flex gap-4 items-center">
             <span className="rounded-full bg-green-100 p-3 text-green-700">
               <svg
@@ -242,7 +270,7 @@ export const Proveedor = () => {
           </div>
         </article>
 
-        <article className="flex justify-between items-center rounded-2xl border border-gray-200 bg-white p-8 shadow">
+        <article className="flex items-center justify-between gap-4 rounded-2xl hover:shadow-md transition-all ease-linear cursor-pointer border border-slate-300 bg-white py-9 px-6">
           <div className="flex gap-4 items-center">
             <span className="rounded-full bg-red-100 p-3 text-red-700">
               <svg
@@ -298,7 +326,7 @@ export const Proveedor = () => {
           </div>
         </article>
 
-        <article className="flex justify-between items-center rounded-2xl border border-gray-200 bg-white p-8 shadow">
+        <article className="flex items-center justify-between gap-4 rounded-2xl hover:shadow-md transition-all ease-linear cursor-pointer border border-slate-300 bg-white py-9 px-6">
           <div className="flex gap-4 items-center">
             <span className="rounded-full bg-green-100 p-3 text-green-700">
               <svg
@@ -384,6 +412,35 @@ export const Proveedor = () => {
         </p>
       </div>
 
+      <div className="flex gap-4 mb-1 mt-6 mx-9 items-center">
+        <input
+          type="date"
+          value={fechaInicial}
+          onChange={(e) => setFechaInicial(e.target.value)}
+          className="px-4 py-2 border border-gray-300 rounded-xl text-sm uppercase"
+        />
+
+        <span className="uppercase font-bold text-sm text-slate-700">
+          desde
+        </span>
+        <input
+          type="date"
+          value={fechaFinal}
+          onChange={(e) => setFechaFinal(e.target.value)}
+          className="px-4 py-2 border border-gray-300 rounded-xl text-sm uppercase"
+        />
+
+        <div>
+          <button
+            className="uppercase text-sm bg-red-100 text-red-800 py-2 px-4 rounded-xl"
+            type="button"
+            onClick={() => resetFechas()}
+          >
+            Volver al mes normal/resetear
+          </button>
+        </div>
+      </div>
+
       <div className="overflow-x-auto mt-6 mx-8 rounded-xl border-slate-300 border-[1px]">
         <table className="min-w-full divide-y-2 divide-gray-200 bg-white text-sm">
           <thead className="text-left">
@@ -410,7 +467,7 @@ export const Proveedor = () => {
           </thead>
 
           <tbody className="divide-y divide-gray-200">
-            {currentProducts.map((p) => (
+            {productosFiltrados.map((p) => (
               <tr key={p.id}>
                 <td className="whitespace-nowrap px-4 py-6 text-gray-700 uppercase text-sm">
                   {p.id}
@@ -454,10 +511,6 @@ export const Proveedor = () => {
                   {p?.created_at?.split("T")[0]} / <strong>HORA:</strong>{" "}
                   {p?.created_at?.split("T")[1]}
                 </td>
-                {/* 
-                <td className="whitespace-nowrap px-4 py-6 text-gray-700 uppercase text-sm">
-                  <img src={p.imagen} alt="" />
-                </td> */}
               </tr>
             ))}
           </tbody>

@@ -53,13 +53,19 @@ export const ModalCrearProveedor = ({ isOpen, closeModal }) => {
 
     toast.success("¡Proveedor creado correctamente!", {
       position: "top-center",
-      autoClose: 1500,
-      hideProgressBar: false,
+      autoClose: 3000,
+      hideProgressBar: true,
       closeOnClick: true,
       pauseOnHover: true,
       draggable: true,
-      progress: undefined,
       theme: "light",
+      style: {
+        padding: "10px",
+        background: "#b8ffb8",
+        color: "#009900",
+        borderRadius: "15px",
+        boxShadow: "none",
+      },
     });
 
     setTimeout(() => {
@@ -206,6 +212,28 @@ export const ModalCrearProveedor = ({ isOpen, closeModal }) => {
                       type="text"
                       className="uppercase py-2 px-4 rounded-xl border-slate-300 border-[1px] shadow placeholder:text-slate-300 text-sm"
                       placeholder="DETALLE DEL PROVEEDOR"
+                    />
+                  </div>
+                  <div className="flex flex-col gap-1">
+                    <label className="text-sm text-slate-700 uppercase">
+                      Localidad
+                    </label>
+                    <input
+                      {...register("localidad")}
+                      type="text"
+                      className="uppercase py-2 px-4 rounded-xl border-slate-300 border-[1px] shadow placeholder:text-slate-300 text-sm"
+                      placeholder="LOCALIDAD DEL PROVEEDOR"
+                    />
+                  </div>
+                  <div className="flex flex-col gap-1">
+                    <label className="text-sm text-slate-700 uppercase">
+                      Provincia
+                    </label>
+                    <input
+                      {...register("provincia")}
+                      type="text"
+                      className="uppercase py-2 px-4 rounded-xl border-slate-300 border-[1px] shadow placeholder:text-slate-300 text-sm"
+                      placeholder="PROVINCIA DEL PROVEEDOR"
                     />
                   </div>
                   <div>
