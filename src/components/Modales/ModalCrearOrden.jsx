@@ -411,72 +411,7 @@ export const ModalCrearOrden = ({ isOpen, closeModal }) => {
                       CARGAR PRODUCTO
                     </button>
                   </div>
-                  {/* <div className="grid grid-cols-3 gap-2">
-                    {productoSeleccionado.map((p) => (
-                      <div className="border-slate-300 border-[1px] shadow py-2 px-5 rounded-xl relative">
-                        <div>
-                          <p className="uppercase font-bold text-slate-700 underline">
-                            {p.detalle}
-                          </p>
-                          <p className="uppercase font-normal text-slate-700 text-sm">
-                            {p.categoria}
-                          </p>
-                          <p className="uppercase font-bold text-slate-700 text-sm">
-                            {Number(p.precio_und).toLocaleString("es-AR", {
-                              style: "currency",
-                              currency: "ARS",
-                            })}
-                          </p>
-                          <p className="uppercase font-bold text-green-500  text-sm">
-                            {p.cantidad}
-                          </p>
-                          <p className="uppercase font-normal text-slate-700 text-sm">
-                            <span className="uppercase font-bold text-slate-800">
-                              Total final:
-                            </span>{" "}
-                            {Number(p.totalFinal).toLocaleString("es-AR", {
-                              style: "currency",
-                              currency: "ARS",
-                            })}
-                          </p>
-                          <div className="flex gap-2 absolute top-0 right-0 py-2 px-2">
-                            <svg
-                              onClick={() => {
-                                handleID(p.id), openProductoEditar();
-                              }}
-                              xmlns="http://www.w3.org/2000/svg"
-                              fill="none"
-                              viewBox="0 0 24 24"
-                              strokeWidth={1.5}
-                              stroke="currentColor"
-                              className="w-6 h-6 text-slate-500 cursor-pointer"
-                            >
-                              <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10"
-                              />
-                            </svg>
-                            <svg
-                              onClick={() => deleteProducto(p.id)}
-                              xmlns="http://www.w3.org/2000/svg"
-                              fill="none"
-                              viewBox="0 0 24 24"
-                              strokeWidth={1.5}
-                              stroke="currentColor"
-                              className="w-6 h-6 text-red-800 cursor-pointer"
-                            >
-                              <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                d="m9.75 9.75 4.5 4.5m0-4.5-4.5 4.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
-                              />
-                            </svg>
-                          </div>
-                        </div>
-                      </div>
-                    ))}
-                  </div> */}
+
                   <div className="border-[1px] border-slate-300 rounded-2xl hover:shadow-md transition-all ease-linear">
                     <table className="min-w-full divide-y-2 divide-gray-200 text-sm cursor-pointer">
                       <thead className="text-left">
@@ -581,7 +516,7 @@ export const ModalCrearOrden = ({ isOpen, closeModal }) => {
                     <p className=" font-normal py-2 px-5 uppercase text-sm rounded-xl text-indigo-700 flex gap-2 items-center">
                       <span className="underline"> iva seleccionado de </span>
                       <span className="bg-indigo-100 py-2 px-4 text-base rounded-xl font-bold">
-                        {"21.00"}
+                        {(iva == 1.21 && "21.00") || (iva == 1.105 && "10.50")}
                       </span>
                     </p>
                     <p className=" font-normal py-2 px-5 uppercase text-sm rounded-xl text-green-700 flex gap-2 items-center">

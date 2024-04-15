@@ -72,10 +72,32 @@ export const OrdenDeCompraCheckout = () => {
         ))
     );
   });
+
+  // Ordenar por fecha de creación descendente
+  filteredProducts.sort(
+    (a, b) => new Date(b.created_at) - new Date(a.created_at)
+  );
+
+  // Mover las órdenes pendientes al principio
+  const pendingOrders = filteredProducts.filter((order) =>
+    order.datos.productoSeleccionado.some(
+      (producto) =>
+        parseInt(producto.cantidad) !== parseInt(producto.cantidadFaltante)
+    )
+  );
+  const completedOrders = filteredProducts.filter(
+    (order) =>
+      !order.datos.productoSeleccionado.some(
+        (producto) =>
+          parseInt(producto.cantidad) !== parseInt(producto.cantidadFaltante)
+      )
+  );
+  const sortedProducts = [...pendingOrders, ...completedOrders];
+
   // Lógica de paginación
   const indexOfLastProduct = currentPage * productsPerPage;
   const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
-  const currentProducts = filteredProducts.slice(
+  const currentProducts = sortedProducts.slice(
     indexOfFirstProduct,
     indexOfLastProduct
   );
@@ -505,145 +527,137 @@ export const OrdenDeCompraCheckout = () => {
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-200">
-            {currentProducts
-              .filter((order) => {
-                // Verifica si la orden está pendiente
-                return order.datos.productoSeleccionado.filter(
-                  (producto) =>
-                    parseInt(producto.cantidad) !==
-                    parseInt(producto.cantidadFaltante)
-                );
-              })
-              .map((p) => (
-                <tr key={p.id}>
-                  <td className="whitespace-nowrap px-4 py-4 text-gray-700 uppercase text-sm">
-                    {p.id}
-                  </td>
-                  <td className="whitespace-nowrap px-4 py-4 text-gray-700 uppercase text-sm">
-                    {p.proveedor}
-                  </td>
-                  <td className="whitespace-nowrap px-4 py-4  uppercase text-sm">
-                    N° {p.numero_factura}
-                  </td>
-                  <td className="whitespace-nowrap px-4 py-4  uppercase text-sm">
-                    {new Date(p.fecha_factura).toLocaleDateString("ars")}
-                  </td>
-                  <td className="whitespace-nowrap px-4 py-4  uppercase text-sm font-bold text-indigo-500">
-                    {Number(p.precio_final).toLocaleString("es-AR", {
-                      style: "currency",
-                      currency: "ARS",
-                    })}
-                  </td>
-                  <td className="whitespace-nowrap px-4 py-4 text-gray-700 uppercase text-sm cursor-pointer space-x-2 flex">
-                    <span
-                      onClick={() => {
-                        handleID(p.id), openProductos();
-                      }}
-                      className="bg-orange-500/20 text-orange-600 py-2 px-3 rounded-xl text-sm flex gap-1 items-center"
+            {currentProducts.map((p) => (
+              <tr key={p.id}>
+                <td className="whitespace-nowrap px-4 py-4 text-gray-700 uppercase text-sm">
+                  {p.id}
+                </td>
+                <td className="whitespace-nowrap px-4 py-4 text-gray-700 uppercase text-sm">
+                  {p.proveedor}
+                </td>
+                <td className="whitespace-nowrap px-4 py-4  uppercase text-sm">
+                  N° {p.numero_factura}
+                </td>
+                <td className="whitespace-nowrap px-4 py-4  uppercase text-sm">
+                  {new Date(p.fecha_factura).toLocaleDateString("ars")}
+                </td>
+                <td className="whitespace-nowrap px-4 py-4  uppercase text-sm font-bold text-indigo-500">
+                  {Number(p.precio_final).toLocaleString("es-AR", {
+                    style: "currency",
+                    currency: "ARS",
+                  })}
+                </td>
+                <td className="whitespace-nowrap px-4 py-4 text-gray-700 uppercase text-sm cursor-pointer space-x-2 flex">
+                  <span
+                    onClick={() => {
+                      handleID(p.id), openProductos();
+                    }}
+                    className="bg-orange-500/20 text-orange-600 py-2 px-3 rounded-xl text-sm flex gap-1 items-center"
+                  >
+                    Ver Productos
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      strokeWidth={1.5}
+                      stroke="currentColor"
+                      className="w-5 h-5"
                     >
-                      Ver Productos
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        strokeWidth={1.5}
-                        stroke="currentColor"
-                        className="w-5 h-5"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z"
-                        />
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
-                        />
-                      </svg>
-                    </span>
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z"
+                      />
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
+                      />
+                    </svg>
+                  </span>
 
-                    <Link
-                      to={`/orden-checkout/${p.id}`}
-                      className="bg-indigo-500/20 text-indigo-700 py-2 px-3 rounded-xl text-sm flex gap-1 items-center"
+                  <Link
+                    to={`/orden-checkout/${p.id}`}
+                    className="bg-indigo-500/20 text-indigo-700 py-2 px-3 rounded-xl text-sm flex gap-1 items-center"
+                  >
+                    VER ORDEN CHECKOUT
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      strokeWidth={1.5}
+                      stroke="currentColor"
+                      className="w-6 h-6"
                     >
-                      VER ORDEN CHECKOUT
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        strokeWidth={1.5}
-                        stroke="currentColor"
-                        className="w-6 h-6"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M17.25 8.25 21 12m0 0-3.75 3.75M21 12H3"
-                        />
-                      </svg>
-                    </Link>
-                  </td>
-                  <td className="whitespace-nowrap px-4 py-4 text-gray-700 uppercase text-sm cursor-pointer">
-                    <div className="flex">
-                      <Link
-                        key={p.id}
-                        className={`${
-                          p.datos.productoSeleccionado.every(
-                            (producto) =>
-                              parseInt(producto.cantidad) ===
-                              parseInt(producto.cantidadFaltante)
-                          )
-                            ? "bg-green-100 text-green-600"
-                            : "bg-orange-100  text-orange-700"
-                        } py-3 px-6 font-bold rounded-xl text-sm cursor-pointer flex items-center gap-1`}
-                      >
-                        {p.datos.productoSeleccionado.every(
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M17.25 8.25 21 12m0 0-3.75 3.75M21 12H3"
+                        uu
+                      />
+                    </svg>
+                  </Link>
+                </td>
+                <td className="whitespace-nowrap px-4 py-4 text-gray-700 uppercase text-sm cursor-pointer">
+                  <div className="flex">
+                    <Link
+                      key={p.id}
+                      className={`${
+                        p.datos.productoSeleccionado.every(
                           (producto) =>
                             parseInt(producto.cantidad) ===
                             parseInt(producto.cantidadFaltante)
-                        ) ? (
-                          <>
-                            FINALIZADO
-                            <svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              fill="none"
-                              viewBox="0 0 24 24"
-                              strokeWidth={1.5}
-                              stroke="currentColor"
-                              className="w-4 h-4"
-                            >
-                              <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                d="m4.5 12.75 6 6 9-13.5"
-                              />
-                            </svg>
-                          </>
-                        ) : (
-                          <>
-                            PENDIENTE
-                            <svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              fill="none"
-                              viewBox="0 0 24 24"
-                              strokeWidth={1.5}
-                              stroke="currentColor"
-                              className="w-4 h-4"
-                            >
-                              <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                d="M8.625 12a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H8.25m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H12m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0h-.375M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
-                              />
-                            </svg>
-                          </>
-                        )}
-                      </Link>
-                    </div>
-                  </td>
-                </tr>
-              ))}
+                        )
+                          ? "bg-green-100 text-green-600"
+                          : "bg-orange-100  text-orange-700"
+                      } py-3 px-6 font-bold rounded-xl text-sm cursor-pointer flex items-center gap-1`}
+                    >
+                      {p.datos.productoSeleccionado.every(
+                        (producto) =>
+                          parseInt(producto.cantidad) ===
+                          parseInt(producto.cantidadFaltante)
+                      ) ? (
+                        <>
+                          FINALIZADO
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            strokeWidth={1.5}
+                            stroke="currentColor"
+                            className="w-4 h-4"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              d="m4.5 12.75 6 6 9-13.5"
+                            />
+                          </svg>
+                        </>
+                      ) : (
+                        <>
+                          PENDIENTE
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            strokeWidth={1.5}
+                            stroke="currentColor"
+                            className="w-4 h-4"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              d="M8.625 12a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H8.25m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H12m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0h-.375M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+                            />
+                          </svg>
+                        </>
+                      )}
+                    </Link>
+                  </div>
+                </td>
+              </tr>
+            ))}
           </tbody>
         </table>
       </div>

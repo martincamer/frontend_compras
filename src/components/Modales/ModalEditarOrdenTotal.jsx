@@ -509,7 +509,7 @@ export const ModalEditarOrdenTotal = ({ isOpen, closeModal, obtenerId }) => {
                     <p className=" font-normal py-2 px-5 uppercase text-sm rounded-xl text-indigo-700 flex gap-2 items-center">
                       <span className="underline"> iva seleccionado de </span>
                       <span className="bg-indigo-100 py-2 px-4 text-base rounded-xl font-bold">
-                        {"21.00"}
+                        {(iva == 1.21 && "21.00") || (iva == 1.105 && "10.50")}
                       </span>
                     </p>
                     <p className=" font-normal py-2 px-5 uppercase text-sm rounded-xl text-green-700 flex gap-2 items-center">
