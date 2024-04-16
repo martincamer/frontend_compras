@@ -77,6 +77,21 @@ export const ImprirmirComprobanteCompra = ({ datos }) => {
     (total, producto) => total + producto.totalFinal,
     0
   );
+
+  const totalFinal = datos?.datos?.productoSeleccionado.reduce(
+    (total, producto) => {
+      return total + parseFloat(producto.totalFinal);
+    },
+    0
+  );
+  ("");
+  const totalFinalIva = datos?.datos?.productoSeleccionado.reduce(
+    (total, producto) => {
+      return total + parseFloat(producto.totalFinalIva);
+    },
+    0
+  );
+
   return (
     <Document
       style={{
@@ -335,6 +350,28 @@ export const ImprirmirComprobanteCompra = ({ datos }) => {
               >
                 Precio total
               </Text>
+              <Text
+                style={{
+                  fontSize: "7px",
+                  fontWeight: "bold",
+                  fontFamily: "Montserrat",
+                  textTransform: "uppercase",
+                  width: "20%",
+                }}
+              >
+                IVA
+              </Text>
+              <Text
+                style={{
+                  fontSize: "7px",
+                  fontWeight: "bold",
+                  fontFamily: "Montserrat",
+                  textTransform: "uppercase",
+                  width: "20%",
+                }}
+              >
+                Precio total iva
+              </Text>
             </View>
             {datos?.datos?.productoSeleccionado?.map((p) => (
               <View
@@ -407,6 +444,33 @@ export const ImprirmirComprobanteCompra = ({ datos }) => {
                     currency: "ARS",
                   })}
                 </Text>
+                <Text
+                  style={{
+                    fontSize: "7px",
+                    fontWeight: "bold",
+                    fontFamily: "Montserrat",
+                    textTransform: "uppercase",
+                    width: "20%",
+                  }}
+                >
+                  {(p.iva === 1.105 && "10.05") ||
+                    (p.iva === 1.21 && "21.00") ||
+                    (p.iva === 0 && "NO TIENE IVA")}
+                </Text>
+                <Text
+                  style={{
+                    fontSize: "7px",
+                    fontWeight: "bold",
+                    fontFamily: "Montserrat",
+                    textTransform: "uppercase",
+                    width: "20%",
+                  }}
+                >
+                  {Number(p.totalFinalIva).toLocaleString("es-AR", {
+                    style: "currency",
+                    currency: "ARS",
+                  })}
+                </Text>
               </View>
             ))}
             {[...Array(6)].map((_, index) => (
@@ -465,7 +529,7 @@ export const ImprirmirComprobanteCompra = ({ datos }) => {
                 textTransform: "uppercase",
               }}
             >
-              IVA{" "}
+              TOTAL DEL IVA{" "}
               <Text
                 style={{
                   fontSize: "7px",
@@ -474,7 +538,10 @@ export const ImprirmirComprobanteCompra = ({ datos }) => {
                   textTransform: "uppercase",
                 }}
               >
-                {datos.iva}
+                {Number(totalFinalIva - totalFinal).toLocaleString("es-AR", {
+                  style: "currency",
+                  currency: "ARS",
+                })}
               </Text>
             </Text>
             <Text

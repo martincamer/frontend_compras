@@ -14,6 +14,7 @@ export const ModalEditarProductoSeleccionado = ({
   const [categoria, setCategorias] = useState("");
   const [detalle, setDetalle] = useState("");
   const [cantidad, setCantidad] = useState("");
+  const [iva, setIva] = useState(0);
 
   const { productos, setProductos } = useProductosContext();
 
@@ -29,11 +30,17 @@ export const ModalEditarProductoSeleccionado = ({
       setCantidad(clienteEncontrado.cantidad);
       setCategorias(clienteEncontrado.categoria);
       setDetalle(clienteEncontrado.detalle);
+      setIva(clienteEncontrado.iva);
     }
   }, [OBTENERID, productoSeleccionado]);
 
   const handleCliente = () => {
     const totalFinal = precio_und * cantidad;
+    const totalFinalIva =
+      Number(iva) === 0
+        ? Number(precio_und * cantidad)
+        : Number(precio_und * cantidad * iva);
+
     // Crear un nuevo objeto de cliente con los datos actualizados
     const clienteActualizado = {
       id: OBTENERID,
@@ -41,8 +48,10 @@ export const ModalEditarProductoSeleccionado = ({
       categoria,
       precio_und,
       cantidad,
-      cantidadFaltante: 0,
       totalFinal,
+      totalFinalIva,
+      iva,
+      cantidadFaltante: 0,
     };
 
     // Actualizar la lista de clientes con los datos actualizados
@@ -192,7 +201,13 @@ export const ModalEditarProductoSeleccionado = ({
                           CANTIDAD
                         </th>
                         <th className="whitespace-nowrap px-4 py-4 uppercase font-bold text-sm text-gray-900">
+                          SELECCIONAR IVA
+                        </th>
+                        <th className="whitespace-nowrap px-4 py-4 uppercase font-bold text-sm text-gray-900">
                           TOTAL FINAL
+                        </th>
+                        <th className="whitespace-nowrap px-4 py-4 uppercase font-bold text-sm text-gray-900">
+                          TOTAL FINAL CON IVA
                         </th>
                       </tr>
                     </thead>
@@ -221,6 +236,18 @@ export const ModalEditarProductoSeleccionado = ({
                             onChange={(e) => setCantidad(e.target.value)}
                           />
                         </td>
+                        <td className="whitespace-nowrap px-4 py-3 font-medium text-gray-900 uppercase">
+                          <select
+                            value={iva}
+                            className="border-slate-300 py-2.5 bg-white uppercase px-4 border-[1px] rounded-xl shadow"
+                            type="text"
+                            onChange={(e) => setIva(Number(e.target.value))}
+                          >
+                            <option value={0}>NO LLEVA IVA</option>
+                            <option value={1.105}>10.5</option>
+                            <option value={1.21}>21.00</option>
+                          </select>
+                        </td>
                         <td className="whitespace-nowrap px-4 py-3 font-bold text-gray-900 uppercase">
                           {Number(precio_und * cantidad).toLocaleString(
                             "es-AR",
@@ -229,6 +256,22 @@ export const ModalEditarProductoSeleccionado = ({
                               currency: "ARS",
                             }
                           )}
+                        </td>
+                        <td className="whitespace-nowrap px-4 py-3 font-bold text-gray-900 uppercase">
+                          {iva === 0
+                            ? Number(precio_und * cantidad).toLocaleString(
+                                "es-AR",
+                                {
+                                  style: "currency",
+                                  currency: "ARS",
+                                }
+                              )
+                            : Number(
+                                Number(precio_und * cantidad) * iva
+                              ).toLocaleString("es-AR", {
+                                style: "currency",
+                                currency: "ARS",
+                              })}
                         </td>
                       </tr>
                     </tbody>

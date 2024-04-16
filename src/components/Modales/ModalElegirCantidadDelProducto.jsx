@@ -14,6 +14,7 @@ export const ModalElegirCantidadDelProducto = ({
   const [producto, setProducto] = useState([]);
   const [precio_und, setPrecio] = useState("");
   const [cantidad, setCantidad] = useState("");
+  const [iva, setIva] = useState(0);
 
   const handleSubmitPrecioUnd = async () => {
     const res = await client.put(`/editar-producto/precio/${OBTENERID}`, {
@@ -110,7 +111,7 @@ export const ModalElegirCantidadDelProducto = ({
               leaveFrom="opacity-100 scale-100"
               leaveTo="opacity-0 scale-95"
             >
-              <div className="inline-block w-4/5 max-md:w-full p-6 my-8 overflow-hidden max-md:h-[300px] max-md:overflow-y-scroll text-left align-middle transition-all transform bg-white shadow-xl rounded-3xl">
+              <div className="inline-block w-5/6 max-md:w-full p-6 my-8 overflow-hidden max-md:h-[300px] max-md:overflow-y-scroll text-left align-middle transition-all transform bg-white shadow-xl rounded-3xl">
                 <div className="flex justify-end">
                   <button
                     type="button"
@@ -155,7 +156,13 @@ export const ModalElegirCantidadDelProducto = ({
                           CANTIDAD
                         </th>
                         <th className="whitespace-nowrap px-4 py-4 uppercase font-bold text-sm text-gray-900">
+                          SELECCIONAR IVA
+                        </th>
+                        <th className="whitespace-nowrap px-4 py-4 uppercase font-bold text-sm text-gray-900">
                           TOTAL FINAL
+                        </th>
+                        <th className="whitespace-nowrap px-4 py-4 uppercase font-bold text-sm text-gray-900">
+                          TOTAL FINAL CON IVA
                         </th>
                       </tr>
                     </thead>
@@ -184,6 +191,18 @@ export const ModalElegirCantidadDelProducto = ({
                             onChange={(e) => setCantidad(e.target.value)}
                           />
                         </td>
+                        <td className="whitespace-nowrap px-4 py-3 font-medium text-gray-900 uppercase">
+                          <select
+                            value={iva}
+                            className="border-slate-300 py-2.5 bg-white uppercase px-4 border-[1px] rounded-xl shadow"
+                            type="text"
+                            onChange={(e) => setIva(Number(e.target.value))}
+                          >
+                            <option value={0}>NO LLEVA IVA</option>
+                            <option value={1.105}>10.5</option>
+                            <option value={1.21}>21.00</option>
+                          </select>
+                        </td>
                         <td className="whitespace-nowrap px-4 py-3 font-bold text-gray-900 uppercase">
                           {Number(precio_und * cantidad).toLocaleString(
                             "es-AR",
@@ -192,6 +211,22 @@ export const ModalElegirCantidadDelProducto = ({
                               currency: "ARS",
                             }
                           )}
+                        </td>
+                        <td className="whitespace-nowrap px-4 py-3 font-bold text-gray-900 uppercase">
+                          {iva === 0
+                            ? Number(precio_und * cantidad).toLocaleString(
+                                "es-AR",
+                                {
+                                  style: "currency",
+                                  currency: "ARS",
+                                }
+                              )
+                            : Number(
+                                Number(precio_und * cantidad) * iva
+                              ).toLocaleString("es-AR", {
+                                style: "currency",
+                                currency: "ARS",
+                              })}
                         </td>
                       </tr>
                     </tbody>
@@ -207,7 +242,11 @@ export const ModalElegirCantidadDelProducto = ({
                         producto?.categoria,
                         precio_und,
                         cantidad,
-                        precio_und * cantidad
+                        Number(precio_und * cantidad),
+                        Number(iva) === 0
+                          ? Number(precio_und * cantidad)
+                          : Number(precio_und * cantidad * iva), // Usar precio_und * cantidad si el IVA es cero
+                        Number(iva)
                       );
                       handleSubmitPrecioUnd();
                       closeModal();

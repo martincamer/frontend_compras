@@ -76,6 +76,8 @@ export const ModalEditarOrdenTotal = ({ isOpen, closeModal, obtenerId }) => {
     precio_und,
     cantidad,
     totalFinal,
+    totalFinalIva,
+    iva,
     cantidadFaltante
   ) => {
     const newProducto = {
@@ -85,6 +87,8 @@ export const ModalEditarOrdenTotal = ({ isOpen, closeModal, obtenerId }) => {
       precio_und,
       cantidad,
       totalFinal,
+      totalFinalIva,
+      iva,
       cantidadFaltante: 0,
     };
 
@@ -119,7 +123,7 @@ export const ModalEditarOrdenTotal = ({ isOpen, closeModal, obtenerId }) => {
 
   const totalFinalSumSinIva = productoSeleccionado.reduce(
     (accumulator, currentValue) => {
-      return accumulator + currentValue.totalFinal;
+      return accumulator + currentValue.totalFinalIva;
     },
     0
   );
@@ -130,7 +134,7 @@ export const ModalEditarOrdenTotal = ({ isOpen, closeModal, obtenerId }) => {
     const datosOrden = {
       proveedor,
       numero_factura,
-      precio_final: Number(totalFinalSumSinIva * iva || totalFinalSumSinIva),
+      precio_final: Number(totalFinalSumSinIva),
       fecha_factura,
       localidad,
       provincia,
@@ -141,7 +145,7 @@ export const ModalEditarOrdenTotal = ({ isOpen, closeModal, obtenerId }) => {
 
     const datos = {
       proveedor,
-      total: Number(totalFinalSumSinIva * iva || totalFinalSumSinIva),
+      total: Number(totalFinalSumSinIva),
     };
 
     const res = await client.put(`/editar-orden/${obtenerId}`, datosOrden);
@@ -454,6 +458,12 @@ export const ModalEditarOrdenTotal = ({ isOpen, closeModal, obtenerId }) => {
                             Total
                           </th>
                           <th className="whitespace-nowrap px-4 py-4 text-slate-700 uppercase font-bold">
+                            Iva Seleccionado
+                          </th>
+                          <th className="whitespace-nowrap px-4 py-4 text-slate-700 uppercase font-bold">
+                            Total final iva
+                          </th>
+                          <th className="whitespace-nowrap px-4 py-4 text-slate-700 uppercase font-bold">
                             Acciones
                           </th>
                         </tr>
@@ -473,8 +483,19 @@ export const ModalEditarOrdenTotal = ({ isOpen, closeModal, obtenerId }) => {
                                 currency: "ARS",
                               })}
                             </td>
-                            <td className="whitespace-nowrap px-4 py-4  uppercase text-sm font-bold text-indigo-500">
+                            <td className="whitespace-nowrap px-4 py-4  uppercase text-sm font-bold text-slate-700">
                               {Number(p.totalFinal).toLocaleString("es-AR", {
+                                style: "currency",
+                                currency: "ARS",
+                              })}
+                            </td>
+                            <td className="whitespace-nowrap px-4 py-4  uppercase text-sm font-normal">
+                              {(p.iva === 1.105 && "IVA DEL 10.05") ||
+                                (p.iva === 1.21 && "IVA DEL 21.00") ||
+                                (p.iva === 0 && "NO TIENE IVA")}
+                            </td>
+                            <td className="whitespace-nowrap px-4 py-4  uppercase text-sm font-bold text-indigo-500">
+                              {Number(p.totalFinalIva).toLocaleString("es-AR", {
                                 style: "currency",
                                 currency: "ARS",
                               })}
@@ -532,24 +553,31 @@ export const ModalEditarOrdenTotal = ({ isOpen, closeModal, obtenerId }) => {
                     <p className=" font-normal py-2 px-5 uppercase text-sm rounded-xl text-indigo-700 flex gap-2 items-center">
                       <span className="underline"> subtotal </span>
                       <span className="bg-indigo-100 py-2 px-4 text-base rounded-xl font-bold">
-                        {totalFinalSumSinIva.toLocaleString("es-AR", {
+                        {totalesFinales.toLocaleString("es-AR", {
                           style: "currency",
                           currency: "ARS",
                         })}
                       </span>
                     </p>
                     <p className=" font-normal py-2 px-5 uppercase text-sm rounded-xl text-indigo-700 flex gap-2 items-center">
-                      <span className="underline"> iva seleccionado de </span>
+                      <span className="underline"> total iva agregado </span>
                       <span className="bg-indigo-100 py-2 px-4 text-base rounded-xl font-bold">
-                        {(iva == 1.21 && "21.00") || (iva == 1.105 && "10.50")}
+                        {Number(
+                          totalFinalSumSinIva - totalesFinales
+                        ).toLocaleString("es-AR", {
+                          style: "currency",
+                          currency: "ARS",
+                        })}
                       </span>
                     </p>
                     <p className=" font-normal py-2 px-5 uppercase text-sm rounded-xl text-green-700 flex gap-2 items-center">
-                      <span className="underline"> total final </span>{" "}
+                      <span className="underline">
+                        {" "}
+                        total final con el{" "}
+                        <span className="font-bold">iva</span> de los productos{" "}
+                      </span>{" "}
                       <span className="bg-green-100 py-2 px-4 text-base rounded-xl font-bold">
-                        {Number(
-                          totalFinalSumSinIva * iva || totalFinalSumSinIva
-                        ).toLocaleString("es-AR", {
+                        {Number(totalFinalSumSinIva).toLocaleString("es-AR", {
                           style: "currency",
                           currency: "ARS",
                         })}
@@ -591,7 +619,6 @@ export const ModalEditarOrdenTotal = ({ isOpen, closeModal, obtenerId }) => {
                   productoSeleccionado={productoSeleccionado}
                   setProductoSeleccionado={setProductoSeleccionado}
                   isOpen={isOpenProductoEditar}
-                  // openProductoEditar={openProductoEditar}
                   closeModal={closeProductoEditar}
                   OBTENERID={OBTENERID}
                 />

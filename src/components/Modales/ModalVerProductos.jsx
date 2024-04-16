@@ -62,7 +62,7 @@ export const ModalVerProductos = ({ isOpen, closeModal, obtenerId }) => {
               leaveFrom="opacity-100 scale-100"
               leaveTo="opacity-0 scale-95"
             >
-              <div className="inline-block w-1/2 max-md:w-full p-6 my-8 overflow-hidden max-md:h-[300px] max-md:overflow-y-scroll text-left align-middle transition-all transform bg-white shadow-xl rounded-3xl">
+              <div className="inline-block w-2/3 max-md:w-full p-6 my-8 overflow-hidden max-md:h-[300px] max-md:overflow-y-scroll text-left align-middle transition-all transform bg-white shadow-xl rounded-3xl">
                 <div className="flex justify-end">
                   <button
                     type="button"
@@ -108,35 +108,61 @@ export const ModalVerProductos = ({ isOpen, closeModal, obtenerId }) => {
                           Precio und
                         </th>
                         <th className="whitespace-nowrap px-4 py-4 text-slate-700 uppercase font-bold">
-                          Precio total
+                          Precio total Sin Iva
+                        </th>
+                        <th className="whitespace-nowrap px-4 py-4 text-slate-700 uppercase font-bold">
+                          Iva Seleccionado
+                        </th>
+                        <th className="whitespace-nowrap px-4 py-4 text-slate-700 uppercase font-bold">
+                          Precio total Con Iva
                         </th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-gray-200">
                       {datos?.datos?.productoSeleccionado.map((p) => (
                         <tr key={p.id}>
-                          <td className="whitespace-nowrap px-4 py-4 text-gray-700 uppercase text-sm font-bold">
+                          <td className=" px-4 py-4 text-gray-700 uppercase text-sm font-bold">
                             {p.detalle}
                           </td>
-                          <td className="whitespace-nowrap px-4 py-4 text-gray-700 uppercase text-sm">
+                          <td className=" px-4 py-4 text-gray-700 uppercase text-sm">
                             {p.categoria}
                           </td>
-                          <td className="whitespace-nowrap px-4 py-4 text-gray-700 uppercase text-sm">
+                          <td className=" px-4 py-4 text-gray-700 uppercase text-sm">
                             {p.cantidad}
                           </td>
-                          <td className="whitespace-nowrap px-4 py-4 text-gray-700 uppercase text-sm">
+                          <td className=" px-4 py-4 text-gray-700 uppercase text-sm">
                             {Number(p.precio_und).toLocaleString("es-AR", {
                               style: "currency",
                               currency: "ARS",
                             })}
                           </td>
-                          <td className="whitespace-nowrap px-4 py-4 text-green-700 uppercase text-sm font-bold flex">
-                            <p className="bg-green-100 py-2 px-5 rounded-xl">
-                              {Number(p.totalFinal).toLocaleString("es-AR", {
-                                style: "currency",
-                                currency: "ARS",
-                              })}
-                            </p>
+                          <td className="px-4 py-4 text-green-700 uppercase text-sm font-bold">
+                            <div className="flex">
+                              <p className="bg-green-100 py-2 px-5 rounded-xl">
+                                {Number(p.totalFinal).toLocaleString("es-AR", {
+                                  style: "currency",
+                                  currency: "ARS",
+                                })}
+                              </p>
+                            </div>
+                          </td>
+                          <td className=" px-4 py-4 text-gray-700 uppercase text-sm">
+                            {(p.iva === 1.105 && "IVA DEL 10.05") ||
+                              (p.iva === 1.21 && "IVA DEL 21.00") ||
+                              (p.iva === 0 && "NO TIENE IVA")}
+                          </td>
+                          <td className="px-4 py-4 text-indigo-700 uppercase text-sm font-bold ">
+                            <div className="flex">
+                              <p className="bg-indigo-100 py-2 px-5 rounded-xl">
+                                {Number(p.totalFinalIva).toLocaleString(
+                                  "es-AR",
+                                  {
+                                    style: "currency",
+                                    currency: "ARS",
+                                  }
+                                )}
+                              </p>
+                            </div>
                           </td>
                         </tr>
                       ))}

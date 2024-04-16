@@ -285,24 +285,40 @@ export const ViewOrden = () => {
                 {producto.cantidad}
               </p>
               <p className="text-slate-700 text-base uppercase">
-                <span className="font-bold">Total: </span>
+                <span className="font-bold">Total sin iva: </span>
                 {Number(producto.totalFinal).toLocaleString("es-AR", {
                   style: "currency",
                   currency: "ARS",
                 })}
+              </p>
+              <p className="text-slate-700 text-base uppercase">
+                <span className="font-bold">Iva seleccionado: </span>
+                {(producto.iva === 1.105 && "IVA DEL 10.05") ||
+                  (producto.iva === 1.21 && "IVA DEL 21.00") ||
+                  (producto.iva === 0 && "NO TIENE IVA")}
+              </p>
+              <p className="text-slate-700 text-base uppercase">
+                <span className="font-bold">Total con iva: </span>
+                <span className="font-bold text-red-700">
+                  {" "}
+                  {Number(producto.totalFinalIva).toLocaleString("es-AR", {
+                    style: "currency",
+                    currency: "ARS",
+                  })}
+                </span>
               </p>
               <div className="mt-2 flex gap-2 items-center justify-end">
                 <button
                   type="button"
                   className="bg-green-100 text-green-700 text-sm py-2 px-4 rounded-xl flex items-center gap-1"
                 >
-                  {Number(producto.totalFinal / 10000).toFixed(2)}%
+                  {Number(producto.totalFinalIva / 10000).toFixed(2)}%
                 </button>
                 <button
                   type="button"
                   className="bg-indigo-100 text-indigo-700 text-sm py-2 px-4 rounded-xl flex items-center gap-1"
                 >
-                  {Number(producto.totalFinal).toLocaleString("es-AR", {
+                  {Number(producto.totalFinalIva).toLocaleString("es-AR", {
                     style: "currency",
                     currency: "ARS",
                   })}

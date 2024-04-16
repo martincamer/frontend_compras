@@ -55,6 +55,8 @@ export const ModalCrearOrden = ({ isOpen, closeModal }) => {
     precio_und,
     cantidad,
     totalFinal,
+    totalFinalIva,
+    iva,
     cantidadFaltante
   ) => {
     const newProducto = {
@@ -64,6 +66,8 @@ export const ModalCrearOrden = ({ isOpen, closeModal }) => {
       precio_und,
       cantidad,
       totalFinal,
+      totalFinalIva,
+      iva,
       cantidadFaltante: 0,
     };
 
@@ -116,10 +120,12 @@ export const ModalCrearOrden = ({ isOpen, closeModal }) => {
 
   const totalFinalSumSinIva = productoSeleccionado.reduce(
     (accumulator, currentValue) => {
-      return accumulator + currentValue.totalFinal;
+      return accumulator + currentValue.totalFinalIva;
     },
     0
   );
+
+  console.log(productoSeleccionado);
 
   const onSubmit = async (e) => {
     e.preventDefault();
@@ -127,7 +133,7 @@ export const ModalCrearOrden = ({ isOpen, closeModal }) => {
     const datosOrden = {
       proveedor,
       numero_factura,
-      precio_final: Number(totalFinalSumSinIva * iva || totalFinalSumSinIva),
+      precio_final: Number(totalFinalSumSinIva),
       fecha_factura,
       localidad,
       provincia,
@@ -138,7 +144,7 @@ export const ModalCrearOrden = ({ isOpen, closeModal }) => {
 
     const datos = {
       proveedor,
-      total: Number(totalFinalSumSinIva * iva || totalFinalSumSinIva),
+      total: Number(totalFinalSumSinIva),
     };
 
     const res = await client.post("/crear-orden-nueva", datosOrden);
@@ -311,27 +317,6 @@ export const ModalCrearOrden = ({ isOpen, closeModal }) => {
                   <div className="grid grid-cols-3 gap-2">
                     <div className="flex flex-col gap-1">
                       <label className="text-sm text-slate-700 uppercase">
-                        SELECCIONAR EL IVA
-                      </label>
-                      <select
-                        value={iva}
-                        onChange={(e) => setIva(e.target.value)}
-                        className="py-2 px-4 rounded-xl border-slate-300 border-[1px] shadow uppercase placeholder:text-slate-300 text-sm bg-white"
-                        placeholder="PROVEEDOR DE LA ORDEN"
-                      >
-                        <option className="uppercase" value={0}>
-                          SACAR EL IVA
-                        </option>
-                        <option className="uppercase" value={1.21}>
-                          IVA DEL 21.00
-                        </option>
-                        <option className="uppercase" value={1.105}>
-                          IVA DEL 10.50
-                        </option>
-                      </select>
-                    </div>
-                    <div className="flex flex-col gap-1">
-                      <label className="text-sm text-slate-700 uppercase">
                         Proveedor de la orden
                       </label>
                       <select
@@ -463,6 +448,12 @@ export const ModalCrearOrden = ({ isOpen, closeModal }) => {
                             Total
                           </th>
                           <th className="whitespace-nowrap px-4 py-4 text-slate-700 uppercase font-bold">
+                            Iva seleccionado
+                          </th>
+                          <th className="whitespace-nowrap px-4 py-4 text-slate-700 uppercase font-bold">
+                            Total Con iva
+                          </th>
+                          <th className="whitespace-nowrap px-4 py-4 text-slate-700 uppercase font-bold">
                             Acciones
                           </th>
                         </tr>
@@ -482,8 +473,19 @@ export const ModalCrearOrden = ({ isOpen, closeModal }) => {
                                 currency: "ARS",
                               })}
                             </td>
-                            <td className="whitespace-nowrap px-4 py-4  uppercase text-sm font-bold text-indigo-500">
+                            <td className="whitespace-nowrap px-4 py-4  uppercase text-sm font-bold text-black">
                               {Number(p.totalFinal).toLocaleString("es-AR", {
+                                style: "currency",
+                                currency: "ARS",
+                              })}
+                            </td>
+                            <td className="whitespace-nowrap px-4 py-4  uppercase text-sm font-normal">
+                              {(p.iva === 1.105 && "IVA DEL 10.05") ||
+                                (p.iva === 1.21 && "IVA DEL 21.00") ||
+                                (p.iva === 0 && "NO TIENE IVA")}
+                            </td>
+                            <td className="whitespace-nowrap px-4 py-4  uppercase text-sm font-bold text-indigo-500">
+                              {Number(p.totalFinalIva).toLocaleString("es-AR", {
                                 style: "currency",
                                 currency: "ARS",
                               })}
@@ -541,24 +543,33 @@ export const ModalCrearOrden = ({ isOpen, closeModal }) => {
                     <p className=" font-normal py-2 px-5 uppercase text-sm rounded-xl text-indigo-700 flex gap-2 items-center">
                       <span className="underline"> subtotal </span>
                       <span className="bg-indigo-100 py-2 px-4 text-base rounded-xl font-bold">
-                        {totalFinalSumSinIva.toLocaleString("es-AR", {
+                        {totalesFinales.toLocaleString("es-AR", {
                           style: "currency",
                           currency: "ARS",
                         })}
                       </span>
                     </p>
                     <p className=" font-normal py-2 px-5 uppercase text-sm rounded-xl text-indigo-700 flex gap-2 items-center">
-                      <span className="underline"> iva seleccionado de </span>
+                      <span className="underline"> total iva agregado </span>
                       <span className="bg-indigo-100 py-2 px-4 text-base rounded-xl font-bold">
-                        {(iva == 1.21 && "21.00") || (iva == 1.105 && "10.50")}
+                        {Number(
+                          totalFinalSumSinIva - totalesFinales
+                        ).toLocaleString("es-AR", {
+                          style: "currency",
+                          currency: "ARS",
+                        })}
                       </span>
                     </p>
                     <p className=" font-normal py-2 px-5 uppercase text-sm rounded-xl text-green-700 flex gap-2 items-center">
-                      <span className="underline"> total final </span>{" "}
+                      <span className="underline">
+                        {" "}
+                        total final con <span className="font-bold">
+                          ivas
+                        </span>{" "}
+                        seleccionado{" "}
+                      </span>{" "}
                       <span className="bg-green-100 py-2 px-4 text-base rounded-xl font-bold">
-                        {Number(
-                          totalFinalSumSinIva * iva || totalFinalSumSinIva
-                        ).toLocaleString("es-AR", {
+                        {Number(totalFinalSumSinIva).toLocaleString("es-AR", {
                           style: "currency",
                           currency: "ARS",
                         })}
