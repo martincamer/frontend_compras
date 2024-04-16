@@ -14,26 +14,26 @@ export const ModalCrearProductos = ({ isOpen, closeModal }) => {
 
   const { categorias, setProductos } = useProductosContext();
 
-  useEffect(() => {
-    const newSocket = io(
-      "https://backendcompras-production.up.railway.app",
-      // import.meta.env.BACKEND_URL,
-      // "http://localhost:4000",
-      {
-        withCredentials: true,
-      }
-    );
+  // useEffect(() => {
+  //   const newSocket = io(
+  //     // "https://backendcompras-production.up.railway.app",
+  //     // import.meta.env.BACKEND_URL,
+  //     // "http://localhost:4000",
+  //     {
+  //       withCredentials: true,
+  //     }
+  //   );
 
-    setSocket(newSocket);
+  //   setSocket(newSocket);
 
-    // showSuccess();
+  //   // showSuccess();
 
-    newSocket.on("crear-producto", (nuevaSalida) => {
-      setProductos((prevTipos) => [...prevTipos, nuevaSalida]);
-    });
+  //   newSocket.on("crear-producto", (nuevaSalida) => {
+  //     setProductos((prevTipos) => [...prevTipos, nuevaSalida]);
+  //   });
 
-    return () => newSocket.close();
-  }, []);
+  //   return () => newSocket.close();
+  // }, []);
 
   const onSubmit = async (e) => {
     e.preventDefault();
@@ -46,6 +46,9 @@ export const ModalCrearProductos = ({ isOpen, closeModal }) => {
       if (socket) {
         socket.emit("crear-producto", res.data);
       }
+
+      setProductos((prevTipos) => [...prevTipos, res.data]);
+
       // Limpiar los campos después de enviar los datos
       setPrecio("");
       setDetale("");

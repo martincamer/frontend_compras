@@ -1,5 +1,7 @@
 import { Dialog, Menu, Transition } from "@headlessui/react";
 import { Fragment, useEffect, useState } from "react";
+import { useProductosContext } from "../../context/ProductosProvider";
+import client from "../../api/axios";
 
 export const ModalEditarProductoSeleccionado = ({
   isOpen,
@@ -13,7 +15,7 @@ export const ModalEditarProductoSeleccionado = ({
   const [detalle, setDetalle] = useState("");
   const [cantidad, setCantidad] = useState("");
 
-  console.log(productoSeleccionado);
+  const { productos, setProductos } = useProductosContext();
 
   useEffect(() => {
     // Buscar el cliente seleccionado dentro de datosCliente
@@ -58,6 +60,43 @@ export const ModalEditarProductoSeleccionado = ({
 
     // Cerrar el modal después de editar el cliente
     closeModal();
+  };
+
+  const handleSubmitPrecioUnd = async () => {
+    try {
+      const res = await client.put(
+        `/editar-producto/precio-detalle/${detalle}`,
+        {
+          precio_und,
+        }
+      );
+
+      console.log(res);
+      const productoEncontrado = productos.find(
+        (producto) => producto.detalle === detalle
+      );
+
+      if (!productoEncontrado) {
+        console.error("Producto no encontrado");
+        return;
+      }
+
+      // Actualizar solo el campo precio_und del producto encontrado
+      const productoActualizado = {
+        ...productoEncontrado,
+        precio_und: precio_und,
+      };
+
+      // Crear un nuevo array de productos con el producto actualizado
+      const nuevosProductos = productos.map((producto) =>
+        producto.id === productoActualizado.id ? productoActualizado : producto
+      );
+
+      // Actualizar el estado de productos con el nuevo array que incluye el producto actualizado
+      setProductos(nuevosProductos);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -199,6 +238,7 @@ export const ModalEditarProductoSeleccionado = ({
                   <button
                     onClick={() => {
                       handleCliente();
+                      handleSubmitPrecioUnd();
                       //   closeModal();
                     }}
                     type="button"

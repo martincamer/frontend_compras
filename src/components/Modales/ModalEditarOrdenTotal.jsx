@@ -6,6 +6,7 @@ import { ModalSeleccionarProducto } from "./ModalSeleccionarProducto";
 import { ModalEditarProductoSeleccionado } from "./ModalEditarProductoSeleccionado";
 import { useProductosContext } from "../../context/ProductosProvider";
 import client from "../../api/axios";
+import { ModalCrearProductos } from "./ModalCrearProductos";
 
 export const ModalEditarOrdenTotal = ({ isOpen, closeModal, obtenerId }) => {
   const { setOrdenesMensuales } = useOrdenesContext();
@@ -32,6 +33,16 @@ export const ModalEditarOrdenTotal = ({ isOpen, closeModal, obtenerId }) => {
 
   const [OBTENERID, setObtenerId] = useState(null);
   const [productoSeleccionado, setProductoSeleccionado] = useState([]);
+
+  const [isOpenProductoNew, setIsOpenProductoNew] = useState(false);
+
+  const openModalProducto = () => {
+    setIsOpenProductoNew(true);
+  };
+
+  const closeModalProducto = () => {
+    setIsOpenProductoNew(false);
+  };
 
   useEffect(() => {
     async function loadData() {
@@ -395,13 +406,34 @@ export const ModalEditarOrdenTotal = ({ isOpen, closeModal, obtenerId }) => {
                       className="py-2 px-4 rounded-xl border-slate-300 border-[1px] shadow uppercase placeholder:text-slate-300 text-sm"
                     />
                   </div>
-                  <div>
+                  <div className="flex gap-2">
                     <button
                       type="button"
                       onClick={() => openProducto()}
                       className="bg-green-200 py-2 px-5 rounded-xl text-green-600 text-sm"
                     >
                       CARGAR PRODUCTO
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => openModalProducto()}
+                      className="bg-indigo-100 py-2 px-5 rounded-xl text-indigo-600 text-sm flex gap-2 items-center"
+                    >
+                      CREAR PRODUCTO INEXISTENTE
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        strokeWidth={1.5}
+                        stroke="currentColor"
+                        className="w-6 h-6"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+                        />
+                      </svg>
                     </button>
                   </div>
 
@@ -563,15 +595,10 @@ export const ModalEditarOrdenTotal = ({ isOpen, closeModal, obtenerId }) => {
                   closeModal={closeProductoEditar}
                   OBTENERID={OBTENERID}
                 />
-                {/* <div className="mt-4">
-                  <button
-                    type="button"
-                    className="inline-flex justify-center px-4 py-2 text-sm text-red-900 bg-red-100 border border-transparent rounded-xl hover:bg-red-200 duration-300 cursor-pointer max-md:text-xs"
-                    onClick={closeModal}
-                  >
-                    Cerrar Ventana
-                  </button>
-                </div> */}
+                <ModalCrearProductos
+                  isOpen={isOpenProductoNew}
+                  closeModal={closeModalProducto}
+                />
               </div>
             </Transition.Child>
           </div>
