@@ -324,6 +324,21 @@ export const ProductosOrdenesFiltrador = () => {
                   currency: "ARS",
                 })}
               </p>
+              <p className="text-slate-700 uppercase text-sm">
+                <span className="font-bold">Iva seleccionado: </span>
+                {(producto.iva === 1.105 && "10.05") ||
+                  (producto.iva === 1.21 && "21.00") ||
+                  (producto.iva === 0 && "NO TIENE IVA")}
+              </p>
+              <p className="text-slate-700 uppercase text-sm font-bold">
+                <span className="font-bold">Total final Iva: </span>
+                <span className="font-bold text-green-500">
+                  {Number(producto.totalFinalIva).toLocaleString("es-AR", {
+                    style: "currency",
+                    currency: "ARS",
+                  })}
+                </span>
+              </p>
             </div>
           ))
         )}

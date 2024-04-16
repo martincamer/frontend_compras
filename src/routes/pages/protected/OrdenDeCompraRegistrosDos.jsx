@@ -616,6 +616,32 @@ export const OrdenDeCompraRegistrosDos = () => {
                               )}
                             </span>
                           </p>
+
+                          <p className="text-xs uppercase">
+                            <span className="font-bold text-slate-700">
+                              Iva Seleccionado:
+                            </span>{" "}
+                            <span className="text-slate-900">
+                              Iva{" "}
+                              {(producto.iva === 1.105 && "10.05") ||
+                                (producto.iva === 1.21 && "21.00") ||
+                                (producto.iva === 0 && "NO TIENE IVA")}
+                            </span>
+                          </p>
+                          <p className="text-xs uppercase">
+                            <span className="font-bold text-slate-700">
+                              Total Final Iva:
+                            </span>{" "}
+                            <span className="text-slate-900">
+                              {Number(producto.totalFinalIva).toLocaleString(
+                                "es-AR",
+                                {
+                                  style: "currency",
+                                  currency: "ARS",
+                                }
+                              )}
+                            </span>
+                          </p>
                         </div>
                       ))}
                     </div>

@@ -229,6 +229,28 @@ export const ImprirmirProductosPDF = ({ datos }) => {
               >
                 Total Final{" "}
               </Text>
+              <Text
+                style={{
+                  width: "20%",
+                  fontFamily: "Montserrat",
+                  fontWeight: "semibold",
+                  fontSize: "8px",
+                  textTransform: "uppercase",
+                }}
+              >
+                Iva Seleccionado{" "}
+              </Text>
+              <Text
+                style={{
+                  width: "20%",
+                  fontFamily: "Montserrat",
+                  fontWeight: "semibold",
+                  fontSize: "8px",
+                  textTransform: "uppercase",
+                }}
+              >
+                Total Final Iva{" "}
+              </Text>
             </View>
             {datos.map((producto, index) => (
               <View
@@ -307,6 +329,33 @@ export const ImprirmirProductosPDF = ({ datos }) => {
                   }}
                 >
                   {Number(producto.totalFinal).toLocaleString("es-AR", {
+                    style: "currency",
+                    currency: "ARS",
+                  })}
+                </Text>
+                <Text
+                  style={{
+                    width: "20%",
+                    fontFamily: "Montserrat",
+                    fontWeight: "semibold",
+                    fontSize: "7px",
+                    textTransform: "uppercase",
+                  }}
+                >
+                  {(producto.iva === 1.105 && "10.05") ||
+                    (producto.iva === 1.21 && "21.00") ||
+                    (producto.iva === 0 && "NO TIENE IVA")}
+                </Text>
+                <Text
+                  style={{
+                    width: "20%",
+                    fontFamily: "Montserrat",
+                    fontWeight: "bold",
+                    fontSize: "7px",
+                    textTransform: "uppercase",
+                  }}
+                >
+                  {Number(producto.totalFinalIva).toLocaleString("es-AR", {
                     style: "currency",
                     currency: "ARS",
                   })}
