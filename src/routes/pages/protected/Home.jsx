@@ -275,13 +275,13 @@ export const Home = () => {
                       key={category.category}
                     >
                       <span className="font-bold">{category.category}:</span>{" "}
-                      <span className="text-red-600">
+                      <p className="text-red-600">
                         {" "}
                         {Number(category.total).toLocaleString("es-AR", {
                           style: "currency",
                           currency: "ARS",
                         })}
-                      </span>
+                      </p>
                     </li>
                   ))}
                 </ul>
@@ -401,28 +401,25 @@ export const Home = () => {
         </article>
       </div>
 
-      <div className="grid grid-cols-2 items-start gap-5 overflow-y-scroll pb-4">
-        <div className="h-[500px] border-slate-300 border-[1px] py-5 px-5 rounded-2xl flex flex-col gap-12 hover:shadow-md transition-all ease-linear cursor-pointer">
+      <div className="grid grid-cols-2 items-start gap-5 pb-4">
+        <div className="h-[500px] overflow-y-scroll border-slate-300 border-[1px] py-5 px-5 rounded-2xl flex flex-col gap-12 hover:shadow-md transition-all ease-linear cursor-pointer">
           <div className="text-2xl font-medium text-gray-900 max-md:text-base flex flex-col gap-5">
             {categoryTotalsData.map((category) => (
               <div key={category.category}>
                 <p className="uppercase text-sm text-slate-600">
                   {category.category}:
                 </p>
-                <div className="bg-gray-200 rounded-xl h-3 relative">
-                  <div
-                    className="bg-indigo-500 h-full rounded-xl"
-                    style={{
-                      width: `${(Number(category.total) / 20000000) * 100}%`,
-                    }}
-                  ></div>
-                </div>
+                <progress
+                  className="[&::-webkit-progress-bar]:rounded-lg [&::-webkit-progress-value]:rounded-lg rounded-full  [&::-webkit-progress-bar]:bg-slate-300 [&::-webkit-progress-value]:bg-green-400 [&::-moz-progress-bar]:bg-green-400 w-full h-3"
+                  value={Number(category.total)}
+                  max={20000000}
+                ></progress>
                 <div>
-                  <p className=" text-xs text-slate-700 px-2 py-1 font-semibold">
+                  <p className="text-xs text-slate-700 px-2 py-1 font-semibold">
                     {`${category.total.toLocaleString("es-AR", {
                       style: "currency",
                       currency: "ARS",
-                    })} (${(Number(category.total / 20000000) * 100).toFixed(
+                    })} (${((Number(category.total) / 20000000) * 100).toFixed(
                       2
                     )}%)`}
                   </p>

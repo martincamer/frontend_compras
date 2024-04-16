@@ -25,7 +25,7 @@ const ProgressBar = ({ ordenesMensuales }) => {
         <p className="text-slate-700 text-sm font-bold mb-3 uppercase max-md:text-sm">
           Total en compras del mes
         </p>
-        <p className=" text-sm font-bold mb-3 max-md:text-sm rounded-xl text-red-600">
+        <p className="text-sm font-bold mb-3 max-md:text-sm rounded-xl text-red-600">
           -{" "}
           {Number(totalFinalAcumulado).toLocaleString("es-AR", {
             style: "currency",
@@ -33,12 +33,11 @@ const ProgressBar = ({ ordenesMensuales }) => {
           })}{" "}
         </p>
       </div>
-      <div className="w-full bg-gray-200 rounded-xl overflow-hidden ">
-        <div
-          className="h-3 max-md:h-2 bg-red-500"
-          style={{ width: `${porcentajeTotal}%` }}
-        ></div>
-      </div>
+      <progress
+        className="[&::-webkit-progress-bar]:rounded-lg [&::-webkit-progress-value]:rounded-lg rounded-full  [&::-webkit-progress-bar]:bg-slate-300 [&::-webkit-progress-value]:bg-red-400 [&::-moz-progress-bar]:bg-red-400 w-full h-3"
+        value={Number(totalFinalAcumulado)}
+        max={100000000}
+      ></progress>
     </div>
   );
 };

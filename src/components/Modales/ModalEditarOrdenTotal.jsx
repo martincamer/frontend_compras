@@ -305,7 +305,7 @@ export const ModalEditarOrdenTotal = ({ isOpen, closeModal, obtenerId }) => {
                 </div>
                 <form onSubmit={onSubmit} className="flex flex-col gap-3">
                   <div className="grid grid-cols-3 gap-2">
-                    <div className="flex flex-col gap-1">
+                    {/* <div className="flex flex-col gap-1">
                       <label className="text-sm text-slate-700 uppercase">
                         SELECCIONAR EL IVA
                       </label>
@@ -325,7 +325,7 @@ export const ModalEditarOrdenTotal = ({ isOpen, closeModal, obtenerId }) => {
                           IVA DEL 10.50
                         </option>
                       </select>
-                    </div>
+                    </div> */}
                     <div className="flex flex-col gap-1">
                       <label className="text-sm text-slate-700 uppercase">
                         Proveedor de la orden
