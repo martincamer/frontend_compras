@@ -4,6 +4,7 @@ import { Link, useParams } from "react-router-dom";
 import { ModalComprobante } from "../../../components/Modales/ModalComprobante";
 import { ModalObtenerCompra } from "../../../components/Modales/ModalObtenerCompra";
 import client from "../../../api/axios";
+import { ModalEditarSaldoProveedor } from "../../../components/Modales/ModalEditarSaldoProveedor";
 
 export const Proveedor = () => {
   const [datos, setDatos] = useState([]);
@@ -156,6 +157,45 @@ export const Proveedor = () => {
   return (
     <section className="w-full h-full px-5 max-md:px-4 flex flex-col gap-2 py-16 max-md:gap-5">
       <ToastContainer />
+      <nav aria-label="Breadcrumb" className="flex px-5">
+        <ol className="flex overflow-hidden rounded-xl border bg-slate-300 text-gray-600 shadow">
+          <li className="flex items-center">
+            <Link
+              to={"/"}
+              className="flex h-10 items-center gap-1.5 bg-gray-100 px-4 transition hover:text-gray-900"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-4 w-4"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
+                />
+              </svg>
+
+              <span className="ms-1.5 text-xs font-medium"> INICIO </span>
+            </Link>
+          </li>
+
+          <li className="relative flex items-center">
+            <span className="absolute inset-y-0 -start-px h-10 w-4 bg-gray-100 [clip-path:_polygon(0_0,_0%_100%,_100%_50%)] rtl:rotate-180"></span>
+
+            <Link
+              to={"/proveedores"}
+              href="#"
+              className="flex h-10 items-center bg-white pe-4 ps-8 text-xs font-medium transition hover:text-gray-900"
+            >
+              PROVEEDORES
+            </Link>
+          </li>
+        </ol>
+      </nav>
 
       <div className="mx-6 mt-5">
         <p className="uppercase text-lg">
@@ -404,6 +444,28 @@ export const Proveedor = () => {
             />
           </svg>
         </button>
+        <button
+          onClick={() => {
+            handleID(params.id), openModal();
+          }}
+          className="bg-green-100 py-2 px-4 rounded-xl text-sm text-green-700 uppercase max-md:text-xs flex gap-2 items-center hover:bg-green-500 hover:text-white transition-all ease-linear"
+        >
+          Editar el saldo del proveedor
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth={1.5}
+            stroke="currentColor"
+            className="w-6 h-6"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M12 6v12m-3-2.818.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.003-.659-1.106-.879-1.106-2.303 0-3.182s2.9-.879 4.006 0l.415.33M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+            />
+          </svg>
+        </button>
       </div>
 
       <div className="mx-8 mt-6">
@@ -561,6 +623,14 @@ export const Proveedor = () => {
         isOpen={isComprobante}
         closeModal={closeComprobanteModal}
         obtenerId={obtenerId}
+      />
+      <ModalEditarSaldoProveedor
+        setDatos={setDatos}
+        datos={datos}
+        obtenerId={obtenerId}
+        isOpen={isOpen}
+        closeModal={closeModal}
+        params={params}
       />
     </section>
   );
