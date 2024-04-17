@@ -80,6 +80,17 @@ export const Proveedores = () => {
     return () => clearTimeout(timer);
   }, []);
 
+  const [busqueda, setBusqueda] = useState("");
+
+  const handleBusquedaChange = (e) => {
+    setBusqueda(e.target.value);
+  };
+
+  // Filtrar los productos en función de la búsqueda
+  const productosFiltrados = currentProducts.filter((producto) =>
+    producto.proveedor.toLowerCase().includes(busqueda.toLowerCase())
+  );
+
   return isLoading ? (
     <section className="w-full h-full px-5 max-md:px-4 flex flex-col gap-2 py-16 max-md:gap-5">
       {/* ToastContainer */}
@@ -391,6 +402,16 @@ export const Proveedores = () => {
         </p>
       </div>
 
+      <div className="mx-8 mt-3 w-1/3">
+        <input
+          type="text"
+          placeholder="Buscar por proveedor..."
+          value={busqueda}
+          onChange={handleBusquedaChange}
+          className="uppercase py-2 px-3 border border-gray-300 rounded-xl focus:outline-none focus:border-indigo-500 w-full"
+        />
+      </div>
+
       <div className="overflow-x-auto mt-6 mx-8 rounded-2xl border-slate-300 border-[1px] transition-all hover:shadow-md ease-linear cursor-pointer">
         <table className="min-w-full divide-y-2 divide-gray-200 bg-white text-sm">
           <thead className="text-left">
@@ -412,7 +433,7 @@ export const Proveedores = () => {
           </thead>
 
           <tbody className="divide-y divide-gray-200">
-            {currentProducts.map((p) => (
+            {productosFiltrados.map((p) => (
               <tr key={p.id}>
                 <td className="whitespace-nowrap px-4 py-6 font-medium text-gray-900 uppercase text-sm">
                   {p.proveedor}
