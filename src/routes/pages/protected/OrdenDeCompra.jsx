@@ -6,6 +6,7 @@ import { useProductosContext } from "../../../context/ProductosProvider";
 import { ModalEliminar } from "../../../components/Modales/ModalEliminar";
 import { ModalVerProductos } from "../../../components/Modales/ModalVerProductos";
 import { ModalEditarOrdenTotal } from "../../../components/Modales/ModalEditarOrdenTotal";
+import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
 import { Link } from "react-router-dom";
 
 export const OrdenDeCompra = () => {
@@ -79,7 +80,7 @@ export const OrdenDeCompra = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [currentPage, setCurrentPage] = useState(1);
-  const [productsPerPage] = useState(9);
+  const [productsPerPage] = useState(10);
 
   const filteredProducts = ordenesMensuales.filter((orden) => {
     // Verificar si el proveedor, el detalle del producto y la categoría coinciden con los criterios de búsqueda
@@ -668,29 +669,55 @@ export const OrdenDeCompra = () => {
           </tbody>
         </table>
       </div>
-      <div className="flex justify-center mt-4">
+      <div className="flex justify-center items-center mt-4">
         {filteredProducts.length > productsPerPage && (
           <nav className="pagination">
             <ul className="pagination-list flex gap-2">
+              {/* Botón Anterior */}
+              {currentPage > 1 && (
+                <li className="pagination-item">
+                  <button
+                    onClick={() => paginate(currentPage - 1)}
+                    className="pagination-link text-slate-600 bg-white border-[1px] border-slate-300 px-2 py-2 rounded-xl flex items-center"
+                  >
+                    <FiChevronLeft className="text-sm" />
+                  </button>
+                </li>
+              )}
+
+              {/* Renderizar números de página */}
               {Array.from({
                 length: Math.ceil(filteredProducts.length / productsPerPage),
               }).map(
                 (_, index) =>
                   index >= currentPage - 2 &&
-                  index <= currentPage + 2 && ( // Mostrar solo 5 páginas a la vez
+                  index <= currentPage + 2 && (
                     <li key={index} className="pagination-item">
                       <button
                         onClick={() => paginate(index + 1)}
                         className={`pagination-link ${
                           currentPage === index + 1
-                            ? "text-white bg-green-500 px-3 py-1 rounded-xl"
-                            : "text-slate-600 bg-white border-[1px] border-slate-300 px-2 py-1 rounded-xl"
+                            ? "text-white bg-green-500 px-3 py-1 rounded-xl border-[1px] border-green-500"
+                            : "text-slate-600 bg-white border-[1px] border-slate-300 px-3 py-1 rounded-xl"
                         }`}
                       >
                         {index + 1}
                       </button>
                     </li>
                   )
+              )}
+
+              {/* Botón Siguiente */}
+              {currentPage <
+                Math.ceil(filteredProducts.length / productsPerPage) && (
+                <li className="pagination-item">
+                  <button
+                    onClick={() => paginate(currentPage + 1)}
+                    className="pagination-link text-slate-600 bg-white border-[1px] border-slate-300 px-2 py-2 rounded-xl flex items-center"
+                  >
+                    <FiChevronRight className="text-sm" />
+                  </button>
+                </li>
               )}
             </ul>
           </nav>

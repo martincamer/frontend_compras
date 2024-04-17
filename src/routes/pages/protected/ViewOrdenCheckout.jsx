@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import client from "../../../api/axios";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { ModalEditarEntrega } from "../../../components/Modales/ModalEditarEntrega";
 import { ToastContainer } from "react-toastify";
 
@@ -63,6 +63,45 @@ export const ViewOrdenCheckout = () => {
   return (
     <section className="w-full h-full px-5 max-md:px-4 flex flex-col gap-2 py-16 max-md:gap-5">
       <ToastContainer />
+      <nav aria-label="Breadcrumb" className="flex px-5">
+        <ol className="flex overflow-hidden rounded-xl border bg-slate-300 text-gray-600 shadow">
+          <li className="flex items-center">
+            <Link
+              to={"/"}
+              className="flex h-10 items-center gap-1.5 bg-gray-100 px-4 transition hover:text-gray-900"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-4 w-4"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
+                />
+              </svg>
+
+              <span className="ms-1.5 text-xs font-medium"> INICIO </span>
+            </Link>
+          </li>
+
+          <li className="relative flex items-center">
+            <span className="absolute inset-y-0 -start-px h-10 w-4 bg-gray-100 [clip-path:_polygon(0_0,_0%_100%,_100%_50%)] rtl:rotate-180"></span>
+
+            <Link
+              to={"/ordenes-checkout"}
+              href="#"
+              className="flex h-10 items-center bg-white pe-4 ps-8 text-xs font-medium transition hover:text-gray-900"
+            >
+              ORDENES CHECKOUT
+            </Link>
+          </li>
+        </ol>
+      </nav>
       <div className="py-5 px-5 rounded-xl grid grid-cols-4 gap-3 mb-2 max-md:grid-cols-1 max-md:border-none max-md:shadow-none max-md:py-0 max-md:px-0">
         <article className="flex flex-col gap-4 rounded-2xl border border-slate-300 cursor-pointer hover:shadow-md transition-all ease-linear bg-white p-6 max-md:p-3">
           <div className="inline-flex gap-2 self-end rounded-xl bg-red-100 py-3 px-4 text-red-600">
