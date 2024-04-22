@@ -49,21 +49,31 @@ export const Proveedores = () => {
     setOpen(false);
   };
 
-  const [searchTerm, setSearchTerm] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState("all");
   const [currentPage, setCurrentPage] = useState(1);
-  const [productsPerPage] = useState(10);
+  const [productsPerPage] = useState(15); // Puedes ajustar el número de productos por página según tus necesidades
+  const [busqueda, setBusqueda] = useState("");
 
-  // Lógica de paginación
+  const handleBusquedaChange = (e) => {
+    setBusqueda(e.target.value);
+  };
+
+  // Filtrar productos en función de la búsqueda
+  const productosFiltrados = proveedores?.filter((producto) =>
+    producto.proveedor.toLowerCase().includes(busqueda.toLowerCase())
+  );
+
+  // Lógica de paginación basada en productos filtrados
   const indexOfLastProduct = currentPage * productsPerPage;
   const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
-  const currentProducts = proveedores?.slice(
+  const currentProducts = productosFiltrados.slice(
     indexOfFirstProduct,
     indexOfLastProduct
   );
 
   // Cambiar de página
-  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+  const paginate = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
 
   const precioTotal = proveedores.reduce(
     (total, orden) => total + Number(orden.total),
@@ -79,17 +89,6 @@ export const Proveedores = () => {
 
     return () => clearTimeout(timer);
   }, []);
-
-  const [busqueda, setBusqueda] = useState("");
-
-  const handleBusquedaChange = (e) => {
-    setBusqueda(e.target.value);
-  };
-
-  // Filtrar los productos en función de la búsqueda
-  const productosFiltrados = currentProducts.filter((producto) =>
-    producto.proveedor.toLowerCase().includes(busqueda.toLowerCase())
-  );
 
   return isLoading ? (
     <section className="w-full h-full px-5 max-md:px-4 flex flex-col gap-2 py-16 max-md:gap-5">

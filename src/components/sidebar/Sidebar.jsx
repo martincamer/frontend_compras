@@ -1,36 +1,60 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useAuth } from "../../context/AuthProvider";
 import { Link, useLocation } from "react-router-dom";
 
 export const SideBar = () => {
-  const [click, setClick] = useState(false);
   const { signout } = useAuth();
+  const [visible, setVisible] = useState(false);
 
-  const toggleSidebar = () => {
-    setClick(!click);
-  };
+  const menuRef = useRef(null); // Para referenciar el menú
+  const sidebarAreaRef = useRef(null); // Para referenciar el área sensible al mouse
 
   const location = useLocation();
 
+  const toggleSidebar = () => {
+    setVisible(!visible);
+  };
+
   useEffect(() => {
-    const handleScroll = () => {
-      const scrollY = window.scrollY;
-      const navbar = document.getElementById("navbar");
-      if (navbar) {
-        if (scrollY > 0) {
-          navbar.style.opacity = "0.5"; // Cambiar la opacidad cuando se hace scroll
-        } else {
-          navbar.style.opacity = "1"; // Restaurar la opacidad cuando se encuentra en la parte superior
-        }
+    const handleClickOutside = (event) => {
+      if (
+        menuRef.current &&
+        !menuRef.current.contains(event.target) &&
+        !sidebarAreaRef.current.contains(event.target)
+      ) {
+        setVisible(false); // Cerrar menú si el clic es fuera de su área
       }
     };
 
-    window.addEventListener("scroll", handleScroll);
+    document.addEventListener("click", handleClickOutside);
+    return () => {
+      document.removeEventListener("click", handleClickOutside);
+    };
+  }, []); // Se ejecuta solo cuando el componente se monta y se desmonte
+
+  useEffect(() => {
+    const handleMouseEnter = () => {
+      setVisible(true);
+    };
+
+    const handleMouseLeave = (event) => {
+      // Verificamos que el mouse realmente dejó la barra lateral antes de cerrarla
+      if (menuRef.current && !menuRef.current.contains(event.relatedTarget)) {
+        setVisible(false);
+      }
+    };
+
+    sidebarAreaRef.current.addEventListener("mouseenter", handleMouseEnter);
+    menuRef.current.addEventListener("mouseleave", handleMouseLeave);
 
     return () => {
-      window.removeEventListener("scroll", handleScroll);
+      sidebarAreaRef.current.removeEventListener(
+        "mouseenter",
+        handleMouseEnter
+      );
+      menuRef.current.removeEventListener("mouseleave", handleMouseLeave);
     };
-  }, []);
+  }, []); // Se ejecuta solo cuando el componente se monta y se desmonte
 
   return (
     <>
@@ -39,43 +63,24 @@ export const SideBar = () => {
         className="fixed left-0 top-0 z-[1] p-1 px-4 max-md:px-4"
         onClick={() => toggleSidebar()}
       >
-        <div className="py-4">
-          <a
-            onClick={() => toggleSidebar()}
-            href="#"
-            className="t group relative flex justify-center rounded bg-slate-200 px-2 py-1.5 text-black-500"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth={1.5}
-              stroke="currentColor"
-              className="w-7 h-7 max-md:h-6 max-md:w-6"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25H12"
-              />
-            </svg>
-
-            <span className="invisible absolute start-full w-[120px] text-center top-1/2 ms-4 -translate-y-1/2 rounded bg-gray-900 px-2 py-1.5 text-xs font-medium text-white group-hover:visible">
-              Abrir Navegación
-            </span>
-          </a>
-        </div>
+        <div
+          ref={sidebarAreaRef} // Referencia para el área sensible al mouse
+          className="fixed left-0 top-0 z-[100] h-full w-5 bg-transparent bg-white"
+        ></div>
       </div>
       <div
+        ref={menuRef}
         className={`${
-          click ? "translate-x-0" : "-translate-x-full"
-        } fixed left-0 top-0 z-[100] w-20 bg-white h-full shadow-lg transition-transform duration-300 ease-in-out`}
+          visible
+            ? "translate-x-0 w-20 opacity-1"
+            : "-translate-x-full w-[-100px] opacity-0"
+        } fixed left-0 top-0 z-[100] bg-white h-full shadow-lg transition-transform duration-300 ease-in-out`}
       >
         <div className="flex max-md:w-14 flex-col justify-between border-e bg-white h-full max-h-full min-h-full">
           <div className="">
             <div className="border-t border-slate-300 ">
               <div className="px-2">
-                <div className="py-4">
+                {/* <div className="py-4">
                   <a
                     onClick={() => toggleSidebar()}
                     href="#"
@@ -100,7 +105,7 @@ export const SideBar = () => {
                       Cerrar Navegacion
                     </span>
                   </a>
-                </div>
+                </div> */}
 
                 <ul className="space-y-1 flex flex-col border-t border-slate-300 pt-4 ">
                   <Link to={"/"} onClick={() => toggleSidebar()}>
@@ -118,7 +123,7 @@ export const SideBar = () => {
                         viewBox="0 0 24 24"
                         strokeWidth={1.5}
                         stroke="currentColor"
-                        className="w-6 h-6"
+                        className="w-7 h-7"
                       >
                         <path
                           strokeLinecap="round"
@@ -127,8 +132,10 @@ export const SideBar = () => {
                         />
                       </svg>
 
-                      <span className="invisible absolute start-full top-1/2 ms-4 -translate-y-1/2 rounded bg-gray-900 px-2 py-1.5 text-xs font-medium text-white group-hover:visible">
-                        Inicio
+                      <span className="invisible absolute start-full top-1/2 ms-4 -translate-y-1/2 bg-white px-3 py-3 text-xs font-medium text-slate-700 group-hover:visible w-[200px] uppercase border-slate-300 border-[1px] rounded-2xl">
+                        <div className="flex justify-center">
+                          <p className="font-bold">Inicio/Estadisticas</p>
+                        </div>
                       </span>
                     </a>
                   </Link>
@@ -148,7 +155,7 @@ export const SideBar = () => {
                         viewBox="0 0 24 24"
                         strokeWidth={1.5}
                         stroke="currentColor"
-                        className="w-6 h-6"
+                        className="w-7 h-7"
                       >
                         <path
                           strokeLinecap="round"
@@ -157,8 +164,10 @@ export const SideBar = () => {
                         />
                       </svg>
 
-                      <span className="invisible absolute start-full top-1/2 ms-4 -translate-y-1/2 rounded bg-gray-900 px-2 py-1.5 text-xs font-medium text-white group-hover:visible">
-                        Productos cargados
+                      <span className="invisible absolute start-full top-1/2 ms-4 -translate-y-1/2 bg-white px-3 py-3 text-xs font-medium text-slate-700 group-hover:visible w-[200px] uppercase border-slate-300 border-[1px] rounded-2xl">
+                        <div className="flex justify-center">
+                          <p className="font-bold">Productos/Crear/Editar</p>
+                        </div>
                       </span>
                     </a>
                   </Link>
@@ -177,7 +186,7 @@ export const SideBar = () => {
                         viewBox="0 0 24 24"
                         strokeWidth={1.5}
                         stroke="currentColor"
-                        className="w-7 h-7"
+                        className="w-8 h-8"
                       >
                         <path
                           strokeLinecap="round"
@@ -186,8 +195,10 @@ export const SideBar = () => {
                         />
                       </svg>
 
-                      <span className="invisible absolute start-full top-1/2 ms-4 -translate-y-1/2 rounded bg-gray-900 px-2 py-1.5 text-xs font-medium text-white group-hover:visible">
-                        Ordenes
+                      <span className="invisible absolute start-full top-1/2 ms-4 -translate-y-1/2 bg-white px-3 py-3 text-xs font-medium text-slate-700 group-hover:visible w-[200px] uppercase border-slate-300 border-[1px] rounded-2xl">
+                        <div className="flex justify-center">
+                          <p className="font-bold">Ordenes/crear/editar</p>
+                        </div>
                       </span>
                     </a>
                   </Link>
@@ -209,7 +220,7 @@ export const SideBar = () => {
                         viewBox="0 0 24 24"
                         strokeWidth={1.5}
                         stroke="currentColor"
-                        className="w-6 h-6"
+                        className="w-8 h-8"
                       >
                         <path
                           strokeLinecap="round"
@@ -218,8 +229,12 @@ export const SideBar = () => {
                         />
                       </svg>
 
-                      <span className="invisible absolute start-full top-1/2 ms-4 -translate-y-1/2 rounded bg-gray-900 px-2 py-1.5 text-xs font-medium text-white group-hover:visible w-[200px]">
-                        Ordenes Pendientes/Finalizadas
+                      <span className="invisible absolute start-full top-1/2 ms-4 -translate-y-1/2 bg-white px-3 py-3 text-xs font-medium text-slate-700 group-hover:visible w-[200px] uppercase border-slate-300 border-[1px] rounded-2xl">
+                        <div className="flex justify-center">
+                          <p className="font-bold">
+                            Ordenes pendientes/cantidad
+                          </p>
+                        </div>
                       </span>
                     </a>
                   </Link>
@@ -239,7 +254,7 @@ export const SideBar = () => {
                         viewBox="0 0 24 24"
                         strokeWidth={1.5}
                         stroke="currentColor"
-                        className="w-6 h-6"
+                        className="w-7 h-7"
                       >
                         <path
                           strokeLinecap="round"
@@ -248,8 +263,10 @@ export const SideBar = () => {
                         />
                       </svg>
 
-                      <span className="invisible absolute start-full top-1/2 ms-4 -translate-y-1/2 rounded bg-gray-900 px-2 py-1.5 text-xs font-medium text-white group-hover:visible w-[200px]">
-                        Proveedores - pagos
+                      <span className="invisible absolute start-full top-1/2 ms-4 -translate-y-1/2 bg-white px-3 py-3 text-xs font-medium text-slate-700 group-hover:visible w-[200px] uppercase border-slate-300 border-[1px] rounded-2xl">
+                        <div className="flex justify-center">
+                          <p className="font-bold">Proveedores/pagos</p>
+                        </div>
                       </span>
                     </a>
                   </Link>
@@ -272,7 +289,7 @@ export const SideBar = () => {
                   viewBox="0 0 24 24"
                   strokeWidth={1.5}
                   stroke="currentColor"
-                  className="w-6 h-6"
+                  className="w-8 h-8"
                 >
                   <path
                     strokeLinecap="round"

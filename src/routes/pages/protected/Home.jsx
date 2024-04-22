@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import PogressBar from "../../../components/charts/PogressBar";
 import { useOrdenesContext } from "../../../context/OrdenesProvider";
 import { useProductosContext } from "../../../context/ProductosProvider";
+import PogressBar from "../../../components/charts/PogressBar";
 
 export const Home = () => {
   const { ordenesMensuales } = useOrdenesContext();

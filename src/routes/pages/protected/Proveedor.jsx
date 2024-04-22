@@ -649,7 +649,7 @@ const ImagenModal = ({ imagen }) => {
       </td>
       {showModal && (
         <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-gray-800 bg-opacity-75 z-50">
-          <div className="bg-white rounded-lg p-8 max-w-lg w-full relative">
+          <div className="bg-white rounded-lg p-8 w-full flex justify-center relative">
             <button
               className="absolute top-0 right-0 m-4 text-red-700 bg-red-100 py-2 px-2 rounded-xl hover:bg-red-200 transition-all ease-linear"
               onClick={() => setShowModal(false)}
@@ -669,7 +669,7 @@ const ImagenModal = ({ imagen }) => {
                 />
               </svg>
             </button>
-            <img src={imagen} alt="Imagen" className="w-full h-auto" />
+            <img src={imagen} alt="Imagen" className="w-[600px] h-[600px]" />
           </div>
         </div>
       )}

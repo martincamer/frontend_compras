@@ -89,6 +89,18 @@ export const ModalComprobante = ({ isOpen, closeModal, datos, setDatos }) => {
     }
   };
 
+  const [previewUrl, setPreviewUrl] = useState(null);
+
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setImagen(file);
+      // Crear una URL para la vista previa
+      const url = URL.createObjectURL(file);
+      setPreviewUrl(url);
+    }
+  };
+
   return (
     <Menu as="div" className="z-50">
       <Transition appear show={isOpen} as={Fragment}>
@@ -203,14 +215,36 @@ export const ModalComprobante = ({ isOpen, closeModal, datos, setDatos }) => {
                       Comprobante
                     </label>
                     <br />
-                    <input
+                    {/* <input
                       type="file"
                       accept="image/*"
                       id="img"
                       onChange={(e) => setImagen((prev) => e.target.files[0])}
                       className="w-full bg-slate-100 text-slate-800 py-4 px-4 rounded-xl uppercase font-bold text-sm file:bg-slate-700 file:text-white file:py-2 file:border-none file:px-3 file:rounded-xl file:shadow-md cursor-pointer"
+                    /> */}
+                    <input
+                      type="file"
+                      accept="image/*"
+                      id="img"
+                      onChange={handleFileChange}
+                      className="w-full bg-slate-100 text-slate-800 py-4 px-4 rounded-xl uppercase font-bold text-sm file:bg-slate-700 file:text-white file:py-2 file:border-none file:px-3 file:rounded-xl file:shadow-md cursor-pointer"
                     />
                   </div>
+
+                  {previewUrl && (
+                    <div className="mt-2">
+                      <label className="uppercase text-slate-700 text-sm font-bold">
+                        Vista Previa imagen:
+                      </label>
+                      <div className="h-[300px] overflow-y-scroll">
+                        <img
+                          src={previewUrl}
+                          alt="Vista previa"
+                          className="h-[600px] w-full rounded-2xl shadow"
+                        />
+                      </div>
+                    </div>
+                  )}
 
                   <div className="mt-3">
                     <button
