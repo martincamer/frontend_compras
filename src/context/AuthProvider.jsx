@@ -27,13 +27,13 @@ export const AuthProvider = ({ children }) => {
     }, 1000);
   }, []);
 
-  // useEffect(() => {
-  //   localStorage.setItem("isAuth", JSON.stringify(isAuth));
-  // }, [isAuth]);
+  useEffect(() => {
+    localStorage.setItem("isAuth", JSON.stringify(isAuth));
+  }, [isAuth]);
 
-  // useEffect(() => {
-  //   localStorage.setItem("user", JSON.stringify(user));
-  // }, [user]);
+  useEffect(() => {
+    localStorage.setItem("user", JSON.stringify(user));
+  }, [user]);
 
   //login
   const signin = async (data) => {
