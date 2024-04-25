@@ -222,7 +222,7 @@ export const ListaDePrecios = ({ datos }) => {
               >
                 <Text
                   style={{
-                    width: "30%",
+                    width: "40%",
                     fontFamily: "Montserrat",
                     fontWeight: "semibold",
                     fontSize: "9px",
@@ -233,7 +233,7 @@ export const ListaDePrecios = ({ datos }) => {
                 </Text>
                 <Text
                   style={{
-                    width: "20%",
+                    width: "30%",
                     fontFamily: "Montserrat",
                     fontWeight: "semibold",
                     fontSize: "9px",
