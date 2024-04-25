@@ -179,18 +179,7 @@ export const ListaDePrecios = ({ datos }) => {
             >
               <Text
                 style={{
-                  width: "5%",
-                  fontFamily: "Montserrat",
-                  fontWeight: "semibold",
-                  fontSize: "10px",
-                  textTransform: "uppercase",
-                }}
-              >
-                Codigo{" "}
-              </Text>
-              <Text
-                style={{
-                  width: "30%",
+                  width: "40%",
                   fontFamily: "Montserrat",
                   fontWeight: "semibold",
                   fontSize: "10px",
@@ -201,7 +190,7 @@ export const ListaDePrecios = ({ datos }) => {
               </Text>
               <Text
                 style={{
-                  width: "20%",
+                  width: "30%",
                   fontFamily: "Montserrat",
                   fontWeight: "semibold",
                   fontSize: "10px",
@@ -231,17 +220,6 @@ export const ListaDePrecios = ({ datos }) => {
                   gap: 5,
                 }}
               >
-                <Text
-                  style={{
-                    width: "5%",
-                    fontFamily: "Montserrat",
-                    fontWeight: "semibold",
-                    fontSize: "9px",
-                    textTransform: "uppercase",
-                  }}
-                >
-                  {producto.id}
-                </Text>
                 <Text
                   style={{
                     width: "30%",
