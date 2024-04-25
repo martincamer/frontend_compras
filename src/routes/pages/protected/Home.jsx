@@ -104,7 +104,7 @@ export const Home = () => {
   }, []);
 
   return isLoading ? (
-    <section className="w-full h-full min-h-full max-h-full px-12 max-md:px-4 flex flex-col gap-12 max-md:gap-8 py-24">
+    <section className=" w-full h-full min-h-full max-h-full px-12 max-md:px-4 flex flex-col gap-12 max-md:gap-8 py-24">
       <div className="rounded-xl bg-white grid grid-cols-3 gap-3 max-md:grid-cols-1 max-md:border-none max-md:shadow-none max-md:py-2 max-md:px-0">
         {[1, 2, 3, 4, 5].map((index) => (
           <article
@@ -153,8 +153,8 @@ export const Home = () => {
       </div>
     </section>
   ) : (
-    <section className="w-full h-full min-h-full max-h-full px-12 max-md:px-4 flex flex-col gap-12 max-md:gap-8 py-24">
-      <div className="rounded-xl bg-white grid grid-cols-3 gap-3 max-md:grid-cols-1 max-md:border-none max-md:shadow-none max-md:py-2 max-md:px-0">
+    <section className="bg-gray-100/50 w-full h-full min-h-full max-h-full px-12 max-md:px-4 flex flex-col gap-12 max-md:gap-8 py-24">
+      <div className="grid grid-cols-3 gap-3 max-md:grid-cols-1 max-md:py-2 max-md:px-0">
         <article className="flex items-center justify-between gap-4 rounded-xl border border-slate-300 bg-white p-6 hover:shadow-md transition-all ease-linear cursor-pointer">
           <div className="flex gap-4 items-center">
             <span className="rounded-full bg-red-100 p-3 text-red-700">
@@ -402,7 +402,7 @@ export const Home = () => {
       </div>
 
       <div className="grid grid-cols-2 items-start gap-5 pb-4">
-        <div className="h-[500px] overflow-y-scroll border-slate-300 border-[1px] py-5 px-5 rounded-2xl flex flex-col gap-12 hover:shadow-md transition-all ease-linear cursor-pointer">
+        <div className="bg-white h-[500px] overflow-y-scroll border-slate-300 border-[1px] py-5 px-5 rounded-2xl flex flex-col gap-12 hover:shadow-md transition-all ease-linear cursor-pointer">
           <div className="text-2xl font-medium text-gray-900 max-md:text-base flex flex-col gap-5">
             {categoryTotalsData.map((category) => (
               <div key={category.category}>

@@ -162,7 +162,7 @@ export const OrdenDeCompraRegistrosDos = () => {
   const categoryTotalsData = calculateCategoryTotals();
 
   return (
-    <section className="w-full h-full px-5 max-md:px-4 flex flex-col gap-2 py-20 max-md:gap-5">
+    <section className="bg-gray-100/50 min-h-screen max-h-full w-full h-full px-5 max-md:px-4 flex flex-col gap-2 py-20 max-md:gap-5">
       <ToastContainer />
       <nav aria-label="Breadcrumb" className="flex px-5">
         <ol className="flex overflow-hidden rounded-xl border bg-slate-300 text-gray-600 shadow">
@@ -295,25 +295,6 @@ export const OrdenDeCompraRegistrosDos = () => {
         </article>
 
         <article className="flex flex-col gap-4 rounded-2xl border border-slate-200 shadow bg-white p-6 max-md:p-3">
-          {/* <div className="inline-flex gap-2 self-end rounded bg-green-100 p-1 text-green-600">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-4 w-4"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"
-              />
-            </svg>
-
-            <span className="text-xs font-medium"> </span>
-          </div> */}
-
           <div>
             <strong className="block text-sm font-medium text-gray-500 max-md:text-sm uppercase">
               Materiales/categorias gastos totales
@@ -428,7 +409,7 @@ export const OrdenDeCompraRegistrosDos = () => {
           <div className="grid grid-cols-3 h-full w-full gap-4">
             {currentProducts.map((o) => (
               <div
-                className="shadow border-slate-200 border-[1px] rounded-xl pt-14 pb-6 px-5 flex justify-between items-center relative"
+                className="bg-white shadow border-slate-200 border-[1px] rounded-xl pt-14 pb-6 px-5 flex justify-between items-center relative"
                 key={o.id}
               >
                 <div className="absolute top-2 right-5 flex items-center gap-2">

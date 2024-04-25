@@ -162,7 +162,7 @@ export const OrdenDeCompraRegistros = () => {
   const categoryTotalsData = calculateCategoryTotals();
 
   return (
-    <section className="w-full h-full px-5 max-md:px-4 flex flex-col gap-2 py-20 max-md:gap-5">
+    <section className="bg-gray-100/50 min-h-screen max-h-full w-full h-full px-5 max-md:px-4 flex flex-col gap-2 py-20 max-md:gap-5">
       <ToastContainer />
       <nav aria-label="Breadcrumb" className="flex px-5">
         <ol className="flex overflow-hidden rounded-xl border bg-slate-300 text-gray-600 shadow">
@@ -428,7 +428,7 @@ export const OrdenDeCompraRegistros = () => {
           <div className="grid grid-cols-3 h-full w-full gap-4">
             {currentProducts.map((o) => (
               <div
-                className="shadow border-slate-200 border-[1px] rounded-xl pt-14 pb-6 px-5 flex justify-between items-center relative"
+                className="bg-white shadow border-slate-200 border-[1px] rounded-xl pt-14 pb-6 px-5 flex justify-between items-center relative"
                 key={o.id}
               >
                 <div className="absolute top-2 right-5 flex items-center gap-2">

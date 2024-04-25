@@ -129,7 +129,7 @@ export const ProductosOrdenesFiltrador = () => {
   );
 
   return (
-    <section className="w-full h-full px-5 max-md:px-4 flex flex-col gap-2 py-20 max-md:gap-5">
+    <section className="bg-gray-100/50 min-h-screen max-h-full w-full h-full px-5 max-md:px-4 flex flex-col gap-2 py-20 max-md:gap-5">
       <ToastContainer />
 
       <nav aria-label="Breadcrumb" className="flex px-5">
@@ -272,7 +272,7 @@ export const ProductosOrdenesFiltrador = () => {
           ))}
         </select>
 
-        <div className="border-slate-300 border-[1px] text-red-600 font-semibold py-3 px-5 rounded-xl shadow">
+        <div className="bg-white border-slate-300 border-[1px] text-red-600 font-semibold py-3 px-5 rounded-xl shadow">
           {Number(totalFinal).toLocaleString("es-AR", {
             style: "currency",
             currency: "ARS",

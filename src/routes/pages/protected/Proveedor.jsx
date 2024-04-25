@@ -155,7 +155,7 @@ export const Proveedor = () => {
   };
 
   return (
-    <section className="w-full h-full px-5 max-md:px-4 flex flex-col gap-2 py-16 max-md:gap-5">
+    <section className="bg-gray-100/50 max-h-full min-h-screen w-full h-full px-5 max-md:px-4 flex flex-col gap-2 py-16 max-md:gap-5">
       <ToastContainer />
       <nav aria-label="Breadcrumb" className="flex px-5">
         <ol className="flex overflow-hidden rounded-xl border bg-slate-300 text-gray-600 shadow">
@@ -517,10 +517,7 @@ export const Proveedor = () => {
                 Total del comprobante final
               </th>
               <th className="whitespace-nowrap px-4 py-4 text-gray-900 uppercase font-semibold">
-                Ver Comprobante
-              </th>
-              <th className="whitespace-nowrap px-4 py-4 text-gray-900 uppercase font-semibold">
-                Ver Imagen
+                Ver imagen
               </th>
               <th className="whitespace-nowrap px-4 py-4 text-gray-900 uppercase font-semibold">
                 Acciones
@@ -552,29 +549,56 @@ export const Proveedor = () => {
                     })}
                   </span>
                 </td>
-                <td className="whitespace-nowrap px-4 py-6 text-gray-700 uppercase text-sm cursor-pointer space-x-2">
-                  <Link
-                    // to={`/proveedores/${p.id}`}
-                    onClick={() => {
-                      handleID(p.id), openComprobanteModal();
-                    }}
-                    className="bg-indigo-500/20 text-indigo-600 py-2 px-3 rounded-xl text-sm hover:bg-indigo-500 hover:text-white transition-all ease-linear"
-                  >
-                    VER COMPROBANTE
-                  </Link>
-                </td>
                 <td>
                   <ImagenModal imagen={p.imagen} />
                 </td>
-
                 <td className="whitespace-nowrap px-4 py-6 text-gray-700 uppercase text-sm cursor-pointer space-x-2">
-                  <Link
-                    target="_blank"
-                    to={`/pdf-comprobante/${p.id}`}
-                    className="bg-green-500/20 text-green-600 py-2 px-3 rounded-xl text-sm"
-                  >
-                    DESCARGAR COMPROBANTE
-                  </Link>
+                  <div className="dropdown dropdown-left z-1">
+                    <div
+                      tabIndex={0}
+                      role="button"
+                      className="hover:bg-gray-200 rounded-full px-2 py-2 transition-all"
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        strokeWidth={1.5}
+                        stroke="currentColor"
+                        className="w-7 h-7"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M10.5 6h9.75M10.5 6a1.5 1.5 0 1 1-3 0m3 0a1.5 1.5 0 1 0-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-9.75 0h9.75"
+                        />
+                      </svg>
+                    </div>
+                    <ul
+                      tabIndex={0}
+                      className="dropdown-content z-[1] menu p-2 shadow-lg border bg-base-100 rounded-box w-72 gap-2"
+                    >
+                      <li>
+                        <Link
+                          onClick={() => {
+                            handleID(p.id), openComprobanteModal();
+                          }}
+                          className="bg-indigo-500/20 text-indigo-600 py-2 px-3 rounded-xl text-sm hover:bg-indigo-500 hover:text-white transition-all ease-linear"
+                        >
+                          VER COMPROBANTE
+                        </Link>
+                      </li>
+                      <li>
+                        <Link
+                          target="_blank"
+                          to={`/pdf-comprobante/${p.id}`}
+                          className="bg-green-500/20 hover:bg-green-200 text-green-600 py-2 px-3 rounded-xl text-sm"
+                        >
+                          DESCARGAR COMPROBANTE
+                        </Link>
+                      </li>
+                    </ul>
+                  </div>
                 </td>
                 <td className="whitespace-nowrap px-4 py-6 font-medium text-gray-900 uppercase text-sm">
                   {p?.created_at?.split("T")[0]} / <strong>HORA:</strong>{" "}
@@ -642,7 +666,7 @@ const ImagenModal = ({ imagen }) => {
   return (
     <>
       <td
-        className="bg-orange-100 text-orange-700 py-2 px-5 rounded-xl"
+        className="bg-orange-100 hover:bg-orange-200 text-orange-700 py-2 px-5 rounded-xl"
         onClick={() => setShowModal(true)}
       >
         VER IMAGEN

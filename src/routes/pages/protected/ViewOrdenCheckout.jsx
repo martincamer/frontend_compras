@@ -61,7 +61,7 @@ export const ViewOrdenCheckout = () => {
   const nombreDiaActual = nombresDias[numeroDiaActual]; // Obtener el nombre del día actual
 
   return (
-    <section className="w-full h-full px-5 max-md:px-4 flex flex-col gap-2 py-16 max-md:gap-5">
+    <section className="bg-gray-100/50 min-h-scren max-h-full w-full h-full px-5 max-md:px-4 flex flex-col gap-2 py-16 max-md:gap-5">
       <ToastContainer />
       <nav aria-label="Breadcrumb" className="flex px-5">
         <ol className="flex overflow-hidden rounded-xl border bg-slate-300 text-gray-600 shadow">
@@ -193,7 +193,7 @@ export const ViewOrdenCheckout = () => {
         </article>
       </div>
 
-      <div className="mt-4 border-slate-300 hover:shadow-md transition-all ease-linear cursor-pointer border-[1px] py-5 px-5 rounded-xl mx-4">
+      <div className="bg-white w-1/5 mt-4 border-slate-300 hover:shadow-md transition-all ease-linear cursor-pointer border-[1px] py-5 px-5 rounded-xl mx-4">
         <div>
           <h5 className="underline text-indigo-500 text-lg">
             DATOS DE LA COMPRA

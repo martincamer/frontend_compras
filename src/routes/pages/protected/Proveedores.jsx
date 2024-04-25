@@ -3,6 +3,8 @@ import { ToastContainer } from "react-toastify";
 import { useProductosContext } from "../../../context/ProductosProvider";
 import { ModalCrearProveedor } from "../../../components/Modales/ModalCrearProveedor";
 import { Link } from "react-router-dom";
+import { PDFDownloadLink } from "@react-pdf/renderer";
+import { PdfProveedores } from "../../../components/pdf/PdfProveedores";
 
 export const Proveedores = () => {
   const { proveedores } = useProductosContext();
@@ -205,7 +207,7 @@ export const Proveedores = () => {
       </div>
     </section>
   ) : (
-    <section className="w-full h-full px-5 max-md:px-4 flex flex-col gap-2 py-16 max-md:gap-5">
+    <section className="bg-gray-100/50 min-h-screen max-h-full w-full h-full px-5 max-md:px-4 flex flex-col gap-2 py-16 max-md:gap-5">
       <ToastContainer />
       <div className="py-5 px-5 rounded-xl grid grid-cols-3 gap-3 mb-2 max-md:grid-cols-1 max-md:border-none max-md:shadow-none max-md:py-0 max-md:px-0">
         <article className="flex items-center justify-between gap-4 rounded-2xl hover:shadow-md transition-all ease-linear cursor-pointer border border-slate-300 bg-white py-9 px-6">
@@ -393,6 +395,27 @@ export const Proveedores = () => {
             />
           </svg>
         </button>
+
+        <PDFDownloadLink
+          className="bg-green-100 py-2.5 px-3 uppercase text-sm text-green-700 rounded-xl flex gap-2 items-center"
+          document={<PdfProveedores datos={proveedores} />}
+        >
+          Descargar lista de precios
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth={1.5}
+            stroke="currentColor"
+            className="w-6 h-6"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m.75 12 3 3m0 0 3-3m-3 3v-6m-1.5-9H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z"
+            />
+          </svg>
+        </PDFDownloadLink>
       </div>
 
       <div className="mx-8 mt-6">
@@ -433,7 +456,7 @@ export const Proveedores = () => {
 
           <tbody className="divide-y divide-gray-200">
             {productosFiltrados.map((p) => (
-              <tr key={p.id}>
+              <tr className="hover:bg-gray-100/40 transition-all" key={p.id}>
                 <td className="whitespace-nowrap px-4 py-6 font-medium text-gray-900 uppercase text-sm">
                   {p.proveedor}
                 </td>

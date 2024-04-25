@@ -85,7 +85,7 @@ export const ViewOrden = () => {
   };
 
   return (
-    <section className="w-full h-full px-5 max-md:px-4 flex flex-col gap-2 py-20 max-md:gap-5">
+    <section className="bg-gray-100/50 min-h-screen max-h-full w-full h-full px-5 max-md:px-4 flex flex-col gap-2 py-20 max-md:gap-5">
       <ToastContainer />
       <nav aria-label="Breadcrumb" className="flex px-5">
         <ol className="flex overflow-hidden rounded-xl border bg-slate-300 text-gray-600 shadow">
@@ -217,7 +217,7 @@ export const ViewOrden = () => {
         </article>
       </div>
 
-      <div className="mt-4 border-slate-300 transition-all ease-linear cursor-pointer hover:shadow-md border-[1px] py-5 px-5 rounded-2xl mx-4">
+      <div className="bg-white w-1/5 mt-4 border-slate-300 transition-all ease-linear cursor-pointer hover:shadow-md border-[1px] py-5 px-5 rounded-2xl mx-4">
         <div>
           <h5 className="underline text-indigo-500 text-lg">
             DATOS DE LA COMPRA
@@ -262,7 +262,7 @@ export const ViewOrden = () => {
         <div className="mt-2 grid grid-cols-5 gap-2">
           {orden?.datos?.productoSeleccionado?.map((producto) => (
             <div
-              className="bg-slate-100/10 hover:shadow-md transition-all ease-linear cursor-pointer rounded-xl py-4 px-4 border-slate-300 border-[1px]"
+              className="bg-white hover:shadow-md transition-all ease-linear cursor-pointer rounded-xl py-4 px-4 border-slate-300 border-[1px]"
               key={producto.id}
             >
               <p className="text-slate-700 text-base uppercase">
