@@ -73,6 +73,5 @@ module.exports = {
       },
     },
   },
-  plugins: [require("tailwindcss-animate")],
-  plugins: [require("daisyui")],
+  plugins: [require("tailwindcss-animate"), require("daisyui")],
 };
