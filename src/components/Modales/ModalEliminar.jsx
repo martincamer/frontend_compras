@@ -11,14 +11,9 @@ export const ModalEliminar = ({ eliminarModal, closeEliminar, obtenerId }) => {
   const [socket, setSocket] = useState(null);
 
   useEffect(() => {
-    const newSocket = io(
-      "https://backendcompras-production.up.railway.app",
-      // "http://localhost:4000",
-      // import.meta.env.BACKEND_URL,
-      {
-        withCredentials: true,
-      }
-    );
+    const newSocket = io(import.meta.env.VITE_URL, {
+      withCredentials: true,
+    });
 
     setSocket(newSocket);
 

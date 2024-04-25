@@ -5,6 +5,9 @@ import { ModalCrearCategorias } from "../../../components/Modales/ModalCrearCate
 import { ToastContainer } from "react-toastify";
 import { ModalEditarProducto } from "../../../components/Modales/ModalEditarProducto";
 import { ModalEliminarProducto } from "../../../components/Modales/ModalEliminarProducto";
+import { PDFDownloadLink } from "@react-pdf/renderer";
+import { ImprirmirProductosPDF } from "../../../components/pdf/ImprirmirProductosPDF";
+import { ListaDePrecios } from "../../../components/pdf/ListaDePrecios";
 
 export const Productos = () => {
   const { productos, categorias } = useProductosContext();
@@ -66,12 +69,16 @@ export const Productos = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [productsPerPage] = useState(10);
 
-  // Filtrar productos por término de búsqueda y categoría seleccionada
   const filteredProducts = productos.filter((product) => {
-    return (
-      product?.detalle?.toLowerCase().includes(searchTerm?.toLowerCase()) &&
-      (selectedCategory === "all" || product.categoria === selectedCategory)
-    );
+    const idMatches = product.id.toString().includes(searchTerm.toLowerCase());
+    const detailMatches = product.detalle
+      .toLowerCase()
+      .includes(searchTerm.toLowerCase());
+    const categoryMatches =
+      selectedCategory === "all" || product.categoria === selectedCategory;
+
+    // Filtra si coincide con el ID o con el detalle, además de la categoría
+    return (idMatches || detailMatches) && categoryMatches;
   });
 
   // Lógica de paginación
@@ -222,7 +229,7 @@ export const Productos = () => {
       </div>
     </section>
   ) : (
-    <section className="w-full h-full px-5 max-md:px-4 flex flex-col gap-2 py-16 max-md:gap-5">
+    <section className="min-h-screen max-h-full bg-gray-100/50 w-full h-full px-5 max-md:px-4 flex flex-col gap-2 py-16 max-md:gap-5">
       <ToastContainer />
       <div className="py-5 px-5 rounded-xl grid grid-cols-3 gap-3 mb-2 max-md:grid-cols-1 max-md:border-none max-md:shadow-none max-md:py-0 max-md:px-0">
         <article className="flex items-center justify-between gap-4 rounded-2xl hover:shadow-md transition-all ease-linear cursor-pointer border border-slate-300 bg-white py-9 px-6">
@@ -373,6 +380,26 @@ export const Productos = () => {
             />
           </svg>
         </button>
+        <PDFDownloadLink
+          className="bg-green-100 py-2.5 px-3 uppercase text-sm text-green-700 rounded-xl flex gap-2 items-center"
+          document={<ListaDePrecios datos={productos} />}
+        >
+          Descargar lista de precios
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth={1.5}
+            stroke="currentColor"
+            className="w-6 h-6"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m.75 12 3 3m0 0 3-3m-3 3v-6m-1.5-9H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z"
+            />
+          </svg>
+        </PDFDownloadLink>
       </div>
 
       <div className="max-md:mt-2 mt-5 ">
@@ -386,14 +413,14 @@ export const Productos = () => {
           {/* Buscador */}
           <input
             type="text"
-            placeholder="Buscar por detalle"
-            className="rounded-xl py-2 px-5 border-slate-300 bg-white text-slate-700 border-[1px] uppercase w-1/4"
+            placeholder="Buscar por detalle o el codigo...."
+            className="text-sm rounded-xl py-2 px-5 border-slate-300 bg-white text-slate-700 border-[1px] uppercase w-1/4"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
           {/* Selector de categoría */}
           <select
-            className="py-1 px-4 text-slate-700 rounded-xl shadow bg-white border-slate-300 border-[1px] uppercase"
+            className="text-sm py-1 px-4 text-slate-700 rounded-xl shadow bg-white border-slate-300 border-[1px] uppercase"
             value={selectedCategory}
             onChange={(e) => setSelectedCategory(e.target.value)}
           >
@@ -404,8 +431,8 @@ export const Productos = () => {
           </select>
         </div>
 
-        <div className="overflow-x-auto mt-6 mx-8 border-slate-300 border-[1px]  rounded-2xl hover:shadow-md transition-all ease-linear cursor-pointer">
-          <table className="min-w-full divide-y-2 divide-gray-200 bg-white text-sm">
+        <div className="mt-6 mx-8 border-slate-300 border-[1px]  bg-white rounded-2xl hover:shadow-md transition-all ease-linear cursor-pointer">
+          <table className="min-w-full divide-y-2 divide-gray-200 text-sm">
             <thead className="text-left">
               <tr>
                 <th className="whitespace-nowrap px-4 py-4 text-indigo-500 uppercase font-normal">
@@ -445,22 +472,53 @@ export const Productos = () => {
                     })}
                   </td>
                   <td className="whitespace-nowrap px-4 py-4 text-gray-700 uppercase text-sm cursor-pointer space-x-2">
-                    <span
-                      onClick={() => {
-                        handleID(p.id), openEditProducto();
-                      }}
-                      className="bg-green-500/20 text-green-600 py-2 px-3 rounded-xl text-sm"
-                    >
-                      EDITAR
-                    </span>
-                    <span
-                      onClick={() => {
-                        handleID(p.id), openEliminar();
-                      }}
-                      className="bg-red-500/10 text-red-800 py-2 px-3 rounded-xl text-sm"
-                    >
-                      ELIMINAR
-                    </span>
+                    <div className="dropdown dropdown-left z-1">
+                      <div
+                        tabIndex={0}
+                        role="button"
+                        className="hover:bg-slate-100 rounded-full px-2 py-2 transition-all"
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          strokeWidth={1.5}
+                          stroke="currentColor"
+                          className="w-7 h-7"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="M10.5 6h9.75M10.5 6a1.5 1.5 0 1 1-3 0m3 0a1.5 1.5 0 1 0-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-9.75 0h9.75"
+                          />
+                        </svg>
+                      </div>
+                      <ul
+                        tabIndex={0}
+                        className="dropdown-content z-[1] menu p-2 shadow-lg border bg-base-100 rounded-box w-52 gap-2"
+                      >
+                        <li>
+                          <span
+                            className="bg-indigo-500/10 text-indigo-800 hover:bg-indigo-200 py-2 px-3 rounded-xl text-sm"
+                            onClick={() => {
+                              handleID(p.id), openEditProducto();
+                            }}
+                          >
+                            EDITAR
+                          </span>
+                        </li>
+                        <li>
+                          <span
+                            onClick={() => {
+                              handleID(p.id), openEliminar();
+                            }}
+                            className="bg-red-500/10 text-red-800 hover:bg-red-200 py-2 px-3 rounded-xl text-sm"
+                          >
+                            ELIMINAR
+                          </span>
+                        </li>
+                      </ul>
+                    </div>
                   </td>
                 </tr>
               ))}

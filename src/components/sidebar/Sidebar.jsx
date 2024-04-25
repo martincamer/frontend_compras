@@ -4,6 +4,7 @@ import { Link, useLocation } from "react-router-dom";
 
 export const SideBar = () => {
   const { signout } = useAuth();
+
   const [visible, setVisible] = useState(false);
 
   const menuRef = useRef(null); // Para referenciar el menú
@@ -18,11 +19,11 @@ export const SideBar = () => {
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (
-        menuRef.current &&
-        !menuRef.current.contains(event.target) &&
-        !sidebarAreaRef.current.contains(event.target)
+        menuRef?.current &&
+        !menuRef?.current.contains(event.target) &&
+        !sidebarAreaRef?.current.contains(event.target)
       ) {
-        setVisible(false); // Cerrar menú si el clic es fuera de su área
+        setVisible(false);
       }
     };
 
@@ -30,7 +31,7 @@ export const SideBar = () => {
     return () => {
       document.removeEventListener("click", handleClickOutside);
     };
-  }, []); // Se ejecuta solo cuando el componente se monta y se desmonte
+  }, []);
 
   useEffect(() => {
     const handleMouseEnter = () => {
@@ -39,22 +40,25 @@ export const SideBar = () => {
 
     const handleMouseLeave = (event) => {
       // Verificamos que el mouse realmente dejó la barra lateral antes de cerrarla
-      if (menuRef.current && !menuRef.current.contains(event.relatedTarget)) {
+      if (
+        menuRef?.current &&
+        !menuRef?.current.contains(event?.relatedTarget)
+      ) {
         setVisible(false);
       }
     };
 
-    sidebarAreaRef.current.addEventListener("mouseenter", handleMouseEnter);
-    menuRef.current.addEventListener("mouseleave", handleMouseLeave);
+    sidebarAreaRef?.current?.addEventListener("mouseenter", handleMouseEnter);
+    menuRef?.current?.addEventListener("mouseleave", handleMouseLeave);
 
     return () => {
-      sidebarAreaRef.current.removeEventListener(
+      sidebarAreaRef?.current?.removeEventListener(
         "mouseenter",
         handleMouseEnter
       );
-      menuRef.current.removeEventListener("mouseleave", handleMouseLeave);
+      menuRef?.current?.removeEventListener("mouseleave", handleMouseLeave);
     };
-  }, []); // Se ejecuta solo cuando el componente se monta y se desmonte
+  }, []);
 
   return (
     <>
@@ -65,7 +69,7 @@ export const SideBar = () => {
       >
         <div
           ref={sidebarAreaRef} // Referencia para el área sensible al mouse
-          className="fixed left-0 top-0 z-[100] h-full w-5 bg-transparent bg-white"
+          className="fixed left-0 top-0 z-[100] h-full w-5 bg-transparent"
         ></div>
       </div>
       <div
@@ -78,36 +82,9 @@ export const SideBar = () => {
       >
         <div className="flex max-md:w-14 flex-col justify-between border-e bg-white h-full max-h-full min-h-full">
           <div className="">
-            <div className="border-t border-slate-300 ">
+            <div>
               <div className="px-2">
-                {/* <div className="py-4">
-                  <a
-                    onClick={() => toggleSidebar()}
-                    href="#"
-                    className="t group relative flex justify-center rounded bg-slate-200 px-2 py-1.5 text-black-500"
-                  >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      strokeWidth={1.5}
-                      stroke="currentColor"
-                      className="w-8 h-8"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="m9.75 9.75 4.5 4.5m0-4.5-4.5 4.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
-                      />
-                    </svg>
-
-                    <span className="invisible absolute start-full w-[120px] text-center top-1/2 ms-4 -translate-y-1/2 rounded bg-gray-900 px-2 py-1.5 text-xs font-medium text-white group-hover:visible">
-                      Cerrar Navegacion
-                    </span>
-                  </a>
-                </div> */}
-
-                <ul className="space-y-1 flex flex-col border-t border-slate-300 pt-4 ">
+                <ul className="space-y-1 flex flex-col  pt-4 ">
                   <Link to={"/"} onClick={() => toggleSidebar()}>
                     <a
                       href="#"
@@ -278,7 +255,6 @@ export const SideBar = () => {
           <div className="sticky inset-x-0 bottom-0 border-t border-gray-100 bg-white p-2 ">
             <form action="#">
               <button
-                //   type="submit"
                 type="button"
                 onClick={() => signout()}
                 className="group relative flex w-full justify-center rounded-lg px-2 py-1.5 text-sm text-gray-500 hover:bg-gray-50 hover:text-gray-700"

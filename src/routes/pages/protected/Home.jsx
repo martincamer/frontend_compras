@@ -90,7 +90,7 @@ export const Home = () => {
     return categoryTotalsArray;
   };
 
-  // Call the function to gsssssssssssssset category totals
+  // Call the function to category totals
   const categoryTotalsData = calculateCategoryTotals();
 
   const [isLoading, setIsLoading] = useState(true);

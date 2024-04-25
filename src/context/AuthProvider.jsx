@@ -13,12 +13,8 @@ export const useAuth = () => {
 };
 
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(
-    JSON.parse(localStorage.getItem("user")) ?? null
-  );
-  const [isAuth, setIsAuth] = useState(
-    JSON.parse(localStorage.getItem("isAuth")) ?? false
-  );
+  const [user, setUser] = useState(null);
+  const [isAuth, setIsAuth] = useState(false);
   const [error, setError] = useState(null);
   const [spinner, setSpinner] = useState(false);
 
@@ -31,13 +27,13 @@ export const AuthProvider = ({ children }) => {
     }, 1000);
   }, []);
 
-  useEffect(() => {
-    localStorage.setItem("isAuth", JSON.stringify(isAuth));
-  }, [isAuth]);
+  // useEffect(() => {
+  //   localStorage.setItem("isAuth", JSON.stringify(isAuth));
+  // }, [isAuth]);
 
-  useEffect(() => {
-    localStorage.setItem("user", JSON.stringify(user));
-  }, [user]);
+  // useEffect(() => {
+  //   localStorage.setItem("user", JSON.stringify(user));
+  // }, [user]);
 
   //login
   const signin = async (data) => {
@@ -92,6 +88,7 @@ export const AuthProvider = ({ children }) => {
   const signout = async () => {
     Cookies.remove("token"); // Aquí se borra la cookie
     const res = await axios.post("/signout");
+
     setUser(null);
     setIsAuth(false);
   };
