@@ -31,13 +31,13 @@ export const SideBar = () => {
     <div
       className={`${
         isOpen ? "w-64 opacity-1" : "w-16 opacity-1"
-      } transition-all ease-linear flex flex-col bg-white min-h-screen max-h-full h-full z-[100] border-r`}
+      } transition-all ease-linear flex flex-col bg-white min-h-[220vh] max-h-full h-full z-[100] border-r`}
     >
       {/* Botón de menú */}
       <div
         className={`${
           isOpen ? "flex justify-between" : ""
-        } transition-all ease-linear duration-300 py-3 px-4 border-b-[2px] border-slate-300 `}
+        } transition-all ease-linear duration-300 py-3 px-4 border-b-[2px] border-slate-300`}
       >
         <button className="text-3xl text-sky-600" onClick={handleToggle}>
           {isOpen ? <IoCloseOutline /> : <IoMenuOutline />}
@@ -49,7 +49,7 @@ export const SideBar = () => {
         )}
       </div>
       {isOpen ? (
-        <div className="w-full flex flex-col gap-0">
+        <div className="w-full max-h-full min-h-full h-full flex flex-col gap-0">
           <Link
             to={"/"}
             className={`${

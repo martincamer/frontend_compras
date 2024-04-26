@@ -1,18 +1,31 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useAuth } from "../../context/AuthProvider";
-import { Link } from "react-router-dom";
+import client from "../../api/axios";
 
 export const NavbarStatick = () => {
   const { user, signout, isAuth } = useAuth();
 
-  console.log(user);
+  const [comprobantes, setComprobantes] = useState([]);
+
+  useEffect(() => {
+    const loadData = async () => {
+      const res = await client.get("/comprobantes-dia");
+
+      setComprobantes(res.data);
+    };
+    loadData();
+  }, []);
 
   return (
     isAuth && (
       <div className="absolute top-2 right-10 flex gap-2 items-start z-1 max-md:top-5">
         <div className="navbar gap-2">
-          <div className="navbar-end">
-            <button className="btn btn-ghost hover:bg-slate-200 btn-circle">
+          <div className="navbar-end dropdown dropdown-end">
+            <button
+              tabIndex={0}
+              role="button"
+              className="btn btn-ghost hover:bg-slate-200 btn-circle"
+            >
               <div className="indicator">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -31,6 +44,33 @@ export const NavbarStatick = () => {
                 <span className="badge badge-xs indicator-item bg-sky-400"></span>
               </div>
             </button>
+            <ul
+              tabIndex={0}
+              className="mt-3 z-[100] p-2 shadow menu menu-sm dropdown-content bg-base-100 rounded-box w-80 border"
+            >
+              <div className="py-2 px-3 text-center capitalize font-bold text-slate-700">
+                {"NOTIFICACIONES"}
+              </div>
+
+              <div className="h-[10vh] overflow-y-scroll scroll-bar px-2 py-2 flex flex-col gap-2">
+                {comprobantes.map((c) => (
+                  <div className="border py-2 px-3 rounded-xl flex flex-wrap gap-1">
+                    <p>N ° {c.id}</p>,
+                    <p>
+                      Orden total{" "}
+                      <span className="font-bold">
+                        {" "}
+                        {Number(c.total).toLocaleString("es-AR", {
+                          style: "currency",
+                          currency: "ARS",
+                        })}
+                      </span>
+                    </p>
+                    ,<p>{c.proveedor}</p>
+                  </div>
+                ))}
+              </div>
+            </ul>
           </div>
           <div>
             <div className="dropdown dropdown-end">
