@@ -16,8 +16,8 @@ const ApexChartComprobantes = ({ comprobantes, total }) => {
   // Generar categorías que incluyan el proveedor y la fecha de creación
   const categoriesData = comprobantes.map(
     (orden) =>
-      `${orden.proveedor.toUpperCase()} - ${new Date(
-        orden.created_at
+      `${orden?.proveedor?.toUpperCase()} - ${new Date(
+        orden?.created_at
       ).toLocaleDateString("es-AR", {
         day: "numeric",
         month: "numeric",
