@@ -13,8 +13,12 @@ export const useAuth = () => {
 };
 
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null);
-  const [isAuth, setIsAuth] = useState(false);
+  const [user, setUser] = useState(
+    JSON.parse(localStorage.getItem("user")) ?? null
+  );
+  const [isAuth, setIsAuth] = useState(
+    JSON.parse(localStorage.getItem("isAuth")) ?? false
+  );
   const [error, setError] = useState(null);
   const [spinner, setSpinner] = useState(false);
 

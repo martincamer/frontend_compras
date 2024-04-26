@@ -59,31 +59,6 @@ export const ViewOrden = () => {
   const [idOrden, setIdOrden] = useState(null);
   const [idProducto, setIdProducto] = useState(null);
 
-  const openModal = () => {
-    setIsOpen(true);
-  };
-
-  const closeModal = () => {
-    setIsOpen(false);
-  };
-
-  const handleIdProducto = (id) => setIdProducto(id);
-  const handleIdOrden = (id) => setIdOrden(id);
-
-  const handleEliminarProducto = async (idProducto) => {
-    try {
-      await client.delete(`/orden/${params.id}/producto/${idProducto}`);
-      // Actualizar la orden después de eliminar el producto
-
-      setTimeout(() => {
-        location.reload();
-      }, 500);
-      console.log("Producto eliminado correctamente");
-    } catch (error) {
-      console.error("Error al eliminar el producto:", error);
-    }
-  };
-
   return (
     <section className="bg-gray-100/50 min-h-screen max-h-full w-full h-full px-5 max-md:px-4 flex flex-col gap-2 py-20 max-md:gap-5">
       <ToastContainer />
@@ -127,7 +102,7 @@ export const ViewOrden = () => {
         </ol>
       </nav>
       <div className="py-5 px-5 rounded-xl grid grid-cols-4 gap-3 mb-2 max-md:grid-cols-1 max-md:border-none max-md:shadow-none max-md:py-0 max-md:px-0">
-        <article className="flex flex-col gap-4 rounded-2xl border border-slate-300 hover:shadow-md transition-all ease-linear cursor-pointer bg-white p-6 max-md:p-3">
+        <article className="flex flex-col justify-center shadow-lg hover:shadow-md transition-all ease-linear cursor-pointer border border-slate-300 bg-white py-8 px-6">
           <div className="inline-flex gap-2 self-end rounded bg-red-100 p-1 text-red-600">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -176,7 +151,7 @@ export const ViewOrden = () => {
           </div>
         </article>
 
-        <article className="flex flex-col gap-4 rounded-2xl border border-slate-300 hover:shadow-md transition-all ease-linear cursor-pointer bg-white p-6 max-md:p-3">
+        <article className="flex flex-col justify-center shadow-lg hover:shadow-md transition-all ease-linear cursor-pointer border border-slate-300 bg-white py-4 px-6">
           <div className="inline-flex gap-2 self-end rounded bg-green-100 p-1 text-green-600">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -217,9 +192,9 @@ export const ViewOrden = () => {
         </article>
       </div>
 
-      <div className="bg-white w-1/5 mt-4 border-slate-300 transition-all ease-linear cursor-pointer hover:shadow-md border-[1px] py-5 px-5 rounded-2xl mx-4">
+      <div className="bg-white w-1/5 mt-4 border-slate-300 transition-all ease-linear cursor-pointer hover:shadow-md border-[1px] py-5 px-5 shadow-lg mx-4">
         <div>
-          <h5 className="underline text-indigo-500 text-lg">
+          <h5 className="underline text-sky-400 font-semibold text-lg">
             DATOS DE LA COMPRA
           </h5>
         </div>
@@ -257,7 +232,9 @@ export const ViewOrden = () => {
 
       <div className="mx-5 mt-5">
         <div>
-          <h5 className="underline text-indigo-500 text-lg">PRODUCTOS</h5>
+          <h5 className="underline text-sky-400 font-semibold text-lg">
+            PRODUCTOS
+          </h5>
         </div>
         <div className="mt-2 grid grid-cols-5 gap-2">
           {orden?.datos?.productoSeleccionado?.map((producto) => (
@@ -316,7 +293,7 @@ export const ViewOrden = () => {
                 </button>
                 <button
                   type="button"
-                  className="bg-indigo-100 text-indigo-700 text-sm py-2 px-4 rounded-xl flex items-center gap-1"
+                  className="bg-sky-100 text-sky-700 text-sm py-2 px-4 rounded-xl flex items-center gap-1"
                 >
                   {Number(producto.totalFinalIva).toLocaleString("es-AR", {
                     style: "currency",
@@ -334,7 +311,7 @@ export const ViewOrden = () => {
           download={false}
           target="_blank"
           document={<ImprirmirComprobanteCompra datos={orden} />}
-          className="bg-green-100 text-green-700 py-4 hover:shadow-md transition-all ease-linear px-5 rounded-xl uppercase flex gap-2 items-center"
+          className="bg-green-500/90 text-white py-3 px-5 rounded-full font-semibold uppercase flex gap-2 items-center"
         >
           Descargar comprobante orden de compra en pdf{" "}
           <svg
@@ -353,13 +330,6 @@ export const ViewOrden = () => {
           </svg>
         </PDFDownloadLink>
       </div>
-
-      <ModalEditarProductoOrden
-        idOrden={idOrden}
-        idProducto={idProducto}
-        isOpen={isOpen}
-        closeModal={closeModal}
-      />
     </section>
   );
 };

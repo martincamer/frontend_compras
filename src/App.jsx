@@ -47,8 +47,8 @@ function App() {
               element={
                 <ProductosProvider>
                   <OrdenesProvider>
-                    <SideBar />
-                    <main className="min-h-full max-h-full h-full">
+                    <main className="min-h-full max-h-full h-full flex">
+                      <SideBar />
                       <Outlet />
                     </main>
                   </OrdenesProvider>

@@ -204,8 +204,8 @@ export const Proveedor = () => {
         </p>
       </div>
       <div className="py-5 px-5 rounded-xl grid grid-cols-3 gap-3 mb-2 max-md:grid-cols-1 max-md:border-none max-md:shadow-none max-md:py-0 max-md:px-0">
-        <article className="flex items-center justify-between gap-4 rounded-2xl hover:shadow-md transition-all ease-linear cursor-pointer border border-slate-300 bg-white py-9 px-6">
-          <div className="flex gap-4 items-center">
+        <article className="flex items-start justify-between gap-4 shadow-lg hover:shadow-md transition-all ease-linear cursor-pointer border border-slate-300 bg-white py-10 px-6">
+          <div className="flex justify-center h-full gap-4 items-center">
             <span className="rounded-full bg-green-100 p-3 text-green-700">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -257,8 +257,8 @@ export const Proveedor = () => {
           </div>
         </article>
 
-        <article className="flex items-center justify-between gap-4 rounded-2xl hover:shadow-md transition-all ease-linear cursor-pointer border border-slate-300 bg-white py-9 px-6">
-          <div className="flex gap-4 items-center">
+        <article className="flex items-start justify-between gap-4 shadow-lg hover:shadow-md transition-all ease-linear cursor-pointer border border-slate-300 bg-white py-10 px-6">
+          <div className="flex justify-center h-full gap-4 items-center">
             <span className="rounded-full bg-green-100 p-3 text-green-700">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -310,8 +310,8 @@ export const Proveedor = () => {
           </div>
         </article>
 
-        <article className="flex items-center justify-between gap-4 rounded-2xl hover:shadow-md transition-all ease-linear cursor-pointer border border-slate-300 bg-white py-9 px-6">
-          <div className="flex gap-4 items-center">
+        <article className="flex items-start justify-between gap-4 shadow-lg hover:shadow-md transition-all ease-linear cursor-pointer border border-slate-300 bg-white py-10 px-6">
+          <div className="flex justify-center h-full gap-4 items-center">
             <span className="rounded-full bg-red-100 p-3 text-red-700">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -366,8 +366,8 @@ export const Proveedor = () => {
           </div>
         </article>
 
-        <article className="flex items-center justify-between gap-4 rounded-2xl hover:shadow-md transition-all ease-linear cursor-pointer border border-slate-300 bg-white py-9 px-6">
-          <div className="flex gap-4 items-center">
+        <article className="flex items-start justify-between gap-4 shadow-lg hover:shadow-md transition-all ease-linear cursor-pointer border border-slate-300 bg-white py-10 px-6">
+          <div className="flex justify-center h-full gap-4 items-center">
             <span className="rounded-full bg-green-100 p-3 text-green-700">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -426,7 +426,7 @@ export const Proveedor = () => {
       <div className="mx-10 py-2 flex gap-2 items-center max-md:px-0 max-md:py-0 max-md:flex-col max-md:items-start border-b-[1px] border-slate-300 pb-4 max-md:pb-4 max-md:mx-2">
         <button
           onClick={() => openComprobante()}
-          className="bg-green-100 py-2 px-4 rounded-xl text-sm text-green-700 uppercase max-md:text-xs flex gap-2 items-center hover:bg-green-500 hover:text-white transition-all ease-linear"
+          className=" text-sm text-white bg-sky-400 py-3 px-6 rounded-full font-semibold uppercase max-md:text-xs flex gap-2 items-center transition-all ease-linear"
         >
           Cargar nuevo comprobante de pago
           <svg
@@ -448,7 +448,7 @@ export const Proveedor = () => {
           onClick={() => {
             handleID(params.id), openModal();
           }}
-          className="bg-green-100 py-2 px-4 rounded-xl text-sm text-green-700 uppercase max-md:text-xs flex gap-2 items-center hover:bg-green-500 hover:text-white transition-all ease-linear"
+          className=" text-sm text-white bg-orange-400 py-3 px-6 rounded-full font-semibold uppercase max-md:text-xs flex gap-2 items-center transition-all ease-linear"
         >
           Editar el saldo del proveedor
           <svg
@@ -469,7 +469,7 @@ export const Proveedor = () => {
       </div>
 
       <div className="mx-8 mt-6">
-        <p className="underline text-indigo-500 uppercase font-semibold">
+        <p className="underline text-sky-400 uppercase font-semibold">
           Tabla de comprobantes cargados del mes
         </p>
       </div>
@@ -583,7 +583,7 @@ export const Proveedor = () => {
                           onClick={() => {
                             handleID(p.id), openComprobanteModal();
                           }}
-                          className="bg-indigo-500/20 text-indigo-600 py-2 px-3 rounded-xl text-sm hover:bg-indigo-500 hover:text-white transition-all ease-linear"
+                          className="bg-sky-500/20 text-sky-600 py-2 px-3 rounded-xl text-sm hover:bg-sky-500 hover:text-white transition-all ease-linear"
                         >
                           VER COMPROBANTE
                         </Link>
@@ -673,9 +673,9 @@ const ImagenModal = ({ imagen }) => {
       </td>
       {showModal && (
         <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-gray-800 bg-opacity-75 z-50">
-          <div className="bg-white rounded-lg p-8 w-full flex justify-center relative">
+          <div className="bg-white p-8 w-full flex justify-center relative">
             <button
-              className="absolute top-0 right-0 m-4 text-red-700 bg-red-100 py-2 px-2 rounded-xl hover:bg-red-200 transition-all ease-linear"
+              className="absolute top-0 right-0 m-4 text-red-700 bg-red-100 py-2 px-2 rounded-full hover:bg-red-200 transition-all ease-linear"
               onClick={() => setShowModal(false)}
             >
               <svg

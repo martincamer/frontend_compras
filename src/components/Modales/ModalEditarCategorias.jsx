@@ -148,7 +148,7 @@ export const ModalEditarCategorias = ({
               <div className="flex justify-end">
                 <button
                   type="button"
-                  className="inline-flex justify-center px-2 py-2 text-sm text-red-900 bg-red-100 border border-transparent rounded-xl hover:bg-red-200 duration-300 cursor-pointer max-md:text-xs"
+                  className="inline-flex justify-center px-2 py-2 text-sm text-red-900 bg-red-100 border border-transparent rounded-full hover:bg-red-200 duration-300 cursor-pointer max-md:text-xs"
                   onClick={closeModalEditar}
                 >
                   <svg
@@ -186,7 +186,7 @@ export const ModalEditarCategorias = ({
                 <div>
                   <button
                     type="submit"
-                    class="group relative hover:bg-indigo-500 hover:text-white transition-all ease-in-out bg-indigo-100 text-indigo-600 font-normal uppercase text-sm py-2 px-4 rounded-xl flex items-center justify-center"
+                    class="group relative bg-sky-400 text-white transition-all ease-in-out font-normal uppercase text-sm py-3 px-4 rounded-full flex items-center justify-center"
                   >
                     Editar categoria
                     <svg

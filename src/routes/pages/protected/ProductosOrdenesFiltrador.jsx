@@ -173,7 +173,7 @@ export const ProductosOrdenesFiltrador = () => {
       </nav>
 
       <div className="mt-5 mx-6 mb-2">
-        <h4 className="underline text-indigo-500 font-semibold text-lg">
+        <h4 className="underline text-sky-400 font-semibold text-lg">
           BUSCAR POR LOS PRODUCTOS/COMPARAR PRECIOS/ETC
         </h4>
       </div>
@@ -226,7 +226,7 @@ export const ProductosOrdenesFiltrador = () => {
 
         <div>
           <PDFDownloadLink
-            className="bg-green-100 text-green-600 py-2 px-5 rounded-xl uppercase flex gap-2 items-center hover:bg-green-500 hover:text-white transition-all ease-linear"
+            className="bg-green-500/90 text-white py-3 px-6 rounded-full uppercase flex gap-2 items-center"
             fileName="productos_filtrados"
             target="_blank"
             download={false}

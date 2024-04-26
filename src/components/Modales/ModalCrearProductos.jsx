@@ -14,27 +14,6 @@ export const ModalCrearProductos = ({ isOpen, closeModal }) => {
 
   const { categorias, setProductos } = useProductosContext();
 
-  // useEffect(() => {
-  //   const newSocket = io(
-  //     // "https://backendcompras-production.up.railway.app",
-  //     // import.meta.env.BACKEND_URL,
-  //     // "http://localhost:4000",
-  //     {
-  //       withCredentials: true,
-  //     }
-  //   );
-
-  //   setSocket(newSocket);
-
-  //   // showSuccess();
-
-  //   newSocket.on("crear-producto", (nuevaSalida) => {
-  //     setProductos((prevTipos) => [...prevTipos, nuevaSalida]);
-  //   });
-
-  //   return () => newSocket.close();
-  // }, []);
-
   const onSubmit = async (e) => {
     e.preventDefault();
 
@@ -130,7 +109,7 @@ export const ModalCrearProductos = ({ isOpen, closeModal }) => {
                 <div className="flex justify-end">
                   <button
                     type="button"
-                    className="inline-flex justify-center px-2 py-2 text-sm text-red-900 bg-red-100 border border-transparent rounded-xl hover:bg-red-200 duration-300 cursor-pointer max-md:text-xs"
+                    className="inline-flex justify-center px-2 py-2 text-sm text-red-900 bg-red-100 border border-transparent rounded-full hover:bg-red-200 duration-300 cursor-pointer max-md:text-xs"
                     onClick={closeModal}
                   >
                     <svg
@@ -201,7 +180,7 @@ export const ModalCrearProductos = ({ isOpen, closeModal }) => {
                       />
                     </div>
                     <div className="mt-2">
-                      <span className="bg-indigo-100 text-sm py-2 px-6 rounded-xl uppercase  text-indigo-600">
+                      <span className="bg-sky-100 text-sm py-2 px-6 rounded-xl uppercase  text-sky-600">
                         {Number(precio_und).toLocaleString("es-AR", {
                           style: "currency",
                           currency: "ARS",
@@ -213,7 +192,7 @@ export const ModalCrearProductos = ({ isOpen, closeModal }) => {
                   <div>
                     <button
                       type="submit"
-                      className="bg-indigo-500 py-2 px-6 shadow rounded-xl text-white uppercase text-sm"
+                      className="bg-sky-400 py-3 px-8 shadow rounded-full text-white uppercase text-sm"
                     >
                       Crear nuevo producto
                     </button>

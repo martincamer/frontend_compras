@@ -204,8 +204,8 @@ export const OrdenDeCompraRegistrosDos = () => {
         </ol>
       </nav>
       <div className="py-5 px-5 rounded-xl grid grid-cols-3 gap-3 mb-2 max-md:grid-cols-1 max-md:border-none max-md:shadow-none max-md:py-0 max-md:px-0">
-        <article className="flex flex-col gap-4 rounded-2xl border border-slate-200 shadow bg-white p-6 max-md:p-3">
-          <div className="inline-flex gap-2 self-end rounded bg-red-100 p-1 text-red-600">
+        <article className="flex flex-col justify-center gap-4 shadow-lg hover:shadow-md transition-all ease-linear cursor-pointer border border-slate-300 bg-white py-4 px-6">
+          <div className="inline-flex gap-2 self-end rounded-xl bg-red-100 p-2 text-red-600">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="h-4 w-4"
@@ -228,7 +228,7 @@ export const OrdenDeCompraRegistrosDos = () => {
 
           <div>
             <strong className="block text-sm font-medium text-gray-500 max-md:text-xs uppercase">
-              Total en compras del mes finalizadas/pendientes
+              Total en compras del mes
             </strong>
 
             <p>
@@ -254,8 +254,8 @@ export const OrdenDeCompraRegistrosDos = () => {
           </div>
         </article>
 
-        <article className="flex flex-col gap-4 rounded-2xl border border-slate-200 shadow bg-white p-6 max-md:p-3">
-          <div className="inline-flex gap-2 self-end rounded bg-green-100 p-1 text-green-600">
+        <article className="flex flex-col justify-center gap-4 shadow-lg hover:shadow-md transition-all ease-linear cursor-pointer border border-slate-300 bg-white py-4 px-6">
+          <div className="inline-flex gap-2 self-end rounded-xl bg-green-100 p-2 text-green-600">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -294,13 +294,32 @@ export const OrdenDeCompraRegistrosDos = () => {
           </div>
         </article>
 
-        <article className="flex flex-col gap-4 rounded-2xl border border-slate-200 shadow bg-white p-6 max-md:p-3">
+        <article className="flex flex-col justify-center gap-4 shadow-lg hover:shadow-md transition-all ease-linear cursor-pointer border border-slate-300 bg-white py-4 px-6">
+          <div className="inline-flex gap-2 self-end rounded-xl bg-green-100 p-2 text-green-600">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-4 w-4"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"
+              />
+            </svg>
+
+            <span className="text-xs font-medium"> </span>
+          </div>
+
           <div>
             <strong className="block text-sm font-medium text-gray-500 max-md:text-sm uppercase">
               Materiales/categorias gastos totales
             </strong>
 
-            <p className="mt-2 h-[55px] overflow-y-scroll">
+            <p className="mt-2 h-[35px] overflow-y-scroll">
               <span className="text-2xl font-medium text-gray-900 max-md:text-base">
                 <ul className="flex flex-col gap-1">
                   {categoryTotalsData.map((category) => (
@@ -374,7 +393,7 @@ export const OrdenDeCompraRegistrosDos = () => {
 
       <div className="max-md:mt-2 mt-4 px-6">
         <div className="px-10 max-md:px-2">
-          <p className="uppercase text-indigo-500 font-semibold text-sm underline">
+          <p className="uppercase text-sky-400 font-semibold text-sm underline">
             Ordenes de compra registradas del mes
           </p>
         </div>
@@ -416,7 +435,7 @@ export const OrdenDeCompraRegistrosDos = () => {
                   <Link
                     target="_blank"
                     to={`/orden-checkout/${o.id}`}
-                    className="py-2 px-4 rounded-xl text-indigo-500 text-xs bg-indigo-100 cursor-pointer flex items-center gap-1"
+                    className="py-2 px-4 rounded-xl text-sky-600 text-xs bg-sky-100 cursor-pointer flex items-center gap-1"
                   >
                     VER ORDEN CHECKOUT
                     <svg

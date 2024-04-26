@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { useOrdenesContext } from "../../../context/OrdenesProvider";
 import { useProductosContext } from "../../../context/ProductosProvider";
 import PogressBar from "../../../components/charts/PogressBar";
+import ApexChart from "../../../components/charts/ChartOne";
+import ApexChartColumn from "../../../components/charts/ChartTwo";
 
 export const Home = () => {
   const { ordenesMensuales } = useOrdenesContext();
@@ -59,6 +61,8 @@ export const Home = () => {
     return total;
   }, 0);
 
+  console.log(ordenesMensuales);
+
   const calculateCategoryTotals = () => {
     const categoryTotals = {};
 
@@ -103,335 +107,226 @@ export const Home = () => {
     return () => clearTimeout(timer);
   }, []);
 
-  return isLoading ? (
-    <section className=" w-full h-full min-h-full max-h-full px-12 max-md:px-4 flex flex-col gap-12 max-md:gap-8 py-24">
-      <div className="rounded-xl bg-white grid grid-cols-3 gap-3 max-md:grid-cols-1 max-md:border-none max-md:shadow-none max-md:py-2 max-md:px-0">
-        {[1, 2, 3, 4, 5].map((index) => (
-          <article
-            key={index}
-            className="animate-pulse flex items-center justify-between gap-4 rounded-xl border-[1px] border-slate-300 bg-white p-8 hover:shadow-md transition-all ease-linear cursor-pointer"
-          >
-            <div className="flex gap-4 items-center">
-              <div className="rounded-full bg-gray-200 animate-pulse w-9 h-9"></div>
-              <div>
-                <div className="bg-gray-200 animate-pulse h-8 w-24"></div>
-                <div className="bg-gray-200 animate-pulse h-4 w-20"></div>
-              </div>
-            </div>
-            <div className="flex items-center gap-2 self-end rounded-xl bg-gray-200 py-2 px-2 text-gray-200 animate-pulse">
-              <div className="w-4 h-4 rounded-full bg-gray-300 animate-pulse"></div>
-              <div className="w-10 h-4 bg-gray-300 animate-pulse"></div>
-            </div>
-          </article>
-        ))}
-      </div>
+  // Determina la semana actual
+  const getStartOfWeek = (date) => {
+    const day = date.getDay(); // 0 = domingo, 1 = lunes, etc.
+    const diff = date.getDate() - day + (day === 0 ? -6 : 1); // Ajusta para que la semana comience el lunes
+    return new Date(date.setDate(diff));
+  };
 
-      <div className="grid grid-cols-2 items-start gap-5 overflow-y-scroll pb-4">
-        <div className="h-[500px] border-slate-300 border-[1px] py-5 px-5 rounded-xl flex flex-col gap-12 hover:shadow-md transition-all ease-linear cursor-pointer">
-          {[1, 2, 3].map((index) => (
-            <div key={index} className="animate-pulse flex flex-col gap-5">
-              <div className="bg-gray-200 rounded-xl h-3"></div>
-              <div className="bg-gray-200 rounded-xl h-3"></div>
-              <div className="bg-gray-200 rounded-xl h-3"></div>
-            </div>
-          ))}
+  // Filtra productos cargados en la semana actual y agrega el proveedor
+  const startOfWeek = getStartOfWeek(new Date());
+  const productosDeEstaSemana = ordenesMensuales
+    .filter((orden) => new Date(orden.created_at) >= startOfWeek)
+    .reduce((productos, orden) => {
+      // Agrega todos los productos de las órdenes recientes al arreglo de productos
+      const proveedor = orden.proveedor;
+      orden.datos.productoSeleccionado.forEach((producto) => {
+        productos.push({
+          proveedor: proveedor,
+          nombre: producto.detalle,
+          precio: parseFloat(producto.precio_und),
+          cantidad: parseInt(producto.cantidad),
+        });
+      });
+      return productos;
+    }, []);
+  console.log(productosDeEstaSemana);
+
+  return (
+    <section className="bg-gray-100/40 w-full h-full min-h-full max-h-full px-12 max-md:px-4 flex flex-col gap-12 max-md:gap-8 py-24">
+      <div>
+        <div className="mb-8 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+          <div className="bg-white py-4 px-6 shadow-md border">
+            <h2 className="text-xl font-bold text-sky-400 bg-white">
+              Dashboard de compras del mes
+            </h2>
+          </div>
         </div>
-        <div className="flex flex-col gap-4">
-          {[1, 2, 3].map((index) => (
-            <div
-              key={index}
-              className="animate-pulse flex items-center justify-between gap-4 rounded-xl border border-slate-300 bg-white p-6 hover:shadow-md transition-all ease-linear cursor-pointer"
-            >
-              <div className="rounded-full bg-gray-200 animate-pulse w-9 h-9"></div>
-              <div>
-                <div className="bg-gray-200 animate-pulse h-8 w-24"></div>
-                <div className="bg-gray-200 animate-pulse h-4 w-20"></div>
-              </div>
-            </div>
-          ))}
+
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-6 xl:grid-cols-3">
+          {/* Tarjeta 1 */}
+          <Card
+            description="Total gasto en compras del mes"
+            value={totalFinalAcumulado.toLocaleString("es-AR", {
+              style: "currency",
+              currency: "ARS",
+            })}
+            change={`${Number(totalFinalAcumulado % 100).toFixed(2)} %`}
+            changeColor="bg-red-500"
+            porcentaje={totalFinalAcumulado}
+            color={"rgb(220 38 38 / 0.8)"}
+          />
+
+          {/* Tarjeta 2 */}
+          <Card
+            description="Deuda total proveedores"
+            value={totalProveedores.toLocaleString("es-AR", {
+              style: "currency",
+              currency: "ARS",
+            })}
+            change={`${Number(totalProveedores % 100).toFixed(2)} %`}
+            changeColor="bg-red-500"
+            color={"rgb(220 38 38 / 0.8)"}
+            porcentaje={totalProveedores}
+          />
+
+          <Card
+            description="Total ordenes generadas en el mes"
+            value={ordenesMensuales.length}
+            change={`${Number(ordenesMensuales.length % 100).toFixed(2)} %`}
+            changeColor="bg-green-500"
+            porcentaje={ordenesMensuales.length}
+            color={"rgb(34 197 94)"}
+          />
         </div>
       </div>
-    </section>
-  ) : (
-    <section className="bg-gray-100/50 w-full h-full min-h-full max-h-full px-12 max-md:px-4 flex flex-col gap-12 max-md:gap-8 py-24">
-      <div className="grid grid-cols-3 gap-3 max-md:grid-cols-1 max-md:py-2 max-md:px-0">
-        <article className="flex items-center justify-between gap-4 rounded-xl border border-slate-300 bg-white p-6 hover:shadow-md transition-all ease-linear cursor-pointer">
-          <div className="flex gap-4 items-center">
-            <span className="rounded-full bg-red-100 p-3 text-red-700">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-9 w-9"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                strokeWidth="2"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"
-                />
-              </svg>
-            </span>
 
-            <div>
-              <p className="text-2xl font-medium text-red-700">
-                {Number(totalFinalAcumulado).toLocaleString("es-AR", {
-                  style: "currency",
-                  currency: "ARS",
-                })}
-              </p>
-
-              <p className="text-sm text-gray-500 uppercase underline">
-                Total en compras del mes
-              </p>
-            </div>
-          </div>
-
-          <div className="flex items-center gap-2 self-end rounded-xl bg-red-100 py-2 px-2 text-red-600">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-4 w-4"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"
-              />
-            </svg>
-
-            <span className="text-xs font-medium">
-              {" "}
-              {Number(totalFinalAcumulado / 1000000).toFixed(2)} %{" "}
-            </span>
-          </div>
-        </article>
-
-        <article className="flex items-center justify-between gap-4 rounded-2xl hover:shadow-md transition-all ease-linear cursor-pointer border border-slate-300 bg-white py-9 px-6">
-          <div className="flex gap-4 items-center">
-            <span className="rounded-full bg-green-100 p-3 text-green-700">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth={1.5}
-                stroke="currentColor"
-                className="w-9 h-9"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 0 0 2.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 0 0-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 0 0 .75-.75 2.25 2.25 0 0 0-.1-.664m-5.8 0A2.251 2.251 0 0 1 13.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25ZM6.75 12h.008v.008H6.75V12Zm0 3h.008v.008H6.75V15Zm0 3h.008v.008H6.75V18Z"
-                />
-              </svg>
-            </span>
-
-            <div>
-              <p className="text-2xl font-medium text-green-700">
-                {Number(ordenesMensuales.length)}
-              </p>
-
-              <p className="text-sm text-gray-500 uppercase underline">
-                Total en compras del mes
-              </p>
-            </div>
-          </div>
-
-          <div className="flex items-center gap-2 self-end rounded-xl bg-green-100 py-2 px-2 text-green-600">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-4 w-4"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"
-              />
-            </svg>
-
-            <span className="text-xs font-medium">
-              {" "}
-              {Number(ordenesMensuales.length / 1).toFixed(2)} %{" "}
-            </span>
-          </div>
-        </article>
-
-        <article className="flex items-center justify-between gap-4 rounded-2xl hover:shadow-md transition-all ease-linear cursor-pointer border border-slate-300 bg-white py-9 px-6">
-          <div className="mt-2 h-[50px] overflow-y-scroll">
-            <p className="">
-              <span className="text-2xl font-medium text-gray-900 max-md:text-base">
-                <ul className="flex flex-col gap-1">
-                  {categoryTotalsData.map((category) => (
-                    <li
-                      className="uppercase text-sm text-slate-600"
-                      key={category.category}
-                    >
-                      <span className="font-bold">{category.category}:</span>{" "}
-                      <p className="text-red-600">
-                        {" "}
-                        {Number(category.total).toLocaleString("es-AR", {
-                          style: "currency",
-                          currency: "ARS",
-                        })}
-                      </p>
-                    </li>
-                  ))}
-                </ul>
-              </span>
-            </p>
-          </div>
-        </article>
-
-        <article className="flex items-center justify-between gap-4 rounded-2xl hover:shadow-md transition-all ease-linear cursor-pointer border border-slate-300 bg-white py-9 px-6">
-          <div className="flex gap-4 items-center">
-            <span className="rounded-full bg-indigo-100 p-3 text-indigo-700">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth={1.5}
-                stroke="currentColor"
-                className="w-9 h-9"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 11.25v7.5"
-                />
-              </svg>
-            </span>
-
-            <div>
-              <p className="text-2xl font-medium text-indigo-700 uppercase">
-                {nombreMesActual}
-              </p>
-
-              <p className="text-sm text-gray-500 uppercase underline">
-                MES ACTUAL
-              </p>
-            </div>
-          </div>
-
-          <div className="flex items-center gap-2 self-end rounded-xl bg-indigo-100 py-2 px-4 text-indigo-600">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth={1.5}
-              stroke="currentColor"
-              className="w-6 h-6"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 11.25v7.5"
-              />
-            </svg>
-
-            <span className="text-xs font-medium uppercase">
-              {" "}
-              {nombreDiaActual}{" "}
-            </span>
-          </div>
-        </article>
-
-        <article className="flex items-center justify-between gap-4 rounded-2xl hover:shadow-md transition-all ease-linear cursor-pointer border border-slate-300 bg-white py-9 px-6">
-          <div className="flex gap-4 items-center">
-            <span className="rounded-full bg-red-100 p-3 text-red-700">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth={1.5}
-                stroke="currentColor"
-                className="w-9 h-9"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M12 3v17.25m0 0c-1.472 0-2.882.265-4.185.75M12 20.25c1.472 0 2.882.265 4.185.75M18.75 4.97A48.416 48.416 0 0 0 12 4.5c-2.291 0-4.545.16-6.75.47m13.5 0c1.01.143 2.01.317 3 .52m-3-.52 2.62 10.726c.122.499-.106 1.028-.589 1.202a5.988 5.988 0 0 1-2.031.352 5.988 5.988 0 0 1-2.031-.352c-.483-.174-.711-.703-.59-1.202L18.75 4.971Zm-16.5.52c.99-.203 1.99-.377 3-.52m0 0 2.62 10.726c.122.499-.106 1.028-.589 1.202a5.989 5.989 0 0 1-2.031.352 5.989 5.989 0 0 1-2.031-.352c-.483-.174-.711-.703-.59-1.202L5.25 4.971Z"
-                />
-              </svg>
-            </span>
-
-            <div>
-              <p className="text-2xl font-medium text-red-700">
-                {" "}
-                {Number(totalProveedores).toLocaleString("es-AR", {
-                  style: "currency",
-                  currency: "ARS",
-                })}
-              </p>
-
-              <p className="text-sm text-gray-500 uppercase underline">
-                Total deuda proveedores
-              </p>
-            </div>
-          </div>
-
-          <div className="flex items-center gap-2 self-end rounded-xl bg-red-100 py-2 px-2 text-red-600">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-4 w-4"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"
-              />
-            </svg>
-
-            <span className="text-xs font-medium">
-              {" "}
-              {Number(totalProveedores / 1000000).toFixed(2)} %{" "}
-            </span>
-          </div>
-        </article>
+      <div className="grid grid-cols-2 gap-5 mb-10 z-0">
+        <ApexChart ordenesMensuales={ordenesMensuales} />
+        <ApexChartColumn ordenesMensuales={ordenesMensuales} />
       </div>
 
-      <div className="grid grid-cols-2 items-start gap-5 pb-4">
-        <div className="bg-white h-[500px] overflow-y-scroll border-slate-300 border-[1px] py-5 px-5 rounded-2xl flex flex-col gap-12 hover:shadow-md transition-all ease-linear cursor-pointer">
-          <div className="text-2xl font-medium text-gray-900 max-md:text-base flex flex-col gap-5">
-            {categoryTotalsData.map((category) => (
-              <div key={category.category}>
-                <p className="uppercase text-sm text-slate-600">
-                  {category.category}:
-                </p>
-                <progress
-                  className="[&::-webkit-progress-bar]:rounded-lg [&::-webkit-progress-value]:rounded-lg rounded-full  [&::-webkit-progress-bar]:bg-slate-300 [&::-webkit-progress-value]:bg-green-400 [&::-moz-progress-bar]:bg-green-400 w-full h-3"
-                  value={Number(category.total)}
-                  max={20000000}
-                ></progress>
-                <div>
-                  <p className="text-xs text-slate-700 px-2 py-1 font-semibold">
-                    {`${category.total.toLocaleString("es-AR", {
+      <div className="bg-white border shadow-lg py-10 px-10 rounded">
+        <div>
+          <p className="font-semibold text-gray-800 mb-4">
+            Reporte de productos cargados en la semana.
+          </p>
+        </div>
+        <div className="overflow-x-auto">
+          <table className="table">
+            {/* head */}
+            <thead>
+              <tr className="text-sm">
+                <th>Proveedor</th>
+                <th>Producto comprado</th>
+                <th>Cantidad del producto</th>
+                <th>Total final</th>
+                <th>Estado</th>
+              </tr>
+            </thead>
+            <tbody>
+              {productosDeEstaSemana.map((p) => (
+                <tr className="text-sm uppercase">
+                  <th>{p.proveedor}</th>
+                  <td>{p.nombre}</td>
+                  <td>{p.cantidad}</td>
+                  <td className="font-bold">
+                    {p.precio.toLocaleString("es-AR", {
                       style: "currency",
                       currency: "ARS",
-                    })} (${((Number(category.total) / 20000000) * 100).toFixed(
-                      2
-                    )}%)`}
-                  </p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-        <div className="flex flex-col gap-4">
-          <PogressBar ordenesMensuales={ordenesMensuales} />
+                    })}
+                  </td>
+                  <td className="flex">
+                    <p className="bg-green-100 py-2 px-6 rounded-full text-green-700 font-medium">
+                      aprobado
+                    </p>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
       </div>
     </section>
   );
 };
+
+const Card = ({
+  description,
+  value,
+  change,
+  changeColor,
+  porcentaje,
+  color,
+}) => {
+  return (
+    <div className="xl:p-7.5 border border-gray-200 bg-white p-4 shadow-lg dark:border-gray-600 dark:bg-gray-800 md:p-6">
+      <div className="flex items-center justify-between">
+        <div>
+          <h3 className="mb-4 text-2xl font-bold text-gray-900 dark:text-white">
+            {value}
+          </h3>
+          <p className="font-medium text-gray-600 dark:text-gray-300">
+            {description}
+          </p>
+          <span className="mt-2 flex items-center gap-2">
+            <span
+              className={`flex items-center gap-1 rounded-md ${changeColor} p-1 text-xs font-medium text-white`}
+            >
+              <svg
+                width="14"
+                height="15"
+                viewBox="0 0 14 15"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M13.0155 5.24683H9.49366C9.23116 5.24683 9.01241 5.72808C9.01241 5.99058 9.49366 6.20933H11.6593L8.85928 8.09058C8.74991 8.17808 8.59678 8.17808 8.46553 8.09058L5.57803 6.18745C5.11866 5.8812 4.54991 5.8812 4.09053 6.18745L0.721783 8.44058C0.503033 8.5937 0.437408 8.89995 0.590533 9.1187C0.678033 9.24995 0.831157 9.33745 1.00616 9.33745C1.09366 9.33745 1.20303 9.31558 1.26866 9.24995L4.65928 6.99683C4.76866 6.90933 4.92178 6.90933 5.05303 6.99683L7.94053 8.92183C8.39991 9.22808 8.96866 9.22808 9.42803 8.92183L12.5124 6.8437V9.27183V5.72808Z"
+                  fill="white"
+                />
+              </svg>
+              <span>{change}</span>
+            </span>
+            <span className="text-sm font-medium text-gray-600 dark:text-gray-300">
+              Porcentaje del mes
+            </span>
+          </span>
+        </div>
+        <div className="flex justify-center items-center">
+          <CircularProgress color={color} percentage={porcentaje} />
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const CircularProgress = ({ percentage, color }) => {
+  // Asegura que el porcentaje esté entre 1 y 100
+  const normalizedPercentage = percentage % 100 || 100;
+
+  // Cálculo del ángulo de progreso
+  const progressAngle = `${(normalizedPercentage / 100) * 360}deg`;
+
+  // Tamaño de la barra de progreso
+  const circleSize = "100px"; // Tamaño del círculo exterior
+
+  // Estilo para el círculo de progreso
+  const progressStyle = {
+    backgroundImage: `conic-gradient(
+      ${color} ${progressAngle},
+      transparent 0
+    )`,
+  };
+
+  return (
+    <div
+      className="relative flex justify-center items-center rounded-full bg-gray-200"
+      style={{ width: circleSize, height: circleSize }}
+    >
+      {/* Fondo del círculo de progreso */}
+      <div
+        className="absolute w-full h-full rounded-full"
+        style={{ ...progressStyle, zIndex: 1 }}
+      />
+
+      {/* Anillo interior para crear la barra gruesa */}
+      <div
+        className="-absolute w-20 h-20 rounded-full bg-white"
+        style={{ zIndex: 2 }}
+      />
+
+      {/* Texto en el centro */}
+      <div
+        className="absolute flex justify-center items-center"
+        style={{ zIndex: 3 }}
+      >
+        <span className="text-lg font-bold text-gray-700">
+          {`${normalizedPercentage}%`}
+        </span>
+      </div>
+    </div>
+  );
+};
+
+export default CircularProgress;

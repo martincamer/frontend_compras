@@ -169,130 +169,12 @@ export const OrdenDeCompra = () => {
 
   const closeModalEditarOrden = () => setOpenModalEditarOrden(false);
 
-  return isLoading ? (
-    <section className="w-full h-full px-5 max-md:px-4 flex flex-col gap-2 py-16 max-md:gap-5">
-      {/* ToastContainer */}
-      <div className="py-5 px-5 rounded-xl grid grid-cols-3 gap-3 mb-2 max-md:grid-cols-1 max-md:border-none max-md:shadow-none max-md:py-0 max-md:px-0 animate-pulse">
-        {/* Primer artículo */}
-        <article className="flex justify-between items-center rounded-2xl border border-gray-200 bg-white p-8 shadow">
-          {/* Icono y detalles */}
-          <div className="flex gap-4 items-center">
-            {/* Placeholder para el icono */}
-            <div className="rounded-full bg-slate-200 p-3 text-slate-700">
-              <div className="w-9 h-9 rounded-full bg-gray-300"></div>
-            </div>
-            <div className="space-y-2">
-              {/* Placeholder para el texto */}
-              <p className="text-2xl font-medium bg-slate-200 py-4 px-16 rounded-xl"></p>
-              <p className="text-sm bg-slate-200 uppercase underline py-4 px-16 rounded-xl"></p>
-            </div>
-          </div>
-          {/* Placeholder para el porcentaje */}
-          <div className="inline-flex gap-2 rounded-xl bg-slate-200 py-4 px-10"></div>
-        </article>
-        {/* Segundo artículo */}
-        <article className="flex justify-between items-center rounded-2xl border border-gray-200 bg-white p-8 shadow">
-          {/* Icono y detalles */}
-          <div className="flex gap-4 items-center">
-            {/* Placeholder para el icono */}
-            <div className="rounded-full bg-slate-200 p-3 text-slate-700">
-              <div className="w-9 h-9 rounded-full bg-gray-200"></div>
-            </div>
-            <div className="space-y-2">
-              {/* Placeholder para el texto */}
-              <p className="text-2xl font-medium bg-slate-200 py-4 px-16 rounded-xl"></p>
-              <p className="text-sm bg-slate-200 uppercase underline py-4 px-16 rounded-xl"></p>
-            </div>
-          </div>
-          {/* Placeholder para el porcentaje */}
-          <div className="inline-flex gap-2 rounded-xl bg-slate-200 py-4 px-10"></div>
-        </article>
-
-        <article className="flex justify-between items-center rounded-2xl border border-gray-200 bg-white p-8 shadow">
-          {/* Icono y detalles */}
-          <div className="flex gap-4 items-center">
-            {/* Placeholder para el icono */}
-            <div className="rounded-full bg-slate-200 p-3 text-slate-700">
-              <div className="w-9 h-9 rounded-full bg-gray-200"></div>
-            </div>
-            <div className="space-y-2">
-              {/* Placeholder para el texto */}
-              <p className="text-2xl font-medium bg-slate-200 py-4 px-16 rounded-xl"></p>
-              <p className="text-sm bg-slate-200 uppercase underline py-4 px-16 rounded-xl"></p>
-            </div>
-          </div>
-          {/* Placeholder para el porcentaje */}
-          <div className="inline-flex gap-2 rounded-xl bg-slate-200 py-4 px-10"></div>
-        </article>
-        {/* Tercer artículo */}
-      </div>
-      {/* Botones */}
-      <div className="mx-10 py-2 flex gap-2 items-center max-md:px-0 max-md:py-0 max-md:flex-col max-md:items-start border-b-[1px] border-slate-200 pb-4 max-md:pb-4 max-md:mx-2 animate-pulse">
-        {/* Placeholder para el botón */}
-        <button className="bg-slate-200  py-5 px-20 rounded-xl"></button>
-        {/* Placeholder para el enlace */}
-        <button className="bg-slate-200  py-5 px-20 rounded-xl"></button>
-        {/* Placeholder para el enlace */}
-        <button className="bg-slate-200  py-5 px-20 rounded-xl"></button>
-      </div>
-      {/* Placeholder para la sección de órdenes de compra */}
-      <div className="max-md:mt-2 mt-4 px-6 animate-pulse">
-        {/* Placeholder para el título */}
-        <div className="px-10 max-md:px-2">
-          <button className="bg-slate-200  py-5 px-20 rounded-xl"></button>
-        </div>
-        {/* Placeholder para la barra de búsqueda */}
-        <div className="mt-5 px-8 flex gap-2">
-          {/* Placeholder para el campo de búsqueda */}
-          <div className="w-1/4 rounded-xl py-2 px-5 border-slate-200 bg-white text-slate-700 border-[1px] uppercase"></div>
-          {/* Placeholder para el select */}
-          <div className="py-5 px-32 text-slate-700 rounded-xl shadow bg-white border-slate-200 border-[1px] uppercase"></div>
-        </div>
-        {/* Placeholder para las órdenes de compra */}
-        <div className="overflow-x-auto mt-6 mx-0 border-slate-300 border-[1px] rounded-2xl animate-pulse">
-          <table className="min-w-full divide-y-2 divide-gray-200 bg-white text-sm">
-            <thead className="text-left">
-              <tr>
-                <th className="whitespace-nowrap px-4 py-7 bg-slate-300"></th>
-                <th className="whitespace-nowrap px-4 py-7 bg-slate-300"></th>
-                <th className="whitespace-nowrap px-4 py-7 bg-slate-300"></th>
-                <th className="whitespace-nowrap px-4 py-7 bg-slate-300"></th>
-                <th className="whitespace-nowrap px-4 py-7 bg-slate-300"></th>
-              </tr>
-            </thead>
-
-            <tbody className="divide-y divide-gray-200">
-              {/* Placeholder para 10 filas de datos */}
-              {[...Array(ordenesMensuales.length)].map((_, index) => (
-                <tr key={index}>
-                  <td className="whitespace-nowrap px-4 bg-slate-100/30 py-8 font-medium text-gray-900 uppercase text-sm animate-pulse">
-                    {/* Placeholder para el código */}
-                  </td>
-                  <td className="whitespace-nowrap px-4 bg-slate-100/30 py-8 text-gray-700 uppercase text-sm animate-pulse">
-                    {/* Placeholder para el detalle */}
-                  </td>
-                  <td className="whitespace-nowrap px-4 bg-slate-100/30 py-8 text-gray-700 uppercase text-sm animate-pulse">
-                    {/* Placeholder para la categoría */}
-                  </td>
-                  <td className="whitespace-nowrap px-4 bg-slate-100/30 py-8  uppercase text-sm font-bold text-indigo-500 animate-pulse">
-                    {/* Placeholder para el precio */}
-                  </td>
-                  <td className="whitespace-nowrap px-4 bg-slate-100/30 py-8 text-gray-700 uppercase text-sm cursor-pointer space-x-2 animate-pulse">
-                    {/* Placeholder para las acciones */}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </section>
-  ) : (
-    <section className="max-h-full min-h-screen bg-gray-100/50 w-full h-full px-5 max-md:px-4 flex flex-col gap-2 py-16 max-md:gap-5">
+  return (
+    <section className="max-h-full min-h-screen bg-gray-100/40 w-full h-full px-5 max-md:px-4 flex flex-col gap-2 py-16 max-md:gap-5">
       <ToastContainer />
       <div className="py-5 px-5 rounded-xl grid grid-cols-3 gap-3 mb-2 max-md:grid-cols-1 max-md:border-none max-md:shadow-none max-md:py-0 max-md:px-0">
-        <article className="flex justify-between items-center rounded-2xl border border-gray-200 bg-white p-8 hover:shadow-md cursor-pointer transition-all ease-linear">
-          <div className="flex gap-4 items-center">
+        <article className="flex items-start justify-between gap-4 shadow-lg hover:shadow-md transition-all ease-linear cursor-pointer border border-slate-300 bg-white py-4 px-6">
+          <div className="flex justify-center h-full gap-4 items-center py-8">
             <span className="rounded-full bg-red-100 p-3 text-red-700">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -348,8 +230,8 @@ export const OrdenDeCompra = () => {
           </div>
         </article>
 
-        <article className="flex justify-between items-center rounded-2xl border border-gray-200 bg-white p-8 hover:shadow-md cursor-pointer transition-all ease-linear">
-          <div className="flex gap-4 items-center">
+        <article className="flex items-start justify-between gap-4 shadow-lg hover:shadow-md transition-all ease-linear cursor-pointer border border-slate-300 bg-white py-4 px-6">
+          <div className="flex justify-center h-full gap-4 items-center py-8">
             <span className="rounded-full bg-green-100 p-3 text-green-700">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -400,18 +282,18 @@ export const OrdenDeCompra = () => {
             </span>
           </div>
         </article>
-        <article className="flex justify-between items-center rounded-2xl border border-gray-200 bg-white p-8 hover:shadow-md cursor-pointer transition-all ease-linear">
+        <article className="flex items-center gap-4 shadow-lg hover:shadow-md transition-all ease-linear cursor-pointer border border-slate-300 bg-white py-4 px-6">
           <div>
             <strong className="block text-sm font-medium text-gray-500 max-md:text-sm uppercase">
               Materiales/categorias gastos totales
             </strong>
 
-            <p className="mt-2 h-[35px] overflow-y-scroll">
-              <span className="text-2xl font-medium text-gray-900 max-md:text-base">
-                <ul className="flex flex-col gap-1">
+            <p className="mt-2 h-[35px] overflow-y-scroll w-full">
+              <span className="text-2xl font-medium text-gray-900 max-md:text-base w-full">
+                <ul className="flex flex-col gap-1 w-full">
                   {categoryTotalsData.map((category) => (
                     <li
-                      className="uppercase text-sm text-slate-600"
+                      className="uppercase text-sm text-slate-600 w-full"
                       key={category.category}
                     >
                       <span className="font-bold">{category.category}:</span>{" "}
@@ -434,7 +316,7 @@ export const OrdenDeCompra = () => {
       <div className="mx-10 py-2 flex gap-2 items-center max-md:px-0 max-md:py-0 max-md:flex-col max-md:items-start border-b-[1px] border-slate-300 pb-4 max-md:pb-4 max-md:mx-2">
         <button
           onClick={() => openModal()}
-          className="bg-green-200  py-2 px-4 rounded-xl text-sm text-green-700 uppercase max-md:text-xs flex gap-2 items-center hover:bg-green-500 hover:text-white transition-all ease-in-out"
+          className="bg-sky-400  py-3 px-5 rounded-full text-sm text-white font-semibold uppercase max-md:text-xs flex gap-2 items-center hover:bg-sky-500 hover:text-white transition-all ease-in-out"
         >
           Crear nueva orden
           <svg
@@ -455,7 +337,7 @@ export const OrdenDeCompra = () => {
 
         <Link
           to={"/registro-ordenes"}
-          className="flex items-center gap-1 bg-white border-slate-300 border-[1px] py-2 px-4 rounded-xl text-sm shadow text-slate-700 uppercase max-md:text-xs"
+          className="bg-orange-400  py-3 px-5 rounded-full text-sm text-white font-semibold uppercase max-md:text-xs flex gap-2 items-center hover:bg-orange-500 hover:text-white transition-all ease-in-out"
         >
           Ver registros de ordenes
           <svg
@@ -476,7 +358,7 @@ export const OrdenDeCompra = () => {
 
         <Link
           to={"/productos-ordenes"}
-          className="flex items-center gap-1 bg-white border-slate-300 border-[1px] py-2 px-4 rounded-xl text-sm shadow text-slate-700 uppercase max-md:text-xs"
+          className="bg-orange-400  py-3 px-5 rounded-full text-sm text-white font-semibold uppercase max-md:text-xs flex gap-2 items-center hover:bg-orange-500 hover:text-white transition-all ease-in-out"
         >
           Ir a busqueda de productos
           <svg
@@ -498,7 +380,7 @@ export const OrdenDeCompra = () => {
 
       <div className="max-md:mt-2 mt-4 px-6">
         <div className="px-10 max-md:px-2">
-          <p className="uppercase text-indigo-500 font-semibold text-sm underline">
+          <p className="uppercase text-sky-400 font-semibold text-sm underline">
             Ordenes de compra
           </p>
         </div>
@@ -507,12 +389,12 @@ export const OrdenDeCompra = () => {
           <input
             type="text"
             placeholder="BUSCAR POR EL PROVEEDOR O DETALLE.."
-            className="w-1/4 rounded-xl py-2 px-5 border-slate-300 bg-white text-slate-700 border-[1px] uppercase"
+            className="w-1/4 rounded-xl py-2 px-5 border-slate-300 bg-white text-slate-700 border-[1px] uppercase text-sm"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
           <select
-            className="py-1 px-4 text-slate-700 rounded-xl shadow bg-white border-slate-300 border-[1px] uppercase"
+            className="font-bold py-1 px-4 text-slate-700 rounded-xl shadow bg-white border-slate-300 border-[1px] uppercase text-sm"
             value={selectedCategory}
             onChange={(e) => setSelectedCategory(e.target.value)}
           >
@@ -551,7 +433,7 @@ export const OrdenDeCompra = () => {
           <tbody className="divide-y divide-gray-200">
             {currentProducts.map((p) => (
               <tr className="hover:bg-gray-100/50 transition-all" key={p.id}>
-                <td className="whitespace-nowrap px-4 py-4 text-gray-700 uppercase text-sm">
+                <td className="whitespace-nowrap px-4 py-4 text-gray-700 font-bold uppercase text-sm">
                   {p.id}
                 </td>
                 <td className="whitespace-nowrap px-4 py-4 text-gray-700 uppercase text-sm">
@@ -563,7 +445,7 @@ export const OrdenDeCompra = () => {
                 <td className="whitespace-nowrap px-4 py-4  uppercase text-sm">
                   {new Date(p.fecha_factura).toLocaleDateString("ars")}
                 </td>
-                <td className="whitespace-nowrap px-4 py-4  uppercase text-sm font-bold text-indigo-500">
+                <td className="whitespace-nowrap px-4 py-4  uppercase text-sm font-bold text-sky-500">
                   {Number(p.precio_final).toLocaleString("es-AR", {
                     style: "currency",
                     currency: "ARS",
@@ -651,7 +533,7 @@ export const OrdenDeCompra = () => {
                       <li>
                         <Link
                           to={`/orden/${p.id}`}
-                          className="bg-indigo-500/20 hover:bg-indigo-200 text-indigo-700 py-2 px-3 rounded-xl text-sm flex gap-1 items-center"
+                          className="bg-sky-500/20 hover:bg-sky-200 text-sky-700 py-2 px-3 rounded-xl text-sm flex gap-1 items-center"
                         >
                           VER ORDEN
                           <svg

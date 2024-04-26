@@ -179,7 +179,7 @@ export const ModalCrearCategorias = ({
                 <div className="flex justify-end">
                   <button
                     type="button"
-                    className="inline-flex justify-center px-2 py-2 text-sm text-red-900 bg-red-100 border border-transparent rounded-xl hover:bg-red-200 duration-300 cursor-pointer max-md:text-xs"
+                    className="inline-flex justify-center px-2 py-2 text-sm text-red-900 bg-red-100 border border-transparent rounded-full hover:bg-red-200 duration-300 cursor-pointer max-md:text-xs"
                     onClick={closeModalCategorias}
                   >
                     <svg
@@ -217,7 +217,7 @@ export const ModalCrearCategorias = ({
                   <div>
                     <button
                       type="submit"
-                      class="group relative hover:bg-indigo-500 hover:text-white transition-all ease-in-out bg-indigo-100 text-indigo-600 font-normal uppercase text-sm py-2 px-4 rounded-xl flex items-center justify-center"
+                      class="group relative transition-all ease-in-out bg-sky-400 text-white tex font-normal uppercase text-sm py-3 text-center px-4 rounded-full flex items-center justify-center"
                     >
                       Crear nueva categoria
                       <svg
@@ -262,7 +262,7 @@ export const ModalCrearCategorias = ({
                             viewBox="0 0 24 24"
                             strokeWidth={1.5}
                             stroke="currentColor"
-                            className="w-10 h-10 text-indigo-500 bg-indigo-100 py-2 px-2 rounded-xl cursor-pointer"
+                            className="w-10 h-10 text-sky-500 bg-sky-100 py-2 px-2 rounded-xl cursor-pointer"
                           >
                             <path
                               strokeLinecap="round"

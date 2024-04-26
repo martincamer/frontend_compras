@@ -80,49 +80,6 @@ export const ModalEditarProducto = ({ isOpen, closeModal, OBTENERID }) => {
     }, 500);
   };
 
-  //   useEffect(() => {
-  //     const newSocket = io(
-  //       //"https://tecnohouseindustrialbackend-production.up.railway.app",
-  //       "http://localhost:4000",
-  //       {
-  //         withCredentials: true,
-  //       }
-  //     );
-
-  //     setSocket(newSocket);
-
-  //     const handleEditarSalida = (editarSalida) => {
-  //       const updateSalida = JSON.parse(editarSalida?.config?.data);
-
-  //       setProductos((prevSalidas) => {
-  //         const nuevosSalidas = [...prevSalidas];
-  //         const index = nuevosSalidas.findIndex(
-  //           (salida) => salida.id === salida.id
-  //         );
-  //         if (index !== -1) {
-  //           nuevosSalidas[index] = {
-  //             id: nuevosSalidas[index].id,
-  //             detalle: updateSalida.detalle,
-  //             precio_und: updateSalida.precio_und,
-  //             categoria: updateSalida.categoria,
-  //             usuario: nuevosSalidas[index].usuario,
-  //             role_id: nuevosSalidas[index].role_id,
-  //             created_at: nuevosSalidas[index].created_at,
-  //             updated_at: nuevosSalidas[index].updated_at,
-  //           };
-  //         }
-  //         return nuevosSalidas;
-  //       });
-  //     };
-
-  //     newSocket.on("editar-producto", handleEditarSalida);
-
-  //     return () => {
-  //       newSocket.off("editar-producto", handleEditarSalida);
-  //       newSocket.close();
-  //     };
-  //   }, []);
-
   return (
     <Menu as="div" className="z-50">
       <Transition appear show={isOpen} as={Fragment}>
@@ -176,7 +133,7 @@ export const ModalEditarProducto = ({ isOpen, closeModal, OBTENERID }) => {
                 <div className="flex justify-end">
                   <button
                     type="button"
-                    className="inline-flex justify-center px-2 py-2 text-sm text-red-900 bg-red-100 border border-transparent rounded-xl hover:bg-red-200 duration-300 cursor-pointer max-md:text-xs"
+                    className="inline-flex justify-center px-2 py-2 text-sm text-red-900 bg-red-100 border border-transparent rounded-full hover:bg-red-200 duration-300 cursor-pointer max-md:text-xs"
                     onClick={closeModal}
                   >
                     <svg
@@ -232,19 +189,6 @@ export const ModalEditarProducto = ({ isOpen, closeModal, OBTENERID }) => {
                     </select>
                   </div>
 
-                  {/* <div className="flex flex-col gap-1">
-                    <label className="text-sm text-slate-700 uppercase">
-                      Proveedor
-                    </label>
-                    <input
-                      onChange={(e) => setProveedor(e.target.value)}
-                      value={proveedor}
-                      type="text"
-                      className="py-2 px-4 rounded-xl uppercase border-slate-300 border-[1px] shadow placeholder:text-slate-300 text-sm"
-                      placeholder="DETALLE DEL PRODUCTO"
-                    />
-                  </div> */}
-
                   <div className="flex flex-col gap-1">
                     <label className="text-sm text-slate-700 uppercase">
                       Precio
@@ -260,7 +204,7 @@ export const ModalEditarProducto = ({ isOpen, closeModal, OBTENERID }) => {
                       />
                     </div>
                     <div className="mt-2">
-                      <span className="bg-indigo-100 text-sm py-2 px-6 rounded-xl uppercase text-indigo-500">
+                      <span className="bg-sky-100 text-sm py-2 px-6 rounded-xl uppercase text-sky-500">
                         {Number(precio_und).toLocaleString("es-AR", {
                           style: "currency",
                           currency: "ARS",
@@ -272,7 +216,7 @@ export const ModalEditarProducto = ({ isOpen, closeModal, OBTENERID }) => {
                   <div>
                     <button
                       type="submit"
-                      class="group relative hover:bg-indigo-500 hover:text-white transition-all ease-in-out bg-indigo-100 text-indigo-600 font-normal uppercase text-sm py-2 px-4 rounded-xl flex items-center justify-center"
+                      class="group relative transition-all ease-in-out bg-sky-400 text-white font-normal uppercase text-sm py-3 px-4 rounded-full flex items-center justify-center"
                     >
                       Editar el producto
                       <svg

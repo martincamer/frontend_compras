@@ -60,7 +60,7 @@ export const ModalObtenerCompra = ({ isOpen, closeModal, obtenerId }) => {
               <div className="flex justify-end">
                 <button
                   type="button"
-                  className="inline-flex justify-center px-2 py-2 text-sm text-red-900 bg-red-100 border border-transparent rounded-xl hover:bg-red-200 duration-300 cursor-pointer max-md:text-xs"
+                  className="inline-flex justify-center px-2 py-2 text-sm text-red-900 bg-red-100 border border-transparent rounded-full hover:bg-red-200 duration-300 cursor-pointer max-md:text-xs"
                   onClick={closeModal}
                 >
                   <svg
@@ -82,7 +82,7 @@ export const ModalObtenerCompra = ({ isOpen, closeModal, obtenerId }) => {
 
               <div className="text-sm text-slate-700 mb-3 border-b-[1px] uppercase font-bold pb-2 flex gap-4 items-center">
                 COMPROBANTE DE PAGO NUMERO{" "}
-                <span className="text-indigo-600 text-lg bg-indigo-100 py-1 px-4 rounded-xl">
+                <span className="text-sky-600 text-lg bg-sky-100 py-1 px-4 rounded-xl">
                   {datos.id}
                 </span>
               </div>
@@ -90,21 +90,21 @@ export const ModalObtenerCompra = ({ isOpen, closeModal, obtenerId }) => {
               <div className="py-2 flex flex-col gap-2">
                 <p className="uppercase font-bold text-sm text-slate-700 flex gap-3">
                   <span className="underline"> Fecha de creación </span>
-                  <span className="text-indigo-600 font-normal">
+                  <span className="text-sky-600 font-normal">
                     {datos?.created_at?.split("T")[0]}
                   </span>
                 </p>
 
                 <p className="uppercase font-bold text-sm text-slate-700 flex gap-3">
                   <span className="underline"> Proveedor </span>
-                  <span className="text-indigo-600 font-normal">
+                  <span className="text-sky-600 font-normal">
                     {datos.proveedor}
                   </span>
                 </p>
 
                 <p className="uppercase font-bold text-sm text-slate-700 flex gap-3">
                   <span className="underline"> Total del comprobante </span>
-                  <span className="text-indigo-600 font-bold">
+                  <span className="text-sky-600 font-bold">
                     {Number(datos.total).toLocaleString("es-AR", {
                       style: "currency",
                       currency: "ARS",
@@ -129,7 +129,7 @@ export const ModalObtenerCompra = ({ isOpen, closeModal, obtenerId }) => {
                       />
                     </div>
                     <button
-                      className="absolute top-4 right-4 bg-red-100 text-red-800 py-3 px-5 rounded-xl text-xl focus:outline-none"
+                      className="absolute top-4 right-4 bg-red-100 text-red-800 py-3 px-3 rounded-full text-sm focus:outline-none"
                       onClick={handleToggleImagenAmpliada}
                     >
                       <svg
@@ -138,7 +138,7 @@ export const ModalObtenerCompra = ({ isOpen, closeModal, obtenerId }) => {
                         viewBox="0 0 24 24"
                         strokeWidth={1.5}
                         stroke="currentColor"
-                        className="w-7 h-7"
+                        className="w-6 h-6"
                       >
                         <path
                           strokeLinecap="round"
@@ -152,9 +152,9 @@ export const ModalObtenerCompra = ({ isOpen, closeModal, obtenerId }) => {
                 <div>
                   <button
                     onClick={handleToggleImagenAmpliada}
-                    className="text-sm text-green-700 bg-green-100 py-2 px-4 rounded-xl flex gap-2 items-center"
+                    className="text-sm text-white bg-green-500/90 py-2.5 px-6 font-semibold rounded-full flex gap-2 items-center"
                   >
-                    VER COMPROBANTE IMAGEN GRANDE.
+                    VER COMPROBANTE IMAGEN GRANDE
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       fill="none"

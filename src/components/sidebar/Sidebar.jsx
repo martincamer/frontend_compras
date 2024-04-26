@@ -1,287 +1,188 @@
 import { useEffect, useRef, useState } from "react";
 import { useAuth } from "../../context/AuthProvider";
 import { Link, useLocation } from "react-router-dom";
+import { IoMenuOutline, IoCloseOutline } from "react-icons/io5";
+import { AiOutlineDatabase } from "react-icons/ai";
+import {
+  CiDatabase,
+  CiHome,
+  CiMedicalClipboard,
+  CiMemoPad,
+  CiUser,
+  CiViewList,
+} from "react-icons/ci";
 
 export const SideBar = () => {
-  const { signout } = useAuth();
-
-  const [visible, setVisible] = useState(false);
-
-  const menuRef = useRef(null); // Para referenciar el menú
-  const sidebarAreaRef = useRef(null); // Para referenciar el área sensible al mouse
-
+  const { user } = useAuth();
   const location = useLocation();
 
-  const toggleSidebar = () => {
-    setVisible(!visible);
+  const [isOpen, setIsOpen] = useState(false);
+
+  const handleToggle = () => {
+    setIsOpen(!isOpen);
   };
 
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (
-        menuRef?.current &&
-        !menuRef?.current.contains(event.target) &&
-        !sidebarAreaRef?.current.contains(event.target)
-      ) {
-        setVisible(false);
-      }
-    };
-
-    document.addEventListener("click", handleClickOutside);
-    return () => {
-      document.removeEventListener("click", handleClickOutside);
-    };
-  }, []);
-
-  useEffect(() => {
-    const handleMouseEnter = () => {
-      setVisible(true);
-    };
-
-    const handleMouseLeave = (event) => {
-      // Verificamos que el mouse realmente dejó la barra lateral antes de cerrarla
-      if (
-        menuRef?.current &&
-        !menuRef?.current.contains(event?.relatedTarget)
-      ) {
-        setVisible(false);
-      }
-    };
-
-    sidebarAreaRef?.current?.addEventListener("mouseenter", handleMouseEnter);
-    menuRef?.current?.addEventListener("mouseleave", handleMouseLeave);
-
-    return () => {
-      sidebarAreaRef?.current?.removeEventListener(
-        "mouseenter",
-        handleMouseEnter
-      );
-      menuRef?.current?.removeEventListener("mouseleave", handleMouseLeave);
-    };
-  }, []);
+  const handleLogout = () => {
+    // Aquí podrías implementar la lógica para cerrar sesión
+    console.log("Cerrando sesión...");
+  };
 
   return (
-    <>
+    <div
+      className={`${
+        isOpen ? "w-64 opacity-1" : "w-16 opacity-1"
+      } transition-all ease-linear flex flex-col bg-white min-h-screen max-h-full h-full z-[100] border-r`}
+    >
+      {/* Botón de menú */}
       <div
-        id="navbar" // ID para identificar el elemento
-        className="fixed left-0 top-0 z-[1] p-1 px-4 max-md:px-4"
-        onClick={() => toggleSidebar()}
-      >
-        <div
-          ref={sidebarAreaRef} // Referencia para el área sensible al mouse
-          className="fixed left-0 top-0 z-[100] h-full w-5 bg-transparent"
-        ></div>
-      </div>
-      <div
-        ref={menuRef}
         className={`${
-          visible
-            ? "translate-x-0 w-20 opacity-1"
-            : "-translate-x-full w-[-100px] opacity-0"
-        } fixed left-0 top-0 z-[100] bg-white h-full shadow-lg transition-transform duration-300 ease-in-out`}
+          isOpen ? "flex justify-between" : ""
+        } transition-all ease-linear duration-300 py-3 px-4 border-b-[2px] border-slate-300 `}
       >
-        <div className="flex max-md:w-14 flex-col justify-between border-e bg-white h-full max-h-full min-h-full">
-          <div className="">
-            <div>
-              <div className="px-2">
-                <ul className="space-y-1 flex flex-col  pt-4 ">
-                  <Link to={"/"} onClick={() => toggleSidebar()}>
-                    <a
-                      href="#"
-                      className={`${
-                        location.pathname === "/"
-                          ? "bg-slate-100 text-black-500"
-                          : "bg-white"
-                      } group relative flex justify-center rounded px-2 py-1.5 text-gray-500 hover:bg-slate-200 hover:text-gray-700`}
-                    >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        strokeWidth={1.5}
-                        stroke="currentColor"
-                        className="w-7 h-7"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="m2.25 12 8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25"
-                        />
-                      </svg>
-
-                      <span className="invisible absolute start-full top-1/2 ms-4 -translate-y-1/2 bg-white px-3 py-3 text-xs font-medium text-slate-700 group-hover:visible w-[200px] uppercase border-slate-300 border-[1px] rounded-2xl">
-                        <div className="flex justify-center">
-                          <p className="font-bold">Inicio/Estadisticas</p>
-                        </div>
-                      </span>
-                    </a>
-                  </Link>
-
-                  <Link to={"/productos"} onClick={() => toggleSidebar()}>
-                    <a
-                      href="#"
-                      className={`${
-                        location.pathname === "/productos"
-                          ? "bg-slate-100 text-black-500"
-                          : "bg-white"
-                      } group relative flex justify-center rounded px-2 py-1.5 text-gray-500 hover:bg-slate-200 hover:text-gray-700`}
-                    >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        strokeWidth={1.5}
-                        stroke="currentColor"
-                        className="w-7 h-7"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M6.429 9.75 2.25 12l4.179 2.25m0-4.5 5.571 3 5.571-3m-11.142 0L2.25 7.5 12 2.25l9.75 5.25-4.179 2.25m0 0L21.75 12l-4.179 2.25m0 0 4.179 2.25L12 21.75 2.25 16.5l4.179-2.25m11.142 0-5.571 3-5.571-3"
-                        />
-                      </svg>
-
-                      <span className="invisible absolute start-full top-1/2 ms-4 -translate-y-1/2 bg-white px-3 py-3 text-xs font-medium text-slate-700 group-hover:visible w-[200px] uppercase border-slate-300 border-[1px] rounded-2xl">
-                        <div className="flex justify-center">
-                          <p className="font-bold">Productos/Crear/Editar</p>
-                        </div>
-                      </span>
-                    </a>
-                  </Link>
-                  <Link to={"/ordenes"} onClick={() => toggleSidebar()}>
-                    <a
-                      href="#"
-                      className={`${
-                        location.pathname === "/ordenes"
-                          ? "bg-slate-100 text-black-500"
-                          : "bg-white"
-                      } group relative flex justify-center rounded px-2 py-1.5 text-gray-500 hover:bg-slate-200 hover:text-gray-700`}
-                    >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        strokeWidth={1.5}
-                        stroke="currentColor"
-                        className="w-8 h-8"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 0 0 2.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 0 0-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 0 0 .75-.75 2.25 2.25 0 0 0-.1-.664m-5.8 0A2.251 2.251 0 0 1 13.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25ZM6.75 12h.008v.008H6.75V12Zm0 3h.008v.008H6.75V15Zm0 3h.008v.008H6.75V18Z"
-                        />
-                      </svg>
-
-                      <span className="invisible absolute start-full top-1/2 ms-4 -translate-y-1/2 bg-white px-3 py-3 text-xs font-medium text-slate-700 group-hover:visible w-[200px] uppercase border-slate-300 border-[1px] rounded-2xl">
-                        <div className="flex justify-center">
-                          <p className="font-bold">Ordenes/crear/editar</p>
-                        </div>
-                      </span>
-                    </a>
-                  </Link>
-                  <Link
-                    to={"/ordenes-checkout"}
-                    onClick={() => toggleSidebar()}
-                  >
-                    <a
-                      href="#"
-                      className={`${
-                        location.pathname === "/ordenes-checkout"
-                          ? "bg-slate-100 text-black-500"
-                          : "bg-white"
-                      } group relative flex justify-center rounded px-2 py-1.5 text-gray-500 hover:bg-slate-200 hover:text-gray-700 text-center`}
-                    >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        strokeWidth={1.5}
-                        stroke="currentColor"
-                        className="w-8 h-8"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M11.35 3.836c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 0 0 .75-.75 2.25 2.25 0 0 0-.1-.664m-5.8 0A2.251 2.251 0 0 1 13.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m8.9-4.414c.376.023.75.05 1.124.08 1.131.094 1.976 1.057 1.976 2.192V16.5A2.25 2.25 0 0 1 18 18.75h-2.25m-7.5-10.5H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V18.75m-7.5-10.5h6.375c.621 0 1.125.504 1.125 1.125v9.375m-8.25-3 1.5 1.5 3-3.75"
-                        />
-                      </svg>
-
-                      <span className="invisible absolute start-full top-1/2 ms-4 -translate-y-1/2 bg-white px-3 py-3 text-xs font-medium text-slate-700 group-hover:visible w-[200px] uppercase border-slate-300 border-[1px] rounded-2xl">
-                        <div className="flex justify-center">
-                          <p className="font-bold">
-                            Ordenes pendientes/cantidad
-                          </p>
-                        </div>
-                      </span>
-                    </a>
-                  </Link>
-
-                  <Link to={"/proveedores"} onClick={() => toggleSidebar()}>
-                    <a
-                      href="#"
-                      className={`${
-                        location.pathname === "/proveedores"
-                          ? "bg-slate-100 text-black-500"
-                          : "bg-white"
-                      } group relative flex justify-center rounded px-2 py-1.5 text-gray-500 hover:bg-slate-200 hover:text-gray-700 text-center`}
-                    >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        strokeWidth={1.5}
-                        stroke="currentColor"
-                        className="w-7 h-7"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z"
-                        />
-                      </svg>
-
-                      <span className="invisible absolute start-full top-1/2 ms-4 -translate-y-1/2 bg-white px-3 py-3 text-xs font-medium text-slate-700 group-hover:visible w-[200px] uppercase border-slate-300 border-[1px] rounded-2xl">
-                        <div className="flex justify-center">
-                          <p className="font-bold">Proveedores/pagos</p>
-                        </div>
-                      </span>
-                    </a>
-                  </Link>
-                </ul>
+        <button className="text-3xl text-sky-600" onClick={handleToggle}>
+          {isOpen ? <IoCloseOutline /> : <IoMenuOutline />}
+        </button>
+        {isOpen && (
+          <p className="bg-sky-500 py-1 px-2 rounded-xl text-sm text-white capitalize">
+            {user?.username}
+          </p>
+        )}
+      </div>
+      {isOpen ? (
+        <div className="w-full flex flex-col gap-0">
+          <Link
+            to={"/"}
+            className={`${
+              location.pathname === "/" ? "bg-sky-100" : "bg-none"
+            } hover:text-sky-700 text-slate-700 text-sm transition-all py-3 px-3`}
+          >
+            Inicio/estadistica/compras
+          </Link>
+          <Link
+            to={"/productos"}
+            className={`${
+              location.pathname === "/productos" ? "bg-sky-100" : "bg-none"
+            } hover:text-sky-700 text-slate-700 text-sm transition-all py-3 px-3`}
+          >
+            Productos/crear/editar
+          </Link>
+          <Link
+            to={"/ordenes"}
+            className={`${
+              location.pathname === "/ordenes" ? "bg-sky-100" : "bg-none"
+            } hover:text-sky-700 text-slate-700 text-sm transition-all py-3 px-3`}
+          >
+            Cargar ordenes/editar/etc
+          </Link>
+          <Link
+            to={"/ordenes-checkout"}
+            className={`${
+              location.pathname === "/ordenes-checkout"
+                ? "bg-sky-100"
+                : "bg-none"
+            } hover:text-sky-700 text-slate-700 text-sm transition-all py-3 px-3`}
+          >
+            Ordenes checkout
+          </Link>
+          <Link
+            to={"/proveedores"}
+            className={`${
+              location.pathname === "/proveedores" ? "bg-sky-100" : "bg-none"
+            } hover:text-sky-700 text-slate-700 text-sm transition-all py-3 px-3`}
+          >
+            Proveedores/crear/editar
+          </Link>
+        </div>
+      ) : (
+        <div className="flex flex-col justify-center">
+          <div
+            className={`${
+              location.pathname === "/" ? "bg-sky-100" : "bg-none"
+            } w-full text-center py-2 items-center transition-all`}
+          >
+            <div className="w-full text-center py-2 items-center transition-all ">
+              <div
+                className="tooltip tooltip-right"
+                data-tip="INICIO/ESTADISTICAS/ETC"
+              >
+                <Link to={"/"}>
+                  <CiHome className="text-3xl text-sky-700" />
+                </Link>
               </div>
             </div>
           </div>
 
-          <div className="sticky inset-x-0 bottom-0 border-t border-gray-100 bg-white p-2 ">
-            <form action="#">
-              <button
-                type="button"
-                onClick={() => signout()}
-                className="group relative flex w-full justify-center rounded-lg px-2 py-1.5 text-sm text-gray-500 hover:bg-gray-50 hover:text-gray-700"
+          <div
+            className={`${
+              location.pathname === "/productos" ? "bg-sky-100" : "bg-none"
+            } w-full text-center py-2 items-center transition-all`}
+          >
+            <div className="w-full text-center py-2 items-center transition-all ">
+              <div
+                className="tooltip tooltip-right"
+                data-tip="PRODUCTOS/CREAR/EDITAR"
               >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth={1.5}
-                  stroke="currentColor"
-                  className="w-8 h-8"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M8.25 9V5.25A2.25 2.25 0 0 1 10.5 3h6a2.25 2.25 0 0 1 2.25 2.25v13.5A2.25 2.25 0 0 1 16.5 21h-6a2.25 2.25 0 0 1-2.25-2.25V15M12 9l3 3m0 0-3 3m3-3H2.25"
-                  />
-                </svg>
+                <Link to={"/productos"}>
+                  <CiViewList className="text-3xl text-sky-700" />
+                </Link>
+              </div>
+            </div>
+          </div>
 
-                <span className="invisible absolute start-full top-1/2 ms-4 -translate-y-1/2 rounded bg-gray-900 px-2 py-1.5 text-xs font-medium text-white group-hover:visible">
-                  Salir de la aplicación
-                </span>
-              </button>
-            </form>
+          <div
+            className={`${
+              location.pathname === "/ordenes" ? "bg-sky-100" : "bg-none"
+            } w-full text-center py-2 items-center transition-all`}
+          >
+            <div className="w-full text-center py-2 items-center transition-all ">
+              <div
+                className="tooltip tooltip-right"
+                data-tip="CREAR ORDENES/EDITAR/ETC"
+              >
+                <Link to={"/ordenes"}>
+                  <CiMedicalClipboard className="text-3xl text-sky-700" />
+                </Link>
+              </div>
+            </div>
+          </div>
+
+          <div
+            className={`${
+              location.pathname === "/ordenes-checkout"
+                ? "bg-sky-100"
+                : "bg-none"
+            } w-full text-center py-2 items-center transition-all`}
+          >
+            <div className="w-full text-center py-2 items-center transition-all ">
+              <div
+                className="tooltip tooltip-right"
+                data-tip="ORDENES CHECKOUT/DAR DE DALTA"
+              >
+                <Link to={"/ordenes-checkout"}>
+                  <CiMemoPad className="text-3xl text-sky-700" />
+                </Link>
+              </div>
+            </div>
+          </div>
+
+          <div
+            className={`${
+              location.pathname === "/proveedores" ? "bg-sky-100" : "bg-none"
+            } w-full text-center py-2 items-center transition-all`}
+          >
+            <div className="w-full text-center py-2 items-center transition-all ">
+              <div
+                className="tooltip tooltip-right"
+                data-tip="CREAR PROVEEDORES/CARGAR COMPROBANTES/ETC"
+              >
+                <Link to={"/proveedores"}>
+                  <CiUser className="text-3xl text-sky-700" />
+                </Link>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-    </>
+      )}
+    </div>
   );
 };

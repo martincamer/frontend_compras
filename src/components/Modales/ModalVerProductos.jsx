@@ -66,7 +66,7 @@ export const ModalVerProductos = ({ isOpen, closeModal, obtenerId }) => {
                 <div className="flex justify-end">
                   <button
                     type="button"
-                    className="inline-flex justify-center px-2 py-2 text-sm text-red-900 bg-red-100 border border-transparent rounded-xl hover:bg-red-200 duration-300 cursor-pointer max-md:text-xs"
+                    className="inline-flex justify-center px-2 py-2 text-sm text-red-900 bg-red-100 border border-transparent rounded-full hover:bg-red-200 duration-300 cursor-pointer max-md:text-xs"
                     onClick={closeModal}
                   >
                     <svg
@@ -136,9 +136,9 @@ export const ModalVerProductos = ({ isOpen, closeModal, obtenerId }) => {
                               currency: "ARS",
                             })}
                           </td>
-                          <td className="px-4 py-4 text-green-700 uppercase text-sm font-bold">
+                          <td className="px-4 py-4 text-white uppercase text-sm font-bold">
                             <div className="flex">
-                              <p className="bg-green-100 py-2 px-5 rounded-xl">
+                              <p className="bg-green-500/90 py-2 px-5 rounded-full">
                                 {Number(p.totalFinal).toLocaleString("es-AR", {
                                   style: "currency",
                                   currency: "ARS",
@@ -151,9 +151,9 @@ export const ModalVerProductos = ({ isOpen, closeModal, obtenerId }) => {
                               (p.iva === 1.21 && "IVA DEL 21.00") ||
                               (p.iva === 0 && "NO TIENE IVA")}
                           </td>
-                          <td className="px-4 py-4 text-indigo-700 uppercase text-sm font-bold ">
+                          <td className="px-4 py-4 text-white uppercase text-sm font-bold ">
                             <div className="flex">
-                              <p className="bg-indigo-100 py-2 px-5 rounded-xl">
+                              <p className="bg-orange-500/90 py-2 px-5 rounded-full">
                                 {Number(p.totalFinalIva).toLocaleString(
                                   "es-AR",
                                   {

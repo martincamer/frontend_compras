@@ -154,7 +154,7 @@ export const ModalComprobante = ({ isOpen, closeModal, datos, setDatos }) => {
                 <div className="flex justify-end">
                   <button
                     type="button"
-                    className="inline-flex justify-center px-2 py-2 text-sm text-red-900 bg-red-100 border border-transparent rounded-xl hover:bg-red-200 duration-300 cursor-pointer max-md:text-xs"
+                    className="inline-flex justify-center px-2 py-2 text-sm text-red-900 bg-red-100 border border-transparent rounded-full hover:bg-red-200 duration-300 cursor-pointer max-md:text-xs"
                     onClick={closeModal}
                   >
                     <svg
@@ -248,7 +248,7 @@ export const ModalComprobante = ({ isOpen, closeModal, datos, setDatos }) => {
 
                   <div className="mt-3">
                     <button
-                      className="bg-indigo-100 py-2 px-4 rounded-xl text-indigo-700 uppercase text-sm flex gap-2 items-center"
+                      className="bg-sky-400 py-2.5 px-6 rounded-full font-semibold text-white uppercase text-sm flex gap-2 items-center"
                       type="submit"
                       onClick={() => closeModal()}
                     >
