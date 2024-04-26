@@ -1,13 +1,24 @@
 import { useEffect, useState } from "react";
 import { useOrdenesContext } from "../../../context/OrdenesProvider";
 import { useProductosContext } from "../../../context/ProductosProvider";
-import PogressBar from "../../../components/charts/PogressBar";
 import ApexChart from "../../../components/charts/ChartOne";
 import ApexChartColumn from "../../../components/charts/ChartTwo";
+import client from "../../../api/axios";
+import ApexChartColumnProveedores from "../../../components/charts/ChartTree";
 
 export const Home = () => {
   const { ordenesMensuales } = useOrdenesContext();
   const { proveedores } = useProductosContext();
+  const [comprobantesMensuales, setComprobantesMensuales] = useState([]);
+
+  useEffect(() => {
+    const obtenerDatos = async () => {
+      const respuesta = await client.get("/comprobantes-mes");
+
+      setComprobantesMensuales(respuesta.data);
+    };
+    obtenerDatos();
+  }, []);
 
   const totalProveedores = proveedores.reduce((accumulator, currentValue) => {
     return accumulator + parseInt(currentValue.total);
@@ -131,7 +142,15 @@ export const Home = () => {
       });
       return productos;
     }, []);
-  console.log(productosDeEstaSemana);
+
+  const totalAcumulado = comprobantesMensuales.reduce((acumulado, item) => {
+    const totalNum = parseFloat(item.total); // Convertir a número
+    return acumulado + totalNum;
+  }, 0); // Inicia la acumulación desde cero
+
+  console.log("Total acumulado:", totalAcumulado); // Muestra el total acumulado
+
+  console.log("proveedores", proveedores);
 
   return (
     <section className="bg-gray-100/40 w-full h-full min-h-full max-h-full px-12 max-md:px-4 flex flex-col gap-12 max-md:gap-8 py-24">
@@ -171,6 +190,19 @@ export const Home = () => {
             porcentaje={totalProveedores}
           />
 
+          {/* Tarjeta 2 */}
+          <Card
+            description="Total pagado a proveedores"
+            value={totalAcumulado.toLocaleString("es-AR", {
+              style: "currency",
+              currency: "ARS",
+            })}
+            change={`${Number(totalAcumulado % 100).toFixed(2)} %`}
+            changeColor="bg-green-500"
+            color={"rgb(34 197 94)"}
+            porcentaje={totalAcumulado}
+          />
+
           <Card
             description="Total ordenes generadas en el mes"
             value={ordenesMensuales.length}
@@ -185,6 +217,13 @@ export const Home = () => {
       <div className="grid grid-cols-2 gap-5 mb-10 z-0">
         <ApexChart ordenesMensuales={ordenesMensuales} />
         <ApexChartColumn ordenesMensuales={ordenesMensuales} />
+      </div>
+
+      <div className="grid grid-cols-2 gap-5 mb-10 z-0">
+        <ApexChartColumnProveedores
+          totalProveedores={totalProveedores}
+          proveedores={proveedores}
+        />
       </div>
 
       <div className="bg-white border shadow-lg py-10 px-10 rounded">
@@ -322,7 +361,7 @@ const CircularProgress = ({ percentage, color }) => {
         style={{ zIndex: 3 }}
       >
         <span className="text-lg font-bold text-gray-700">
-          {`${normalizedPercentage}%`}
+          {`${normalizedPercentage.toFixed(2)}%`}
         </span>
       </div>
     </div>
