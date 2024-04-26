@@ -78,7 +78,7 @@ const ApexChartColumnProveedores = ({ proveedores, totalProveedores }) => {
           options={chartOptions}
           series={series}
           type="bar"
-          height={400}
+          height={600}
         />
       </div>
 
