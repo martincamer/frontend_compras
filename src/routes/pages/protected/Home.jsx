@@ -5,6 +5,7 @@ import ApexChart from "../../../components/charts/ChartOne";
 import ApexChartColumn from "../../../components/charts/ChartTwo";
 import client from "../../../api/axios";
 import ApexChartColumnProveedores from "../../../components/charts/ChartTree";
+import ApexChartComprobantes from "../../../components/charts/ChartFourty";
 
 export const Home = () => {
   const { ordenesMensuales } = useOrdenesContext();
@@ -223,6 +224,10 @@ export const Home = () => {
         <ApexChartColumnProveedores
           totalProveedores={totalProveedores}
           proveedores={proveedores}
+        />
+        <ApexChartComprobantes
+          total={totalAcumulado}
+          comprobantes={comprobantesMensuales}
         />
       </div>
 
