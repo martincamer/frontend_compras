@@ -6,6 +6,7 @@ import {
   CiHome,
   CiMedicalClipboard,
   CiMemoPad,
+  CiSettings,
   CiUser,
   CiViewList,
 } from "react-icons/ci";
@@ -222,6 +223,25 @@ export const SideBar = () => {
               </div>
             </div>
           </div>
+
+          {user.tipo === "admin" && (
+            <div
+              className={`${
+                location.pathname === "/cuentas" ? "bg-sky-100" : "bg-none"
+              } w-full text-center py-2 items-center transition-all`}
+            >
+              <div className="w-full text-center py-2 items-center transition-all ">
+                <div
+                  className="tooltip tooltip-right"
+                  data-tip="REGISTRAR USUARIOS/EDITARLOS/ETC"
+                >
+                  <Link to={"/cuentas"}>
+                    <CiSettings className="text-3xl text-sky-700" />
+                  </Link>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       )}
     </div>

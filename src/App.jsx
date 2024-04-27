@@ -31,13 +31,14 @@ import { OrdenDeCompraRegistrosAdmin } from "./routes/pages/protectedAdmin/Orden
 import { OrdenDeCompraCheckoutAdmin } from "./routes/pages/protectedAdmin/OrdenDeCompraCheckoutAdmin";
 import { ProveedoresAdmin } from "./routes/pages/protectedAdmin/ProveedoresAdmin";
 import { ProductosOrdenesFiltradorAdmin } from "./routes/pages/protectedAdmin/ProductosOrdenesFiltradorAdmin";
+import { OrdenDeCompraRegistrosDosAdmin } from "./routes/pages/protectedAdmin/OrdenDeCompraRegistrosDosAdmin";
+import { AdministrarCuentas } from "./routes/pages/protectedAdmin/AdministrarCuentas";
 ///////////////////////////////////ADMIN//////////////////////////////////////////////
 
 //import normales
 import RutaProtegida from "./layouts/RutaProtejida";
 import "react-toastify/dist/ReactToastify.css";
 import "react-toastify/dist/ReactToastify.min.css";
-import { OrdenDeCompraRegistrosDosAdmin } from "./routes/pages/protectedAdmin/OrdenDeCompraRegistrosDosAdmin";
 
 function App() {
   const { isAuth, user } = useAuth();
@@ -45,6 +46,7 @@ function App() {
   const adminRoutes = (
     <>
       <Route index path="/" element={<HomeAdmin />} />
+      <Route index path="/cuentas" element={<AdministrarCuentas />} />
       <Route index path="/ordenes" element={<OrdenDeCompraAdmin />} />
       <Route index path="/orden/:id" element={<ViewOrden />} />
       <Route index path="/proveedores" element={<ProveedoresAdmin />} />
@@ -144,49 +146,6 @@ function App() {
               }
             >
               {user?.tipo === "admin" ? adminRoutes : userRoutes}
-              {/* 
-              <Route index path="/productos" element={<Productos />} />
-              <Route index path="/ordenes" element={<OrdenDeCompra />} />
-              <Route index path="/orden/:id" element={<ViewOrden />} />
-              <Route index path="/proveedores" element={<Proveedores />} />
-              <Route index path="/proveedores/:id" element={<Proveedor />} />
-
-              <Route
-                index
-                path="/pdf-productos"
-                element={<ViewPdfProducto />}
-              />
-
-              <Route
-                index
-                path="/pdf-comprobante/:id"
-                element={<ViewComprobantePdf />}
-              />
-              <Route
-                index
-                path="/ordenes-checkout"
-                element={<OrdenDeCompraCheckout />}
-              />
-              <Route
-                index
-                path="/orden-checkout/:id"
-                element={<ViewOrdenCheckout />}
-              />
-              <Route
-                index
-                path="/registro-ordenes"
-                element={<OrdenDeCompraRegistros />}
-              />
-              <Route
-                index
-                path="/registro-ordenes-checkout"
-                element={<OrdenDeCompraRegistrosDos />}
-              />
-              <Route
-                index
-                path="/productos-ordenes"
-                element={<ProductosOrdenesFiltrador />}
-              /> */}
             </Route>
           </Route>
           <Route path="*" element={<NotFound />} />
