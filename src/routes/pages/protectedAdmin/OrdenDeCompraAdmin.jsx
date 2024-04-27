@@ -86,20 +86,21 @@ export const OrdenDeCompraAdmin = () => {
   // Filtrar las órdenes según el término de búsqueda, categoría y localidad
   const filteredProducts = ordenesMensualesAdmin.filter((orden) => {
     const matchSearchTerm =
-      orden.proveedor.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      orden.proveedor?.toLowerCase()?.includes(searchTerm?.toLowerCase()) ||
       orden.datos.productoSeleccionado.some((producto) =>
-        producto.detalle.toLowerCase().includes(searchTerm.toLowerCase())
+        producto.detalle.toLowerCase()?.includes(searchTerm?.toLowerCase())
       );
 
     const matchCategory =
       selectedCategory === "all" ||
-      orden.datos.productoSeleccionado.some(
+      orden.datos.productoSeleccionado?.some(
         (producto) => producto.categoria === selectedCategory
       );
 
     const matchLocality =
       selectedLocality === "all" ||
-      orden.localidad_usuario.toLowerCase() === selectedLocality.toLowerCase();
+      orden?.localidad_usuario?.toLowerCase() ===
+        selectedLocality?.toLowerCase();
 
     // Devuelve solo las órdenes que cumplan con todas las condiciones
     return matchSearchTerm && matchCategory && matchLocality;
@@ -181,7 +182,7 @@ export const OrdenDeCompraAdmin = () => {
   const uniqueLocalidad = Array.from(
     new Set(
       ordenesMensualesAdmin.map((orden) =>
-        orden.localidad_usuario.toLowerCase()
+        orden.localidad_usuario?.toLowerCase()
       )
     )
   );

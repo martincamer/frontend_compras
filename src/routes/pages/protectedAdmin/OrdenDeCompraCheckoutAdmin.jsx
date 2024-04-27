@@ -187,7 +187,7 @@ export const OrdenDeCompraCheckoutAdmin = () => {
   const uniqueLocalidad = Array.from(
     new Set(
       ordenesMensualesAdmin.map((orden) =>
-        orden.localidad_usuario.toLowerCase()
+        orden?.localidad_usuario?.toLowerCase()
       )
     )
   );
