@@ -1,10 +1,8 @@
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import { useAuth } from "../../context/AuthProvider";
 import { Link, useLocation } from "react-router-dom";
 import { IoMenuOutline, IoCloseOutline } from "react-icons/io5";
-import { AiOutlineDatabase } from "react-icons/ai";
 import {
-  CiDatabase,
   CiHome,
   CiMedicalClipboard,
   CiMemoPad,
@@ -20,11 +18,6 @@ export const SideBar = () => {
 
   const handleToggle = () => {
     setIsOpen(!isOpen);
-  };
-
-  const handleLogout = () => {
-    // Aquí podrías implementar la lógica para cerrar sesión
-    console.log("Cerrando sesión...");
   };
 
   return (
@@ -58,14 +51,18 @@ export const SideBar = () => {
           >
             Inicio/estadistica/compras
           </Link>
-          <Link
-            to={"/productos"}
-            className={`${
-              location.pathname === "/productos" ? "bg-sky-100" : "bg-none"
-            } hover:text-sky-700 text-slate-700 text-sm transition-all py-3 px-3`}
-          >
-            Productos/crear/editar
-          </Link>
+          {user.tipo === "admin" ? (
+            ""
+          ) : (
+            <Link
+              to={"/productos"}
+              className={`${
+                location.pathname === "/productos" ? "bg-sky-100" : "bg-none"
+              } hover:text-sky-700 text-slate-700 text-sm transition-all py-3 px-3`}
+            >
+              Productos/crear/editar
+            </Link>
+          )}
           <Link
             to={"/ordenes"}
             className={`${
@@ -112,58 +109,102 @@ export const SideBar = () => {
             </div>
           </div>
 
-          <div
-            className={`${
-              location.pathname === "/productos" ? "bg-sky-100" : "bg-none"
-            } w-full text-center py-2 items-center transition-all`}
-          >
-            <div className="w-full text-center py-2 items-center transition-all ">
-              <div
-                className="tooltip tooltip-right"
-                data-tip="PRODUCTOS/CREAR/EDITAR"
-              >
-                <Link to={"/productos"}>
-                  <CiViewList className="text-3xl text-sky-700" />
-                </Link>
+          {user.tipo === "admin" ? (
+            ""
+          ) : (
+            <div
+              className={`${
+                location.pathname === "/productos" ? "bg-sky-100" : "bg-none"
+              } w-full text-center py-2 items-center transition-all`}
+            >
+              <div className="w-full text-center py-2 items-center transition-all ">
+                <div
+                  className="tooltip tooltip-right"
+                  data-tip="PRODUCTOS/CREAR/EDITAR"
+                >
+                  <Link to={"/productos"}>
+                    <CiViewList className="text-3xl text-sky-700" />
+                  </Link>
+                </div>
               </div>
             </div>
-          </div>
+          )}
 
-          <div
-            className={`${
-              location.pathname === "/ordenes" ? "bg-sky-100" : "bg-none"
-            } w-full text-center py-2 items-center transition-all`}
-          >
-            <div className="w-full text-center py-2 items-center transition-all ">
-              <div
-                className="tooltip tooltip-right"
-                data-tip="CREAR ORDENES/EDITAR/ETC"
-              >
-                <Link to={"/ordenes"}>
-                  <CiMedicalClipboard className="text-3xl text-sky-700" />
-                </Link>
+          {user.tipo === "admin" ? (
+            <div
+              className={`${
+                location.pathname === "/ordenes" ? "bg-sky-100" : "bg-none"
+              } w-full text-center py-2 items-center transition-all`}
+            >
+              <div className="w-full text-center py-2 items-center transition-all ">
+                <div
+                  className="tooltip tooltip-right"
+                  data-tip="ORDENES EMITIDAS POR USUARIOS"
+                >
+                  <Link to={"/ordenes"}>
+                    <CiMedicalClipboard className="text-3xl text-sky-700" />
+                  </Link>
+                </div>
               </div>
             </div>
-          </div>
+          ) : (
+            <div
+              className={`${
+                location.pathname === "/ordenes" ? "bg-sky-100" : "bg-none"
+              } w-full text-center py-2 items-center transition-all`}
+            >
+              <div className="w-full text-center py-2 items-center transition-all ">
+                <div
+                  className="tooltip tooltip-right"
+                  data-tip="CREAR ORDENES/EDITAR/ETC"
+                >
+                  <Link to={"/ordenes"}>
+                    <CiMedicalClipboard className="text-3xl text-sky-700" />
+                  </Link>
+                </div>
+              </div>
+            </div>
+          )}
 
-          <div
-            className={`${
-              location.pathname === "/ordenes-checkout"
-                ? "bg-sky-100"
-                : "bg-none"
-            } w-full text-center py-2 items-center transition-all`}
-          >
-            <div className="w-full text-center py-2 items-center transition-all ">
-              <div
-                className="tooltip tooltip-right"
-                data-tip="ORDENES CHECKOUT/DAR DE DALTA"
-              >
-                <Link to={"/ordenes-checkout"}>
-                  <CiMemoPad className="text-3xl text-sky-700" />
-                </Link>
+          {user.tipo === "admin" ? (
+            <div
+              className={`${
+                location.pathname === "/ordenes-checkout"
+                  ? "bg-sky-100"
+                  : "bg-none"
+              } w-full text-center py-2 items-center transition-all`}
+            >
+              <div className="w-full text-center py-2 items-center transition-all ">
+                <div
+                  className="tooltip tooltip-right"
+                  data-tip="ORDENES DADAS DE ALTA POR EL USUARIO"
+                >
+                  <Link to={"/ordenes-checkout"}>
+                    <CiMemoPad className="text-3xl text-sky-700" />
+                  </Link>
+                </div>
               </div>
             </div>
-          </div>
+          ) : (
+            <div
+              className={`${
+                location.pathname === "/ordenes-checkout"
+                  ? "bg-sky-100"
+                  : "bg-none"
+              } w-full text-center py-2 items-center transition-all`}
+            >
+              <div className="w-full text-center py-2 items-center transition-all ">
+                <div
+                  className="tooltip tooltip-right"
+                  data-tip="ORDENES CHECKOUT/DAR DE DALTA"
+                >
+                  <Link to={"/ordenes-checkout"}>
+                    <CiMemoPad className="text-3xl text-sky-700" />
+                  </Link>
+                </div>
+              </div>
+            </div>
+          )}
 
           <div
             className={`${

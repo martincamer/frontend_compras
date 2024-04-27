@@ -6,8 +6,8 @@ import { Link } from "react-router-dom";
 import { PDFDownloadLink } from "@react-pdf/renderer";
 import { PdfProveedores } from "../../../components/pdf/PdfProveedores";
 
-export const Proveedores = () => {
-  const { proveedores } = useProductosContext();
+export const ProveedoresAdmin = () => {
+  const { proveedoresAdmin } = useProductosContext();
 
   const fechaActual = new Date();
   const numeroDiaActual = fechaActual.getDay(); // Obtener el día del mes actual
@@ -52,21 +52,45 @@ export const Proveedores = () => {
   };
 
   const [currentPage, setCurrentPage] = useState(1);
-  const [productsPerPage] = useState(15); // Puedes ajustar el número de productos por página según tus necesidades
+  const [productsPerPage] = useState(15); // Número de productos por página
   const [busqueda, setBusqueda] = useState("");
+  const [selectedLocalidad, setSelectedLocalidad] = useState("all");
 
   const handleBusquedaChange = (e) => {
     setBusqueda(e.target.value);
   };
 
-  // Filtrar productos en función de la búsqueda
-  const productosFiltrados = proveedores?.filter((producto) =>
-    producto.proveedor?.toLowerCase()?.includes(busqueda?.toLowerCase())
+  const handleLocalidadChange = (e) => {
+    setSelectedLocalidad(e.target.value);
+  };
+
+  // Obtén todas las localidades únicas para llenar el control de selección
+  const localidades = Array.from(
+    new Set(proveedoresAdmin.map((prov) => prov.localidad))
+  );
+
+  // Filtrar productos en función de la búsqueda y la localidad seleccionada
+  const productosFiltrados = proveedoresAdmin?.filter((producto) => {
+    const proveedorCoincide = producto.proveedor
+      ?.toLowerCase()
+      ?.includes(busqueda?.toLowerCase());
+    const localidadCoincide =
+      selectedLocalidad === "all" ||
+      producto.localidad_usuario === selectedLocalidad;
+
+    return proveedorCoincide && localidadCoincide;
+  });
+
+  const uniqueLocalidad = Array.from(
+    new Set(
+      proveedoresAdmin.map((orden) => orden?.localidad_usuario?.toLowerCase())
+    )
   );
 
   // Lógica de paginación basada en productos filtrados
   const indexOfLastProduct = currentPage * productsPerPage;
   const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
+
   const currentProducts = productosFiltrados.slice(
     indexOfFirstProduct,
     indexOfLastProduct
@@ -77,7 +101,7 @@ export const Proveedores = () => {
     setCurrentPage(pageNumber);
   };
 
-  const precioTotal = proveedores.reduce(
+  const precioTotal = proveedoresAdmin.reduce(
     (total, orden) => total + Number(orden.total),
     0
   );
@@ -227,7 +251,7 @@ export const Proveedores = () => {
 
             <div>
               <p className="text-2xl font-medium text-green-700">
-                {Number(proveedores.length)}
+                {Number(proveedoresAdmin.length)}
               </p>
 
               <p className="text-sm text-gray-500 uppercase underline">
@@ -254,37 +278,16 @@ export const Proveedores = () => {
 
             <span className="text-xs font-medium">
               {" "}
-              {Number(proveedores.length / 1).toFixed(2)} %{" "}
+              {Number(proveedoresAdmin.length / 1).toFixed(2)} %{" "}
             </span>
           </div>
         </article>
       </div>
 
       <div className="mx-10 py-2 flex gap-2 items-center max-md:px-0 max-md:py-0 max-md:flex-col max-md:items-start border-b-[1px] border-slate-300 pb-4 max-md:pb-4 max-md:mx-2">
-        <button
-          onClick={() => openModal()}
-          className=" text-sm text-white bg-sky-400 py-3 px-6 rounded-full font-semibold uppercase max-md:text-xs flex gap-2 items-center transition-all ease-linear"
-        >
-          Crear nuevo proveedor/ editar,etc
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth={1.5}
-            stroke="currentColor"
-            className="w-6 h-6"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M18 7.5v3m0 0v3m0-3h3m-3 0h-3m-2.25-4.125a3.375 3.375 0 1 1-6.75 0 3.375 3.375 0 0 1 6.75 0ZM3 19.235v-.11a6.375 6.375 0 0 1 12.75 0v.109A12.318 12.318 0 0 1 9.374 21c-2.331 0-4.512-.645-6.374-1.766Z"
-            />
-          </svg>
-        </button>
-
         <PDFDownloadLink
           className=" text-sm text-white bg-green-500/90 py-3 px-6 rounded-full font-semibold uppercase max-md:text-xs flex gap-2 items-center transition-all ease-linear"
-          document={<PdfProveedores datos={proveedores} />}
+          document={<PdfProveedores datos={proveedoresAdmin} />}
         >
           Descargar lista de proveedores
           <svg
@@ -310,7 +313,7 @@ export const Proveedores = () => {
         </p>
       </div>
 
-      <div className="mx-8 mt-3 w-1/3">
+      <div className="mx-8 mt-3 w-1/3 flex gap-3">
         <input
           type="text"
           placeholder="Buscar por proveedor..."
@@ -318,6 +321,17 @@ export const Proveedores = () => {
           onChange={handleBusquedaChange}
           className="uppercase py-2 px-3 border border-gray-300 rounded-xl focus:outline-none focus:border-sky-500 w-full"
         />
+
+        <select
+          className="font-bold py-1 px-4 text-slate-700 rounded-xl shadow bg-white border-slate-300 border-[1px] uppercase text-sm"
+          value={selectedLocalidad}
+          onChange={handleLocalidadChange}
+        >
+          <option value="all">Todas las localidades</option>
+          {uniqueLocalidad.map((c) => (
+            <option>{c}</option>
+          ))}
+        </select>
       </div>
 
       <div className="overflow-x-auto mt-6 mx-8 rounded-2xl border-slate-300 border-[1px] transition-all hover:shadow-md ease-linear cursor-pointer">
@@ -325,7 +339,16 @@ export const Proveedores = () => {
           <thead className="text-left">
             <tr>
               <th className="whitespace-nowrap px-4 py-4 text-gray-900 uppercase font-semibold">
+                Localidad/usuario
+              </th>
+              <th className="whitespace-nowrap px-4 py-4 text-gray-900 uppercase font-semibold">
+                Fabrica/usuario
+              </th>
+              <th className="whitespace-nowrap px-4 py-4 text-gray-900 uppercase font-semibold">
                 Proveedor
+              </th>
+              <th className="whitespace-nowrap px-4 py-4 text-gray-900 uppercase font-semibold">
+                Localidad
               </th>
               <th className="whitespace-nowrap px-4 py-4 text-gray-900 uppercase font-semibold">
                 Total Deber
@@ -343,8 +366,17 @@ export const Proveedores = () => {
           <tbody className="divide-y divide-gray-200">
             {currentProducts.map((p) => (
               <tr className="hover:bg-gray-100/40 transition-all" key={p.id}>
+                <td className="whitespace-nowrap px-4 py-6 font-bold text-gray-900 uppercase text-sm">
+                  {p.localidad_usuario}
+                </td>
+                <td className="whitespace-nowrap px-4 py-6 font-bold text-gray-900 uppercase text-sm">
+                  {p.fabrica}
+                </td>
                 <td className="whitespace-nowrap px-4 py-6 font-medium text-gray-900 uppercase text-sm">
                   {p.proveedor}
+                </td>
+                <td className="whitespace-nowrap px-4 py-6 font-medium text-gray-900 uppercase text-sm">
+                  {p.localidad}
                 </td>
                 <td className="whitespace-nowrap px-4 py-6 text-gray-700 uppercase text-sm">
                   {Number(p.total).toLocaleString("es-AR", {
@@ -393,11 +425,11 @@ export const Proveedores = () => {
       </div>
 
       <div className="flex justify-center mt-4">
-        {proveedores.length > productsPerPage && (
+        {proveedoresAdmin.length > productsPerPage && (
           <nav className="pagination">
             <ul className="pagination-list flex gap-2">
               {Array.from({
-                length: Math.ceil(proveedores.length / productsPerPage),
+                length: Math.ceil(proveedoresAdmin.length / productsPerPage),
               }).map(
                 (_, index) =>
                   index >= currentPage - 2 &&

@@ -20,6 +20,7 @@ export const ProductosProvider = ({ children }) => {
   const [productos, setProductos] = useState([]);
   const [categorias, setCategorias] = useState([]);
   const [proveedores, setProveedores] = useState([]);
+  const [proveedoresAdmin, setProveedoresAdmin] = useState([]);
 
   useEffect(() => {
     async function loadData() {
@@ -48,6 +49,15 @@ export const ProductosProvider = ({ children }) => {
     loadData();
   }, []);
 
+  useEffect(() => {
+    async function loadData() {
+      const respuesta = await client.get("/proveedores-admin");
+      setProveedoresAdmin(respuesta.data);
+    }
+
+    loadData();
+  }, []);
+
   return (
     <ProductosContext.Provider
       value={{
@@ -57,6 +67,8 @@ export const ProductosProvider = ({ children }) => {
         setCategorias,
         proveedores,
         setProveedores,
+        //admin
+        proveedoresAdmin,
       }}
     >
       {children}

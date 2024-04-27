@@ -18,6 +18,7 @@ export const useOrdenesContext = () => {
 //
 export const OrdenesProvider = ({ children }) => {
   const [ordenesMensuales, setOrdenesMensuales] = useState([]);
+  const [ordenesMensualesAdmin, setOrdenesMensualesAdmin] = useState([]);
   const [ordenesFinalMensuales, setOrdenesFinalMensuales] = useState([]);
   const [ordenes, setOrdenes] = useState([]);
 
@@ -25,6 +26,15 @@ export const OrdenesProvider = ({ children }) => {
     async function loadData() {
       const respuesta = await obtenerOrdenesMensuales();
       setOrdenesMensuales(respuesta.data);
+    }
+
+    loadData();
+  }, []);
+
+  useEffect(() => {
+    async function loadData() {
+      const respuesta = await client.get("/ordenes-mensuales-admin");
+      setOrdenesMensualesAdmin(respuesta.data);
     }
 
     loadData();
@@ -57,6 +67,8 @@ export const OrdenesProvider = ({ children }) => {
         setOrdenesFinalMensuales,
         ordenesFinalMensuales,
         ordenes,
+        //admin
+        ordenesMensualesAdmin,
       }}
     >
       {children}

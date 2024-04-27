@@ -64,14 +64,35 @@ export const Register = () => {
           />
         </div>
 
-        {/* <div className="flex flex-col gap-2">
-          <Label label="Rol" />
+        <div className="flex flex-col gap-2">
+          <Label label="Localidad" />
           <Input
             register={register}
-            placeholder={"1 admin - 2 user"}
-            type={"role_id"}
+            placeholder={"@Localidad"}
+            type={"localidad"}
           />
-        </div> */}
+        </div>
+
+        <div className="flex flex-col gap-2">
+          <Label label="Fabrica" />
+          <Input
+            register={register}
+            placeholder={"@Fabrica"}
+            type={"fabrica"}
+          />
+        </div>
+
+        <div className="flex flex-col gap-2">
+          <Label label="Tipo" />
+          <select
+            {...register("tipo", { required: true })}
+            className="bg-white border-slate-300 border-[1px] py-2 px-1 rounded-xl"
+          >
+            <option value="">Seleccionar el tipo</option>
+            <option value="admin">Admin</option>
+            <option value="user">Usuario</option>
+          </select>
+        </div>
 
         <div className="flex flex-col gap-2">
           <Label label="Contraseña" />
