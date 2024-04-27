@@ -239,7 +239,7 @@ export const HomeAdmin = () => {
         />
       </div>
 
-      <div className="bg-white border shadow-lg py-10 px-10 rounded">
+      <div className="bg-white border shadow-lg py-10 px-10 rounded h-[80vh] overflow-y-scroll scroll-bar">
         <div>
           <p className="font-semibold text-gray-800 mb-4">
             Reporte de productos cargados en la semana.

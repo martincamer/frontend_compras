@@ -24,7 +24,7 @@ const ApexChartColumnProveedores = ({ proveedores, totalProveedores }) => {
         borderRadius: 4,
         borderRadiusApplication: "end",
         horizontal: true, // Gráfico horizontal
-        barHeight: "20%", // Ancho de la barra ajustado al 10% del contenedor
+        barHeight: "10%", // Ancho de la barra ajustado al 10% del contenedor
         colors: {
           ranges: [
             {
@@ -78,7 +78,7 @@ const ApexChartColumnProveedores = ({ proveedores, totalProveedores }) => {
           options={chartOptions}
           series={series}
           type="bar"
-          height={1000}
+          height={3000}
         />
       </div>
 
