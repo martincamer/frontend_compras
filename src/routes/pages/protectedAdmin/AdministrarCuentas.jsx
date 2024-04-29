@@ -154,16 +154,6 @@ export const AdministrarCuentas = () => {
                           tabIndex={0}
                           className="dropdown-content z-[1] menu p-2 shadow-lg border bg-base-100 rounded-box w-52 gap-2"
                         >
-                          {/* <li>
-                            <span
-                              className="text-center bg-green-500/90 text-white hover:bg-green-500 py-2 px-3 rounded-xl text-sm"
-                              onClick={() => {
-                                handleId(u.id), openEditar();
-                              }}
-                            >
-                              EDITAR USUARIO
-                            </span>
-                          </li> */}
                           <li>
                             <span
                               className="text-center bg-green-500/90 text-white hover:bg-green-500 py-2 px-3 rounded-xl text-sm"

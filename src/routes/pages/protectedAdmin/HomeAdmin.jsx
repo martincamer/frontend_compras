@@ -160,7 +160,7 @@ export const HomeAdmin = () => {
   console.log("proveedores", proveedoresAdmin);
 
   return (
-    <section className="bg-gray-100/40 w-full h-full min-h-full max-h-full px-12 max-md:px-4 flex flex-col gap-12 max-md:gap-8 py-24">
+    <section className="max-md:py-28 bg-gray-100/40 w-full h-full min-h-full max-h-full px-12 max-md:px-4 flex flex-col gap-12 max-md:gap-8 py-24">
       <div>
         <div className="mb-8 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
           <div className="bg-white py-4 px-6 shadow-md border">
@@ -223,12 +223,12 @@ export const HomeAdmin = () => {
         </div>
       </div>
 
-      <div className="grid grid-cols-2 gap-5 mb-10 z-0">
+      <div className="grid grid-cols-2 gap-5 mb-10 z-0 max-md:grid-cols-1 max-md:gap-28">
         <ApexChart ordenesMensuales={ordenesMensualesAdmin} />
         <ApexChartColumn ordenesMensuales={ordenesMensualesAdmin} />
       </div>
 
-      <div className="grid grid-cols-2 gap-5 mb-10 z-0">
+      <div className="grid grid-cols-2 gap-5 mb-10 z-0 max-md:grid-cols-1 max-md:gap-28">
         <ApexChartColumnProveedores
           totalProveedores={totalProveedores}
           proveedores={proveedoresAdmin}

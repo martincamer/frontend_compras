@@ -34,7 +34,7 @@ export const Login = () => {
 
       <form
         onSubmit={onSubmit}
-        className="flex w-1/3 flex-col gap-4 bg-white  px-10 py-12 rounded-2xl  shadow-lg shadow-slate-300 max-md:w-full"
+        className="border flex w-1/3 flex-col gap-4 bg-white  px-10 py-12 rounded-2xl  shadow-lg shadow-slate-300 max-md:w-full"
       >
         <div className="flex justify-center">
           <h4 className="font-semibold text-2xl text-sky-500">
