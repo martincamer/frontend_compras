@@ -833,7 +833,7 @@ export const OrdenDeCompraAdmin = () => {
                   type="text"
                   placeholder="Buscar por el proveedor o detalle..."
                   className={clsx(
-                    "rounded-xl py-2 px-5 border-slate-300 text-slate-700 border-[1px] uppercase text-sm absolute top-0 left-0 z-[100] transition-all",
+                    "rounded-xl py-2.5 px-5 border-slate-300 text-slate-700 border-[1px] uppercase text-sm absolute top-0 left-0 z-[100] transition-all outline-none",
                     {
                       "w-full bg-white opacity-100": handleIsOpen,
                       "w-0 opacity-0": !handleIsOpen,
@@ -844,7 +844,7 @@ export const OrdenDeCompraAdmin = () => {
                   style={{ left: handleIsOpen ? "0" : "-100px" }} // Controla el desplazamiento horizontal
                 />
               </div>
-              <div className="py-2 px-2 overflow-x-scroll">
+              <div className="py-2 px-2 overflow-x-scroll scrollbar-hidden ">
                 <div className="flex gap-2">
                   <select
                     className="font-bold py-1.5 px-4 text-slate-700 rounded-xl bg-white border-[1px] uppercase text-sm"
