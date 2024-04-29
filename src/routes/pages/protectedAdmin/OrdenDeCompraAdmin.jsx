@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ToastContainer } from "react-toastify";
 import { ModalCrearOrden } from "../../../components/Modales/ModalCrearOrden";
 import { useOrdenesContext } from "../../../context/OrdenesProvider";
@@ -7,6 +7,7 @@ import { ModalEliminar } from "../../../components/Modales/ModalEliminar";
 import { ModalVerProductos } from "../../../components/Modales/ModalVerProductos";
 import { ModalEditarOrdenTotal } from "../../../components/Modales/ModalEditarOrdenTotal";
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
+import { AiOutlineSearch } from "react-icons/ai";
 import { Tab } from "@headlessui/react";
 import { Link } from "react-router-dom";
 import clsx from "clsx"; // Para concatenar clases de manera condicional
@@ -85,6 +86,30 @@ export const OrdenDeCompraAdmin = () => {
   const [selectedLocality, setSelectedLocality] = useState("all"); // Estado para filtrar por localidad
   const [currentPage, setCurrentPage] = useState(1);
   const [productsPerPage] = useState(10);
+  const [handleIsOpen, setHandleOpen] = useState(false);
+
+  const handleToggle = () => {
+    setHandleOpen(!handleIsOpen); // Alternar el estado de apertura/cierre
+  };
+  const inputRef = useRef(null); // Para referenciar el campo de búsqueda
+
+  // Cierra el campo de búsqueda si se hace clic fuera del componente
+  const handleClickOutside = (event) => {
+    if (
+      handleIsOpen &&
+      inputRef.current &&
+      !inputRef.current.contains(event.target)
+    ) {
+      setHandleOpen(false);
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener("click", handleClickOutside); // Agrega el event listener global
+    return () => {
+      document.removeEventListener("click", handleClickOutside); // Limpia el listener para evitar fugas de memoria
+    };
+  }, [handleIsOpen]); // Solo agrega el listener si el campo de búsqueda está abierto
 
   // Filtrar las órdenes según el término de búsqueda, categoría y localidad
   const filteredProducts = ordenesMensualesAdmin.filter((orden) => {
@@ -791,15 +816,36 @@ export const OrdenDeCompraAdmin = () => {
               </div>
             </Tab.Panel>
             <Tab.Panel key="2">
-              <div className="py-5 px-2 overflow-x-scroll">
+              <div
+                className="relative flex items-center my-2 mx-2"
+                ref={inputRef}
+              >
+                {/* Icono de búsqueda para abrir/cerrar el campo */}
+                <button
+                  onClick={handleToggle}
+                  className="bg-gray-200 p-2 rounded-full"
+                >
+                  <AiOutlineSearch className="text-gray-700" />
+                </button>
+
+                {/* Campo de entrada que se expande al hacer clic */}
+                <input
+                  type="text"
+                  placeholder="Buscar por el proveedor o detalle..."
+                  className={clsx(
+                    "rounded-xl py-2 px-5 border-slate-300 text-slate-700 border-[1px] uppercase text-sm absolute top-0 left-0 z-[100] transition-all",
+                    {
+                      "w-full bg-white opacity-100": handleIsOpen,
+                      "w-0 opacity-0": !handleIsOpen,
+                    }
+                  )}
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  style={{ left: handleIsOpen ? "0" : "-100px" }} // Controla el desplazamiento horizontal
+                />
+              </div>
+              <div className="py-2 px-2 overflow-x-scroll">
                 <div className="flex gap-2">
-                  <input
-                    type="text"
-                    placeholder="BUSCAR POR EL PROVEEDOR O DETALLE.."
-                    className="rounded-xl py-2 px-5 border-slate-300 bg-white text-slate-700 border-[1px] uppercase text-sm"
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                  />
                   <select
                     className="font-bold py-1 px-4 text-slate-700 rounded-xl shadow bg-white border-slate-300 border-[1px] uppercase text-sm"
                     value={selectedCategory}
