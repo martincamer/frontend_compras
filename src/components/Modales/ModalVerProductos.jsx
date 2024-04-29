@@ -2,7 +2,12 @@ import { Dialog, Menu, Transition } from "@headlessui/react";
 import { Fragment, useEffect, useState } from "react";
 import client from "../../api/axios";
 
-export const ModalVerProductos = ({ isOpen, closeModal, obtenerId }) => {
+export const ModalVerProductos = ({
+  isOpen,
+  closeModal,
+  obtenerId,
+  setIsOpen,
+}) => {
   const [datos, setDatos] = useState([]);
 
   useEffect(() => {
@@ -21,7 +26,7 @@ export const ModalVerProductos = ({ isOpen, closeModal, obtenerId }) => {
           <Dialog
             as="div"
             className="fixed inset-0 z-10 h-full"
-            onClose={closeModal}
+            onClose={() => {}}
           >
             <Transition.Child
               as={Fragment}
@@ -179,14 +184,15 @@ export const ModalVerProductos = ({ isOpen, closeModal, obtenerId }) => {
           </Dialog>
         </Transition>
       </Menu>
-      <Menu as="div" className="z-50 max-md:hidden">
+      <Menu as="div" className="z-50 md:hidden">
         <Transition appear show={isOpen} as={Fragment}>
           <Dialog
             as="div"
             className="fixed inset-0 z-10 max-md:block md:hidden h-full" // Asegúrate de cubrir toda la pantalla
-            onClose={closeModal}
+            static
+            onClose={() => {}}
           >
-            <div className="flex items-center justify-center h-full ">
+            <div className="flex items-center justify-center h-full md:hidden">
               <Transition.Child
                 as={Fragment}
                 enter="ease-out duration-300"
@@ -201,7 +207,7 @@ export const ModalVerProductos = ({ isOpen, closeModal, obtenerId }) => {
                   <div className="flex justify-end py-4 px-4">
                     <button
                       type="button"
-                      className="inline-flex justify-center px-2 py-2 text-sm text-sky-500 bg-sky-100 border border-transparent rounded-full hover:bg-red-200 duration-300 cursor-pointer"
+                      className="inline-flex justify-center px-2 py-2 text-sm text-sky-500 bg-sky-100 border border-transparent rounded-full cursor-pointer"
                       onClick={closeModal}
                     >
                       <svg
