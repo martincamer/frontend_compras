@@ -825,7 +825,7 @@ export const OrdenDeCompraAdmin = () => {
                   onClick={handleToggle}
                   className="bg-gray-200 p-2 rounded-full"
                 >
-                  <AiOutlineSearch className="text-gray-700" />
+                  <AiOutlineSearch className="text-gray-700 text-2xl" />
                 </button>
 
                 {/* Campo de entrada que se expande al hacer clic */}
@@ -847,7 +847,7 @@ export const OrdenDeCompraAdmin = () => {
               <div className="py-2 px-2 overflow-x-scroll">
                 <div className="flex gap-2">
                   <select
-                    className="font-bold py-1 px-4 text-slate-700 rounded-xl shadow bg-white border-slate-300 border-[1px] uppercase text-sm"
+                    className="font-bold py-1.5 px-4 text-slate-700 rounded-xl bg-white border-[1px] uppercase text-sm"
                     value={selectedCategory}
                     onChange={(e) => setSelectedCategory(e.target.value)}
                   >
@@ -858,7 +858,7 @@ export const OrdenDeCompraAdmin = () => {
                   </select>
 
                   <select
-                    className="font-bold py-1 px-4 text-slate-700 rounded-xl shadow bg-white border-slate-300 border-[1px] uppercase text-sm"
+                    className="font-bold py-1.5 px-4 text-slate-700 rounded-xl bg-white border-[1px] uppercase text-sm"
                     value={selectedLocality}
                     onChange={(e) => setSelectedLocality(e.target.value)}
                   >
@@ -869,8 +869,19 @@ export const OrdenDeCompraAdmin = () => {
                   </select>
                 </div>
               </div>
-
-              <div className="overflow-x-scroll overflow-y-hidden bg-white mt-6 mx-2 h-full">
+              <div className="grid grid-cols-1 gap-2 py-5">
+                {" "}
+                {/* Organiza las tarjetas en una cuadrícula de una sola columna */}
+                {filteredProducts.map((product) => (
+                  <CardComponent
+                    handleID={handleID}
+                    openProductos={openProductos}
+                    key={product.id}
+                    product={product}
+                  />
+                ))}
+              </div>
+              {/* <div className="overflow-x-scroll overflow-y-hidden bg-white mt-6 mx-2 h-full">
                 <table className="min-w-full divide-y-2 divide-gray-200 text-sm cursor-pointer">
                   <thead className="text-left">
                     <tr>
@@ -1014,65 +1025,13 @@ export const OrdenDeCompraAdmin = () => {
                     ))}
                   </tbody>
                 </table>
-              </div>
-              <div className="flex justify-center items-center mt-4">
-                {filteredProducts.length > productsPerPage && (
-                  <nav className="pagination">
-                    <ul className="pagination-list flex gap-2">
-                      {/* Botón Anterior */}
-                      {currentPage > 1 && (
-                        <li className="pagination-item">
-                          <button
-                            onClick={() => paginate(currentPage - 1)}
-                            className="pagination-link text-slate-600 bg-white border-[1px] border-slate-300 px-2 py-2 rounded-xl flex items-center"
-                          >
-                            <FiChevronLeft className="text-sm" />
-                          </button>
-                        </li>
-                      )}
+              </div> */}
 
-                      {/* Renderizar números de página */}
-                      {Array.from({
-                        length: Math.ceil(
-                          filteredProducts.length / productsPerPage
-                        ),
-                      }).map(
-                        (_, index) =>
-                          index >= currentPage - 2 &&
-                          index <= currentPage + 2 && (
-                            <li key={index} className="pagination-item">
-                              <button
-                                onClick={() => paginate(index + 1)}
-                                className={`pagination-link ${
-                                  currentPage === index + 1
-                                    ? "text-white bg-green-500 px-3 py-1 rounded-xl border-[1px] border-green-500"
-                                    : "text-slate-600 bg-white border-[1px] border-slate-300 px-3 py-1 rounded-xl"
-                                }`}
-                              >
-                                {index + 1}
-                              </button>
-                            </li>
-                          )
-                      )}
-
-                      {/* Botón Siguiente */}
-                      {currentPage <
-                        Math.ceil(
-                          filteredProducts.length / productsPerPage
-                        ) && (
-                        <li className="pagination-item">
-                          <button
-                            onClick={() => paginate(currentPage + 1)}
-                            className="pagination-link text-slate-600 bg-white border-[1px] border-slate-300 px-2 py-2 rounded-xl flex items-center"
-                          >
-                            <FiChevronRight className="text-sm" />
-                          </button>
-                        </li>
-                      )}
-                    </ul>
-                  </nav>
-                )}
-              </div>
+              <ModalVerProductos
+                isOpen={isProductos}
+                closeModal={closeProductos}
+                obtenerId={obtenerId}
+              />
             </Tab.Panel>
           </Tab.Panels>
         </Tab.Group>
@@ -1080,3 +1039,107 @@ export const OrdenDeCompraAdmin = () => {
     </>
   );
 };
+
+const CardComponent = ({ product, handleID, openProductos }) => (
+  <div className="bg-white p-4 border border-gray-200">
+    <div className="flex justify-between items-center">
+      <h3 className="text-lg font-bold text-gray-800">Número: {product.id}</h3>
+      <div className="dropdown dropdown-left">
+        <button
+          tabIndex={0}
+          role="button"
+          className="hover:bg-gray-200 rounded-full p-2 transition-all  cursor-pointer"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth={1.5}
+            stroke="currentColor"
+            className="w-6 h-6"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M6 6h12M6 12h12M6 18h12"
+            />
+          </svg>
+        </button>
+        <ul
+          tabIndex={0}
+          className="dropdown-content z-[100] menu p-2 shadow-lg border bg-white rounded-box w-52 gap-2"
+        >
+          <li>
+            <button
+              type="button"
+              onClick={() => {
+                handleID(product.id), openProductos();
+              }}
+              className="bg-orange-500/20 text-orange-600 hover:bg-orange-200 py-2 px-3 rounded-xl text-sm flex gap-1 items-center"
+            >
+              Ver Productos
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor"
+                className="w-5 h-5"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5c-4.638 0-8.573-3.007-9.963-7.178Z"
+                />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
+                />
+              </svg>
+            </button>
+          </li>
+          <li>
+            <Link
+              to={`/orden/${product.id}`}
+              className="bg-sky-500/20 hover:bg-sky-200 text-sky-700 py-2 px-3 rounded-xl text-sm flex gap-1 items-center"
+            >
+              Ver Orden
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor"
+                className="w-6 h-6"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M17.25 8.25L21 12m0 0-3.75 3.75M21 12H3"
+                />
+              </svg>
+            </Link>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <p className="text-gray-600">Fábrica/Usuario: {product.fabrica}</p>
+    <p className="text-gray-600">
+      Localidad/Usuario: {product.localidad_usuario}
+    </p>
+    <p className="text-gray-600">Proveedor: {product.proveedor}</p>
+    <p className="text-gray-600">Número de Factura: {product.numero_factura}</p>
+    <p className="text-gray-600">
+      Fecha de la Factura:{" "}
+      {new Date(product.fecha_factura).toLocaleDateString("es-AR")}
+    </p>
+    <p className="font-bold text-sky-500">
+      Total Facturado:{" "}
+      {Number(product.precio_final).toLocaleString("es-AR", {
+        style: "currency",
+        currency: "ARS",
+      })}
+    </p>
+  </div>
+);
