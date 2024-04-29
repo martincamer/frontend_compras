@@ -155,16 +155,12 @@ export const HomeAdmin = () => {
     return acumulado + totalNum;
   }, 0); // Inicia la acumulación desde cero
 
-  console.log("Total acumulado:", totalAcumulado); // Muestra el total acumulado
-
-  console.log("proveedores", proveedoresAdmin);
-
   return (
     <section className="max-md:py-28 bg-gray-100/40 w-full h-full min-h-full max-h-full px-12 max-md:px-4 flex flex-col gap-12 max-md:gap-8 py-24">
       <div>
         <div className="mb-8 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
           <div className="bg-white py-4 px-6 shadow-md border">
-            <h2 className="text-xl font-bold text-sky-400 bg-white">
+            <h2 className="text-xl font-bold text-sky-400 bg-white max-md:text-lg">
               Dashboard de compras del / todas las fabricas.
             </h2>
           </div>
@@ -223,12 +219,12 @@ export const HomeAdmin = () => {
         </div>
       </div>
 
-      <div className="grid grid-cols-2 gap-5 mb-10 z-0 max-md:grid-cols-1 max-md:gap-28">
+      <div className="grid grid-cols-2 gap-5 mb-10 z-0 max-md:grid-cols-1 max-md:gap-28 max-md:hidden">
         <ApexChart ordenesMensuales={ordenesMensualesAdmin} />
         <ApexChartColumn ordenesMensuales={ordenesMensualesAdmin} />
       </div>
 
-      <div className="grid grid-cols-2 gap-5 mb-10 z-0 max-md:grid-cols-1 max-md:gap-28">
+      <div className="grid grid-cols-2 gap-5 mb-10 z-0 max-md:grid-cols-1 max-md:gap-28 max-md:hidden">
         <ApexChartColumnProveedores
           totalProveedores={totalProveedores}
           proveedores={proveedoresAdmin}
@@ -300,10 +296,10 @@ const Card = ({
     <div className="xl:p-7.5 border border-gray-200 bg-white p-4 shadow-lg dark:border-gray-600 dark:bg-gray-800 md:p-6">
       <div className="flex items-center justify-between">
         <div>
-          <h3 className="mb-4 text-2xl font-bold text-gray-900 dark:text-white">
+          <h3 className="mb-4 text-2xl max-md:text-xl font-bold text-gray-900 dark:text-white">
             {value}
           </h3>
-          <p className="font-medium text-gray-600 dark:text-gray-300">
+          <p className="font-medium text-gray-600 dark:text-gray-300 max-md:text-sm">
             {description}
           </p>
           <span className="mt-2 flex items-center gap-2">
@@ -324,7 +320,7 @@ const Card = ({
               </svg>
               <span>{change}</span>
             </span>
-            <span className="text-sm font-medium text-gray-600 dark:text-gray-300">
+            <span className="text-sm font-medium text-gray-600 dark:text-gray-300 max-md:hidden">
               Porcentaje del mes
             </span>
           </span>
@@ -377,7 +373,7 @@ const CircularProgress = ({ percentage, color }) => {
         className="absolute flex justify-center items-center"
         style={{ zIndex: 3 }}
       >
-        <span className="text-lg font-bold text-gray-700">
+        <span className="text-lg font-bold text-gray-700 max-md:text-sm">
           {`${normalizedPercentage.toFixed(2)}%`}
         </span>
       </div>
