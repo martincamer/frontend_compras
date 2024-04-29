@@ -4,7 +4,7 @@ import { toast } from "react-toastify";
 import client from "../../api/axios"; // Asegúrate de importar tu cliente Axios configurado para tu API
 import axios from "axios";
 
-export const ModalComprobante = ({ isOpen, closeModal, datos, setDatos }) => {
+export const ModalComprobante = ({ isOpen, closeModal, datos }) => {
   const [params, setParams] = useState("");
   const [proveedor, setProveedor] = useState("");
   const [total, setTotal] = useState("");
@@ -121,7 +121,7 @@ export const ModalComprobante = ({ isOpen, closeModal, datos, setDatos }) => {
             <div className="fixed inset-0 bg-black bg-opacity-10" />
           </Transition.Child>
 
-          <div className="min-h-screen px-4 text-center">
+          <div className="min-h-screen px-4 text-center ">
             <Transition.Child
               as={Fragment}
               enter="ease-out duration-300"
@@ -136,7 +136,7 @@ export const ModalComprobante = ({ isOpen, closeModal, datos, setDatos }) => {
 
             {/* This element is to trick the browser into centering the modal contents. */}
             <span
-              className="inline-block h-screen align-middle"
+              className="inline-block h-screen align-middle max-md:h-full max-md:w-full"
               aria-hidden="true"
             >
               &#8203;
@@ -150,7 +150,7 @@ export const ModalComprobante = ({ isOpen, closeModal, datos, setDatos }) => {
               leaveFrom="opacity-100 scale-100"
               leaveTo="opacity-0 scale-95"
             >
-              <div className="inline-block w-[500px] max-md:w-full p-6 my-8 overflow-hidden text-left align-middle transition-all transform bg-white shadow-xl rounded-3xl ">
+              <div className="inline-block w-[500px] p-6 my-8 overflow-hidden text-left align-middle transition-all transform bg-white shadow-xl rounded-3xl max-md:w-full max-md:h-full">
                 <div className="flex justify-end">
                   <button
                     type="button"
