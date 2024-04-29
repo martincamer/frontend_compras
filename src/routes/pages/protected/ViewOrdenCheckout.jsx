@@ -61,10 +61,10 @@ export const ViewOrdenCheckout = () => {
   const nombreDiaActual = nombresDias[numeroDiaActual]; // Obtener el nombre del día actual
 
   return (
-    <section className="bg-gray-100/50 min-h-scren max-h-full w-full h-full px-5 max-md:px-4 flex flex-col gap-2 py-16 max-md:gap-5">
+    <section className="bg-gray-100/50 min-h-scren max-h-full w-full h-full px-5 flex flex-col gap-2 py-16 max-md:gap-5 max-md:py-10 max-md:px-0">
       <ToastContainer />
-      <nav aria-label="Breadcrumb" className="flex px-5">
-        <ol className="flex overflow-hidden rounded-xl border bg-slate-300 text-gray-600 shadow">
+      <nav aria-label="Breadcrumb" className="flex px-5 max-md:px-5">
+        <ol className="flex overflow-hidden rounded-xl border bg-slate-300 text-gray-600 shadow max-md:shadow-none">
           <li className="flex items-center">
             <Link
               to={"/"}
@@ -102,7 +102,7 @@ export const ViewOrdenCheckout = () => {
           </li>
         </ol>
       </nav>
-      <div className="py-5 px-5 rounded-xl grid grid-cols-4 gap-3 mb-2 max-md:grid-cols-1 max-md:border-none max-md:shadow-none max-md:py-0 max-md:px-0">
+      <div className="py-5 px-5 rounded-xl grid grid-cols-4 gap-3 mb-2 max-md:grid-cols-1 max-md:border-none max-md:shadow-none max-md:py-0 max-md:px-5">
         <article className="flex flex-col justify-center shadow-lg hover:shadow-md transition-all ease-linear cursor-pointer border border-slate-300 bg-white py-8 px-6">
           <div className="inline-flex gap-2 self-end rounded bg-red-100 p-1 text-red-600">
             <svg
@@ -130,8 +130,8 @@ export const ViewOrdenCheckout = () => {
               Total de la compra
             </strong>
 
-            <p>
-              <span className="text-xl font-medium text-red-600 max-md:text-base">
+            <div className="max-md:flex-col max-md:gap-1 max-md:flex">
+              <span className="text-xl font-medium text-red-600 max-md:text-base max-md:font-bold">
                 {Number(orden.precio_final).toLocaleString("es-AR", {
                   style: "currency",
                   currency: "ARS",
@@ -148,7 +148,7 @@ export const ViewOrdenCheckout = () => {
                   })}
                 </span>
               </span>
-            </p>
+            </div>
           </div>
         </article>
 
@@ -193,7 +193,7 @@ export const ViewOrdenCheckout = () => {
         </article>
       </div>
 
-      <div className="bg-white w-1/5 mt-4 border-slate-300 transition-all ease-linear cursor-pointer hover:shadow-md border-[1px] py-5 px-5 shadow-lg mx-4">
+      <div className="max-md:w-auto bg-white w-1/5 mt-4 border-slate-300 transition-all ease-linear cursor-pointer hover:shadow-md border-[1px] py-5 px-5 shadow-lg mx-4 max-md:mx-0">
         <div>
           <h5 className="underline text-sky-400 font-semibold text-lg">
             DATOS DE LA COMPRA
@@ -231,12 +231,19 @@ export const ViewOrdenCheckout = () => {
         </div>
       </div>
 
-      <div className="mt-4 py-5 px-5 mx-0">
+      <div className="mt-4 py-5 px-5 max-md:px-0 mx-0">
         <div>
-          <h5 className="underline text-sky-400 font-semibold text-lg">
+          <h5 className="underline text-sky-400 font-semibold text-lg max-md:px-5">
             PRODUCTOS
           </h5>
-          <div className="overflow-x-auto rounded-2xl border border-slate-300 mt-5 hover:shadow-md transition-all ease-linear cursor-pointer">
+
+          <ProductCards
+            handleID={handleID}
+            openEntrega={openEntrega}
+            products={orden}
+          />
+
+          <div className="overflow-x-auto rounded-2xl border border-slate-300 mt-5 hover:shadow-md transition-all ease-linear cursor-pointer max-md:hidden">
             <table className="min-w-full divide-y-2 divide-gray-200 bg-white text-sm">
               <thead className="ltr:text-left rtl:text-right">
                 <tr>
@@ -325,3 +332,55 @@ export const ViewOrdenCheckout = () => {
     </section>
   );
 };
+
+const ProductCard = ({ product, openEntrega, handleID }) => (
+  <div className="bg-white p-6 border border-gray-200 transition hover:shadow-xl">
+    <h3 className="font-bold text-lg text-slate-700 mb-2">
+      Categoría: {product.categoria}
+    </h3>
+    <p className="text-slate-600">Detalle: {product.detalle}</p>
+    <p className="text-slate-600">Cantidad: {product.cantidad}</p>
+    <p className="text-slate-600">
+      Cantidad Entregada: {product.cantidadFaltante}
+    </p>
+    <div className="flex gap-2 mt-4">
+      <button
+        onClick={() => {
+          handleID(product.id), openEntrega();
+        }}
+        className="text-sm font-normal py-2 px-4 rounded-xl bg-green-100 text-green-700"
+        type="button"
+      >
+        EDITAR/ENTREGADA
+      </button>
+    </div>
+    <div className="mt-4">
+      <span
+        className={`${
+          product.cantidad === product.cantidadFaltante
+            ? "bg-green-100 text-green-700"
+            : "bg-orange-100 text-orange-700"
+        } py-2 font-semibold px-4 rounded-xl text-sm`}
+      >
+        {product.cantidad === product.cantidadFaltante
+          ? "FINALIZADO"
+          : "PENDIENTE"}
+      </span>
+    </div>
+  </div>
+);
+
+const ProductCards = ({ products, openEntrega, handleID }) => (
+  <div className="mt-4 py-5 px-0 mx-0 md:hidden">
+    <div className="mt-4 grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+      {products.datos?.productoSeleccionado.map((product, index) => (
+        <ProductCard
+          handleID={handleID}
+          openEntrega={openEntrega}
+          key={index}
+          product={product}
+        />
+      ))}
+    </div>
+  </div>
+);

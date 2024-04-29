@@ -155,10 +155,10 @@ export const Proveedor = () => {
   };
 
   return (
-    <section className="bg-gray-100/50 max-h-full min-h-screen w-full h-full px-5 max-md:px-4 flex flex-col gap-2 py-16 max-md:gap-5">
+    <section className="max-md:py-16 max-md:gap-5 bg-gray-100/50 max-h-full min-h-screen w-full h-full px-5 max-md:px-4 flex flex-col gap-2 py-16">
       <ToastContainer />
       <nav aria-label="Breadcrumb" className="flex px-5">
-        <ol className="flex overflow-hidden rounded-xl border bg-slate-300 text-gray-600 shadow">
+        <ol className="flex overflow-hidden rounded-xl border bg-slate-300 text-gray-600 shadow max-md:shadow-none">
           <li className="flex items-center">
             <Link
               to={"/"}
@@ -197,7 +197,7 @@ export const Proveedor = () => {
         </ol>
       </nav>
 
-      <div className="mx-6 mt-5">
+      <div className="mx-6 mt-5 max-md:mt-0">
         <p className="uppercase text-lg">
           <span className="font-bold text-slate-800">Proveedor:</span>{" "}
           <span className="text-slate-500 underline">{datos?.proveedor}</span>
@@ -206,7 +206,7 @@ export const Proveedor = () => {
       <div className="py-5 px-5 rounded-xl grid grid-cols-3 gap-3 mb-2 max-md:grid-cols-1 max-md:border-none max-md:shadow-none max-md:py-0 max-md:px-0">
         <article className="flex items-start justify-between gap-4 shadow-lg hover:shadow-md transition-all ease-linear cursor-pointer border border-slate-300 bg-white py-10 px-6">
           <div className="flex justify-center h-full gap-4 items-center">
-            <span className="rounded-full bg-green-100 p-3 text-green-700">
+            <span className="rounded-full bg-green-100 p-3 text-green-700 max-md:hidden">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
@@ -259,7 +259,7 @@ export const Proveedor = () => {
 
         <article className="flex items-start justify-between gap-4 shadow-lg hover:shadow-md transition-all ease-linear cursor-pointer border border-slate-300 bg-white py-10 px-6">
           <div className="flex justify-center h-full gap-4 items-center">
-            <span className="rounded-full bg-green-100 p-3 text-green-700">
+            <span className="rounded-full bg-green-100 p-3 text-green-700  max-md:hidden">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
@@ -312,7 +312,7 @@ export const Proveedor = () => {
 
         <article className="flex items-start justify-between gap-4 shadow-lg hover:shadow-md transition-all ease-linear cursor-pointer border border-slate-300 bg-white py-10 px-6">
           <div className="flex justify-center h-full gap-4 items-center">
-            <span className="rounded-full bg-red-100 p-3 text-red-700">
+            <span className="rounded-full bg-red-100 p-3 text-red-700  max-md:hidden">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
@@ -368,7 +368,7 @@ export const Proveedor = () => {
 
         <article className="flex items-start justify-between gap-4 shadow-lg hover:shadow-md transition-all ease-linear cursor-pointer border border-slate-300 bg-white py-10 px-6">
           <div className="flex justify-center h-full gap-4 items-center">
-            <span className="rounded-full bg-green-100 p-3 text-green-700">
+            <span className="rounded-full bg-green-100 p-3 text-green-700  max-md:hidden">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
@@ -423,7 +423,7 @@ export const Proveedor = () => {
         </article>
       </div>
 
-      <div className="mx-10 py-2 flex gap-2 items-center max-md:px-0 max-md:py-0 max-md:flex-col max-md:items-start border-b-[1px] border-slate-300 pb-4 max-md:pb-4 max-md:mx-2">
+      <div className="mx-10 py-2 flex gap-2 items-center max-md:px-0 max-md:py-0 max-md:items-start border-b-[1px] border-slate-300 pb-4 max-md:pb-4 max-md:mx-2 max-md:overflow-x-scroll scrollbar-hidden">
         <button
           onClick={() => openComprobante()}
           className=" text-sm text-white bg-sky-400 py-3 px-6 rounded-full font-semibold uppercase max-md:text-xs flex gap-2 items-center transition-all ease-linear"
@@ -435,7 +435,7 @@ export const Proveedor = () => {
             viewBox="0 0 24 24"
             strokeWidth={1.5}
             stroke="currentColor"
-            className="w-6 h-6"
+            className="w-6 h-6 max-md:hidden"
           >
             <path
               strokeLinecap="round"
@@ -457,7 +457,7 @@ export const Proveedor = () => {
             viewBox="0 0 24 24"
             strokeWidth={1.5}
             stroke="currentColor"
-            className="w-6 h-6"
+            className="w-6 h-6 max-md:hidden"
           >
             <path
               strokeLinecap="round"
