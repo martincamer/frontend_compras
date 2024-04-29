@@ -18,7 +18,7 @@ export const NavbarStatick = () => {
 
   return (
     isAuth && (
-      <div className="absolute top-2 right-10 flex gap-2 items-start z-1 max-md:top-5">
+      <div className="absolute top-2 right-10 flex gap-2 items-start z-1 max-md:top-5 max-md:hidden">
         <div className="navbar gap-2">
           <div className="navbar-end dropdown dropdown-end">
             <button

@@ -40,6 +40,7 @@ import RutaProtegida from "./layouts/RutaProtejida";
 import "react-toastify/dist/ReactToastify.css";
 import "react-toastify/dist/ReactToastify.min.css";
 import { useEffect, useState } from "react";
+import { MenuMobile } from "./components/ui/MenuMobile";
 
 function App() {
   const { isAuth, user } = useAuth();
@@ -155,6 +156,7 @@ function App() {
                 <ProductosProvider>
                   <OrdenesProvider>
                     <main className="min-h-full max-h-full h-full flex">
+                      <MenuMobile />
                       <SideBar />
                       <Outlet />
                     </main>
