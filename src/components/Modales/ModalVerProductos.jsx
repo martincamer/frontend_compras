@@ -202,7 +202,7 @@ export const ModalVerProductos = ({
                 leaveFrom="opacity-100 scale-100"
                 leaveTo="opacity-0 scale-95"
               >
-                <div className="w-full h-full bg-white overflow-auto">
+                <div className="w-full h-full bg-white overflow-auto scrollbar-hidden">
                   {" "}
                   <div className="flex justify-end py-4 px-4">
                     <button
