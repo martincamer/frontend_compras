@@ -28,13 +28,13 @@ export const Login = () => {
 
   return (
     <section className="flex items-center justify-center gap-12 h-screen  bg-white flex-col relative max-md:px-5">
-      <div className="absolute top-0 left-0 p-10">
+      <div className="absolute top-0 left-0 p-10 max-md:hidden">
         <img className="w-[120px]" src="logo.png" />
       </div>
 
       <form
         onSubmit={onSubmit}
-        className="border flex w-1/3 flex-col gap-4 bg-white  px-10 py-12 rounded-2xl  shadow-lg shadow-slate-300 max-md:w-full"
+        className="border max-md:border-none max-md:w-full max-md:shadow-none max-md:px-1 flex w-1/3 flex-col gap-4 bg-white  px-10 py-12 rounded-2xl  shadow-lg shadow-slate-300"
       >
         <div className="flex justify-center">
           <h4 className="font-semibold text-2xl text-sky-500">
@@ -72,10 +72,10 @@ export const Login = () => {
             type={"password"}
           />
         </div>
-        <div className="flex w-1/3">
+        <div className="flex w-1/3 max-md:w-full">
           <Button type={"submit"} titulo={"Iniciar Sesión"} />
         </div>
-        <div className="text-sm font-medium text-center mt-5 w-1/2 mx-auto">
+        <div className="text-sm font-medium text-center mt-5 w-1/2 mx-auto max-md:w-full">
           Si, pide a tu administrador que te cree un usuario 👀.
         </div>
       </form>
