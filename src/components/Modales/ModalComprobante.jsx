@@ -53,6 +53,7 @@ export const ModalComprobante = ({ isOpen, closeModal, datos }) => {
 
     try {
       const res = await client.post(`/crear-comprobante`, data);
+      console.log(res.data);
       toast.success("¡Comprobante creado correctamente espera 3 segundos!", {
         position: "top-center",
         autoClose: 3000,
@@ -72,7 +73,7 @@ export const ModalComprobante = ({ isOpen, closeModal, datos }) => {
 
       setTimeout(() => {
         location.reload();
-      }, 1500);
+      }, 500);
     } catch (error) {
       console.error("Error al agregar el comprobante:", error);
       toast.error("Error al crear el comprobante", {

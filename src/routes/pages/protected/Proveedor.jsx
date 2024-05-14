@@ -6,6 +6,7 @@ import { ModalObtenerCompra } from "../../../components/Modales/ModalObtenerComp
 import client from "../../../api/axios";
 import { ModalEditarSaldoProveedor } from "../../../components/Modales/ModalEditarSaldoProveedor";
 import { useAuth } from "../../../context/AuthProvider";
+import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 
 export const Proveedor = () => {
   const { user } = useAuth();
@@ -89,27 +90,62 @@ export const Proveedor = () => {
   }, [params.id]);
 
   const [currentPage, setCurrentPage] = useState(1);
-  const [productsPerPage] = useState(5);
+  const [productsPerPage] = useState(10);
 
-  // Lógica de paginación
   const indexOfLastProduct = currentPage * productsPerPage;
   const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
 
-  // Ordenar los comprobantes por fecha de creación de manera descendente
-  const sortedComprobantes = comprobantes?.sort((a, b) => {
+  const currentProducts = comprobantes.slice(
+    indexOfFirstProduct,
+    indexOfLastProduct
+  );
+
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
+  const sortedComprobantes = currentProducts.sort((a, b) => {
     const dateA = new Date(a.created_at).getTime();
     const dateB = new Date(b.created_at).getTime();
     return dateB - dateA;
   });
 
-  // Obtener los productos actuales para la página actual
-  const currentProducts = sortedComprobantes?.slice(
-    indexOfFirstProduct,
-    indexOfLastProduct
-  );
+  const totalPages = Math.ceil(comprobantes.length / productsPerPage);
 
-  // Cambiar de página
-  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+  const getPageNumbers = () => {
+    const pageNumbers = [];
+    const maxPages = Math.min(currentPage + 4, totalPages);
+    const startPage = Math.max(1, maxPages - 4);
+    for (let i = startPage; i <= maxPages; i++) {
+      pageNumbers.push(i);
+    }
+    return pageNumbers;
+  };
+
+  const [fechaInicial, setFechaInicial] = useState("");
+  const [fechaFinal, setFechaFinal] = useState("");
+
+  const filtrarPorFecha = (producto) => {
+    if (!fechaInicial || !fechaFinal) {
+      return true;
+    }
+
+    const fechaProducto = new Date(producto.created_at).getTime();
+    const fechaInicialTimestamp = new Date(fechaInicial).getTime();
+    const fechaFinalTimestamp = new Date(fechaFinal).getTime();
+
+    return (
+      fechaProducto >= fechaInicialTimestamp &&
+      fechaProducto <= fechaFinalTimestamp
+    );
+  };
+
+  const productosFiltrados = sortedComprobantes.filter(filtrarPorFecha);
+
+  const resetFechas = () => {
+    setFechaFinal("");
+    setFechaInicial("");
+  };
+
+  console.log(productosFiltrados);
 
   const totalEnComprobantes = comprobantes.reduce((acc, comprobante) => {
     return acc + parseFloat(comprobante.total);
@@ -127,36 +163,6 @@ export const Proveedor = () => {
   };
 
   const handleID = (id) => setObtenerId(id);
-
-  // Agrega los estados para las fechas inicial y final
-  const [fechaInicial, setFechaInicial] = useState("");
-  const [fechaFinal, setFechaFinal] = useState("");
-
-  // Función para filtrar productos por rango de fechas
-  const filtrarPorFecha = (producto) => {
-    if (!fechaInicial || !fechaFinal) {
-      return true; // Si alguna de las fechas no está establecida, no se aplica el filtro
-    }
-
-    const fechaProducto = new Date(producto.created_at).getTime();
-    const fechaInicialTimestamp = new Date(fechaInicial).getTime();
-    const fechaFinalTimestamp = new Date(fechaFinal).getTime();
-
-    return (
-      fechaProducto >= fechaInicialTimestamp &&
-      fechaProducto <= fechaFinalTimestamp
-    );
-  };
-
-  // Filtrar productos por fecha
-  const productosFiltrados = currentProducts.filter(filtrarPorFecha);
-
-  const resetFechas = () => {
-    setFechaFinal("");
-    setFechaInicial("");
-  };
-
-  console.log(productosFiltrados);
 
   return (
     <section className="max-md:py-16 max-md:gap-5 bg-gray-100/50 max-h-full min-h-screen w-full h-full px-5 max-md:px-4 flex flex-col gap-2 py-16">
@@ -617,33 +623,37 @@ export const Proveedor = () => {
           </tbody>
         </table>
       </div>
-      <div className="flex justify-center mt-4">
-        {comprobantes.length > productsPerPage && (
-          <nav className="pagination">
-            <ul className="pagination-list flex gap-2">
-              {Array.from({
-                length: Math.ceil(comprobantes.length / productsPerPage),
-              }).map(
-                (_, index) =>
-                  index >= currentPage - 2 &&
-                  index <= currentPage + 2 && ( // Mostrar solo 5 páginas a la vez
-                    <li key={index} className="pagination-item">
-                      <button
-                        onClick={() => paginate(index + 1)}
-                        className={`pagination-link ${
-                          currentPage === index + 1
-                            ? "text-white bg-green-500 px-3 py-1 rounded-xl"
-                            : "text-slate-600 bg-white border-[1px] border-slate-300 px-2 py-1 rounded-xl"
-                        }`}
-                      >
-                        {index + 1}
-                      </button>
-                    </li>
-                  )
-              )}
-            </ul>
-          </nav>
-        )}
+      <div className="mt-3 flex justify-center items-center space-x-2">
+        <button
+          onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+          disabled={currentPage === 1}
+          className="bg-white py-2 px-3 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-300 focus:outline-none focus:bg-gray-100 cursor-pointer"
+        >
+          <FaArrowLeft />
+        </button>
+        <ul className="flex space-x-2">
+          {getPageNumbers().map((number) => (
+            <li key={number} className="cursor-pointer">
+              <button
+                onClick={() => paginate(number)}
+                className={`${
+                  currentPage === number ? "bg-white" : "bg-gray-300"
+                } py-2 px-3 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-300 focus:outline-none focus:bg-gray-100`}
+              >
+                {number}
+              </button>
+            </li>
+          ))}
+        </ul>
+        <button
+          onClick={() =>
+            setCurrentPage((prev) => Math.min(prev + 1, totalPages))
+          }
+          disabled={currentPage === totalPages}
+          className="bg-white py-2 px-3 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-300 focus:outline-none focus:bg-gray-100 cursor-pointer"
+        >
+          <FaArrowRight />
+        </button>
       </div>
       <ModalComprobante
         isOpen={isOpenComprobante}
