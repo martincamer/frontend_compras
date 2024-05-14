@@ -674,7 +674,7 @@ const ImagenModal = ({ archivo }) => {
   // Función para determinar si el archivo es una imagen
   const esImagen = (archivo) => {
     const extensionesImagenes = ["jpg", "jpeg", "png", "gif", "bmp", "webp"];
-    const extension = archivo.split(".").pop().toLowerCase();
+    const extension = archivo?.split(".").pop().toLowerCase();
     return extensionesImagenes.includes(extension);
   };
 
