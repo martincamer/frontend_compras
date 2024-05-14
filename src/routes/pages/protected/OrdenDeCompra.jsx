@@ -8,6 +8,7 @@ import { ModalVerProductos } from "../../../components/Modales/ModalVerProductos
 import { ModalEditarOrdenTotal } from "../../../components/Modales/ModalEditarOrdenTotal";
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
 import { Link } from "react-router-dom";
+import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 
 export const OrdenDeCompra = () => {
   const fechaActual = new Date();
@@ -78,31 +79,19 @@ export const OrdenDeCompra = () => {
   };
 
   const [searchTerm, setSearchTerm] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState("all");
   const [currentPage, setCurrentPage] = useState(1);
   const [productsPerPage] = useState(10);
 
-  const filteredProducts = ordenesMensuales.filter((orden) => {
-    // Verificar si el proveedor, el detalle del producto y la categoría coinciden con los criterios de búsqueda
-    return (
-      (orden.proveedor.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        orden.datos.productoSeleccionado.some((producto) =>
-          producto.detalle.toLowerCase().includes(searchTerm.toLowerCase())
-        )) &&
-      (selectedCategory === "all" ||
-        orden.datos.productoSeleccionado.some(
-          (producto) => producto.categoria === selectedCategory
-        ))
-    );
-  });
-
-  // Lógica de paginación
   const indexOfLastProduct = currentPage * productsPerPage;
   const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
 
-  // Ordenar los productos por fecha de creación de manera descendente
-  const sortedProducts = filteredProducts.sort((a, b) => {
-    return new Date(b.created_at) - new Date(a.created_at);
+  const sortedProducts = ordenesMensuales.sort((a, b) => {
+    // Convertir las fechas de creación a objetos Date
+    const dateA = new Date(a.created_at);
+    const dateB = new Date(b.created_at);
+
+    // Ordenar en orden descendente
+    return dateB - dateA;
   });
 
   const currentProducts = sortedProducts.slice(
@@ -110,8 +99,27 @@ export const OrdenDeCompra = () => {
     indexOfLastProduct
   );
 
-  // Cambiar de página
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
+  const filteredProducts = currentProducts.filter((product) => {
+    const searchTermMatches = product.proveedor
+      .toLowerCase()
+      .includes(searchTerm.toLowerCase());
+
+    return searchTermMatches;
+  });
+
+  const totalPages = Math.ceil(ordenesMensuales.length / productsPerPage);
+
+  const getPageNumbers = () => {
+    const pageNumbers = [];
+    const maxPages = Math.min(currentPage + 4, totalPages); // Mostrar hasta 5 páginas
+    const startPage = Math.max(1, maxPages - 4); // Comenzar desde la página adecuada
+    for (let i = startPage; i <= maxPages; i++) {
+      pageNumbers.push(i);
+    }
+    return pageNumbers;
+  };
 
   const precioTotal = ordenesMensuales.reduce(
     (total, orden) => total + Number(orden.precio_final),
@@ -173,7 +181,7 @@ export const OrdenDeCompra = () => {
     <section className="max-h-full min-h-screen bg-gray-100/40 w-full h-full px-5 max-md:px-4 flex flex-col gap-2 py-16 max-md:gap-5">
       <ToastContainer />
       <div className="py-5 px-5 rounded-xl grid grid-cols-3 gap-3 mb-2 max-md:grid-cols-1 max-md:border-none max-md:shadow-none max-md:py-0 max-md:px-0">
-        <article className="flex items-start justify-between gap-4 shadow-lg hover:shadow-md transition-all ease-linear cursor-pointer border border-slate-300 bg-white py-4 px-6">
+        <article className="flex items-start justify-between gap-4 shadow-xl hover:shadow-md transition-all ease-linear cursor-pointer bg-white py-4 px-6">
           <div className="flex justify-center h-full gap-4 items-center py-8">
             <span className="rounded-full bg-red-100 p-3 text-red-700">
               <svg
@@ -230,7 +238,7 @@ export const OrdenDeCompra = () => {
           </div>
         </article>
 
-        <article className="flex items-start justify-between gap-4 shadow-lg hover:shadow-md transition-all ease-linear cursor-pointer border border-slate-300 bg-white py-4 px-6">
+        <article className="flex items-start justify-between gap-4 shadow-xl hover:shadow-md transition-all ease-linear cursor-pointer bg-white py-4 px-6">
           <div className="flex justify-center h-full gap-4 items-center py-8">
             <span className="rounded-full bg-green-100 p-3 text-green-700">
               <svg
@@ -282,13 +290,13 @@ export const OrdenDeCompra = () => {
             </span>
           </div>
         </article>
-        <article className="flex items-center gap-4 shadow-lg hover:shadow-md transition-all ease-linear cursor-pointer border border-slate-300 bg-white py-4 px-6">
+        <article className="flex items-center gap-4 hover:shadow-md transition-all ease-linear cursor-pointer shadow-xl bg-white py-4 px-6">
           <div>
             <strong className="block text-sm font-medium text-gray-500 max-md:text-sm uppercase">
               Materiales/categorias gastos totales
             </strong>
 
-            <p className="mt-2 h-[35px] overflow-y-scroll w-full">
+            <p className="mt-2 h-[45px] overflow-y-scroll w-full scroll-bar">
               <span className="text-2xl font-medium text-gray-900 max-md:text-base w-full">
                 <ul className="flex flex-col gap-1 w-full">
                   {categoryTotalsData.map((category) => (
@@ -297,7 +305,7 @@ export const OrdenDeCompra = () => {
                       key={category.category}
                     >
                       <span className="font-bold">{category.category}:</span>{" "}
-                      <span className="text-red-600">
+                      <span className="text-red-600 font-bold">
                         {" "}
                         {Number(category.total).toLocaleString("es-AR", {
                           style: "currency",
@@ -389,69 +397,59 @@ export const OrdenDeCompra = () => {
           <input
             type="text"
             placeholder="BUSCAR POR EL PROVEEDOR O DETALLE.."
-            className="w-1/4 rounded-xl py-2 px-5 border-slate-300 bg-white text-slate-700 border-[1px] uppercase text-sm"
+            className="w-1/4 rounded-xl py-2.5 shadow-lg font-bold px-5 bg-white text-slate-700 uppercase text-sm outline-sky-500"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
-          <select
-            className="font-bold py-1 px-4 text-slate-700 rounded-xl shadow bg-white border-slate-300 border-[1px] uppercase text-sm"
-            value={selectedCategory}
-            onChange={(e) => setSelectedCategory(e.target.value)}
-          >
-            <option value="all">Todas las categorías</option>
-            {categorias.map((c) => (
-              <option>{c?.detalle}</option>
-            ))}
-          </select>
         </div>
       </div>
 
-      <div className="bg-white border-[1px] border-slate-300 rounded-2xl hover:shadow-md transition-all ease-linear mt-6 mx-5">
-        <table className="min-w-full divide-y-2 divide-gray-200 text-sm cursor-pointer">
+      <div className="bg-white rounded-2xl shadow-xl transition-all ease-linear mt-6 mx-5">
+        <table className="min-w-full table text-sm cursor-pointer">
           <thead className="text-left">
             <tr>
-              <th className="whitespace-nowrap px-4 py-4 text-slate-700 uppercase font-bold">
+              <th className="whitespace-nowrap px-4 py-4 text-slate-700 uppercase font-bold text-sm">
                 Numero
               </th>
-              <th className="whitespace-nowrap px-4 py-4 text-slate-700 uppercase font-bold">
+              <th className="whitespace-nowrap px-4 py-4 text-slate-700 uppercase font-bold text-sm">
                 Proveedor
               </th>
-              <th className="whitespace-nowrap px-4 py-4 text-slate-700 uppercase font-bold">
+              <th className="whitespace-nowrap px-4 py-4 text-slate-700 uppercase font-bold text-sm">
                 Numero Factura
               </th>
-              <th className="whitespace-nowrap px-4 py-4 text-slate-700 uppercase font-bold">
+              <th className="whitespace-nowrap px-4 py-4 text-slate-700 uppercase font-bold text-sm">
                 Fecha de la factura
               </th>
-              <th className="whitespace-nowrap px-4 py-4 text-slate-700 uppercase font-bold">
+              <th className="whitespace-nowrap px-4 py-4 text-slate-700 uppercase font-bold text-sm">
                 Total Facturado
               </th>
-              <th className="whitespace-nowrap px-4 py-4 text-slate-700 uppercase font-bold">
+              <th className="whitespace-nowrap px-4 py-4 text-slate-700 uppercase font-bold text-sm">
                 Acciones
               </th>
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-200">
-            {currentProducts.map((p) => (
+            {filteredProducts.map((p) => (
               <tr className="hover:bg-gray-100/50 transition-all" key={p.id}>
-                <td className="whitespace-nowrap px-4 py-4 text-gray-700 font-bold uppercase text-sm">
+                <th className="whitespace-nowrap px-4 py-4 text-gray-700 font-bold uppercase text-sm">
                   {p.id}
-                </td>
-                <td className="whitespace-nowrap px-4 py-4 text-gray-700 uppercase text-sm">
+                </th>
+                <th className="whitespace-nowrap px-4 py-4 text-gray-700 uppercase text-sm">
                   {p.proveedor}
-                </td>
-                <td className="whitespace-nowrap px-4 py-4  uppercase text-sm">
+                </th>
+                <th className="whitespace-nowrap px-4 py-4  uppercase text-sm">
                   N° {p.numero_factura}
-                </td>
-                <td className="whitespace-nowrap px-4 py-4  uppercase text-sm">
+                </th>
+                <th className="whitespace-nowrap px-4 py-4  uppercase text-sm">
                   {new Date(p.fecha_factura).toLocaleDateString("ars")}
-                </td>
-                <td className="whitespace-nowrap px-4 py-4  uppercase text-sm font-bold text-sky-500">
+                </th>
+                <th className="whitespace-nowrap px-4 py-4  uppercase text-sm font-bold text-sky-500">
                   {Number(p.precio_final).toLocaleString("es-AR", {
                     style: "currency",
                     currency: "ARS",
                   })}
-                </td>
-                <td className="whitespace-nowrap px-4 py-4 text-gray-700 uppercase text-sm cursor-pointer space-x-2 flex">
+                </th>
+                <th className="whitespace-nowrap px-4 py-4 text-gray-700 uppercase text-sm cursor-pointer space-x-2 flex">
                   <div className="dropdown dropdown-left z-1">
                     <div
                       tabIndex={0}
@@ -579,65 +577,43 @@ export const OrdenDeCompra = () => {
                       </li>
                     </ul>
                   </div>
-                </td>
+                </th>
               </tr>
             ))}
           </tbody>
         </table>
       </div>
-      <div className="flex justify-center items-center mt-4">
-        {filteredProducts.length > productsPerPage && (
-          <nav className="pagination">
-            <ul className="pagination-list flex gap-2">
-              {/* Botón Anterior */}
-              {currentPage > 1 && (
-                <li className="pagination-item">
-                  <button
-                    onClick={() => paginate(currentPage - 1)}
-                    className="pagination-link text-slate-600 bg-white border-[1px] border-slate-300 px-2 py-2 rounded-xl flex items-center"
-                  >
-                    <FiChevronLeft className="text-sm" />
-                  </button>
-                </li>
-              )}
-
-              {/* Renderizar números de página */}
-              {Array.from({
-                length: Math.ceil(filteredProducts.length / productsPerPage),
-              }).map(
-                (_, index) =>
-                  index >= currentPage - 2 &&
-                  index <= currentPage + 2 && (
-                    <li key={index} className="pagination-item">
-                      <button
-                        onClick={() => paginate(index + 1)}
-                        className={`pagination-link ${
-                          currentPage === index + 1
-                            ? "text-white bg-green-500 px-3 py-1 rounded-xl border-[1px] border-green-500"
-                            : "text-slate-600 bg-white border-[1px] border-slate-300 px-3 py-1 rounded-xl"
-                        }`}
-                      >
-                        {index + 1}
-                      </button>
-                    </li>
-                  )
-              )}
-
-              {/* Botón Siguiente */}
-              {currentPage <
-                Math.ceil(filteredProducts.length / productsPerPage) && (
-                <li className="pagination-item">
-                  <button
-                    onClick={() => paginate(currentPage + 1)}
-                    className="pagination-link text-slate-600 bg-white border-[1px] border-slate-300 px-2 py-2 rounded-xl flex items-center"
-                  >
-                    <FiChevronRight className="text-sm" />
-                  </button>
-                </li>
-              )}
-            </ul>
-          </nav>
-        )}
+      <div className="mt-3 flex justify-center items-center space-x-2">
+        <button
+          onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+          disabled={currentPage === 1}
+          className="bg-white py-2 px-3 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-300 focus:outline-none focus:bg-gray-100 cursor-pointer"
+        >
+          <FaArrowLeft />
+        </button>
+        <ul className="flex space-x-2">
+          {getPageNumbers().map((number) => (
+            <li key={number} className="cursor-pointer">
+              <button
+                onClick={() => paginate(number)}
+                className={`${
+                  currentPage === number ? "bg-white" : "bg-gray-300"
+                } py-2 px-3 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-300 focus:outline-none focus:bg-gray-100`}
+              >
+                {number}
+              </button>
+            </li>
+          ))}
+        </ul>
+        <button
+          onClick={() =>
+            setCurrentPage((prev) => Math.min(prev + 1, totalPages))
+          }
+          disabled={currentPage === totalPages}
+          className="bg-white py-2 px-3 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-300 focus:outline-none focus:bg-gray-100 cursor-pointer"
+        >
+          <FaArrowRight />
+        </button>
       </div>
 
       <ModalCrearOrden

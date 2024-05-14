@@ -21,6 +21,13 @@ export const ModalObtenerCompra = ({ isOpen, closeModal, obtenerId }) => {
     setImagenAmpliada(!imagenAmpliada);
   };
 
+  // Función para determinar si el archivo es una imagen
+  const esImagen = (datos) => {
+    const extensionesImagenes = ["jpg", "jpeg", "png", "gif", "bmp", "webp"];
+    const extension = datos.split(".").pop().toLowerCase();
+    return extensionesImagenes.includes(extension);
+  };
+
   return (
     <Transition appear show={isOpen} as={Fragment}>
       <Dialog
@@ -113,20 +120,30 @@ export const ModalObtenerCompra = ({ isOpen, closeModal, obtenerId }) => {
                 </p>
 
                 <div className="h-[300px] overflow-y-scroll">
-                  <img
-                    src={datos.imagen}
-                    className="h-[600px] w-full rounded-2xl shadow"
-                  />
+                  {esImagen(datos.imagen) ? (
+                    <img src={datos.imagen} className="w-[600px] h-[600px]" />
+                  ) : (
+                    <iframe
+                      src={datos.imagen}
+                      className="h-[600px] w-[1200px]"
+                    />
+                  )}
                 </div>
 
                 {imagenAmpliada ? (
                   <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
                     <div className="absolute inset-0 flex items-center justify-center">
-                      <img
-                        src={datos.imagen}
-                        alt="Imagen ampliada"
-                        className="absolute inset-0 w-full h-full"
-                      />
+                      {esImagen(datos.imagen) ? (
+                        <img
+                          src={datos.imagen}
+                          className="w-[600px] h-[600px]"
+                        />
+                      ) : (
+                        <iframe
+                          src={datos.imagen}
+                          className="h-[600px] w-[1200px]"
+                        />
+                      )}
                     </div>
                     <button
                       className="absolute top-4 right-4 bg-red-100 text-red-800 py-3 px-3 rounded-full text-sm focus:outline-none"

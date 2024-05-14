@@ -82,7 +82,7 @@ export const NavbarStatick = () => {
                 <div className="rounded-full h-[60px] w-[60px]">
                   <img
                     src={
-                      "https://media-eze1-1.cdn.whatsapp.net/v/t61.24694-24/143144780_433365128082776_2065965210607516755_n.jpg?ccb=11-4&oh=01_Q5AaIM0at3JRy1pLTQOpc4pAfeapqNoOS7IePIqPgF0glU69&oe=66364645&_nc_sid=e6ed6c&_nc_cat=103"
+                      "https://e7.pngegg.com/pngimages/507/702/png-clipart-profile-icon-simple-user-icon-icons-logos-emojis-users.png"
                     }
                   />
                 </div>

@@ -95,23 +95,23 @@ export const ModalCrearOrden = ({ isOpen, closeModal }) => {
     }
   };
 
-  useEffect(() => {
-    const newSocket = io("https://backendcompras-production.up.railway.app", {
-      withCredentials: true,
-    });
+  // useEffect(() => {
+  //   const newSocket = io("https://backendcompras-production.up.railway.app", {
+  //     withCredentials: true,
+  //   });
 
-    setSocket(newSocket);
+  //   setSocket(newSocket);
 
-    newSocket.on("crear-orden", (nuevaSalida) => {
-      setOrdenesMensuales((prevTipos) => [...prevTipos, nuevaSalida]);
-    });
+  //   // newSocket.on("crear-orden", (nuevaSalida) => {
+  //   //   setOrdenesMensuales((prevTipos) => [...prevTipos, nuevaSalida]);
+  //   // });
 
-    newSocket.on("crear-orden-dos", (nuevaSalida) => {
-      setOrdenes((prevTipos) => [...prevTipos, nuevaSalida]);
-    });
+  //   // newSocket.on("crear-orden-dos", (nuevaSalida) => {
+  //   //   setOrdenes((prevTipos) => [...prevTipos, nuevaSalida]);
+  //   // });
 
-    return () => newSocket.close();
-  }, []);
+  //   return () => newSocket.close();
+  // }, []);
 
   const totalesFinales = productoSeleccionado.reduce((total, producto) => {
     return total + Number(producto?.totalFinal);
@@ -124,7 +124,9 @@ export const ModalCrearOrden = ({ isOpen, closeModal }) => {
     0
   );
 
-  console.log(productoSeleccionado);
+  console.log(proveedores);
+
+  console.log(totalFinalSumSinIva);
 
   const onSubmit = async (e) => {
     e.preventDefault();
@@ -147,16 +149,15 @@ export const ModalCrearOrden = ({ isOpen, closeModal }) => {
     };
 
     const res = await client.post("/crear-orden-nueva", datosOrden);
-    const resDos = await client.post("/crear-orden-nueva-dos", datosOrden);
-    const resProveedor = await client.put(`actualizar-proveedor-compra`, datos);
+    // const resDos = await client.post("/crear-orden-nueva-dos", datosOrden);
+    const resProveedor = await client.put(
+      `/actualizar-proveedor-compra`,
+      datos
+    );
 
-    if (socket) {
-      socket.emit("crear-orden", res.data);
-    }
+    setOrdenesMensuales((prevTipos) => [...prevTipos, res.data]);
 
-    if (socket) {
-      socket.emit("crear-orden-dos", resDos.data);
-    }
+    console.log(res.data.precio_final);
 
     const tipoExistenteIndex = proveedores.findIndex(
       (p) => p.proveedor === proveedor
@@ -169,7 +170,9 @@ export const ModalCrearOrden = ({ isOpen, closeModal }) => {
       newTipos[tipoExistenteIndex] = {
         id: newTipos[tipoExistenteIndex].id,
         proveedor: updateRemuneracion.proveedor,
-        total: Number(totalFinalSumSinIva * iva || totalFinalSumSinIva),
+        total:
+          Number(newTipos[tipoExistenteIndex].total) +
+          Number(totalFinalSumSinIva),
         comprobantes: newTipos[tipoExistenteIndex].comprobantes,
         created_at: newTipos[tipoExistenteIndex].created_at,
         updated_at: newTipos[tipoExistenteIndex].updated_at,
@@ -238,11 +241,11 @@ export const ModalCrearOrden = ({ isOpen, closeModal }) => {
   };
 
   return (
-    <Menu as="div" className="z-50">
+    <Menu as="div" className="z-50 bg-white h-full">
       <Transition appear show={isOpen} as={Fragment}>
         <Dialog
           as="div"
-          className="fixed inset-0 z-10 overflow-y-auto"
+          className="fixed inset-0 z-[103] overflow-y-auto h-full scroll-bar bg-white"
           onClose={closeModal}
         >
           <Transition.Child
@@ -257,7 +260,7 @@ export const ModalCrearOrden = ({ isOpen, closeModal }) => {
             <div className="fixed inset-0 bg-black bg-opacity-10" />
           </Transition.Child>
 
-          <div className="min-h-screen px-4 text-center">
+          <div className="min-h-full h-full w-full text-center">
             <Transition.Child
               as={Fragment}
               enter="ease-out duration-300"
@@ -267,7 +270,7 @@ export const ModalCrearOrden = ({ isOpen, closeModal }) => {
               leaveFrom="opacity-100"
               leaveTo="opacity-0"
             >
-              <Dialog.Overlay className="fixed inset-0" />
+              <Dialog.Overlay className="fixed inset-0 bg-white" />
             </Transition.Child>
 
             <span
@@ -285,7 +288,7 @@ export const ModalCrearOrden = ({ isOpen, closeModal }) => {
               leaveFrom="opacity-100 scale-100"
               leaveTo="opacity-0 scale-95"
             >
-              <div className="inline-block w-2/3 max-md:w-full p-6 my-8 overflow-hidden max-md:h-[300px] max-md:overflow-y-scroll text-left align-middle transition-all transform bg-white shadow-xl rounded-3xl">
+              <div className="inline-block max-md:overflow-y-scroll text-left align-middle transition-all transform bg-white h-full w-full z-[105] py-5 px-5">
                 <div className="flex justify-end">
                   <button
                     type="button"
@@ -386,7 +389,7 @@ export const ModalCrearOrden = ({ isOpen, closeModal }) => {
                       />
                     </div>
                   </div>
-                  <div className="flex flex-col gap-1">
+                  <div className="flex flex-col gap-1 w-1/6">
                     <label className="text-sm text-slate-700 uppercase">
                       Detallar algo mensaje,etc.
                     </label>
@@ -605,7 +608,7 @@ export const ModalCrearOrden = ({ isOpen, closeModal }) => {
                       </span>
                     </p>
                   </div>
-                  <div>
+                  <div className="pb-4">
                     <button
                       type="submit"
                       class="group relative bg-sky-400 hover:bg-sky-500/90s text-white transition-all ease-in-out font-normal uppercase text-sm py-3 px-6 rounded-full flex items-center justify-center gap-2"
@@ -640,7 +643,6 @@ export const ModalCrearOrden = ({ isOpen, closeModal }) => {
                   productoSeleccionado={productoSeleccionado}
                   setProductoSeleccionado={setProductoSeleccionado}
                   isOpen={isOpenProductoEditar}
-                  // openProductoEditar={openProductoEditar}
                   closeModal={closeProductoEditar}
                   OBTENERID={OBTENERID}
                 />

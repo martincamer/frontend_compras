@@ -211,11 +211,11 @@ export const ModalEditarOrdenTotal = ({ isOpen, closeModal, obtenerId }) => {
   };
 
   return (
-    <Menu as="div" className="z-50">
+    <Menu as="div" className="z-50 bg-white h-full">
       <Transition appear show={isOpen} as={Fragment}>
         <Dialog
           as="div"
-          className="fixed inset-0 z-10 overflow-y-auto"
+          className="fixed inset-0 z-[103] overflow-y-auto h-full scroll-bar bg-white"
           onClose={closeModal}
         >
           <Transition.Child
@@ -230,7 +230,7 @@ export const ModalEditarOrdenTotal = ({ isOpen, closeModal, obtenerId }) => {
             <div className="fixed inset-0 bg-black bg-opacity-10" />
           </Transition.Child>
 
-          <div className="min-h-screen px-4 text-center">
+          <div className="min-h-full h-full w-full text-center">
             <Transition.Child
               as={Fragment}
               enter="ease-out duration-300"
@@ -240,7 +240,7 @@ export const ModalEditarOrdenTotal = ({ isOpen, closeModal, obtenerId }) => {
               leaveFrom="opacity-100"
               leaveTo="opacity-0"
             >
-              <Dialog.Overlay className="fixed inset-0" />
+              <Dialog.Overlay className="fixed inset-0 bg-white" />
             </Transition.Child>
 
             <span
@@ -258,7 +258,7 @@ export const ModalEditarOrdenTotal = ({ isOpen, closeModal, obtenerId }) => {
               leaveFrom="opacity-100 scale-100"
               leaveTo="opacity-0 scale-95"
             >
-              <div className="inline-block w-2/3 max-md:w-full p-6 my-8 overflow-hidden max-md:h-[300px] max-md:overflow-y-scroll text-left align-middle transition-all transform bg-white shadow-xl rounded-3xl">
+              <div className="inline-block max-md:overflow-y-scroll text-left align-middle transition-all transform bg-white h-full w-full z-[105] py-5 px-5">
                 <div className="flex justify-end">
                   <button
                     type="button"

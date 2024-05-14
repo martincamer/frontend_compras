@@ -5,6 +5,7 @@ import { ModalCrearProveedor } from "../../../components/Modales/ModalCrearProve
 import { Link } from "react-router-dom";
 import { PDFDownloadLink } from "@react-pdf/renderer";
 import { PdfProveedores } from "../../../components/pdf/PdfProveedores";
+import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 
 export const Proveedores = () => {
   const { proveedores } = useProductosContext();
@@ -51,52 +52,52 @@ export const Proveedores = () => {
     setOpen(false);
   };
 
+  const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  const [productsPerPage] = useState(15); // Puedes ajustar el número de productos por página según tus necesidades
-  const [busqueda, setBusqueda] = useState("");
+  const [productsPerPage] = useState(7);
 
-  const handleBusquedaChange = (e) => {
-    setBusqueda(e.target.value);
-  };
+  // Ordenar por el total de mayor a menor
+  const sortedProveedores = [...proveedores].sort((a, b) => b.total - a.total);
 
-  // Filtrar productos en función de la búsqueda
-  const productosFiltrados = proveedores?.filter((producto) =>
-    producto.proveedor?.toLowerCase()?.includes(busqueda?.toLowerCase())
-  );
-
-  // Lógica de paginación basada en productos filtrados
   const indexOfLastProduct = currentPage * productsPerPage;
   const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
-  const currentProducts = productosFiltrados.slice(
+  const currentProducts = sortedProveedores.slice(
     indexOfFirstProduct,
     indexOfLastProduct
   );
 
-  // Cambiar de página
-  const paginate = (pageNumber) => {
-    setCurrentPage(pageNumber);
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
+  const filteredProducts = currentProducts.filter((product) => {
+    const searchTermMatches = product.proveedor
+      .toLowerCase()
+      .includes(searchTerm.toLowerCase());
+
+    return searchTermMatches;
+  });
+
+  const totalPages = Math.ceil(sortedProveedores.length / productsPerPage);
+
+  const getPageNumbers = () => {
+    const pageNumbers = [];
+    const maxPages = Math.min(currentPage + 4, totalPages); // Mostrar hasta 5 páginas
+    const startPage = Math.max(1, maxPages - 4); // Comenzar desde la página adecuada
+    for (let i = startPage; i <= maxPages; i++) {
+      pageNumbers.push(i);
+    }
+    return pageNumbers;
   };
 
-  const precioTotal = proveedores.reduce(
+  const precioTotal = sortedProveedores.reduce(
     (total, orden) => total + Number(orden.total),
     0
   );
-
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, 1500);
-
-    return () => clearTimeout(timer);
-  }, []);
 
   return (
     <section className="bg-gray-100/50 min-h-screen max-h-full w-full h-full px-5 max-md:px-4 flex flex-col gap-2 py-16 max-md:gap-5">
       <ToastContainer />
       <div className="py-5 px-5 rounded-xl grid grid-cols-3 gap-3 mb-2 max-md:grid-cols-1 max-md:border-none max-md:shadow-none max-md:py-0 max-md:px-0">
-        <article className="flex items-start justify-between gap-4 shadow-lg hover:shadow-md transition-all ease-linear cursor-pointer border border-slate-300 bg-white py-4 px-6">
+        <article className="flex items-start justify-between gap-4 shadow-lg hover:shadow-md transition-all ease-linear cursor-pointer bg-white py-4 px-6">
           <div className="flex justify-center h-full gap-4 items-center">
             <span className="rounded-full bg-red-100 p-3 text-red-700">
               <svg
@@ -148,12 +149,12 @@ export const Proveedores = () => {
 
             <span className="text-xs font-medium">
               {" "}
-              {Number(precioTotal / 100000).toFixed(2)} %
+              {Number(precioTotal % 100).toFixed(2)} %
             </span>
           </div>
         </article>
 
-        <article className="flex items-start justify-between gap-4 shadow-lg hover:shadow-md transition-all ease-linear cursor-pointer border border-slate-300 bg-white py-4 px-6">
+        <article className="flex items-start justify-between gap-4 shadow-lg hover:shadow-md transition-all ease-linear cursor-pointer bg-white py-4 px-6">
           <div className="flex justify-center h-full gap-4 items-center">
             <span className="rounded-full bg-green-100 p-3 text-green-700">
               <svg
@@ -206,7 +207,7 @@ export const Proveedores = () => {
           </div>
         </article>
 
-        <article className="flex items-start justify-between gap-4 shadow-lg hover:shadow-md transition-all ease-linear cursor-pointer border border-slate-300 bg-white py-10 px-6">
+        <article className="flex items-start justify-between gap-4 shadow-lg hover:shadow-md transition-all ease-linear cursor-pointer bg-white py-10 px-6">
           <div className="flex justify-center h-full gap-4 items-center">
             <span className="rounded-full bg-green-100 p-3 text-green-700">
               <svg
@@ -254,7 +255,7 @@ export const Proveedores = () => {
 
             <span className="text-xs font-medium">
               {" "}
-              {Number(proveedores.length / 1).toFixed(2)} %{" "}
+              {Number(proveedores.length % 100).toFixed(2)} %{" "}
             </span>
           </div>
         </article>
@@ -314,45 +315,45 @@ export const Proveedores = () => {
         <input
           type="text"
           placeholder="Buscar por proveedor..."
-          value={busqueda}
-          onChange={handleBusquedaChange}
-          className="uppercase py-2 px-3 border border-gray-300 rounded-xl focus:outline-none focus:border-sky-500 w-full"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          className="uppercase py-2 px-3 shadow-xl font-bold rounded-xl focus:outline-none focus:border-sky-500 w-full"
         />
       </div>
 
-      <div className="overflow-x-auto mt-6 mx-8 rounded-2xl border-slate-300 border-[1px] transition-all hover:shadow-md ease-linear cursor-pointer">
-        <table className="min-w-full divide-y-2 divide-gray-200 bg-white text-sm">
+      <div className="overflow-x-auto mt-6 mx-8 rounded-2xl transition-all hover:shadow-md ease-linear cursor-pointer">
+        <table className="min-w-full bg-white text-sm table">
           <thead className="text-left">
             <tr>
-              <th className="whitespace-nowrap px-4 py-4 text-gray-900 uppercase font-semibold">
+              <th className="whitespace-nowrap px-4 py-4 text-gray-900 uppercase font-bold text-sm">
                 Proveedor
               </th>
-              <th className="whitespace-nowrap px-4 py-4 text-gray-900 uppercase font-semibold">
+              <th className="whitespace-nowrap px-4 py-4 text-gray-900 uppercase font-bold text-sm">
                 Total Deber
               </th>
-              <th className="whitespace-nowrap px-4 py-4 text-gray-900 uppercase font-semibold">
+              <th className="whitespace-nowrap px-4 py-4 text-gray-900 uppercase font-bold text-sm">
                 Total final deber
               </th>
 
-              <th className="whitespace-nowrap px-4 py-4 text-gray-900 uppercase font-semibold">
+              <th className="whitespace-nowrap px-4 py-4 text-gray-900 uppercase font-bold text-sm">
                 Acciones
               </th>
             </tr>
           </thead>
 
           <tbody className="divide-y divide-gray-200">
-            {currentProducts.map((p) => (
+            {filteredProducts.map((p) => (
               <tr className="hover:bg-gray-100/40 transition-all" key={p.id}>
-                <td className="whitespace-nowrap px-4 py-6 font-medium text-gray-900 uppercase text-sm">
+                <th className="whitespace-nowrap px-4 py-6 font-bold text-gray-900 uppercase text-sm">
                   {p.proveedor}
-                </td>
-                <td className="whitespace-nowrap px-4 py-6 text-gray-700 uppercase text-sm">
+                </th>
+                <th className="whitespace-nowrap px-4 py-6 text-gray-700 uppercase text-sm">
                   {Number(p.total).toLocaleString("es-AR", {
                     style: "currency",
                     currency: "ARS",
                   })}
-                </td>
-                <td className="whitespace-nowrap px-4 py-6 text-red-800 uppercase text-sm font-bold">
+                </th>
+                <th className="whitespace-nowrap px-4 py-6 text-red-800 uppercase text-sm font-bold">
                   {" "}
                   <span className="bg-red-50 py-3 px-5 rounded-xl">
                     {Number(p.total).toLocaleString("es-AR", {
@@ -360,8 +361,8 @@ export const Proveedores = () => {
                       currency: "ARS",
                     })}
                   </span>
-                </td>
-                <td className="whitespace-nowrap px-4 py-6 text-gray-700 uppercase text-sm cursor-pointer space-x-2 flex">
+                </th>
+                <th className="whitespace-nowrap px-4 py-6 text-gray-700 uppercase text-sm cursor-pointer space-x-2 flex">
                   <Link
                     to={`/proveedores/${p.id}`}
                     className="bg-green-500/20 text-green-700 py-2 px-3 rounded-xl text-sm flex gap-2 items-center"
@@ -385,40 +386,44 @@ export const Proveedores = () => {
                   {/* <span className="bg-red-500/10 text-red-800 py-2 px-3 rounded-xl text-sm">
                     ELIMINAR
                   </span> */}
-                </td>
+                </th>
               </tr>
             ))}
           </tbody>
         </table>
       </div>
 
-      <div className="flex justify-center mt-4">
-        {proveedores.length > productsPerPage && (
-          <nav className="pagination">
-            <ul className="pagination-list flex gap-2">
-              {Array.from({
-                length: Math.ceil(proveedores.length / productsPerPage),
-              }).map(
-                (_, index) =>
-                  index >= currentPage - 2 &&
-                  index <= currentPage + 2 && ( // Mostrar solo 5 páginas a la vez
-                    <li key={index} className="pagination-item">
-                      <button
-                        onClick={() => paginate(index + 1)}
-                        className={`pagination-link ${
-                          currentPage === index + 1
-                            ? "text-white bg-green-500 px-3 py-1 rounded-xl"
-                            : "text-slate-600 bg-white border-[1px] border-slate-300 px-2 py-1 rounded-xl"
-                        }`}
-                      >
-                        {index + 1}
-                      </button>
-                    </li>
-                  )
-              )}
-            </ul>
-          </nav>
-        )}
+      <div className="mt-3 flex justify-center items-center space-x-2">
+        <button
+          onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+          disabled={currentPage === 1}
+          className="bg-white py-2 px-3 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-300 focus:outline-none focus:bg-gray-100 cursor-pointer"
+        >
+          <FaArrowLeft />
+        </button>
+        <ul className="flex space-x-2">
+          {getPageNumbers().map((number) => (
+            <li key={number} className="cursor-pointer">
+              <button
+                onClick={() => paginate(number)}
+                className={`${
+                  currentPage === number ? "bg-white" : "bg-gray-300"
+                } py-2 px-3 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-300 focus:outline-none focus:bg-gray-100`}
+              >
+                {number}
+              </button>
+            </li>
+          ))}
+        </ul>
+        <button
+          onClick={() =>
+            setCurrentPage((prev) => Math.min(prev + 1, totalPages))
+          }
+          disabled={currentPage === totalPages}
+          className="bg-white py-2 px-3 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-300 focus:outline-none focus:bg-gray-100 cursor-pointer"
+        >
+          <FaArrowRight />
+        </button>
       </div>
 
       <ModalCrearProveedor isOpen={isOpen} closeModal={closeModal} />

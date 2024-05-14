@@ -157,7 +157,7 @@ export const Home = () => {
     <section className="bg-gray-100/40 w-full h-full min-h-full max-h-full px-12 max-md:px-4 flex flex-col gap-12 max-md:gap-8 py-24">
       <div>
         <div className="mb-8 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-          <div className="bg-white py-4 px-6 shadow-md border">
+          <div className="bg-white py-4 px-6 shadow-xl">
             <h2 className="text-xl font-bold text-sky-400 bg-white">
               Dashboard de compras del mes
             </h2>
@@ -285,7 +285,7 @@ const Card = ({
   color,
 }) => {
   return (
-    <div className="xl:p-7.5 border border-gray-200 bg-white p-4 shadow-lg dark:border-gray-600 dark:bg-gray-800 md:p-6">
+    <div className="xl:p-7.5 shadow-xl bg-white dark:border-gray-600 dark:bg-gray-800 md:p-6">
       <div className="flex items-center justify-between">
         <div>
           <h3 className="mb-4 text-2xl font-bold text-gray-900 dark:text-white">

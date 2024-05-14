@@ -8,6 +8,7 @@ import { ModalEliminarProducto } from "../../../components/Modales/ModalEliminar
 import { PDFDownloadLink } from "@react-pdf/renderer";
 import { ImprirmirProductosPDF } from "../../../components/pdf/ImprirmirProductosPDF";
 import { ListaDePrecios } from "../../../components/pdf/ListaDePrecios";
+import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 
 export const Productos = () => {
   const { productos, categorias } = useProductosContext();
@@ -69,28 +70,61 @@ export const Productos = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [productsPerPage] = useState(10);
 
-  const filteredProducts = productos.filter((product) => {
-    const idMatches = product.id.toString().includes(searchTerm.toLowerCase());
-    const detailMatches = product.detalle
+  const indexOfLastProduct = currentPage * productsPerPage;
+  const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
+  const currentProducts = productos.slice(
+    indexOfFirstProduct,
+    indexOfLastProduct
+  );
+
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
+  const filteredProducts = currentProducts.filter((product) => {
+    const searchTermMatches = product.detalle
       .toLowerCase()
       .includes(searchTerm.toLowerCase());
     const categoryMatches =
       selectedCategory === "all" || product.categoria === selectedCategory;
 
-    // Filtra si coincide con el ID o con el detalle, además de la categoría
-    return (idMatches || detailMatches) && categoryMatches;
+    return searchTermMatches && categoryMatches;
   });
 
-  // Lógica de paginación
-  const indexOfLastProduct = currentPage * productsPerPage;
-  const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
-  const currentProducts = filteredProducts.slice(
-    indexOfFirstProduct,
-    indexOfLastProduct
-  );
+  const totalPages = Math.ceil(productos.length / productsPerPage);
 
-  // Cambiar de página
-  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+  const getPageNumbers = () => {
+    const pageNumbers = [];
+    const maxPages = Math.min(currentPage + 4, totalPages); // Mostrar hasta 5 páginas
+    const startPage = Math.max(1, maxPages - 4); // Comenzar desde la página adecuada
+    for (let i = startPage; i <= maxPages; i++) {
+      pageNumbers.push(i);
+    }
+    return pageNumbers;
+  };
+  // const [currentPage, setCurrentPage] = useState(1);
+  // const [productsPerPage] = useState(10);
+
+  // const filteredProducts = productos.filter((product) => {
+  //   const idMatches = product.id.toString().includes(searchTerm.toLowerCase());
+  //   const detailMatches = product.detalle
+  //     .toLowerCase()
+  //     .includes(searchTerm.toLowerCase());
+  //   const categoryMatches =
+  //     selectedCategory === "all" || product.categoria === selectedCategory;
+
+  //   // Filtra si coincide con el ID o con el detalle, además de la categoría
+  //   return (idMatches || detailMatches) && categoryMatches;
+  // });
+
+  // // Lógica de paginación
+  // const indexOfLastProduct = currentPage * productsPerPage;
+  // const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
+  // const currentProducts = filteredProducts.slice(
+  //   indexOfFirstProduct,
+  //   indexOfLastProduct
+  // );
+
+  // // Cambiar de página
+  // const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   const [editarProducto, setEditarProducto] = useState(false);
 
@@ -130,7 +164,7 @@ export const Productos = () => {
     <section className="min-h-screen max-h-full bg-gray-100/40 w-full h-full px-5 max-md:px-4 flex flex-col gap-2 py-16 max-md:gap-5">
       <ToastContainer />
       <div className="py-5 px-5 grid grid-cols-3 gap-3 mb-2 max-md:grid-cols-1 max-md:border-none max-md:shadow-none max-md:py-0 max-md:px-0">
-        <article className="flex items-start justify-between gap-4 shadow-lg hover:shadow-md transition-all ease-linear cursor-pointer border border-slate-300 bg-white py-4 px-6">
+        <article className="flex items-start justify-between gap-4 shadow-xl hover:shadow-md transition-all ease-linear cursor-pointer bg-white py-4 px-6">
           <div className="flex justify-center h-full gap-4 items-center">
             <span className="rounded-full bg-sky-400 p-3 text-white">
               <svg
@@ -182,8 +216,7 @@ export const Productos = () => {
             </span>
           </div>
         </article>
-
-        <article className="flex items-start justify-between gap-4 shadow-lg hover:shadow-md transition-all ease-linear cursor-pointer border border-slate-300 bg-white py-4 px-6">
+        <article className="flex items-start justify-between gap-4 shadow-xl hover:shadow-md transition-all ease-linear cursor-pointer bg-white py-4 px-6">
           <div className="flex justify-center h-full gap-4 items-center py-8">
             <span className="rounded-full bg-green-500/80 p-3 text-white">
               <svg
@@ -312,13 +345,13 @@ export const Productos = () => {
           <input
             type="text"
             placeholder="Buscar por detalle o el codigo...."
-            className="text-sm rounded-xl py-2 px-5 border-slate-300 bg-white text-slate-700 border-[1px] uppercase w-1/4"
+            className="text-sm rounded-xl py-2.5 px-5  shadow-lg bg-white text-slate-700 font-bold uppercase w-1/4 outline-sky-500 cursor-pointer"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
           {/* Selector de categoría */}
           <select
-            className="font-semibold text-sm py-1 px-4 text-slate-700 rounded-xl shadow bg-white border-slate-300 border-[1px] uppercase"
+            className="font-semibold text-sm py-1 px-4 text-slate-700 rounded-xl shadow-lg bg-white uppercase outline-sky-500 cursor-pointer"
             value={selectedCategory}
             onChange={(e) => setSelectedCategory(e.target.value)}
           >
@@ -329,47 +362,47 @@ export const Productos = () => {
           </select>
         </div>
 
-        <div className="mt-6 mx-8 border-slate-300 border-[1px]  bg-white rounded-2xl hover:shadow-md transition-all ease-linear cursor-pointer">
-          <table className="min-w-full divide-y-2 divide-gray-200 text-sm">
+        <div className="mt-6 mx-8 bg-white shadow-xl rounded-2xl transition-all ease-linear cursor-pointer">
+          <table className="min-w-full divide-y-2 table text-sm">
             <thead className="text-left">
               <tr className="">
-                <th className="whitespace-nowrap px-4 py-4 text-gray-500 uppercase font-bold">
+                <th className="whitespace-nowrap px-4 py-4 text-gray-500 uppercase font-bold text-sm">
                   Codigo
                 </th>
-                <th className="whitespace-nowrap px-4 py-4 text-gray-500 uppercase font-bold">
+                <th className="whitespace-nowrap px-4 py-4 text-gray-500 uppercase font-bold text-sm">
                   Detalle
                 </th>
-                <th className="whitespace-nowrap px-4 py-4 text-gray-500 uppercase font-bold">
+                <th className="whitespace-nowrap px-4 py-4 text-gray-500 uppercase font-bold text-sm">
                   Categoria
                 </th>
-                <th className="whitespace-nowrap px-4 py-4 text-gray-500 uppercase font-bold">
+                <th className="whitespace-nowrap px-4 py-4 text-gray-500 uppercase font-bold text-sm">
                   Precio Und
                 </th>
-                <th className="whitespace-nowrap px-4 py-4 text-gray-500 uppercase font-bold">
+                <th className="whitespace-nowrap px-4 py-4 text-gray-500 uppercase font-bold text-sm">
                   Acciones
                 </th>
               </tr>
             </thead>
 
             <tbody className="divide-y divide-gray-200">
-              {currentProducts.map((p) => (
+              {filteredProducts.map((p) => (
                 <tr key={p.id}>
-                  <td className="whitespace-nowrap px-4 py-4 font-semibold text-gray-900 uppercase text-sm">
+                  <th className="whitespace-nowrap px-4 py-4 font-semibold text-gray-900 uppercase text-sm">
                     {p.id}
-                  </td>
-                  <td className="whitespace-nowrap px-4 py-4 text-gray-700 uppercase text-sm">
+                  </th>
+                  <th className="whitespace-nowrap px-4 py-4 text-gray-700 uppercase text-sm">
                     {p.detalle}
-                  </td>
-                  <td className="whitespace-nowrap px-4 py-4 text-gray-700 uppercase text-sm">
+                  </th>
+                  <th className="whitespace-nowrap px-4 py-4 text-gray-700 uppercase text-sm">
                     {p.categoria}
-                  </td>
-                  <td className="whitespace-nowrap px-4 py-4  uppercase text-sm font-semibold text-sky-600">
+                  </th>
+                  <th className="whitespace-nowrap px-4 py-4  uppercase text-sm font-semibold text-sky-600">
                     {Number(p.precio_und).toLocaleString("es-AR", {
                       style: "currency",
                       currency: "ARS",
                     })}
-                  </td>
-                  <td className="whitespace-nowrap px-4 py-4 text-gray-700 uppercase text-sm cursor-pointer space-x-2">
+                  </th>
+                  <th className="whitespace-nowrap px-4 py-4 text-gray-700 uppercase text-sm cursor-pointer space-x-2">
                     <div className="dropdown dropdown-left z-1">
                       <div
                         tabIndex={0}
@@ -417,14 +450,46 @@ export const Productos = () => {
                         </li>
                       </ul>
                     </div>
-                  </td>
+                  </th>
                 </tr>
               ))}
             </tbody>
           </table>
         </div>
       </div>
-      <div className="flex justify-center mt-4">
+      <div className="mt-3 flex justify-center items-center space-x-2">
+        <button
+          onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+          disabled={currentPage === 1}
+          className="bg-white py-2 px-3 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-300 focus:outline-none focus:bg-gray-100 cursor-pointer"
+        >
+          <FaArrowLeft />
+        </button>
+        <ul className="flex space-x-2">
+          {getPageNumbers().map((number) => (
+            <li key={number} className="cursor-pointer">
+              <button
+                onClick={() => paginate(number)}
+                className={`${
+                  currentPage === number ? "bg-white" : "bg-gray-300"
+                } py-2 px-3 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-300 focus:outline-none focus:bg-gray-100`}
+              >
+                {number}
+              </button>
+            </li>
+          ))}
+        </ul>
+        <button
+          onClick={() =>
+            setCurrentPage((prev) => Math.min(prev + 1, totalPages))
+          }
+          disabled={currentPage === totalPages}
+          className="bg-white py-2 px-3 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-300 focus:outline-none focus:bg-gray-100 cursor-pointer"
+        >
+          <FaArrowRight />
+        </button>
+      </div>
+      {/* <div className="flex justify-center mt-4">
         {filteredProducts.length > productsPerPage && (
           <nav className="pagination">
             <ul className="pagination-list flex gap-2">
@@ -451,7 +516,7 @@ export const Productos = () => {
             </ul>
           </nav>
         )}
-      </div>
+      </div> */}
       <ModalCrearProductos isOpen={isOpen} closeModal={closeModal} />
       <ModalCrearCategorias
         isOpenCategorias={isOpenCategorias}

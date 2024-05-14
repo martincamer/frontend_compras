@@ -156,6 +156,8 @@ export const Proveedor = () => {
     setFechaInicial("");
   };
 
+  console.log(productosFiltrados);
+
   return (
     <section className="max-md:py-16 max-md:gap-5 bg-gray-100/50 max-h-full min-h-screen w-full h-full px-5 max-md:px-4 flex flex-col gap-2 py-16">
       <ToastContainer />
@@ -509,26 +511,26 @@ export const Proveedor = () => {
         </div>
       </div>
 
-      <div className="overflow-x-auto mt-6 mx-8 rounded-2xl border-slate-300 border-[1px] transition-all hover:shadow-md ease-linear cursor-pointer">
-        <table className="min-w-full divide-y-2 divide-gray-200 bg-white text-sm">
+      <div className="mt-6 mx-8 rounded-2xl shadow-xl ease-linear cursor-pointer">
+        <table className="min-w-full divide-y-2 bg-white text-sm table">
           <thead className="text-left">
             <tr>
-              <th className="whitespace-nowrap px-4 py-4 text-gray-900 uppercase font-semibold">
+              <th className="whitespace-nowrap px-4 py-4 text-gray-900 uppercase font-bol text-sm">
                 Numero °
               </th>
-              <th className="whitespace-nowrap px-4 py-4 text-gray-900 uppercase font-semibold">
+              <th className="whitespace-nowrap px-4 py-4 text-gray-900 uppercase font-bol text-sm">
                 Total del comprobante
               </th>
-              <th className="whitespace-nowrap px-4 py-4 text-gray-900 uppercase font-semibold">
+              <th className="whitespace-nowrap px-4 py-4 text-gray-900 uppercase font-bol text-sm">
                 Total del comprobante final
               </th>
-              <th className="whitespace-nowrap px-4 py-4 text-gray-900 uppercase font-semibold">
-                Ver imagen
+              <th className="whitespace-nowrap px-4 py-4 text-gray-900 uppercase font-bol text-sm">
+                Ver comprobante
               </th>
-              <th className="whitespace-nowrap px-4 py-4 text-gray-900 uppercase font-semibold">
+              <th className="whitespace-nowrap px-4 py-4 text-gray-900 uppercase font-bol text-sm">
                 Acciones
               </th>
-              <th className="whitespace-nowrap px-4 py-4 text-gray-900 uppercase font-semibold">
+              <th className="whitespace-nowrap px-4 py-4 text-gray-900 uppercase font-bol text-sm">
                 Fecha de creación
               </th>
             </tr>
@@ -537,15 +539,15 @@ export const Proveedor = () => {
           <tbody className="divide-y divide-gray-200">
             {productosFiltrados.map((p) => (
               <tr key={p.id}>
-                <td className="whitespace-nowrap px-4 py-6 text-gray-700 uppercase text-sm">
+                <th className="whitespace-nowrap px-4 py-6 text-gray-700 uppercase text-sm">
                   {p.id}
-                </td>
-                <td className="whitespace-nowrap px-4 py-6 text-gray-700 uppercase text-sm">
+                </th>
+                <th className="whitespace-nowrap px-4 py-6 text-gray-700 uppercase text-sm">
                   {Number(p.total).toLocaleString("es-AR", {
                     style: "currency",
                     currency: "ARS",
                   })}
-                </td>
+                </th>
                 <td className="whitespace-nowrap px-4 py-6 text-green-800 uppercase text-sm font-bold">
                   {" "}
                   <span className="bg-green-100 py-3 px-5 rounded-xl">
@@ -556,7 +558,7 @@ export const Proveedor = () => {
                   </span>
                 </td>
                 <td>
-                  <ImagenModal imagen={p.imagen} />
+                  <ImagenModal archivo={p.imagen} />
                 </td>
                 <td className="whitespace-nowrap px-4 py-6 text-gray-700 uppercase text-sm cursor-pointer space-x-2">
                   <div className="dropdown dropdown-left z-1">
@@ -666,16 +668,23 @@ export const Proveedor = () => {
   );
 };
 
-const ImagenModal = ({ imagen }) => {
+const ImagenModal = ({ archivo }) => {
   const [showModal, setShowModal] = useState(false);
+
+  // Función para determinar si el archivo es una imagen
+  const esImagen = (archivo) => {
+    const extensionesImagenes = ["jpg", "jpeg", "png", "gif", "bmp", "webp"];
+    const extension = archivo.split(".").pop().toLowerCase();
+    return extensionesImagenes.includes(extension);
+  };
 
   return (
     <>
       <td
-        className="bg-orange-100 hover:bg-orange-200 text-orange-700 py-2 px-5 rounded-xl"
+        className="bg-orange-100 hover:bg-orange-200 text-orange-700 py-2 px-5 rounded-xl font-bold"
         onClick={() => setShowModal(true)}
       >
-        VER IMAGEN
+        VER COMPROBANTE
       </td>
       {showModal && (
         <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-gray-800 bg-opacity-75 z-50">
@@ -695,14 +704,20 @@ const ImagenModal = ({ imagen }) => {
                 <path
                   strokeLinecap="round"
                   strokeLinejoin="round"
-                  d="M6 18 18 6M6 6l12 12"
+                  d="M6 18L18 6M6 6l12 12"
                 />
               </svg>
             </button>
-            <img src={imagen} alt="Imagen" className="w-[600px] h-[600px]" />
+            {esImagen(archivo) ? (
+              <img src={archivo} alt="Imagen" className="w-[600px] h-[600px]" />
+            ) : (
+              <iframe src={archivo} className="h-[600px] w-[1200px]" />
+            )}
           </div>
         </div>
       )}
     </>
   );
 };
+
+export default ImagenModal;

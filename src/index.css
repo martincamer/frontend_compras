@@ -12,6 +12,28 @@ body {
   height: 100%;
   margin: 0;
   padding: 0;
+  background-color: rgb(243 244 246);
+  &::-webkit-scrollbar {
+    width: 10px; /* Ancho de la barra de desplazamiento */
+    border-radius: 2px; /* Bordes redondeados */
+  }
+  &::-webkit-scrollbar-track {
+    background: #f1f1f1; /* Color del riel */
+    border-radius: 10px; /* Bordes redondeados para el riel */
+  }
+  &::-webkit-scrollbar-thumb {
+    background: rgba(
+      190,
+      190,
+      190,
+      0.6
+    ); /* Color de la barra de desplazamiento */
+    border-radius: 2px; /* Bordes redondeados para el pulgar */
+  }
+  &::-webkit-scrollbar-thumb:hover {
+    background: rgb(58, 58, 58); /* Color al pasar el mouse por encima */
+    cursor: pointer;
+  }
 }
 
 .scroll-bar {

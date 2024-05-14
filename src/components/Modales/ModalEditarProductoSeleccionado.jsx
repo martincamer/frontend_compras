@@ -113,7 +113,7 @@ export const ModalEditarProductoSeleccionado = ({
       <Transition appear show={isOpen} as={Fragment}>
         <Dialog
           as="div"
-          className="fixed inset-0 z-10 overflow-y-auto"
+          className="fixed inset-0 z-[107] overflow-y-auto"
           onClose={closeModal}
         >
           <Transition.Child
