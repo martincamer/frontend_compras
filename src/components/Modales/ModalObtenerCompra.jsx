@@ -24,7 +24,7 @@ export const ModalObtenerCompra = ({ isOpen, closeModal, obtenerId }) => {
   // Función para determinar si el archivo es una imagen
   const esImagen = (datos) => {
     const extensionesImagenes = ["jpg", "jpeg", "png", "gif", "bmp", "webp"];
-    const extension = datos.split(".").pop().toLowerCase();
+    const extension = datos?.split(".").pop().toLowerCase();
     return extensionesImagenes.includes(extension);
   };
 
