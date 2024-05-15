@@ -88,27 +88,28 @@ export const Proveedor = () => {
 
     loadData();
   }, [params.id]);
-
   const [currentPage, setCurrentPage] = useState(1);
-  const [productsPerPage] = useState(10);
+  const [productsPerPage] = useState(1);
+  const [fechaInicial, setFechaInicial] = useState("");
+  const [fechaFinal, setFechaFinal] = useState("");
+
+  const orderByCreatedAtDescending = (a, b) => {
+    return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
+  };
+
+  const sortedComprobantes = comprobantes.sort(orderByCreatedAtDescending);
 
   const indexOfLastProduct = currentPage * productsPerPage;
   const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
 
-  const currentProducts = comprobantes.slice(
+  const currentProducts = sortedComprobantes.slice(
     indexOfFirstProduct,
     indexOfLastProduct
   );
 
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
-  const sortedComprobantes = currentProducts.sort((a, b) => {
-    const dateA = new Date(a.created_at).getTime();
-    const dateB = new Date(b.created_at).getTime();
-    return dateB - dateA;
-  });
-
-  const totalPages = Math.ceil(comprobantes.length / productsPerPage);
+  const totalPages = Math.ceil(sortedComprobantes.length / productsPerPage);
 
   const getPageNumbers = () => {
     const pageNumbers = [];
@@ -119,9 +120,6 @@ export const Proveedor = () => {
     }
     return pageNumbers;
   };
-
-  const [fechaInicial, setFechaInicial] = useState("");
-  const [fechaFinal, setFechaFinal] = useState("");
 
   const filtrarPorFecha = (producto) => {
     if (!fechaInicial || !fechaFinal) {
@@ -144,9 +142,6 @@ export const Proveedor = () => {
     setFechaFinal("");
     setFechaInicial("");
   };
-
-  console.log(productosFiltrados);
-
   const totalEnComprobantes = comprobantes.reduce((acc, comprobante) => {
     return acc + parseFloat(comprobante.total);
   }, 0);
