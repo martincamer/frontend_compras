@@ -37,9 +37,9 @@ export const ModalComprobante = ({ isOpen, closeModal, datos }) => {
   const onSubmit = async (e) => {
     e.preventDefault();
 
-    const fileType = archivo.type.startsWith("image/")
+    const fileType = archivo?.type?.startsWith("image/")
       ? "image"
-      : archivo.type === "application/pdf"
+      : archivo?.type === "application/pdf"
       ? "pdf"
       : "video";
     const imgUrl = await uploadFile(fileType);
@@ -53,7 +53,6 @@ export const ModalComprobante = ({ isOpen, closeModal, datos }) => {
 
     try {
       const res = await client.post(`/crear-comprobante`, data);
-      console.log(res.data);
       toast.success("¡Comprobante creado correctamente espera 3 segundos!", {
         position: "top-center",
         autoClose: 3000,
@@ -328,13 +327,13 @@ export const ModalComprobante = ({ isOpen, closeModal, datos }) => {
                         Vista Previa:
                       </p>
                       <div className="h-[300px] overflow-y-scroll">
-                        {archivo.type.startsWith("image/") ? (
+                        {archivo?.type?.startsWith("image/") ? (
                           <img
                             src={previewUrl}
                             alt="Vista previa"
                             className="h-[600px] w-full shadow"
                           />
-                        ) : archivo.type === "application/pdf" ? (
+                        ) : archivo?.type === "application/pdf" ? (
                           <iframe
                             src={previewUrl}
                             className="h-[600px] w-full shadow"
