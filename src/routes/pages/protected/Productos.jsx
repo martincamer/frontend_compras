@@ -68,7 +68,7 @@ export const Productos = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [currentPage, setCurrentPage] = useState(1);
-  const [productsPerPage] = useState(5);
+  const [productsPerPage] = useState(10);
 
   // Filtrar productos antes de la paginación
   const filteredProducts = productos.filter((product) => {
@@ -363,7 +363,7 @@ export const Productos = () => {
             </thead>
 
             <tbody className="divide-y divide-gray-200">
-              {filteredProducts.map((p) => (
+              {currentProducts.map((p) => (
                 <tr key={p.id}>
                   <th className="whitespace-nowrap px-4 py-4 font-semibold text-gray-900 uppercase text-sm">
                     {p.id}
