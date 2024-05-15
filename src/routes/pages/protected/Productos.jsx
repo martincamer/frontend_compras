@@ -68,28 +68,31 @@ export const Productos = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [currentPage, setCurrentPage] = useState(1);
-  const [productsPerPage] = useState(10);
+  const [productsPerPage] = useState(5);
 
-  const indexOfLastProduct = currentPage * productsPerPage;
-  const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
-  const currentProducts = productos.slice(
-    indexOfFirstProduct,
-    indexOfLastProduct
-  );
-
-  const paginate = (pageNumber) => setCurrentPage(pageNumber);
-
-  const filteredProducts = currentProducts.filter((product) => {
-    const searchTermMatches = product.detalle
-      .toLowerCase()
-      .includes(searchTerm.toLowerCase());
+  // Filtrar productos antes de la paginación
+  const filteredProducts = productos.filter((product) => {
+    const searchTermMatches =
+      product.detalle.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      product.id.toString().includes(searchTerm);
     const categoryMatches =
       selectedCategory === "all" || product.categoria === selectedCategory;
 
     return searchTermMatches && categoryMatches;
   });
 
-  const totalPages = Math.ceil(productos.length / productsPerPage);
+  // Obtener índices de paginación para productos filtrados
+  const indexOfLastProduct = currentPage * productsPerPage;
+  const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
+
+  const currentProducts = filteredProducts.slice(
+    indexOfFirstProduct,
+    indexOfLastProduct
+  );
+
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
+  const totalPages = Math.ceil(filteredProducts.length / productsPerPage);
 
   const getPageNumbers = () => {
     const pageNumbers = [];
@@ -100,31 +103,6 @@ export const Productos = () => {
     }
     return pageNumbers;
   };
-  // const [currentPage, setCurrentPage] = useState(1);
-  // const [productsPerPage] = useState(10);
-
-  // const filteredProducts = productos.filter((product) => {
-  //   const idMatches = product.id.toString().includes(searchTerm.toLowerCase());
-  //   const detailMatches = product.detalle
-  //     .toLowerCase()
-  //     .includes(searchTerm.toLowerCase());
-  //   const categoryMatches =
-  //     selectedCategory === "all" || product.categoria === selectedCategory;
-
-  //   // Filtra si coincide con el ID o con el detalle, además de la categoría
-  //   return (idMatches || detailMatches) && categoryMatches;
-  // });
-
-  // // Lógica de paginación
-  // const indexOfLastProduct = currentPage * productsPerPage;
-  // const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
-  // const currentProducts = filteredProducts.slice(
-  //   indexOfFirstProduct,
-  //   indexOfLastProduct
-  // );
-
-  // // Cambiar de página
-  // const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   const [editarProducto, setEditarProducto] = useState(false);
 
