@@ -138,7 +138,7 @@ export const Proveedor = () => {
     );
   };
 
-  const productosFiltrados = sortedComprobantes.filter(filtrarPorFecha);
+  const productosFiltrados = currentProducts.filter(filtrarPorFecha);
 
   const resetFechas = () => {
     setFechaFinal("");
