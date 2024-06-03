@@ -1,7 +1,8 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useProductosContext } from "../../../context/ProductosProvider";
 import { ToastContainer } from "react-toastify";
 import { SyncLoader } from "react-spinners";
+import { ModalImprimir } from "../../../components/Modales/ModalImprimir";
 import { Link } from "react-router-dom";
 import client from "../../../api/axios";
 
@@ -388,6 +389,15 @@ export const OrdenDeCompraRegistros = () => {
               </svg>
             </button>
           </div>
+
+          <button
+            className=" bg-green-500 py-2 px-6 rounded-full text-white font-semibold hover:shadow transition-all ease-linear"
+            onClick={() =>
+              document.getElementById("my_modal_gastos_materiales").showModal()
+            }
+          >
+            Filtrar total en comprobantes
+          </button>
         </div>
       </div>
 
@@ -621,6 +631,11 @@ export const OrdenDeCompraRegistros = () => {
           </nav>
         )}
       </div>
+      <ModalImprimir
+        fechaInicio={fechaInicio}
+        fechaFin={fechaFin}
+        datos={categoryTotalsData}
+      />
     </section>
   );
 };

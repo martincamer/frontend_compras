@@ -149,10 +149,6 @@ export const Home = () => {
     return acumulado + totalNum;
   }, 0); // Inicia la acumulación desde cero
 
-  console.log("Total acumulado:", totalAcumulado); // Muestra el total acumulado
-
-  console.log("proveedores", proveedores);
-
   return (
     <section className="bg-gray-100/40 w-full h-full min-h-full max-h-full px-12 max-md:px-4 flex flex-col gap-12 max-md:gap-8 py-24">
       <div>

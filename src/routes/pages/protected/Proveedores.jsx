@@ -6,9 +6,28 @@ import { Link } from "react-router-dom";
 import { PDFDownloadLink } from "@react-pdf/renderer";
 import { PdfProveedores } from "../../../components/pdf/PdfProveedores";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
+import client from "../../../api/axios";
+import { ModalFiltrarComprobantes } from "../../../components/Modales/ModalFiltrarComprobantes";
 
 export const Proveedores = () => {
   const { proveedores } = useProductosContext();
+  const [comprobantesMensuales, setComprobantesMensuales] = useState([]);
+
+  useEffect(() => {
+    const obtenerDatos = async () => {
+      const respuesta = await client.get("/comprobantes-mes");
+
+      setComprobantesMensuales(respuesta.data);
+    };
+    obtenerDatos();
+  }, []);
+
+  const totalAcumulado = comprobantesMensuales.reduce((acumulado, item) => {
+    const totalNum = parseFloat(item.total); // Convertir a número
+    return acumulado + totalNum;
+  }, 0); // Inicia la acumulación desde cero
+
+  console.log(totalAcumulado);
 
   const fechaActual = new Date();
   const numeroDiaActual = fechaActual.getDay(); // Obtener el día del mes actual
@@ -54,29 +73,27 @@ export const Proveedores = () => {
 
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  const [productsPerPage] = useState(7);
+  const [productsPerPage] = useState(10);
 
   // Ordenar por el total de mayor a menor
   const sortedProveedores = [...proveedores].sort((a, b) => b.total - a.total);
 
+  // Filtrar productos por el término de búsqueda antes de la paginación
+  const filteredProveedores = sortedProveedores.filter((product) =>
+    product.proveedor.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   const indexOfLastProduct = currentPage * productsPerPage;
   const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
-  const currentProducts = sortedProveedores.slice(
+
+  const currentProducts = filteredProveedores.slice(
     indexOfFirstProduct,
     indexOfLastProduct
   );
 
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
-  const filteredProducts = currentProducts.filter((product) => {
-    const searchTermMatches = product.proveedor
-      .toLowerCase()
-      .includes(searchTerm.toLowerCase());
-
-    return searchTermMatches;
-  });
-
-  const totalPages = Math.ceil(sortedProveedores.length / productsPerPage);
+  const totalPages = Math.ceil(filteredProveedores.length / productsPerPage);
 
   const getPageNumbers = () => {
     const pageNumbers = [];
@@ -97,7 +114,7 @@ export const Proveedores = () => {
     <section className="bg-gray-100/50 min-h-screen max-h-full w-full h-full px-5 max-md:px-4 flex flex-col gap-2 py-16 max-md:gap-5">
       <ToastContainer />
       <div className="py-5 px-5 rounded-xl grid grid-cols-3 gap-3 mb-2 max-md:grid-cols-1 max-md:border-none max-md:shadow-none max-md:py-0 max-md:px-0">
-        <article className="flex items-start justify-between gap-4 shadow-lg hover:shadow-md transition-all ease-linear cursor-pointer bg-white py-4 px-6">
+        <article className="flex items-start justify-between gap-4 shadow-lg hover:shadow-md transition-all ease-linear cursor-pointer bg-white py-10 px-6">
           <div className="flex justify-center h-full gap-4 items-center">
             <span className="rounded-full bg-red-100 p-3 text-red-700">
               <svg
@@ -150,6 +167,63 @@ export const Proveedores = () => {
             <span className="text-xs font-medium">
               {" "}
               {Number(precioTotal % 100).toFixed(2)} %
+            </span>
+          </div>
+        </article>
+
+        <article className="flex items-start justify-between gap-4 shadow-lg hover:shadow-md transition-all ease-linear cursor-pointer bg-white py-4 px-6">
+          <div className="flex justify-center h-full gap-4 items-center">
+            <span className="rounded-full bg-green-100 p-3 text-green-700">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor"
+                className="w-9 h-9"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M12 6v12m-3-2.818.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.003-.659-1.106-.879-1.106-2.303 0-3.182s2.9-.879 4.006 0l.415.33M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+                />
+              </svg>
+            </span>
+
+            <div>
+              <p className="text-2xl font-medium text-green-700">
+                {" "}
+                {Number(totalAcumulado).toLocaleString("es-AR", {
+                  style: "currency",
+                  currency: "ARS",
+                })}
+              </p>
+
+              <p className="text-sm text-gray-500 uppercase underline">
+                Total en comprobantes
+              </p>
+            </div>
+          </div>
+
+          <div className="inline-flex gap-2 rounded-xl bg-green-100 p-2 text-green-600">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-4 w-4"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"
+              />
+            </svg>
+
+            <span className="text-xs font-medium">
+              {" "}
+              {Number(totalAcumulado % 100).toFixed(2)} %
             </span>
           </div>
         </article>
@@ -303,6 +377,15 @@ export const Proveedores = () => {
             />
           </svg>
         </PDFDownloadLink>
+
+        <button
+          className=" text-sm text-white bg-green-500/90 py-3 px-6 rounded-full font-semibold uppercase max-md:text-xs flex gap-2 items-center transition-all ease-linear"
+          onClick={() =>
+            document.getElementById("my_modal_proveedores").showModal()
+          }
+        >
+          Descargar gastos materiales filtrados
+        </button>
       </div>
 
       <div className="mx-8 mt-6">
@@ -342,7 +425,7 @@ export const Proveedores = () => {
           </thead>
 
           <tbody className="divide-y divide-gray-200">
-            {filteredProducts.map((p) => (
+            {currentProducts.map((p) => (
               <tr className="hover:bg-gray-100/40 transition-all" key={p.id}>
                 <th className="whitespace-nowrap px-4 py-6 font-bold text-gray-900 uppercase text-sm">
                   {p.proveedor}
@@ -427,6 +510,7 @@ export const Proveedores = () => {
       </div>
 
       <ModalCrearProveedor isOpen={isOpen} closeModal={closeModal} />
+      <ModalFiltrarComprobantes />
     </section>
   );
 };

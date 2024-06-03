@@ -89,7 +89,7 @@ export const Proveedor = () => {
     loadData();
   }, [params.id]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [productsPerPage] = useState(1);
+  const [productsPerPage] = useState(10);
   const [fechaInicial, setFechaInicial] = useState("");
   const [fechaFinal, setFechaFinal] = useState("");
 
@@ -208,6 +208,7 @@ export const Proveedor = () => {
           <span className="text-slate-500 underline">{datos?.proveedor}</span>
         </p>
       </div>
+
       <div className="py-5 px-5 rounded-xl grid grid-cols-3 gap-3 mb-2 max-md:grid-cols-1 max-md:border-none max-md:shadow-none max-md:py-0 max-md:px-0">
         <article className="flex items-start justify-between gap-4 shadow-lg hover:shadow-md transition-all ease-linear cursor-pointer border border-slate-300 bg-white py-10 px-6">
           <div className="flex justify-center h-full gap-4 items-center">
