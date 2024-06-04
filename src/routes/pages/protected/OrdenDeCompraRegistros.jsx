@@ -396,7 +396,7 @@ export const OrdenDeCompraRegistros = () => {
               document.getElementById("my_modal_gastos_materiales").showModal()
             }
           >
-            Filtrar total en comprobantes
+            Descargar compras del mes estadistica materiales
           </button>
         </div>
       </div>

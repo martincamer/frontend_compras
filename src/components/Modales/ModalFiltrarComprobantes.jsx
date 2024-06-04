@@ -1,7 +1,7 @@
 import { PDFViewer } from "@react-pdf/renderer";
-import client from "../../../src/api/axios";
 import { useState } from "react";
 import { ImprimirComprantePdf } from "../pdf/ImprimirComprantePdf";
+import client from "../../../src/api/axios";
 
 export const ModalFiltrarComprobantes = ({}) => {
   const fechaActual = new Date();

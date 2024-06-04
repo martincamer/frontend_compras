@@ -1,9 +1,9 @@
+import React from "react";
 import { Document, Text, View, Page, Image, Font } from "@react-pdf/renderer";
 import normal from "../../fonts/Montserrat-Light.ttf";
 import semibold from "../../fonts/Montserrat-SemiBold.ttf";
 import bold from "../../fonts/Montserrat-Bold.ttf";
 import logo from "../../../public/logo.png";
-import React from "react";
 
 Font.register({
   family: "Montserrat",
