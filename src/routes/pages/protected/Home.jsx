@@ -153,7 +153,7 @@ export const Home = () => {
     <section className="bg-gray-100/40 w-full h-full min-h-full max-h-full px-12 max-md:px-4 flex flex-col gap-12 max-md:gap-8 py-24">
       <div>
         <div className="mb-8 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-          <div className="bg-white py-4 px-6 shadow-xl">
+          <div className="bg-white py-4 px-6 shadow-xl rounded">
             <h2 className="text-xl font-bold text-sky-400 bg-white">
               Dashboard de compras del mes
             </h2>
@@ -281,7 +281,7 @@ const Card = ({
   color,
 }) => {
   return (
-    <div className="xl:p-7.5 shadow-xl bg-white dark:border-gray-600 dark:bg-gray-800 md:p-6">
+    <div className="xl:p-7.5 shadow-xl bg-white dark:border-gray-600 dark:bg-gray-800 md:p-6 rounded">
       <div className="flex items-center justify-between">
         <div>
           <h3 className="mb-4 text-2xl font-bold text-gray-900 dark:text-white">
@@ -352,7 +352,7 @@ const CircularProgress = ({ percentage, color }) => {
 
       {/* Anillo interior para crear la barra gruesa */}
       <div
-        className="-absolute w-20 h-20 rounded-full bg-white"
+        className="-absolute w-[90px] h-[90px] rounded-full bg-white"
         style={{ zIndex: 2 }}
       />
 
@@ -361,7 +361,7 @@ const CircularProgress = ({ percentage, color }) => {
         className="absolute flex justify-center items-center"
         style={{ zIndex: 3 }}
       >
-        <span className="text-lg font-bold text-gray-700">
+        <span className="text-md font-bold text-gray-700">
           {`${normalizedPercentage.toFixed(2)}%`}
         </span>
       </div>

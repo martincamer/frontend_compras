@@ -3,10 +3,11 @@ import { ToastContainer } from "react-toastify";
 import { Link, useParams } from "react-router-dom";
 import { ModalComprobante } from "../../../components/Modales/ModalComprobante";
 import { ModalObtenerCompra } from "../../../components/Modales/ModalObtenerCompra";
-import client from "../../../api/axios";
 import { ModalEditarSaldoProveedor } from "../../../components/Modales/ModalEditarSaldoProveedor";
 import { useAuth } from "../../../context/AuthProvider";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
+import client from "../../../api/axios";
+import { ModalEliminarComprobante } from "../../../components/Modales/ModalEliminarComprobante";
 
 export const Proveedor = () => {
   const { user } = useAuth();
@@ -14,6 +15,8 @@ export const Proveedor = () => {
   const [comprobantes, setComprobantes] = useState([]);
 
   const [isOpenComprobante, setOpenComprobante] = useState(false);
+  const [isOpenComprobanteEliminar, setOpenComprobanteEliminar] =
+    useState(false);
 
   const openComprobante = () => {
     setOpenComprobante(true);
@@ -21,6 +24,14 @@ export const Proveedor = () => {
 
   const closeComprobante = () => {
     setOpenComprobante(false);
+  };
+
+  const openComprobanteEliminar = () => {
+    setOpenComprobanteEliminar(true);
+  };
+
+  const closeComprobanteEliminar = () => {
+    setOpenComprobanteEliminar(false);
   };
 
   const fechaActual = new Date();
@@ -88,6 +99,7 @@ export const Proveedor = () => {
 
     loadData();
   }, [params.id]);
+
   const [currentPage, setCurrentPage] = useState(1);
   const [productsPerPage] = useState(10);
   const [fechaInicial, setFechaInicial] = useState("");
@@ -593,7 +605,7 @@ export const Proveedor = () => {
                           onClick={() => {
                             handleID(p.id), openComprobanteModal();
                           }}
-                          className="bg-sky-500/20 text-sky-600 py-2 px-3 rounded-xl text-sm hover:bg-sky-500 hover:text-white transition-all ease-linear"
+                          className="bg-sky-500/20 text-sky-600 py-2 px-3 rounded-xl text-sm hover:bg-sky-200 hover:text-sky-700 transition-all ease-linear"
                         >
                           VER COMPROBANTE
                         </Link>
@@ -606,6 +618,18 @@ export const Proveedor = () => {
                         >
                           DESCARGAR COMPROBANTE
                         </Link>
+                      </li>
+
+                      <li>
+                        <button
+                          onClick={() => {
+                            handleID(p.id), openComprobanteEliminar();
+                          }}
+                          type="button"
+                          className="bg-red-500/20 hover:bg-red-200 text-red-600 py-2 px-3 rounded-xl text-sm"
+                        >
+                          ELIMINAR COMPROBANTE
+                        </button>
                       </li>
                     </ul>
                   </div>
@@ -669,6 +693,12 @@ export const Proveedor = () => {
         isOpen={isOpen}
         closeModal={closeModal}
         params={params}
+      />
+
+      <ModalEliminarComprobante
+        eliminarModal={isOpenComprobanteEliminar}
+        closeEliminar={closeComprobanteEliminar}
+        obtenerId={obtenerId}
       />
     </section>
   );

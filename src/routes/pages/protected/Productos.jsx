@@ -142,7 +142,7 @@ export const Productos = () => {
     <section className="min-h-screen max-h-full bg-gray-100/40 w-full h-full px-5 max-md:px-4 flex flex-col gap-2 py-16 max-md:gap-5">
       <ToastContainer />
       <div className="py-5 px-5 grid grid-cols-3 gap-3 mb-2 max-md:grid-cols-1 max-md:border-none max-md:shadow-none max-md:py-0 max-md:px-0">
-        <article className="flex items-start justify-between gap-4 shadow-xl hover:shadow-md transition-all ease-linear cursor-pointer bg-white py-4 px-6">
+        <article className="rounded flex items-start justify-between gap-4 shadow-xl hover:shadow-md transition-all ease-linear cursor-pointer bg-white py-4 px-6">
           <div className="flex justify-center h-full gap-4 items-center">
             <span className="rounded-full bg-sky-400 p-3 text-white">
               <svg
@@ -194,7 +194,7 @@ export const Productos = () => {
             </span>
           </div>
         </article>
-        <article className="flex items-start justify-between gap-4 shadow-xl hover:shadow-md transition-all ease-linear cursor-pointer bg-white py-4 px-6">
+        <article className="rounded flex items-start justify-between gap-4 shadow-xl hover:shadow-md transition-all ease-linear cursor-pointer bg-white py-4 px-6">
           <div className="flex justify-center h-full gap-4 items-center py-8">
             <span className="rounded-full bg-green-500/80 p-3 text-white">
               <svg

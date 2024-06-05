@@ -194,7 +194,7 @@ export const OrdenDeCompraCheckout = () => {
       <ToastContainer />
 
       <div className="py-5 px-5 rounded-xl grid grid-cols-3 gap-3 mb-2 max-md:grid-cols-1 max-md:border-none max-md:shadow-none max-md:py-0 max-md:px-0">
-        <article className="flex items-start justify-between gap-4 shadow-xl hover:shadow-md transition-all ease-linear cursor-pointer bg-white py-4 px-6">
+        <article className="rounded flex items-start justify-between gap-4 shadow-xl hover:shadow-md transition-all ease-linear cursor-pointer bg-white py-4 px-6">
           <div className="flex justify-center h-full gap-4 items-center py-8">
             <span className="rounded-full bg-red-100 p-3 text-red-700">
               <svg
@@ -251,7 +251,7 @@ export const OrdenDeCompraCheckout = () => {
           </div>
         </article>
 
-        <article className="flex items-start justify-between gap-4 shadow-xl hover:shadow-md transition-all ease-linear cursor-pointer bg-white py-4 px-6">
+        <article className="rounded flex items-start justify-between gap-4 shadow-xl hover:shadow-md transition-all ease-linear cursor-pointer bg-white py-4 px-6">
           <div className="flex justify-center h-full gap-4 items-center py-8">
             <span className="rounded-full bg-green-100 p-3 text-green-700">
               <svg
@@ -303,7 +303,7 @@ export const OrdenDeCompraCheckout = () => {
             </span>
           </div>
         </article>
-        <article className="flex items-center gap-4 shadow-lg hover:shadow-md transition-all ease-linear cursor-pointer bg-white py-4 px-6">
+        <article className="rounded flex items-center gap-4 shadow-lg hover:shadow-md transition-all ease-linear cursor-pointer bg-white py-4 px-6">
           <div>
             <strong className="block text-sm font-medium text-gray-500 max-md:text-sm uppercase">
               Materiales/categorias gastos totales
