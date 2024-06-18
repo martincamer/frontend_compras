@@ -94,6 +94,7 @@ export const OrdenDeCompraCheckout = () => {
           parseInt(producto.cantidad) !== parseInt(producto.cantidadFaltante)
       )
   );
+
   const sortedProducts = [...pendingOrders, ...completedOrders];
 
   // Lógica de paginación

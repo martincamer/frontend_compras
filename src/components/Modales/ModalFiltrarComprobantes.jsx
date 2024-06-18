@@ -67,7 +67,7 @@ export const ModalFiltrarComprobantes = ({}) => {
   console.log(agrupadosPorProveedor);
   return (
     <dialog id="my_modal_proveedores" className="modal">
-      <div className="modal-box max-w-6xl h-full rounded-none">
+      <div className="modal-box max-w-6xl h-full rounded-none scrollbar-hidden">
         <form method="dialog">
           {/* if there is a button in form, it will close the modal */}
           <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
@@ -75,28 +75,28 @@ export const ModalFiltrarComprobantes = ({}) => {
           </button>
         </form>
         <div>
-          <p className="font-semibold text-orange-500 text-lg">
+          <p className="font-semibold text-sky-500 text-lg">
             Filtrar comprobantes por fecha
           </p>
         </div>
         <div className="flex gap-6 items-center max-md:flex-col max-md:items-start mt-5">
           <div className="flex gap-2 items-center">
-            <label className="text-base uppercase text-slate-700">
+            <label className="text-sm font-semibold capitalize text-slate-700">
               Fecha de inicio
             </label>
             <input
-              className="text-sm bg-white py-2 px-3 rounded-xl shadow border-slate-300 border-[1px] cursor-pointer text-slate-700 outline-none"
+              className="text-sm bg-white py-2 px-3 font-bold border-sky-300 border cursor-pointer text-sky-400 outline-none"
               type="date"
               value={fechaInicio}
               onChange={(e) => setFechaInicio(e.target.value)}
             />
           </div>
           <div className="flex gap-2 items-center">
-            <label className="text-base uppercase text-slate-700">
+            <label className="text-sm font-semibold capitalize text-slate-700">
               Fecha fin
             </label>
             <input
-              className="text-sm bg-white py-2 px-3 rounded-xl shadow border-slate-300 border-[1px] cursor-pointer text-slate-700 outline-none"
+              className="text-sm bg-white py-2 px-3 font-bold border-sky-300 border cursor-pointer text-sky-400 outline-none"
               type="date"
               value={fechaFin}
               onChange={(e) => setFechaFin(e.target.value)}
@@ -104,7 +104,7 @@ export const ModalFiltrarComprobantes = ({}) => {
 
             <button
               onClick={buscarIngresosPorFecha}
-              className="bg-white border-slate-300 border-[1px] rounded-xl px-2 py-2 shadow flex gap-3 text-slate-700 hover:shadow-md transtion-all ease-in-out duration-200 max-md:py-1"
+              className="bg-white border-sky-300 border-[1px] px-2 py-2 flex gap-3 text-slate-700 hover:shadow-md transtion-all ease-in-out duration-200 max-md:py-1"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"

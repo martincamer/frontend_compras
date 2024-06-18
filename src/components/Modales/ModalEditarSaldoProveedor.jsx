@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from "react";
+import { Fragment, useState } from "react";
 import { Dialog, Transition, Menu } from "@headlessui/react";
 import { useProductosContext } from "../../context/ProductosProvider";
 import { toast } from "react-toastify";
@@ -7,12 +7,11 @@ import client from "../../api/axios"; // Asegúrate de importar tu cliente Axios
 export const ModalEditarSaldoProveedor = ({
   isOpen,
   closeModal,
-  obtenerId,
   setDatos,
-  datos,
   params,
 }) => {
-  const { proveedores, setProveedores } = useProductosContext();
+  const { setProveedores } = useProductosContext();
+
   const [total, setTotal] = useState("");
 
   const onSubmit = async (e) => {
@@ -22,39 +21,10 @@ export const ModalEditarSaldoProveedor = ({
       total,
     });
 
-    const respuesta = JSON.parse(res.config.data);
+    setDatos(res.data.proveedor);
+    setProveedores(res.data.proveedores);
 
-    console.log(respuesta);
-
-    const tipoExistenteIndex = proveedores.findIndex(
-      (tipo) => tipo.id === params.id
-    );
-
-    console.log(respuesta.total);
-
-    setProveedores((prevTipos) => {
-      const newTipos = [...prevTipos];
-      const updateRemuneracion = respuesta; // La respuesta ya contiene los datos actualizados
-      newTipos[tipoExistenteIndex] = {
-        ...newTipos[tipoExistenteIndex],
-        // Mantén el resto de los datos intactos
-        total: respuesta.total, // Actualiza solo el total
-      };
-      return newTipos;
-    });
-
-    // Actualiza solo el total del proveedor correspondiente
-    setDatos((prevDatos) => {
-      return {
-        ...prevDatos,
-        [params.id]: {
-          ...prevDatos[params.id], // Mantén el resto de los datos intactos
-          total: respuesta.total, // Actualiza el total
-        },
-      };
-    });
-
-    toast.success("¡Producto editado correctamente!", {
+    toast.success("¡Saldo del proveedor editado correctamente!", {
       position: "top-center",
       autoClose: 3000,
       hideProgressBar: true,
@@ -71,10 +41,7 @@ export const ModalEditarSaldoProveedor = ({
       },
     });
 
-    setTimeout(() => {
-      closeModal();
-      location.reload(1500);
-    }, 500);
+    closeModal();
   };
 
   return (
@@ -166,23 +133,22 @@ export const ModalEditarSaldoProveedor = ({
                       value={total}
                       onChange={(e) => setTotal(e.target.value)}
                       type="text"
-                      className="border-slate-300 border-[1px] shadow rounded-xl w-full uppercase py-2 px-4"
+                      className="border-sky-300 border py-2 px-3 font-semibold text-sm outline-none"
                       placeholder="PONER EL TOTAL"
                     />
                     <div className="flex">
-                      <p className="bg-orange-100 py-2 px-5 rounded-xl text-orange-600 font-bold">
+                      <p className="bg-orange-100 py-2 px-5 rounded text-orange-600 font-bold">
                         {Number(total).toLocaleString("es-AR", {
                           style: "currency",
                           currency: "ARS",
                         })}{" "}
-                        - TOTAL FINAL
                       </p>
                     </div>
                   </div>
 
                   <div className="mt-3">
                     <button
-                      className="bg-sky-400 py-2.5 px-6 rounded-full font-semibold text-white uppercase text-sm flex gap-2 items-center"
+                      className="bg-sky-400 py-2.5 px-6 rounded-full font-semibold text-white uppercase text-xs flex gap-2 items-center hover:bg-orange-500 transition-all"
                       type="submit"
                     >
                       EDITAR SALDO DEL PROVEEDOR

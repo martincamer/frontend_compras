@@ -1,39 +1,21 @@
 import { Dialog, Menu, Transition } from "@headlessui/react";
-import { Fragment, useState, useEffect } from "react";
+import { Fragment } from "react";
 import { useOrdenesContext } from "../../context/OrdenesProvider";
+import { useProductosContext } from "../../context/ProductosProvider";
 import { toast } from "react-toastify";
-import client from "../../api/axios";
-import io from "socket.io-client";
 import { IoIosAlert } from "react-icons/io";
+import client from "../../api/axios";
 
 export const ModalEliminar = ({ eliminarModal, closeEliminar, obtenerId }) => {
-  const { setOrdenesMensuales } = useOrdenesContext();
-
-  const [socket, setSocket] = useState(null);
-
-  useEffect(() => {
-    const newSocket = io(import.meta.env.VITE_URL, {
-      withCredentials: true,
-    });
-
-    setSocket(newSocket);
-
-    newSocket.on("eliminar-orden", (salidaEliminada) => {
-      setOrdenesMensuales((prevSalidas) =>
-        prevSalidas.filter((salida) => salida.id !== salidaEliminada.id)
-      );
-    });
-
-    return () => newSocket.close();
-  }, []);
+  const { setOrdenes } = useOrdenesContext();
+  const { setProveedores } = useProductosContext();
 
   const handleEliminarOrden = async (id) => {
     try {
-      await client.delete(`/eliminar-orden/${id}`);
+      const res = await client.delete(`/eliminar-orden/${id}`);
 
-      if (socket) {
-        socket.emit("eliminar-orden", { id });
-      }
+      setOrdenes(res.data.ordenes);
+      setProveedores(res.data.proveedores);
 
       toast.error("¡Orden de compra eliminada correctamente!", {
         position: "top-center",

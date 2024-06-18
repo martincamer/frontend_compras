@@ -3,13 +3,22 @@ import { Dialog, Transition, Menu } from "@headlessui/react";
 import { toast } from "react-toastify";
 import client from "../../api/axios"; // Asegúrate de importar tu cliente Axios configurado para tu API
 import axios from "axios";
+import { useProductosContext } from "../../context/ProductosProvider";
 
-export const ModalComprobante = ({ isOpen, closeModal, datos }) => {
+export const ModalComprobante = ({
+  isOpen,
+  closeModal,
+  datos,
+  setComprobantes,
+  setDatos,
+}) => {
   const [params, setParams] = useState(null);
   const [proveedor, setProveedor] = useState("");
   const [total, setTotal] = useState(0);
   const [archivo, setArchivo] = useState(null);
   const [previewUrl, setPreviewUrl] = useState(null);
+
+  const { setProveedores } = useProductosContext();
 
   useEffect(() => {
     setParams(datos.id);
@@ -53,6 +62,14 @@ export const ModalComprobante = ({ isOpen, closeModal, datos }) => {
 
     try {
       const res = await client.post(`/crear-comprobante`, data);
+
+      console.log(res.data);
+
+      setComprobantes(res.data.comprobantes);
+      setProveedores(res.data.proveedores);
+
+      setDatos(res.data.proveedorActualizado);
+
       toast.success("¡Comprobante creado correctamente espera 3 segundos!", {
         position: "top-center",
         autoClose: 3000,
@@ -70,9 +87,7 @@ export const ModalComprobante = ({ isOpen, closeModal, datos }) => {
         },
       });
 
-      setTimeout(() => {
-        location.reload();
-      }, 500);
+      closeModal();
     } catch (error) {
       console.error("Error al agregar el comprobante:", error);
       toast.error("Error al crear el comprobante", {
@@ -215,7 +230,7 @@ export const ModalComprobante = ({ isOpen, closeModal, datos }) => {
             leaveFrom="opacity-100"
             leaveTo="opacity-0"
           >
-            <div className="fixed inset-0 bg-black bg-opacity-10" />
+            <div className="fixed inset-0 bg-black bg-opacity-30" />
           </Transition.Child>
 
           <div className="min-h-screen px-4 text-center ">
@@ -247,7 +262,7 @@ export const ModalComprobante = ({ isOpen, closeModal, datos }) => {
               leaveFrom="opacity-100 scale-100"
               leaveTo="opacity-0 scale-95"
             >
-              <div className="inline-block w-[500px] p-6 my-8 overflow-hidden text-left align-middle transition-all transform bg-white shadow-xl rounded-3xl max-md:w-full max-md:h-full">
+              <div className="inline-block w-1/3 p-6 my-8 overflow-hidden text-left align-middle transition-all transform bg-white shadow-xl rounded-3xl max-md:w-full max-md:h-full">
                 <div className="flex justify-end">
                   <button
                     type="button"
@@ -290,23 +305,22 @@ export const ModalComprobante = ({ isOpen, closeModal, datos }) => {
                     <input
                       onChange={(e) => setTotal(e.target.value)}
                       type="text"
-                      className="border-slate-300 border-[1px] shadow rounded-xl w-full uppercase py-2 px-4"
+                      className="border-sky-300 border py-2 px-3 font-semibold text-sm outline-none"
                       placeholder="PONER EL TOTAL"
                     />
                     <div className="flex">
-                      <p className="bg-orange-100 py-2 px-5 rounded-xl text-orange-600 font-bold">
+                      <p className="bg-orange-100 py-2 px-5 rounded text-orange-600 font-bold">
                         {Number(total || 0).toLocaleString("es-AR", {
                           style: "currency",
                           currency: "ARS",
                         })}{" "}
-                        - TOTAL FINAL
                       </p>
                     </div>
                   </div>
 
-                  <div className="mt-2 rounded-xl hover:shadow-md transition-all ease-linear space-y-1 cursor-pointer">
+                  <div className="border border-sky-300 py-2 px-3 mt-4">
                     <label
-                      className="uppercase text-slate-700 text-sm"
+                      className="uppercase text-slate-700 text-sm font-semibold"
                       htmlFor="fileUpload"
                     >
                       Comprobante
@@ -317,7 +331,7 @@ export const ModalComprobante = ({ isOpen, closeModal, datos }) => {
                       accept="image/*,video/*,application/pdf"
                       id="fileUpload"
                       onChange={handleFileChange}
-                      className="w-full bg-slate-100 text-slate-800 py-4 px-4 rounded-xl uppercase font-bold text-sm file:bg-slate-700 file:text-white file:py-2 file:border-none file:px-3 file:rounded-xl file:shadow-md cursor-pointer"
+                      className="w-full file-input file-input-info bg-sky-100"
                     />
                   </div>
 
@@ -326,7 +340,7 @@ export const ModalComprobante = ({ isOpen, closeModal, datos }) => {
                       <p className="uppercase text-slate-700 text-sm font-bold">
                         Vista Previa:
                       </p>
-                      <div className="h-[300px] overflow-y-scroll">
+                      <div className="h-[300px] overflow-y-scroll scroll-bar px-2">
                         {archivo?.type?.startsWith("image/") ? (
                           <img
                             src={previewUrl}
@@ -352,7 +366,7 @@ export const ModalComprobante = ({ isOpen, closeModal, datos }) => {
 
                   <div className="mt-3">
                     <button
-                      className="bg-sky-400 py-2.5 px-6 rounded-full font-semibold text-white uppercase text-sm flex gap-2 items-center"
+                      className="bg-sky-400 py-2 text-xs px-6 rounded-full font-semibold text-white uppercase flex gap-2 items-center hover:bg-orange-500 transition-all"
                       type="submit"
                     >
                       CREAR COMPROBANTE

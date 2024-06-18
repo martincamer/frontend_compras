@@ -15,21 +15,7 @@ export const ModalEditarCategorias = ({
 
   const { setCategorias } = useProductosContext();
 
-  const [socket, setSocket] = useState(null);
   const [datos, setDatos] = useState([]);
-
-  useEffect(() => {
-    const newSocket = io(
-      /*"http://localhost:4000"¨*/ "https://backendcompras-production.up.railway.app",
-      {
-        withCredentials: true,
-      }
-    );
-
-    setSocket(newSocket);
-
-    return () => newSocket.close();
-  }, []);
 
   useEffect(() => {
     async function loadData() {
@@ -45,9 +31,7 @@ export const ModalEditarCategorias = ({
   const onSubmit = handleSubmit(async (data) => {
     const res = await client.put(`/editar-categoria/${datos}`, data);
 
-    if (socket) {
-      socket.emit("editar-categoria", res);
-    }
+    setCategorias(res.data);
 
     toast.success("¡Categoria editada correctamente!", {
       position: "top-center",
@@ -69,45 +53,6 @@ export const ModalEditarCategorias = ({
       closeModalEditar();
     }, 500);
   });
-
-  useEffect(() => {
-    const newSocket = io(
-      //   "https://tecnohouseindustrialbackend-production.up.railway.app",
-      "http://localhost:4000",
-      {
-        withCredentials: true,
-      }
-    );
-
-    setSocket(newSocket);
-
-    const handleEditarSalida = (editarSalida) => {
-      const updateSalida = JSON.parse(editarSalida?.config?.data);
-
-      setCategorias((prevSalidas) => {
-        const nuevosSalidas = [...prevSalidas];
-        const index = nuevosSalidas.findIndex(
-          (salida) => salida.id === salida.id
-        );
-        nuevosSalidas[index] = {
-          id: datos,
-          detalle: updateSalida.detalle,
-          usuario: updateSalida.usuario,
-          role_id: updateSalida.role_id,
-          created_at: nuevosSalidas[index].created_at,
-          updated_at: nuevosSalidas[index].updated_at,
-        };
-        return nuevosSalidas;
-      });
-    };
-
-    newSocket.on("editar-categoria", handleEditarSalida);
-
-    return () => {
-      newSocket.off("editar-categoria", handleEditarSalida);
-      newSocket.close();
-    };
-  }, [datos]);
 
   return (
     <Transition appear show={isOpenEditar} as={Fragment}>
@@ -144,7 +89,7 @@ export const ModalEditarCategorias = ({
             leaveFrom="opacity-100 scale-100"
             leaveTo="opacity-0 scale-95"
           >
-            <div className="inline-block w-1/3 max-md:w-full p-6 my-8 text-left align-middle transition-all transform bg-white shadow-xl rounded-3xl">
+            <div className="inline-block w-1/4 max-md:w-full p-6 my-8 text-left align-middle transition-all transform bg-white shadow-xl rounded-3xl">
               <div className="flex justify-end">
                 <button
                   type="button"
@@ -179,14 +124,14 @@ export const ModalEditarCategorias = ({
                   <input
                     {...register("detalle")}
                     type="text"
-                    className="uppercase py-2 px-4 rounded-xl border-slate-300 border-[1px] shadow placeholder:text-slate-300 text-sm"
+                    className="py-2 px-4 font-semibold uppercase text-sm border border-sky-300 outline-none"
                     placeholder="DETALLE DE LA CATEGORIA"
                   />
                 </div>
                 <div>
                   <button
                     type="submit"
-                    class="group relative bg-sky-400 text-white transition-all ease-in-out font-normal uppercase text-sm py-3 px-4 rounded-full flex items-center justify-center"
+                    className="group relative bg-sky-400 text-white transition-all ease-in-out uppercase text-xs font-semibold py-2 px-4 rounded-full flex items-center justify-center"
                   >
                     Editar categoria
                     <svg
@@ -195,7 +140,7 @@ export const ModalEditarCategorias = ({
                       viewBox="0 0 24 24"
                       strokeWidth={1.5}
                       stroke="currentColor"
-                      class="w-6 h-6 ml-2 icon opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                      className="w-6 h-6 ml-2 icon opacity-0 group-hover:opacity-100 transition-opacity duration-300"
                     >
                       <path
                         strokeLinecap="round"

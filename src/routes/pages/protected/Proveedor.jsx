@@ -6,8 +6,8 @@ import { ModalObtenerCompra } from "../../../components/Modales/ModalObtenerComp
 import { ModalEditarSaldoProveedor } from "../../../components/Modales/ModalEditarSaldoProveedor";
 import { useAuth } from "../../../context/AuthProvider";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
-import client from "../../../api/axios";
 import { ModalEliminarComprobante } from "../../../components/Modales/ModalEliminarComprobante";
+import client from "../../../api/axios";
 
 export const Proveedor = () => {
   const { user } = useAuth();
@@ -154,9 +154,32 @@ export const Proveedor = () => {
     setFechaFinal("");
     setFechaInicial("");
   };
-  const totalEnComprobantes = comprobantes.reduce((acc, comprobante) => {
+
+  // Obtener el mes y año actuales
+  const hoy = new Date();
+  const mesActual = hoy.getMonth(); // El mes actual (0 = enero, 11 = diciembre)
+  const añoActual = hoy.getFullYear(); // El año actual
+
+  // Filtrar los comprobantes del mes actual
+  const comprobantesDelMes = comprobantes.filter((comprobante) => {
+    const fechaComprobante = new Date(comprobante.created_at); // Convertir la fecha del comprobante a un objeto Date
+    const mesComprobante = fechaComprobante.getMonth(); // Obtener el mes del comprobante
+    const añoComprobante = fechaComprobante.getFullYear(); // Obtener el año del comprobante
+
+    return mesComprobante === mesActual && añoComprobante === añoActual; // Filtrar por comprobantes del mes actual y del mismo año
+  });
+
+  // Calcular el total de los comprobantes del mes
+  const totalEnComprobantes = comprobantesDelMes.reduce((acc, comprobante) => {
     return acc + parseFloat(comprobante.total);
   }, 0);
+
+  const totalEnComprobantesFiltrados = productosFiltrados.reduce(
+    (acc, comprobante) => {
+      return acc + parseFloat(comprobante.total);
+    },
+    0
+  );
 
   const [isComprobante, setIsComprobante] = useState(false);
   const [obtenerId, setObtenerId] = useState("");
@@ -172,56 +195,27 @@ export const Proveedor = () => {
   const handleID = (id) => setObtenerId(id);
 
   return (
-    <section className="max-md:py-16 max-md:gap-5 bg-gray-100/50 max-h-full min-h-screen w-full h-full px-5 max-md:px-4 flex flex-col gap-2 py-16">
+    <section className="max-h-full min-h-screen h-full w-full">
       <ToastContainer />
-      <nav aria-label="Breadcrumb" className="flex px-5">
-        <ol className="flex overflow-hidden rounded-xl border bg-slate-300 text-gray-600 shadow max-md:shadow-none">
-          <li className="flex items-center">
-            <Link
-              to={"/"}
-              className="flex h-10 items-center gap-1.5 bg-gray-100 px-4 transition hover:text-gray-900"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-4 w-4"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
-                />
-              </svg>
-
-              <span className="ms-1.5 text-xs font-medium"> INICIO </span>
-            </Link>
-          </li>
-
-          <li className="relative flex items-center">
-            <span className="absolute inset-y-0 -start-px h-10 w-4 bg-gray-100 [clip-path:_polygon(0_0,_0%_100%,_100%_50%)] rtl:rotate-180"></span>
-
-            <Link
-              to={"/proveedores"}
-              href="#"
-              className="flex h-10 items-center bg-white pe-4 ps-8 text-xs font-medium transition hover:text-gray-900"
-            >
-              PROVEEDORES
-            </Link>
-          </li>
-        </ol>
-      </nav>
-
-      <div className="mx-6 mt-5 max-md:mt-0">
-        <p className="uppercase text-lg">
-          <span className="font-bold text-slate-800">Proveedor:</span>{" "}
-          <span className="text-slate-500 underline">{datos?.proveedor}</span>
-        </p>
+      <div className="bg-white mb-4 h-10 flex">
+        <Link
+          to={"/proveedores"}
+          className="bg-sky-100 flex h-full px-4 justify-center items-center font-bold text-sky-600"
+        >
+          Proveedores
+        </Link>{" "}
+        <Link className="bg-sky-500 flex h-full px-4 justify-center items-center font-bold text-white capitalize">
+          Proveedor {datos.proveedor}
+        </Link>
       </div>
-
-      <div className="py-5 px-5 rounded-xl grid grid-cols-3 gap-3 mb-2 max-md:grid-cols-1 max-md:border-none max-md:shadow-none max-md:py-0 max-md:px-0">
+      <div className="bg-white py-5 px-5 mx-5 mt-10">
+        <h3 className="text-xl font-bold text-sky-500">
+          Observa el proveedor y carga comprobantes, pone la cuenta al día de
+          proveedor{" "}
+          <span className="text-slate-600 capitalize">{datos.proveedor}</span>.
+        </h3>
+      </div>
+      {/* <div className="py-5 px-5 rounded-xl grid grid-cols-3 gap-3 mb-2 max-md:grid-cols-1 max-md:border-none max-md:shadow-none max-md:py-0 max-md:px-0">
         <article className="flex items-start justify-between gap-4 shadow-lg hover:shadow-md transition-all ease-linear cursor-pointer border border-slate-300 bg-white py-10 px-6">
           <div className="flex justify-center h-full gap-4 items-center">
             <span className="rounded-full bg-green-100 p-3 text-green-700 max-md:hidden">
@@ -439,15 +433,67 @@ export const Proveedor = () => {
             </span>
           </div>
         </article>
+      </div> */}
+
+      <div className="bg-white py-5 px-5 mx-5 my-10">
+        <div className="dropdown dropdown-bottom">
+          <button className="font-bold text-sm bg-rose-400 py-2 px-4 text-white rounded">
+            Ver estadisticas de compras
+          </button>
+          <ul
+            tabIndex={0}
+            className="dropdown-content z-[1] menu p-2 mt-2 bg-white w-[800px] border"
+          >
+            <div className="py-5 px-5 grid grid-cols-3 gap-5 w-full">
+              <div className="flex flex-col gap-1 border border-sky-300 py-3 px-3">
+                <p className="font-medium text-sm text-sky-500">
+                  Total en comprobantes cargados del mes.
+                </p>
+                <p className="font-bold text-lg">
+                  {totalEnComprobantes.toLocaleString("es-AR", {
+                    style: "currency",
+                    currency: "ARS",
+                  })}
+                </p>
+              </div>
+
+              <div className="flex flex-col justify-center gap-1 border border-sky-300 py-3 px-3">
+                <p className="font-medium text-sm">
+                  Total de deuda del proveedor.
+                </p>
+                <p className="font-bold text-lg text-red-500">
+                  {Number(datos?.total)?.toLocaleString("es-AR", {
+                    style: "currency",
+                    currency: "ARS",
+                  })}
+                </p>
+              </div>
+              <div className="flex flex-col gap-1 border border-sky-300 py-3 px-3">
+                <p className="font-medium text-sm">
+                  Total en comprobantes filtrados.
+                </p>
+                <p className="font-bold text-lg text-sky-500">
+                  {Number(totalEnComprobantesFiltrados)?.toLocaleString(
+                    "es-AR",
+                    {
+                      style: "currency",
+                      currency: "ARS",
+                    }
+                  )}
+                </p>
+              </div>
+            </div>
+          </ul>
+        </div>
       </div>
 
       {user.tipo === "admin" ? (
         ""
       ) : (
-        <div className="mx-10 py-2 flex max-md:flex-col gap-2 items-center max-md:px-0 max-md:py-0 max-md:items-start border-b-[1px] border-slate-300 pb-4 max-md:pb-4 max-md:mx-2 max-md:overflow-x-scroll scrollbar-hidden">
+        <div className="mx-5 py-2 flex max-md:flex-col gap-2 items-center max-md:px-0 max-md:py-0 max-md:items-start border-b-[1px] border-slate-300 pb-4 max-md:pb-4 max-md:mx-2 max-md:overflow-x-scroll scrollbar-hidden">
           <button
             onClick={() => openComprobante()}
-            className=" text-sm text-white bg-sky-400 py-3 px-6 rounded-full font-semibold uppercase max-md:text-xs flex gap-2 items-center transition-all ease-linear"
+            className="text-sm text-white bg-sky-400 py-3 px-6 rounded font-bold uppercase max-md:text-xs flex gap-2 items-center transition-all ease-linear"
           >
             Cargar nuevo comprobante de pago
             <svg
@@ -469,7 +515,7 @@ export const Proveedor = () => {
             onClick={() => {
               handleID(params.id), openModal();
             }}
-            className=" text-sm text-white bg-orange-400 py-3 px-6 rounded-full font-semibold uppercase max-md:text-xs flex gap-2 items-center transition-all ease-linear"
+            className=" text-sm text-white bg-orange-400 py-3 px-6 rounded font-semibold uppercase max-md:text-xs flex gap-2 items-center transition-all ease-linear"
           >
             Editar el saldo del proveedor
             <svg
@@ -490,7 +536,7 @@ export const Proveedor = () => {
         </div>
       )}
 
-      <div className="mx-8 mt-6">
+      <div className="mx-5 mt-6 bg-white py-6 px-4 border-sky-300 border">
         <p className="underline text-sky-400 uppercase font-semibold">
           Tabla de comprobantes cargados del mes
         </p>
@@ -501,7 +547,7 @@ export const Proveedor = () => {
           type="date"
           value={fechaInicial}
           onChange={(e) => setFechaInicial(e.target.value)}
-          className="px-4 py-2 border border-gray-300 rounded-xl text-sm uppercase"
+          className="px-4 py-2 border border-sky-300 text-sm uppercase font-semibold"
         />
 
         <span className="uppercase font-bold text-sm text-slate-700">
@@ -511,12 +557,12 @@ export const Proveedor = () => {
           type="date"
           value={fechaFinal}
           onChange={(e) => setFechaFinal(e.target.value)}
-          className="px-4 py-2 border border-gray-300 rounded-xl text-sm uppercase"
+          className="px-4 py-2 border border-sky-300 text-sm uppercase font-semibold"
         />
 
         <div>
           <button
-            className="uppercase text-sm bg-red-100 text-red-800 py-2 px-4 rounded-xl"
+            className="uppercase text-sm bg-red-100 text-red-800 py-2 px-4 rounded font-bold"
             type="button"
             onClick={() => resetFechas()}
           >
@@ -525,26 +571,26 @@ export const Proveedor = () => {
         </div>
       </div>
 
-      <div className="mt-6 mx-8 rounded-2xl shadow-xl ease-linear cursor-pointer">
-        <table className="min-w-full divide-y-2 bg-white text-sm table">
+      <div className="mt-6 mx-8">
+        <table className="min-w-full divide-y-2 bg-white text-sm table rounded-none">
           <thead className="text-left">
             <tr>
-              <th className="whitespace-nowrap px-4 py-4 text-gray-900 uppercase font-bol text-sm">
+              <th className="whitespace-nowrap px-4 py-4 text-gray-900 uppercase font-bol text-xs">
                 Numero °
               </th>
-              <th className="whitespace-nowrap px-4 py-4 text-gray-900 uppercase font-bol text-sm">
+              <th className="whitespace-nowrap px-4 py-4 text-gray-900 uppercase font-bol text-xs">
                 Total del comprobante
               </th>
-              <th className="whitespace-nowrap px-4 py-4 text-gray-900 uppercase font-bol text-sm">
+              <th className="whitespace-nowrap px-4 py-4 text-gray-900 uppercase font-bol text-xs">
                 Total del comprobante final
               </th>
-              <th className="whitespace-nowrap px-4 py-4 text-gray-900 uppercase font-bol text-sm">
+              <th className="whitespace-nowrap px-4 py-4 text-gray-900 uppercase font-bol text-xs">
                 Ver comprobante
               </th>
-              <th className="whitespace-nowrap px-4 py-4 text-gray-900 uppercase font-bol text-sm">
+              <th className="whitespace-nowrap px-4 py-4 text-gray-900 uppercase font-bol text-xs">
                 Acciones
               </th>
-              <th className="whitespace-nowrap px-4 py-4 text-gray-900 uppercase font-bol text-sm">
+              <th className="whitespace-nowrap px-4 py-4 text-gray-900 uppercase font-bol text-xs">
                 Fecha de creación
               </th>
             </tr>
@@ -553,18 +599,18 @@ export const Proveedor = () => {
           <tbody className="divide-y divide-gray-200">
             {productosFiltrados.map((p) => (
               <tr key={p.id}>
-                <th className="whitespace-nowrap px-4 py-6 text-gray-700 uppercase text-sm">
+                <th className="whitespace-nowrap px-4 py-6 text-gray-700 uppercase text-xs">
                   {p.id}
                 </th>
-                <th className="whitespace-nowrap px-4 py-6 text-gray-700 uppercase text-sm">
+                <th className="whitespace-nowrap px-4 py-6 text-gray-700 uppercase text-xs">
                   {Number(p.total).toLocaleString("es-AR", {
                     style: "currency",
                     currency: "ARS",
                   })}
                 </th>
-                <td className="whitespace-nowrap px-4 py-6 text-green-800 uppercase text-sm font-bold">
+                <td className="whitespace-nowrap px-4 py-6 text-green-800 uppercase text-xs font-bold">
                   {" "}
-                  <span className="bg-green-100 py-3 px-5 rounded-xl">
+                  <span className="bg-green-100 py-2 px-5 rounded">
                     {Number(p.total).toLocaleString("es-AR", {
                       style: "currency",
                       currency: "ARS",
@@ -574,7 +620,7 @@ export const Proveedor = () => {
                 <td>
                   <ImagenModal archivo={p.imagen} />
                 </td>
-                <td className="whitespace-nowrap px-4 py-6 text-gray-700 uppercase text-sm cursor-pointer space-x-2">
+                <td className="whitespace-nowrap px-4 py-6 text-gray-700 uppercase text-xs cursor-pointer space-x-2">
                   <div className="dropdown dropdown-left z-1">
                     <div
                       tabIndex={0}
@@ -598,43 +644,38 @@ export const Proveedor = () => {
                     </div>
                     <ul
                       tabIndex={0}
-                      className="dropdown-content z-[1] menu p-2 shadow-lg border bg-base-100 rounded-box w-72 gap-2"
+                      className="dropdown-content z-[1] menu p-3 border-sky-300 border bg-white w-52 gap-2"
                     >
-                      <li>
-                        <Link
-                          onClick={() => {
-                            handleID(p.id), openComprobanteModal();
-                          }}
-                          className="bg-sky-500/20 text-sky-600 py-2 px-3 rounded-xl text-sm hover:bg-sky-200 hover:text-sky-700 transition-all ease-linear"
-                        >
-                          VER COMPROBANTE
-                        </Link>
-                      </li>
-                      <li>
-                        <Link
-                          target="_blank"
-                          to={`/pdf-comprobante/${p.id}`}
-                          className="bg-green-500/20 hover:bg-green-200 text-green-600 py-2 px-3 rounded-xl text-sm"
-                        >
-                          DESCARGAR COMPROBANTE
-                        </Link>
-                      </li>
+                      <Link
+                        onClick={() => {
+                          handleID(p.id), openComprobanteModal();
+                        }}
+                        className="hover:text-sky-500 transition-all text-left hover:underline font-semibold capitalize"
+                      >
+                        Ver comprobante
+                      </Link>
 
-                      <li>
-                        <button
-                          onClick={() => {
-                            handleID(p.id), openComprobanteEliminar();
-                          }}
-                          type="button"
-                          className="bg-red-500/20 hover:bg-red-200 text-red-600 py-2 px-3 rounded-xl text-sm"
-                        >
-                          ELIMINAR COMPROBANTE
-                        </button>
-                      </li>
+                      <Link
+                        target="_blank"
+                        to={`/pdf-comprobante/${p.id}`}
+                        className="hover:text-sky-500 transition-all text-left hover:underline font-semibold capitalize"
+                      >
+                        Descargar comprob.
+                      </Link>
+
+                      <button
+                        onClick={() => {
+                          handleID(p.id), openComprobanteEliminar();
+                        }}
+                        type="button"
+                        className="hover:text-red-500 transition-all text-left hover:underline font-semibold capitalize"
+                      >
+                        Eliminar comprob.
+                      </button>
                     </ul>
                   </div>
                 </td>
-                <td className="whitespace-nowrap px-4 py-6 font-medium text-gray-900 uppercase text-sm">
+                <td className="whitespace-nowrap px-4 py-6 font-medium text-gray-900 uppercase text-xs">
                   {p?.created_at?.split("T")[0]} / <strong>HORA:</strong>{" "}
                   {p?.created_at?.split("T")[1]}
                 </td>
@@ -643,11 +684,11 @@ export const Proveedor = () => {
           </tbody>
         </table>
       </div>
-      <div className="mt-3 flex justify-center items-center space-x-2">
+      <div className="mt-3 flex justify-center items-center space-x-2 pb-10">
         <button
           onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
           disabled={currentPage === 1}
-          className="bg-white py-2 px-3 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-300 focus:outline-none focus:bg-gray-100 cursor-pointer"
+          className="bg-sky-300 py-2 px-3 rounded-md text-sm font-medium text-gray-700 hover:bg-sky-400 hover:text-white focus:outline-none focus:bg-gray-100 cursor-pointer"
         >
           <FaArrowLeft />
         </button>
@@ -657,8 +698,8 @@ export const Proveedor = () => {
               <button
                 onClick={() => paginate(number)}
                 className={`${
-                  currentPage === number ? "bg-white" : "bg-gray-300"
-                } py-2 px-3 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-300 focus:outline-none focus:bg-gray-100`}
+                  currentPage === number ? "bg-sky-200" : "bg-sky-300"
+                } py-2 px-3 rounded-md text-sm font-medium text-gray-700 hover:text-white hover:bg-sky-500 focus:outline-none focus:bg-sky-300`}
               >
                 {number}
               </button>
@@ -670,16 +711,18 @@ export const Proveedor = () => {
             setCurrentPage((prev) => Math.min(prev + 1, totalPages))
           }
           disabled={currentPage === totalPages}
-          className="bg-white py-2 px-3 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-300 focus:outline-none focus:bg-gray-100 cursor-pointer"
+          className="bg-sky-300 py-2 px-3 rounded-md text-sm font-medium text-gray-700 hover:bg-sky-400 hover:text-white focus:outline-none focus:bg-gray-100 cursor-pointer"
         >
           <FaArrowRight />
         </button>
       </div>
       <ModalComprobante
+        setComprobantes={setComprobantes}
         isOpen={isOpenComprobante}
         closeModal={closeComprobante}
         OBTENERID={params.id}
         datos={datos}
+        setDatos={setDatos}
       />
       <ModalObtenerCompra
         isOpen={isComprobante}
@@ -696,9 +739,11 @@ export const Proveedor = () => {
       />
 
       <ModalEliminarComprobante
+        setComprobantes={setComprobantes}
         eliminarModal={isOpenComprobanteEliminar}
         closeEliminar={closeComprobanteEliminar}
         obtenerId={obtenerId}
+        setDatos={setDatos}
       />
     </section>
   );
@@ -717,7 +762,7 @@ const ImagenModal = ({ archivo }) => {
   return (
     <>
       <td
-        className="bg-orange-100 hover:bg-orange-200 text-orange-700 py-2 px-5 rounded-xl font-bold"
+        className="bg-sky-100 text-sky-600 py-2 px-5 rounded font-bold text-xs"
         onClick={() => setShowModal(true)}
       >
         VER COMPROBANTE

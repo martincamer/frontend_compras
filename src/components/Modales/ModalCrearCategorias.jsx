@@ -1,11 +1,10 @@
 import { Dialog, Menu, Transition } from "@headlessui/react";
-import { Fragment, useEffect, useState } from "react";
+import { Fragment, useState } from "react";
 import { toast } from "react-toastify";
 import { useForm } from "react-hook-form";
 import { useProductosContext } from "../../context/ProductosProvider";
 import { ModalEditarCategorias } from "./ModalEditarCategorias";
 import client from "../../api/axios";
-import io from "socket.io-client";
 
 export const ModalCrearCategorias = ({
   isOpenCategorias,
@@ -19,39 +18,14 @@ export const ModalCrearCategorias = ({
     formState: { errors },
   } = useForm();
 
-  const [socket, setSocket] = useState(null);
-
   const [OBTENERID, setObtenerId] = useState(null);
 
   const handleID = (id) => setObtenerId(id);
 
-  // const baseURL = import.meta.env.BACKEND_URL;
-
-  useEffect(() => {
-    const newSocket = io(
-      "https://backendcompras-production.up.railway.app",
-      // "http://localhost:4000",
-      // baseURL,
-      {
-        withCredentials: true,
-      }
-    );
-
-    setSocket(newSocket);
-
-    newSocket.on("nueva-categoria", (nuevaSalida) => {
-      setCategorias((prevTipos) => [...prevTipos, nuevaSalida]);
-    });
-
-    return () => newSocket.close();
-  }, []);
-
   const onSubmit = handleSubmit(async (data) => {
     const res = await client.post("/crear-categoria", data);
 
-    if (socket) {
-      socket.emit("nueva-categoria", res.data);
-    }
+    setCategorias(res.data);
 
     toast.success("¡Categoria creada correctamente!", {
       position: "top-center",
@@ -70,7 +44,7 @@ export const ModalCrearCategorias = ({
     });
 
     setTimeout(() => {
-      closeModal();
+      closeModalCategorias();
     }, 500);
   });
 
@@ -83,32 +57,10 @@ export const ModalCrearCategorias = ({
     setIsOpenEditar(false);
   };
 
-  useEffect(() => {
-    const newSocket = io(
-      "https://backendcompras-production.up.railway.app",
-      // "http://localhost:4000",
-      {
-        withCredentials: true,
-      }
-    );
-
-    setSocket(newSocket);
-
-    newSocket.on("eliminar-categoria", (salidaEliminada) => {
-      setCategorias((prevSalidas) =>
-        prevSalidas.filter((salida) => salida.id !== salidaEliminada.id)
-      );
-    });
-
-    return () => newSocket.close();
-  }, []);
-
   const handleEliminarChofer = async (id) => {
     const res = await client.delete(`/eliminar-categoria/${id}`);
 
-    if (socket) {
-      socket.emit("eliminar-categoria", { id });
-    }
+    setCategorias(res.data);
 
     toast.error("¡Categoria eliminada correctamente!", {
       position: "top-center",
@@ -210,14 +162,14 @@ export const ModalCrearCategorias = ({
                     <input
                       {...register("detalle")}
                       type="text"
-                      className="uppercase py-2 px-4 rounded-xl border-slate-300 border-[1px] shadow placeholder:text-slate-300 text-sm"
+                      className="py-2 px-4 font-semibold uppercase text-sm border border-sky-300 outline-none w-1/4"
                       placeholder="DETALLE DE LA CATEGORIA"
                     />
                   </div>
                   <div>
                     <button
                       type="submit"
-                      class="group relative transition-all ease-in-out bg-sky-400 text-white tex font-normal uppercase text-sm py-3 text-center px-4 rounded-full flex items-center justify-center"
+                      className="group relative transition-all ease-in-out bg-sky-400 text-white uppercase font-semibold py-2 text-xs text-center px-4 rounded-full flex items-center justify-center"
                     >
                       Crear nueva categoria
                       <svg
@@ -225,7 +177,7 @@ export const ModalCrearCategorias = ({
                         fill="none"
                         viewBox="0 0 24 24"
                         stroke="currentColor"
-                        class="w-6 h-6 ml-2 icon opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                        className="w-6 h-6 ml-2 icon opacity-0 group-hover:opacity-100 transition-opacity duration-300"
                       >
                         <path
                           stroke-linecap="round"
@@ -297,16 +249,6 @@ export const ModalCrearCategorias = ({
                   isOpenEditar={isOpenEditar}
                   OBTENERID={OBTENERID}
                 />
-
-                {/* <div className="mt-4">
-                  <button
-                    type="button"
-                    className="inline-flex justify-center px-4 py-2 text-sm text-red-900 bg-red-100 border border-transparent rounded-xl hover:bg-red-200 duration-300 cursor-pointer max-md:text-xs"
-                    onClick={closeModalCategorias}
-                  >
-                    Cerrar Ventana
-                  </button>
-                </div> */}
               </div>
             </Transition.Child>
           </div>

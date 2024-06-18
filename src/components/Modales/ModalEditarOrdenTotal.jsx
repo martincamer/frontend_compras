@@ -9,9 +9,8 @@ import client from "../../api/axios";
 import { ModalCrearProductos } from "./ModalCrearProductos";
 
 export const ModalEditarOrdenTotal = ({ isOpen, closeModal, obtenerId }) => {
-  const { setOrdenesMensuales } = useOrdenesContext();
-
   const { proveedores, setProveedores } = useProductosContext();
+  const { setOrdenes } = useOrdenesContext();
 
   useEffect(() => {
     async function loadData() {
@@ -29,7 +28,6 @@ export const ModalEditarOrdenTotal = ({ isOpen, closeModal, obtenerId }) => {
   const [localidad, setLocalidad] = useState("");
   const [provincia, setProvincia] = useState("");
   const [iva, setIva] = useState(1.21);
-  const [datos, setDatos] = useState([]);
 
   const [OBTENERID, setObtenerId] = useState(null);
   const [productoSeleccionado, setProductoSeleccionado] = useState([]);
@@ -150,6 +148,11 @@ export const ModalEditarOrdenTotal = ({ isOpen, closeModal, obtenerId }) => {
 
     const res = await client.put(`/editar-orden/${obtenerId}`, datosOrden);
 
+    // setOrdenes(res.data);
+    console.log(res);
+    setOrdenes(res.data.ordenes);
+    setProveedores(res.data.proveedores);
+
     toast.success("¡Orden de editada correctamente, espera 3 segundos!", {
       position: "top-center",
       autoClose: 3000,
@@ -167,10 +170,7 @@ export const ModalEditarOrdenTotal = ({ isOpen, closeModal, obtenerId }) => {
       },
     });
 
-    setTimeout(() => {
-      closeModal();
-      location.reload();
-    }, 500);
+    closeModal();
   };
 
   const [isOpenProducto, setIsOpenProducto] = useState(false);
@@ -294,7 +294,7 @@ export const ModalEditarOrdenTotal = ({ isOpen, closeModal, obtenerId }) => {
                       <select
                         value={proveedor}
                         onChange={handleProveedorChange}
-                        className="py-2.5 px-4 rounded-xl uppercase placeholder:text-slate-400 text-slate-700 font-semibold text-sm bg-gray-200/80"
+                        className="py-2 px-4 uppercase placeholder:text-slate-400 text-slate-700 font-semibold text-sm bg-white border-sky-400 border rounded-none outline-none"
                         placeholder="PROVEEDOR DE LA ORDEN"
                       >
                         <option value={"seleccionar"} className="uppercase">
@@ -319,7 +319,7 @@ export const ModalEditarOrdenTotal = ({ isOpen, closeModal, obtenerId }) => {
                         value={localidad}
                         onChange={(e) => setLocalidad(e.target.value)}
                         type="text"
-                        className="py-2.5 px-4 rounded-xl uppercase placeholder:text-slate-400 text-slate-700 font-semibold text-sm bg-gray-200/80"
+                        className="py-2 px-4 uppercase placeholder:text-slate-400 text-slate-700 font-semibold text-sm bg-white border-sky-400 border rounded-none outline-none"
                         placeholder="LOCALIDAD"
                       />
                     </div>
@@ -331,7 +331,7 @@ export const ModalEditarOrdenTotal = ({ isOpen, closeModal, obtenerId }) => {
                         value={provincia}
                         onChange={(e) => setProvincia(e.target.value)}
                         type="text"
-                        className="py-2.5 px-4 rounded-xl uppercase placeholder:text-slate-400 text-slate-700 font-semibold text-sm bg-gray-200/80"
+                        className="py-2 px-4 uppercase placeholder:text-slate-400 text-slate-700 font-semibold text-sm bg-white border-sky-400 border rounded-none outline-none"
                         placeholder="NUMERO DE LA FACT O REM"
                       />
                     </div>
@@ -343,7 +343,7 @@ export const ModalEditarOrdenTotal = ({ isOpen, closeModal, obtenerId }) => {
                         value={numero_factura}
                         onChange={(e) => setNumeroFactura(e.target.value)}
                         type="text"
-                        className="py-2.5 px-4 rounded-xl uppercase placeholder:text-slate-400 text-slate-700 font-semibold text-sm bg-gray-200/80"
+                        className="py-2 px-4 uppercase placeholder:text-slate-400 text-slate-700 font-semibold text-sm bg-white border-sky-400 border rounded-none outline-none"
                         placeholder="NUMERO DE LA FACT O REM"
                       />
                     </div>
@@ -355,7 +355,7 @@ export const ModalEditarOrdenTotal = ({ isOpen, closeModal, obtenerId }) => {
                         value={fecha_factura}
                         onChange={(e) => setFechaFactura(e.target.value)}
                         type="date"
-                        className="py-2.5 px-4 rounded-xl uppercase placeholder:text-slate-400 text-slate-700 font-semibold text-sm bg-gray-200/80"
+                        className="py-2 px-4 uppercase placeholder:text-slate-400 text-slate-700 font-semibold text-sm bg-white border-sky-400 border rounded-none outline-none"
                       />
                     </div>
                   </div>
@@ -368,21 +368,21 @@ export const ModalEditarOrdenTotal = ({ isOpen, closeModal, obtenerId }) => {
                       onChange={(e) => setDetalle(e.target.value)}
                       type="text"
                       placeholder="ESCRIBIR UN MENSAJE O DETALLAR ALGO."
-                      className="py-2.5 px-4 rounded-xl uppercase placeholder:text-slate-400 text-slate-700 font-semibold text-sm bg-gray-200/80"
+                      className="py-2 px-4 uppercase placeholder:text-slate-400 text-slate-700 font-semibold text-sm bg-white border-sky-400 border rounded-none outline-none w-1/3"
                     />
                   </div>
                   <div className="flex gap-2">
                     <button
                       type="button"
                       onClick={() => openProducto()}
-                      className="bg-green-500/90 font-semibold text-white py-2 px-6 rounded-full  text-sm"
+                      className="bg-green-500/90 font-semibold text-white py-2 px-6 rounded  text-sm"
                     >
                       CARGAR PRODUCTO
                     </button>
                     <button
                       type="button"
                       onClick={() => openModalProducto()}
-                      className="bg-sky-500/90 font-semibold text-white py-2 px-6 rounded-full  text-sm flex gap-2 items-center"
+                      className="bg-sky-500/90 font-semibold text-white py-2 px-6 rounded text-sm flex gap-2 items-center"
                     >
                       CREAR PRODUCTO INEXISTENTE
                       <svg
@@ -402,7 +402,7 @@ export const ModalEditarOrdenTotal = ({ isOpen, closeModal, obtenerId }) => {
                     </button>
                   </div>
 
-                  <div className="border-[1px] border-slate-300 rounded-2xl hover:shadow-md transition-all ease-linear">
+                  <div className="border-[1px] border-slate-300 hover:shadow-md transition-all ease-linear">
                     <table className="min-w-full divide-y-2 divide-gray-200 text-sm cursor-pointer">
                       <thead className="text-left">
                         <tr>
@@ -455,7 +455,7 @@ export const ModalEditarOrdenTotal = ({ isOpen, closeModal, obtenerId }) => {
                                 (p.iva === 1.21 && "IVA DEL 21.00") ||
                                 (p.iva === 0 && "NO TIENE IVA")}
                             </td>
-                            <td className="whitespace-nowrap px-4 py-4  uppercase text-sm font-bold text-indigo-500">
+                            <td className="whitespace-nowrap px-4 py-4  uppercase text-sm font-bold text-sky-500">
                               {Number(p.totalFinalIva).toLocaleString("es-AR", {
                                 style: "currency",
                                 currency: "ARS",

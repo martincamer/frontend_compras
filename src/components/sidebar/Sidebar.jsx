@@ -3,13 +3,14 @@ import { useAuth } from "../../context/AuthProvider";
 import { Link, useLocation } from "react-router-dom";
 import { IoMenuOutline, IoCloseOutline } from "react-icons/io5";
 import {
-  CiHome,
-  CiMedicalClipboard,
-  CiMemoPad,
-  CiSettings,
-  CiUser,
-  CiViewList,
-} from "react-icons/ci";
+  FaBook,
+  FaCashRegister,
+  FaDatabase,
+  FaFileAlt,
+  FaTable,
+  FaUser,
+  FaWordpress,
+} from "react-icons/fa";
 
 export const SideBar = () => {
   const { user } = useAuth();
@@ -25,7 +26,7 @@ export const SideBar = () => {
     <div
       className={`${
         isOpen ? "w-64 opacity-1" : "w-16 opacity-1"
-      } transition-all ease-linear flex flex-col bg-white min-h-[220vh] max-h-full h-full z-[100] border-r max-md:hidden`}
+      } transition-all ease-linear flex flex-col bg-white  z-[100] border-r max-md:hidden`}
     >
       {/* Botón de menú */}
       <div
@@ -72,7 +73,7 @@ export const SideBar = () => {
           >
             Cargar ordenes/editar/etc
           </Link>
-          <Link
+          {/* <Link
             to={"/ordenes-checkout"}
             className={`${
               location.pathname === "/ordenes-checkout"
@@ -81,7 +82,7 @@ export const SideBar = () => {
             } hover:text-sky-700 text-slate-700 text-sm transition-all py-3 px-3`}
           >
             Ordenes checkout
-          </Link>
+          </Link> */}
           <Link
             to={"/proveedores"}
             className={`${
@@ -100,11 +101,11 @@ export const SideBar = () => {
           >
             <div className="w-full text-center py-2 items-center transition-all ">
               <div
-                className="tooltip tooltip-right"
+                className="tooltip tooltip-right font-semibold"
                 data-tip="INICIO/ESTADISTICAS/ETC"
               >
                 <Link to={"/"}>
-                  <CiHome className="text-3xl text-sky-700" />
+                  <FaDatabase className="text-3xl text-sky-700" />
                 </Link>
               </div>
             </div>
@@ -120,11 +121,11 @@ export const SideBar = () => {
             >
               <div className="w-full text-center py-2 items-center transition-all ">
                 <div
-                  className="tooltip tooltip-right"
+                  className="tooltip tooltip-right font-semibold"
                   data-tip="PRODUCTOS/CREAR/EDITAR"
                 >
                   <Link to={"/productos"}>
-                    <CiViewList className="text-3xl text-sky-700" />
+                    <FaTable className="text-3xl text-sky-700" />
                   </Link>
                 </div>
               </div>
@@ -139,11 +140,11 @@ export const SideBar = () => {
             >
               <div className="w-full text-center py-2 items-center transition-all ">
                 <div
-                  className="tooltip tooltip-right"
+                  className="tooltip tooltip-right font-semibold"
                   data-tip="ORDENES EMITIDAS POR USUARIOS"
                 >
                   <Link to={"/ordenes"}>
-                    <CiMedicalClipboard className="text-3xl text-sky-700" />
+                    <FaBook className="text-3xl text-sky-700" />
                   </Link>
                 </div>
               </div>
@@ -156,51 +157,11 @@ export const SideBar = () => {
             >
               <div className="w-full text-center py-2 items-center transition-all ">
                 <div
-                  className="tooltip tooltip-right"
+                  className="tooltip tooltip-right font-semibold"
                   data-tip="CREAR ORDENES/EDITAR/ETC"
                 >
                   <Link to={"/ordenes"}>
-                    <CiMedicalClipboard className="text-3xl text-sky-700" />
-                  </Link>
-                </div>
-              </div>
-            </div>
-          )}
-
-          {user.tipo === "admin" ? (
-            <div
-              className={`${
-                location.pathname === "/ordenes-checkout"
-                  ? "bg-sky-100"
-                  : "bg-none"
-              } w-full text-center py-2 items-center transition-all`}
-            >
-              <div className="w-full text-center py-2 items-center transition-all ">
-                <div
-                  className="tooltip tooltip-right"
-                  data-tip="ORDENES DADAS DE ALTA POR EL USUARIO"
-                >
-                  <Link to={"/ordenes-checkout"}>
-                    <CiMemoPad className="text-3xl text-sky-700" />
-                  </Link>
-                </div>
-              </div>
-            </div>
-          ) : (
-            <div
-              className={`${
-                location.pathname === "/ordenes-checkout"
-                  ? "bg-sky-100"
-                  : "bg-none"
-              } w-full text-center py-2 items-center transition-all`}
-            >
-              <div className="w-full text-center py-2 items-center transition-all ">
-                <div
-                  className="tooltip tooltip-right"
-                  data-tip="ORDENES CHECKOUT/DAR DE DALTA"
-                >
-                  <Link to={"/ordenes-checkout"}>
-                    <CiMemoPad className="text-3xl text-sky-700" />
+                    <FaFileAlt className="text-3xl text-sky-700" />
                   </Link>
                 </div>
               </div>
@@ -214,11 +175,11 @@ export const SideBar = () => {
           >
             <div className="w-full text-center py-2 items-center transition-all ">
               <div
-                className="tooltip tooltip-right"
+                className="tooltip tooltip-right font-semibold"
                 data-tip="CREAR PROVEEDORES/CARGAR COMPROBANTES/ETC"
               >
                 <Link to={"/proveedores"}>
-                  <CiUser className="text-3xl text-sky-700" />
+                  <FaCashRegister className="text-3xl text-sky-700" />
                 </Link>
               </div>
             </div>
@@ -236,7 +197,7 @@ export const SideBar = () => {
                   data-tip="REGISTRAR USUARIOS/EDITARLOS/ETC"
                 >
                   <Link to={"/cuentas"}>
-                    <CiSettings className="text-3xl text-sky-700" />
+                    <FaUser className="text-3xl text-sky-700" />
                   </Link>
                 </div>
               </div>

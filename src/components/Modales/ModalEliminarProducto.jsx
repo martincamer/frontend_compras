@@ -12,31 +12,12 @@ export const ModalEliminarProducto = ({
   obtenerId,
 }) => {
   const { setProductos } = useProductosContext();
-  const [socket, setSocket] = useState(null);
-
-  useEffect(() => {
-    const newSocket = io(import.meta.env.VITE_URL, {
-      withCredentials: true,
-    });
-
-    setSocket(newSocket);
-
-    newSocket.on("eliminar-producto", (salidaEliminada) => {
-      setProductos((prevSalidas) =>
-        prevSalidas.filter((salida) => salida.id !== salidaEliminada.id)
-      );
-    });
-
-    return () => newSocket.close();
-  }, []);
 
   const handleEliminarChofer = async (id) => {
     try {
-      await client.delete(`/eliminar-producto/${id}`);
+      const res = await client.delete(`/eliminar-producto/${id}`);
 
-      if (socket) {
-        socket.emit("eliminar-producto", { id });
-      }
+      setProductos(res.data);
 
       toast.error("¡Producto eliminado correctamente!", {
         position: "top-center",

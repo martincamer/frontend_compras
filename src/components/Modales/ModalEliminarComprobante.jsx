@@ -2,16 +2,23 @@ import { Dialog, Menu, Transition } from "@headlessui/react";
 import { Fragment } from "react";
 import { toast } from "react-toastify";
 import { IoIosAlert } from "react-icons/io";
+import { useProductosContext } from "../../context/ProductosProvider";
 import client from "../../api/axios";
 
 export const ModalEliminarComprobante = ({
   eliminarModal,
   closeEliminar,
   obtenerId,
+  setDatos,
+  setComprobantes,
 }) => {
+  const { setProveedores } = useProductosContext();
+
   const handleEliminarOrden = async (id) => {
     try {
-      await client.delete(`/comprobante/${id}`);
+      const res = await client.delete(`/comprobante/${id}`);
+
+      console.log(res.data);
 
       toast.error("¡Comprobante eliminado correctamente!", {
         position: "top-center",
@@ -32,9 +39,9 @@ export const ModalEliminarComprobante = ({
 
       closeEliminar();
 
-      setTimeout(() => {
-        location.reload();
-      }, 1000);
+      setDatos(res.data.updatedProveedor);
+      setComprobantes(res.data.comprobantes);
+      setProveedores(res.data.proveedores);
     } catch (error) {
       console.error("Error al eliminar la orden:", error);
     }

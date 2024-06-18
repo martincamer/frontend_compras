@@ -5,13 +5,19 @@ import { ModalCrearProveedor } from "../../../components/Modales/ModalCrearProve
 import { Link } from "react-router-dom";
 import { PDFDownloadLink } from "@react-pdf/renderer";
 import { PdfProveedores } from "../../../components/pdf/PdfProveedores";
+import { ModalFiltrarComprobantes } from "../../../components/Modales/ModalFiltrarComprobantes";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 import client from "../../../api/axios";
-import { ModalFiltrarComprobantes } from "../../../components/Modales/ModalFiltrarComprobantes";
+import { CgSearch } from "react-icons/cg";
+import { ModalActualizarProveedor } from "../../../components/Modales/ModalActualizarProveedor";
+import { useObtenerId } from "../../../helpers/obtenerId";
+import { ModalEliminarProveedor } from "../../../components/Modales/ModalEliminarProveedor";
 
 export const Proveedores = () => {
   const { proveedores } = useProductosContext();
   const [comprobantesMensuales, setComprobantesMensuales] = useState([]);
+
+  const { handleObtenerId, idObtenida } = useObtenerId();
 
   useEffect(() => {
     const obtenerDatos = async () => {
@@ -111,9 +117,28 @@ export const Proveedores = () => {
   );
 
   return (
-    <section className="bg-gray-100/50 min-h-screen max-h-full w-full h-full px-5 max-md:px-4 flex flex-col gap-2 py-16 max-md:gap-5">
+    <section className="w-full min-h-screen h-full max-h-full">
       <ToastContainer />
-      <div className="py-5 px-5 rounded-xl grid grid-cols-3 gap-3 mb-2 max-md:grid-cols-1 max-md:border-none max-md:shadow-none max-md:py-0 max-md:px-0">
+      <div className="bg-white mb-4 h-10 flex">
+        <Link
+          to={"/"}
+          className="bg-sky-100 flex h-full px-4 justify-center items-center font-bold text-sky-600"
+        >
+          Inicio
+        </Link>{" "}
+        <Link
+          to={"/proveedores"}
+          className="bg-sky-500 flex h-full px-4 justify-center items-center font-bold text-white"
+        >
+          Proveedores
+        </Link>
+      </div>
+      <div className="bg-white py-5 px-5 mx-5 my-10">
+        <h3 className="text-xl font-bold text-sky-500">
+          Crea nuevos proveedores, carga comprobantes, etc.
+        </h3>
+      </div>
+      {/* <div className="py-5 px-5 rounded-xl grid grid-cols-3 gap-3 mb-2 max-md:grid-cols-1 max-md:border-none max-md:shadow-none max-md:py-0 max-md:px-0">
         <article
           className="rounded
          flex items-start justify-between gap-4 shadow-lg hover:shadow-md transition-all ease-linear cursor-pointer bg-white py-10 px-6"
@@ -336,12 +361,53 @@ export const Proveedores = () => {
             </span>
           </div>
         </article>
+      </div> */}
+
+      <div className="bg-white py-5 px-5 mx-5 my-10">
+        <div className="dropdown dropdown-bottom">
+          <button className="font-bold text-sm bg-rose-400 py-2 px-4 text-white rounded">
+            Ver estadisticas de los proveedores
+          </button>
+          <ul
+            tabIndex={0}
+            className="dropdown-content z-[1] menu p-2 mt-2 bg-white w-[800px] border"
+          >
+            <div className="py-5 px-5 grid grid-cols-3 gap-5 w-full">
+              <div className="flex flex-col gap-1 border border-sky-300 py-3 px-3">
+                <p className="font-medium text-sm">
+                  Total en proveedores/deuda
+                </p>
+                <p className="font-bold text-lg text-red-500">
+                  {precioTotal.toLocaleString("es-AR", {
+                    style: "currency",
+                    currency: "ARS",
+                  })}
+                </p>
+              </div>
+              <div className="flex flex-col gap-1 border border-sky-300 py-3 px-3">
+                <p className="font-medium text-sm">Total en comprobantes</p>
+                <p className="font-bold text-lg text-sky-500">
+                  {totalAcumulado.toLocaleString("es-AR", {
+                    style: "currency",
+                    currency: "ARS",
+                  })}
+                </p>
+              </div>{" "}
+              <div className="flex flex-col gap-1 border border-sky-300 py-3 px-3">
+                <p className="font-medium text-sm">Total de proveedores</p>
+                <p className="font-bold text-lg text-sky-500">
+                  {proveedores.length}
+                </p>
+              </div>
+            </div>
+          </ul>
+        </div>
       </div>
 
-      <div className="mx-10 py-2 flex gap-2 items-center max-md:px-0 max-md:py-0 max-md:flex-col max-md:items-start border-b-[1px] border-slate-300 pb-4 max-md:pb-4 max-md:mx-2">
+      <div className="mx-5 py-2 flex gap-2 items-center max-md:px-0 max-md:py-0 max-md:flex-col max-md:items-start border-b-[1px] border-slate-300 pb-4 max-md:pb-4 max-md:mx-2">
         <button
           onClick={() => openModal()}
-          className=" text-sm text-white bg-sky-400 py-3 px-6 rounded-full font-semibold uppercase max-md:text-xs flex gap-2 items-center transition-all ease-linear"
+          className="text-white bg-sky-400 py-2.5 px-6 rounded font-bold uppercase max-md:text-xs flex gap-2 items-center transition-all ease-linear text-sm"
         >
           Crear nuevo proveedor/ editar,etc
           <svg
@@ -361,7 +427,7 @@ export const Proveedores = () => {
         </button>
 
         <PDFDownloadLink
-          className=" text-sm text-white bg-green-500/90 py-3 px-6 rounded-full font-semibold uppercase max-md:text-xs flex gap-2 items-center transition-all ease-linear"
+          className=" text-sm text-white bg-green-500/90 py-2.5 px-6 rounded font-bold uppercase max-md:text-xs flex gap-2 items-center transition-all ease-linear"
           document={<PdfProveedores datos={proveedores} />}
         >
           Descargar lista de proveedores
@@ -382,7 +448,7 @@ export const Proveedores = () => {
         </PDFDownloadLink>
 
         <button
-          className=" text-sm text-white bg-green-500/90 py-3 px-6 rounded-full font-semibold uppercase max-md:text-xs flex gap-2 items-center transition-all ease-linear"
+          className=" text-sm text-white bg-green-500/90 py-3 px-6 rounded font-bold uppercase max-md:text-xs flex gap-2 items-center transition-all ease-linear outline-none"
           onClick={() =>
             document.getElementById("my_modal_proveedores").showModal()
           }
@@ -391,37 +457,32 @@ export const Proveedores = () => {
         </button>
       </div>
 
-      <div className="mx-8 mt-6">
-        <p className="underline text-sky-400 uppercase font-semibold">
-          Proveedores tabla de saldos
-        </p>
-      </div>
-
-      <div className="mx-8 mt-3 w-1/3">
+      <div className="mt-6 w-1/3 border border-sky-500 py-3 px-3 text-sm font-semibold flex items-center justify-between bg-white mx-5">
         <input
+          className="w-full outline-none"
           type="text"
-          placeholder="Buscar por proveedor..."
+          placeholder="Buscar por proveedores existentes..."
           value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          className="uppercase py-2 px-3 shadow-xl font-bold rounded-xl focus:outline-none focus:border-sky-500 w-full"
+          onChange={(e) => sd(e.target.value)}
         />
+        <CgSearch className="text-sky-500" />
       </div>
 
-      <div className="overflow-x-auto mt-6 mx-8 rounded-2xl transition-all hover:shadow-md ease-linear cursor-pointer">
-        <table className="min-w-full bg-white text-sm table">
+      <div className="mt-6 cursor-pointer mx-5">
+        <table className="min-w-full bg-white table rounded-none">
           <thead className="text-left">
             <tr>
-              <th className="whitespace-nowrap px-4 py-4 text-gray-900 uppercase font-bold text-sm">
+              <th className="whitespace-nowrap px-4 py-4 text-gray-900 uppercase font-bold text-xs">
                 Proveedor
               </th>
-              <th className="whitespace-nowrap px-4 py-4 text-gray-900 uppercase font-bold text-sm">
+              <th className="whitespace-nowrap px-4 py-4 text-gray-900 uppercase font-bold text-xs">
                 Total Deber
               </th>
-              <th className="whitespace-nowrap px-4 py-4 text-gray-900 uppercase font-bold text-sm">
+              <th className="whitespace-nowrap px-4 py-4 text-gray-900 uppercase font-bold text-xs">
                 Total final deber
               </th>
 
-              <th className="whitespace-nowrap px-4 py-4 text-gray-900 uppercase font-bold text-sm">
+              <th className="whitespace-nowrap px-4 py-4 text-gray-900 uppercase font-bold text-xs">
                 Acciones
               </th>
             </tr>
@@ -430,48 +491,103 @@ export const Proveedores = () => {
           <tbody className="divide-y divide-gray-200">
             {currentProducts.map((p) => (
               <tr className="hover:bg-gray-100/40 transition-all" key={p.id}>
-                <th className="whitespace-nowrap px-4 py-6 font-bold text-gray-900 uppercase text-sm">
+                <th className="whitespace-nowrap px-4 py-6 font-bold text-gray-900 uppercase text-xs">
                   {p.proveedor}
                 </th>
-                <th className="whitespace-nowrap px-4 py-6 text-gray-700 uppercase text-sm">
+                <th className="whitespace-nowrap px-4 py-6 text-gray-700 uppercase text-xs">
                   {Number(p.total).toLocaleString("es-AR", {
                     style: "currency",
                     currency: "ARS",
                   })}
                 </th>
-                <th className="whitespace-nowrap px-4 py-6 text-red-800 uppercase text-sm font-bold">
+                <th className="whitespace-nowrap px-4 py-6  uppercase text-xs font-bold">
                   {" "}
-                  <span className="bg-red-50 py-3 px-5 rounded-xl">
+                  <span
+                    className={`${
+                      p.total > 0
+                        ? "bg-red-50 text-red-800"
+                        : "bg-sky-50 text-sky-800"
+                    } py-3 px-5 rounded`}
+                  >
                     {Number(p.total).toLocaleString("es-AR", {
                       style: "currency",
                       currency: "ARS",
                     })}
                   </span>
                 </th>
-                <th className="whitespace-nowrap px-4 py-6 text-gray-700 uppercase text-sm cursor-pointer space-x-2 flex">
-                  <Link
-                    to={`/proveedores/${p.id}`}
-                    className="bg-green-500/20 text-green-700 py-2 px-3 rounded-xl text-sm flex gap-2 items-center"
-                  >
-                    VER O CARGAR COMPROBANTES/DINERO{" "}
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      strokeWidth={1.5}
-                      stroke="currentColor"
-                      className="w-6 h-6"
+                <th>
+                  <div className="flex">
+                    <p
+                      className={`${
+                        p.total > 0
+                          ? "bg-orange-100 text-orange-500"
+                          : "bg-green-100 text-green-500"
+                      } py-3 px-5 rounded`}
                     >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M17.25 8.25 21 12m0 0-3.75 3.75M21 12H3"
-                      />
-                    </svg>
-                  </Link>
-                  {/* <span className="bg-red-500/10 text-red-800 py-2 px-3 rounded-xl text-sm">
-                    ELIMINAR
-                  </span> */}
+                      {p.total > 0
+                        ? "Deudas con el proveedor, pagar ahora"
+                        : "Sin deudas con el proveedor.."}
+                    </p>
+                  </div>
+                </th>
+                <th className="whitespace-nowrap px-4 py-4 text-gray-700 uppercase text-xs cursor-pointer space-x-2 flex">
+                  <div className="dropdown dropdown-left z-1">
+                    <div
+                      tabIndex={0}
+                      role="button"
+                      className="hover:bg-gray-200 rounded-full px-2 py-2 transition-all"
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        strokeWidth={1.5}
+                        stroke="currentColor"
+                        className="w-7 h-7"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M10.5 6h9.75M10.5 6a1.5 1.5 0 1 1-3 0m3 0a1.5 1.5 0 1 0-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-9.75 0h9.75"
+                        />
+                      </svg>
+                    </div>
+                    <ul
+                      tabIndex={0}
+                      className="dropdown-content z-[1] menu p-3 border-sky-300 border bg-white w-52 gap-2"
+                    >
+                      <Link
+                        to={`/proveedores/${p.id}`}
+                        className="hover:text-sky-500 transition-all text-left hover:underline text-xs capitalize"
+                      >
+                        Cargar comprobantes{" "}
+                      </Link>{" "}
+                      <button
+                        onClick={() => {
+                          handleObtenerId(p.id),
+                            document
+                              .getElementById("my_modal_editar_proveedor")
+                              .showModal();
+                        }}
+                        type="button"
+                        className="hover:text-sky-500 transition-all text-left hover:underline text-xs"
+                      >
+                        Editar proveedor{" "}
+                      </button>{" "}
+                      <button
+                        onClick={() => {
+                          handleObtenerId(p.id),
+                            document
+                              .getElementById("my_modal_eliminar_proveedor")
+                              .showModal();
+                        }}
+                        type="button"
+                        className="hover:text-red-500 transition-all text-left hover:underline text-xs"
+                      >
+                        Eliminar proveedor{" "}
+                      </button>
+                    </ul>
+                  </div>
                 </th>
               </tr>
             ))}
@@ -479,11 +595,11 @@ export const Proveedores = () => {
         </table>
       </div>
 
-      <div className="mt-3 flex justify-center items-center space-x-2">
+      <div className="mt-3 flex justify-center items-center space-x-2 pb-10">
         <button
           onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
           disabled={currentPage === 1}
-          className="bg-white py-2 px-3 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-300 focus:outline-none focus:bg-gray-100 cursor-pointer"
+          className="bg-sky-300 py-2 px-3 rounded-md text-sm font-medium text-gray-700 hover:bg-sky-400 hover:text-white focus:outline-none focus:bg-gray-100 cursor-pointer"
         >
           <FaArrowLeft />
         </button>
@@ -493,8 +609,8 @@ export const Proveedores = () => {
               <button
                 onClick={() => paginate(number)}
                 className={`${
-                  currentPage === number ? "bg-white" : "bg-gray-300"
-                } py-2 px-3 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-300 focus:outline-none focus:bg-gray-100`}
+                  currentPage === number ? "bg-sky-200" : "bg-sky-300"
+                } py-2 px-3 rounded-md text-sm font-medium text-gray-700 hover:text-white hover:bg-sky-500 focus:outline-none focus:bg-sky-300`}
               >
                 {number}
               </button>
@@ -506,7 +622,7 @@ export const Proveedores = () => {
             setCurrentPage((prev) => Math.min(prev + 1, totalPages))
           }
           disabled={currentPage === totalPages}
-          className="bg-white py-2 px-3 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-300 focus:outline-none focus:bg-gray-100 cursor-pointer"
+          className="bg-sky-300 py-2 px-3 rounded-md text-sm font-medium text-gray-700 hover:bg-sky-400 hover:text-white focus:outline-none focus:bg-gray-100 cursor-pointer"
         >
           <FaArrowRight />
         </button>
@@ -514,6 +630,8 @@ export const Proveedores = () => {
 
       <ModalCrearProveedor isOpen={isOpen} closeModal={closeModal} />
       <ModalFiltrarComprobantes />
+      <ModalActualizarProveedor idObtenida={idObtenida} />
+      <ModalEliminarProveedor idObtenida={idObtenida} />
     </section>
   );
 };

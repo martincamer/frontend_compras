@@ -1,16 +1,16 @@
 import { Dialog, Menu, Transition } from "@headlessui/react";
 import { useProductosContext } from "../../context/ProductosProvider";
-import { Fragment, useEffect, useState } from "react";
+import { Fragment, useState } from "react";
 import { toast } from "react-toastify";
+import { IoMdAdd } from "react-icons/io";
 import client from "../../api/axios";
-import io from "socket.io-client";
+import { ModalNuevaCategoria } from "./ModalNuevaCategoria";
 
 export const ModalCrearProductos = ({ isOpen, closeModal }) => {
   const [precio_und, setPrecio] = useState("");
   const [detalle, setDetale] = useState("");
   const [proveedor, setProveedor] = useState("");
   const [categoria, setCategoria] = useState("");
-  const [socket, setSocket] = useState(null);
 
   const { categorias, setProductos } = useProductosContext();
 
@@ -22,13 +22,8 @@ export const ModalCrearProductos = ({ isOpen, closeModal }) => {
     try {
       const res = await client.post("/crear-producto", datosProducto);
 
-      if (socket) {
-        socket.emit("crear-producto", res.data);
-      }
+      setProductos(res.data);
 
-      setProductos((prevTipos) => [...prevTipos, res.data]);
-
-      // Limpiar los campos después de enviar los datos
       setPrecio("");
       setDetale("");
       setProveedor("");
@@ -74,7 +69,7 @@ export const ModalCrearProductos = ({ isOpen, closeModal }) => {
             leaveFrom="opacity-100"
             leaveTo="opacity-0"
           >
-            <div className="fixed inset-0 bg-black bg-opacity-10" />
+            <div className="fixed inset-0 bg-black bg-opacity-40" />
           </Transition.Child>
 
           <div className="min-h-screen px-4 text-center">
@@ -141,7 +136,7 @@ export const ModalCrearProductos = ({ isOpen, closeModal }) => {
                       onChange={(e) => setDetale(e.target.value)}
                       value={detalle}
                       type="text"
-                      className="py-2 px-4 rounded-xl uppercase border-slate-300 border-[1px] shadow placeholder:text-slate-300 text-sm"
+                      className="py-2 px-4 font-semibold uppercase text-sm border border-sky-300 outline-none"
                       placeholder="DETALLE DEL PRODUCTO"
                     />
                   </div>
@@ -150,26 +145,43 @@ export const ModalCrearProductos = ({ isOpen, closeModal }) => {
                     <label className="text-sm text-slate-700 uppercase">
                       Seleccionar categoria
                     </label>
-                    <select
-                      type="text"
-                      className="py-2 px-4 rounded-xl uppercase border-slate-300 border-[1px] shadow bg-white placeholder:text-slate-300 text-sm uppercase"
-                      onChange={(e) => setCategoria(e.target.value)}
-                      value={categoria}
-                    >
-                      <option className="uppercase" value="">
-                        Seleccionar la categoria
-                      </option>
-                      {categorias.map((c) => (
-                        <option key={c.id}>{c.detalle}</option>
-                      ))}
-                    </select>
+                    <div className="flex gap-2 items-center">
+                      <select
+                        type="text"
+                        className="py-2 px-4 font-semibold uppercase text-sm border border-sky-300 outline-none w-full"
+                        onChange={(e) => setCategoria(e.target.value)}
+                        value={categoria}
+                      >
+                        <option
+                          className="uppercase font-bold text-sky-500"
+                          value=""
+                        >
+                          Seleccionar la categoria
+                        </option>
+                        {categorias.map((c) => (
+                          <option className="font-semibold" key={c.id}>
+                            {c.detalle}
+                          </option>
+                        ))}
+                      </select>
+                      <div
+                        onClick={() =>
+                          document
+                            .getElementById("my_modal_categoria")
+                            .showModal()
+                        }
+                        className="cursor-pointer"
+                      >
+                        <IoMdAdd className="text-3xl border border-sky-300 py-0.5 px-0.5" />
+                      </div>
+                    </div>
                   </div>
 
                   <div className="flex flex-col gap-1">
                     <label className="text-sm text-slate-700 uppercase">
                       Precio
                     </label>
-                    <div className="py-1 px-6 rounded-xl uppercase border-slate-300 border-[1px] shadow flex gap-4">
+                    <div className="py-2 px-4 font-semibold uppercase text-sm border border-sky-300 outline-none flex gap-2">
                       <span className="text-lg text-slate-700">$</span>
                       <input
                         onChange={(e) => setPrecio(e.target.value)}
@@ -180,7 +192,7 @@ export const ModalCrearProductos = ({ isOpen, closeModal }) => {
                       />
                     </div>
                     <div className="mt-2">
-                      <span className="bg-sky-100 text-sm py-2 px-6 rounded-xl uppercase  text-sky-600">
+                      <span className="bg-sky-100 text-sm font-semibold py-2 px-6 rounded uppercase  text-sky-600">
                         {Number(precio_und).toLocaleString("es-AR", {
                           style: "currency",
                           currency: "ARS",
@@ -192,12 +204,14 @@ export const ModalCrearProductos = ({ isOpen, closeModal }) => {
                   <div>
                     <button
                       type="submit"
-                      className="bg-sky-400 py-3 px-8 shadow rounded-full text-white uppercase text-sm"
+                      className="bg-sky-400 py-2 px-8 font-semibold hover:bg-orange-500 transition-all rounded-full text-white uppercase text-xs"
                     >
                       Crear nuevo producto
                     </button>
                   </div>
                 </form>
+
+                <ModalNuevaCategoria />
               </div>
             </Transition.Child>
           </div>

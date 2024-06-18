@@ -150,11 +150,11 @@ export const Home = () => {
   }, 0); // Inicia la acumulación desde cero
 
   return (
-    <section className="bg-gray-100/40 w-full h-full min-h-full max-h-full px-12 max-md:px-4 flex flex-col gap-12 max-md:gap-8 py-24">
+    <section className="bg-gray-100/40 w-full min-h-full max-h-full px-12 max-md:px-4 flex flex-col gap-12 max-md:gap-8 py-10 h-[100vh] overflow-y-scroll scroll-bar max-md:py-20">
       <div>
         <div className="mb-8 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-          <div className="bg-white py-4 px-6 shadow-xl rounded">
-            <h2 className="text-xl font-bold text-sky-400 bg-white">
+          <div className="bg-white py-4 px-6 shadow-xl max-md:py-2 max-md:px-2 max-md:text-center">
+            <h2 className="text-xl font-bold text-sky-400 bg-white max-md:text-sm">
               Dashboard de compras del mes
             </h2>
           </div>
@@ -211,12 +211,12 @@ export const Home = () => {
         </div>
       </div>
 
-      <div className="grid grid-cols-2 gap-5 mb-10 z-0">
+      <div className="grid grid-cols-2 gap-5 mb-10 z-0 max-md:grid-cols-1 max-md:gap-16">
         <ApexChart ordenesMensuales={ordenesMensuales} />
         <ApexChartColumn ordenesMensuales={ordenesMensuales} />
       </div>
 
-      <div className="grid grid-cols-2 gap-5 mb-10 z-0">
+      <div className="grid grid-cols-2 gap-5 mb-10 z-0 max-md:grid-cols-1 max-md:gap-20">
         <ApexChartColumnProveedores
           totalProveedores={totalProveedores}
           proveedores={proveedores}
@@ -281,39 +281,27 @@ const Card = ({
   color,
 }) => {
   return (
-    <div className="xl:p-7.5 shadow-xl bg-white dark:border-gray-600 dark:bg-gray-800 md:p-6 rounded">
+    <div className="xl:p-7.5 shadow-xl bg-white dark:border-gray-600 dark:bg-gray-800 md:p-6 max-md:p-3 rounded">
       <div className="flex items-center justify-between">
         <div>
-          <h3 className="mb-4 text-2xl font-bold text-gray-900 dark:text-white">
+          <h3 className="mb-4 text-2xl font-bold text-gray-900 dark:text-white max-md:text-xl">
             {value}
           </h3>
-          <p className="font-medium text-gray-600 dark:text-gray-300">
+          <p className="font-medium text-gray-600 dark:text-gray-300 max-md:text-sm">
             {description}
           </p>
           <span className="mt-2 flex items-center gap-2">
             <span
-              className={`flex items-center gap-1 rounded-md ${changeColor} p-1 text-xs font-medium text-white`}
+              className={`flex items-center gap-1 rounded-md ${changeColor} px-2 py-1 text-xs font-medium text-white`}
             >
-              <svg
-                width="14"
-                height="15"
-                viewBox="0 0 14 15"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M13.0155 5.24683H9.49366C9.23116 5.24683 9.01241 5.72808C9.01241 5.99058 9.49366 6.20933H11.6593L8.85928 8.09058C8.74991 8.17808 8.59678 8.17808 8.46553 8.09058L5.57803 6.18745C5.11866 5.8812 4.54991 5.8812 4.09053 6.18745L0.721783 8.44058C0.503033 8.5937 0.437408 8.89995 0.590533 9.1187C0.678033 9.24995 0.831157 9.33745 1.00616 9.33745C1.09366 9.33745 1.20303 9.31558 1.26866 9.24995L4.65928 6.99683C4.76866 6.90933 4.92178 6.90933 5.05303 6.99683L7.94053 8.92183C8.39991 9.22808 8.96866 9.22808 9.42803 8.92183L12.5124 6.8437V9.27183V5.72808Z"
-                  fill="white"
-                />
-              </svg>
               <span>{change}</span>
             </span>
-            <span className="text-sm font-medium text-gray-600 dark:text-gray-300">
+            <span className="text-sm font-medium text-gray-600 dark:text-gray-300 max-md:text-xs">
               Porcentaje del mes
             </span>
           </span>
         </div>
-        <div className="flex justify-center items-center">
+        <div className="flex justify-center items-center max-md:hidden">
           <CircularProgress color={color} percentage={porcentaje} />
         </div>
       </div>

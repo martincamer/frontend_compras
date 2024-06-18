@@ -67,7 +67,7 @@ export const OrdenesProvider = ({ children }) => {
         setOrdenesFinalMensuales,
         ordenesFinalMensuales,
         ordenes,
-        //admin
+        setOrdenes,
         ordenesMensualesAdmin,
       }}
     >

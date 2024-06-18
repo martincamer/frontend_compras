@@ -7,10 +7,9 @@ import { ModalEditarProductoSeleccionado } from "./ModalEditarProductoSelecciona
 import { useProductosContext } from "../../context/ProductosProvider";
 import { ModalCrearProductos } from "./ModalCrearProductos";
 import client from "../../api/axios";
-import io from "socket.io-client";
 
 export const ModalCrearOrden = ({ isOpen, closeModal }) => {
-  const { setOrdenesMensuales } = useOrdenesContext();
+  const { setOrdenes } = useOrdenesContext();
 
   const { proveedores, setProveedores } = useProductosContext();
 
@@ -95,24 +94,6 @@ export const ModalCrearOrden = ({ isOpen, closeModal }) => {
     }
   };
 
-  // useEffect(() => {
-  //   const newSocket = io("https://backendcompras-production.up.railway.app", {
-  //     withCredentials: true,
-  //   });
-
-  //   setSocket(newSocket);
-
-  //   // newSocket.on("crear-orden", (nuevaSalida) => {
-  //   //   setOrdenesMensuales((prevTipos) => [...prevTipos, nuevaSalida]);
-  //   // });
-
-  //   // newSocket.on("crear-orden-dos", (nuevaSalida) => {
-  //   //   setOrdenes((prevTipos) => [...prevTipos, nuevaSalida]);
-  //   // });
-
-  //   return () => newSocket.close();
-  // }, []);
-
   const totalesFinales = productoSeleccionado.reduce((total, producto) => {
     return total + Number(producto?.totalFinal);
   }, 0);
@@ -123,10 +104,6 @@ export const ModalCrearOrden = ({ isOpen, closeModal }) => {
     },
     0
   );
-
-  console.log(proveedores);
-
-  console.log(totalFinalSumSinIva);
 
   const onSubmit = async (e) => {
     e.preventDefault();
@@ -155,31 +132,11 @@ export const ModalCrearOrden = ({ isOpen, closeModal }) => {
       datos
     );
 
-    setOrdenesMensuales((prevTipos) => [...prevTipos, res.data]);
+    setOrdenes(res.data.ordenes);
+    setProveedores(resProveedor.data);
+    console.log(resProveedor);
 
-    console.log(res.data.precio_final);
-
-    const tipoExistenteIndex = proveedores.findIndex(
-      (p) => p.proveedor === proveedor
-    );
-
-    setProveedores((prevTipos) => {
-      const newTipos = [...prevTipos];
-      const updateRemuneracion = JSON.parse(resProveedor.config.data); // Convierte el JSON a objeto
-
-      newTipos[tipoExistenteIndex] = {
-        id: newTipos[tipoExistenteIndex].id,
-        proveedor: updateRemuneracion.proveedor,
-        total:
-          Number(newTipos[tipoExistenteIndex].total) +
-          Number(totalFinalSumSinIva),
-        comprobantes: newTipos[tipoExistenteIndex].comprobantes,
-        created_at: newTipos[tipoExistenteIndex].created_at,
-        updated_at: newTipos[tipoExistenteIndex].updated_at,
-      };
-
-      return newTipos;
-    });
+    console.log("res", res.data);
 
     toast.success("¡Orden de compra creada correctamente!", {
       position: "top-center",
@@ -324,7 +281,7 @@ export const ModalCrearOrden = ({ isOpen, closeModal }) => {
                       <select
                         value={proveedor}
                         onChange={handleProveedorChange}
-                        className="py-2.5 px-4 rounded-xl uppercase placeholder:text-slate-400 text-slate-700 font-semibold text-sm bg-gray-200/80"
+                        className="py-2.5 px-4 uppercase placeholder:text-slate-400 text-slate-700 font-semibold text-sm bg-white border-sky-400 border rounded-none outline-none"
                         placeholder="PROVEEDOR DE LA ORDEN"
                       >
                         <option value={"seleccionar"} className="uppercase">
@@ -349,7 +306,7 @@ export const ModalCrearOrden = ({ isOpen, closeModal }) => {
                         value={localidad}
                         onChange={(e) => setLocalidad(e.target.value)}
                         type="text"
-                        className="py-2.5 px-4 rounded-xl uppercase placeholder:text-slate-400 text-slate-700 font-semibold text-sm bg-gray-200/80"
+                        className="py-2 px-4 uppercase placeholder:text-slate-400 text-slate-700 font-semibold text-sm bg-white border-sky-400 border rounded-none outline-none"
                         placeholder="LOCALIDAD"
                       />
                     </div>
@@ -361,7 +318,7 @@ export const ModalCrearOrden = ({ isOpen, closeModal }) => {
                         value={provincia}
                         onChange={(e) => setProvincia(e.target.value)}
                         type="text"
-                        className="py-2.5 px-4 rounded-xl uppercase placeholder:text-slate-400 text-slate-700 font-semibold text-sm bg-gray-200/80"
+                        className="py-2 px-4 uppercase placeholder:text-slate-400 text-slate-700 font-semibold text-sm bg-white border-sky-400 border rounded-none outline-none"
                         placeholder="NUMERO DE LA FACT O REM"
                       />
                     </div>
@@ -372,8 +329,7 @@ export const ModalCrearOrden = ({ isOpen, closeModal }) => {
                       <input
                         value={numero_factura}
                         onChange={(e) => setNumeroFactura(e.target.value)}
-                        type="text"
-                        className="py-2.5 px-4 rounded-xl uppercase placeholder:text-slate-400 text-slate-700 font-semibold text-sm bg-gray-200/80"
+                        className="py-2 px-4 uppercase placeholder:text-slate-400 text-slate-700 font-semibold text-sm bg-white border-sky-400 border rounded-none outline-none"
                         placeholder="NUMERO DE LA FACT O REM"
                       />
                     </div>
@@ -385,7 +341,7 @@ export const ModalCrearOrden = ({ isOpen, closeModal }) => {
                         value={fecha_factura}
                         onChange={(e) => setFechaFactura(e.target.value)}
                         type="date"
-                        className="py-2.5 px-4 rounded-xl uppercase placeholder:text-slate-400 text-slate-700 font-semibold text-sm bg-gray-200/80"
+                        className="py-2 px-4 uppercase placeholder:text-slate-400 text-slate-700 font-semibold text-sm bg-white border-sky-400 border rounded-none outline-none"
                       />
                     </div>
                   </div>
@@ -398,21 +354,21 @@ export const ModalCrearOrden = ({ isOpen, closeModal }) => {
                       onChange={(e) => setDetalle(e.target.value)}
                       type="text"
                       placeholder="ESCRIBIR UN MENSAJE O DETALLAR ALGO."
-                      className="py-2.5 px-4 rounded-xl uppercase placeholder:text-slate-400 text-slate-700 font-semibold text-sm bg-gray-200/80"
+                      className="py-2 px-4 uppercase placeholder:text-slate-400 text-slate-700 font-semibold text-sm bg-white border-sky-400 border rounded-none outline-none"
                     />
                   </div>
                   <div className="flex gap-2">
                     <button
                       type="button"
                       onClick={() => openProducto()}
-                      className="bg-green-500/90 font-semibold text-white py-2 px-6 rounded-full  text-sm"
+                      className="bg-green-500/90 font-semibold text-white py-2 px-6 rounded  text-sm"
                     >
                       CARGAR PRODUCTO
                     </button>
                     <button
                       type="button"
                       onClick={() => openModalProducto()}
-                      className="bg-sky-500/90 font-semibold text-white py-2 px-6 rounded-full  text-sm flex gap-2 items-center"
+                      className="bg-sky-500/90 font-semibold text-white py-2 px-6 rounded  text-sm flex gap-2 items-center"
                     >
                       CREAR PRODUCTO INEXISTENTE
                       <svg
@@ -432,7 +388,7 @@ export const ModalCrearOrden = ({ isOpen, closeModal }) => {
                     </button>
                   </div>
 
-                  <div className="border-[1px] border-slate-300 rounded-2xl hover:shadow-md transition-all ease-linear">
+                  <div className="border-[1px] border-slate-300 hover:shadow-md transition-all ease-linear">
                     <table className="min-w-full divide-y-2 divide-gray-200 text-sm cursor-pointer">
                       <thead className="text-left">
                         <tr>
@@ -485,7 +441,7 @@ export const ModalCrearOrden = ({ isOpen, closeModal }) => {
                                 (p.iva === 1.21 && "IVA DEL 21.00") ||
                                 (p.iva === 0 && "NO TIENE IVA")}
                             </td>
-                            <td className="whitespace-nowrap px-4 py-4  uppercase text-sm font-bold text-indigo-500">
+                            <td className="whitespace-nowrap px-4 py-4  uppercase text-sm font-bold text-sky-500">
                               {Number(p.totalFinalIva).toLocaleString("es-AR", {
                                 style: "currency",
                                 currency: "ARS",

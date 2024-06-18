@@ -70,7 +70,7 @@ const ApexChartComprobantes = ({ comprobantes, total }) => {
           height={450}
         />
       </div>
-      <div className="px-20 flex absolute left-0 bottom-[-34px]">
+      <div className="px-20 flex absolute left-0 bottom-[-34px] max-md:hidden">
         <div className="border py-3 px-8 shadow-lg bg-white rounded">
           <p className="font-semibold text-base text-gray-500">
             Total final en pagos/comprobantes
