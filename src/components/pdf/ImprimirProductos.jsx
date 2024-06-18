@@ -12,7 +12,7 @@ import logo from "../../../public/logo.png";
 import normal from "../../fonts/Montserrat-Light.ttf";
 import medium from "../../fonts/Montserrat-Medium.ttf";
 import semibold from "../../fonts/Montserrat-SemiBold.ttf";
-import bold from "../../fonts/Montserrat-bold.ttf";
+import bold from "../../fonts/Montserrat-Bold.ttf";
 
 export const ImprimirProductos = ({ productos, fechaInicio, fechaFin }) => {
   Font.register({
