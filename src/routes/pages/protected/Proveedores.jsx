@@ -463,7 +463,7 @@ export const Proveedores = () => {
           type="text"
           placeholder="Buscar por proveedores existentes..."
           value={searchTerm}
-          onChange={(e) => sd(e.target.value)}
+          onChange={(e) => setSearchTerm(e.target.value)}
         />
         <CgSearch className="text-sky-500" />
       </div>
