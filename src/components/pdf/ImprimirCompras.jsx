@@ -1,13 +1,4 @@
-import React from "react";
-import {
-  Page,
-  Text,
-  View,
-  Document,
-  StyleSheet,
-  Image,
-  Font,
-} from "@react-pdf/renderer";
+import { Page, Text, View, Document, Image, Font } from "@react-pdf/renderer";
 import logo from "../../../public/logo.png";
 import normal from "../../fonts/Montserrat-Light.ttf";
 import medium from "../../fonts/Montserrat-Medium.ttf";
