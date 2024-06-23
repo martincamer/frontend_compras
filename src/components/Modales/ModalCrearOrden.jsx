@@ -529,7 +529,7 @@ export const ModalCrearOrden = ({ isOpen, closeModal }) => {
                   </div>
                   <div className="flex flex-col gap-2">
                     <p className=" font-normal py-2 px-5 uppercase text-sm rounded-xl text-sky-700 flex gap-2 items-center">
-                      <span className="underline"> subtotal </span>
+                      <span className="underline font-bold"> subtotal </span>
                       <span className="bg-sky-100 py-2 px-4 text-base rounded-xl font-bold">
                         {totalesFinales.toLocaleString("es-AR", {
                           style: "currency",
@@ -538,7 +538,10 @@ export const ModalCrearOrden = ({ isOpen, closeModal }) => {
                       </span>
                     </p>
                     <p className=" font-normal py-2 px-5 uppercase text-sm rounded-xl text-sky-700 flex gap-2 items-center">
-                      <span className="underline"> total iva agregado </span>
+                      <span className="underline font-bold">
+                        {" "}
+                        total iva agregado{" "}
+                      </span>
                       <span className="bg-sky-100 py-2 px-4 text-base rounded-xl font-bold">
                         {Number(
                           totalFinalSumSinIva - totalesFinales
@@ -549,7 +552,7 @@ export const ModalCrearOrden = ({ isOpen, closeModal }) => {
                       </span>
                     </p>
                     <p className=" font-normal py-2 px-5 uppercase text-sm rounded-xl text-green-700 flex gap-2 items-center">
-                      <span className="underline">
+                      <span className="underline font-bold">
                         {" "}
                         total final con <span className="font-bold">
                           ivas

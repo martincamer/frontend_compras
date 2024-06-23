@@ -53,7 +53,7 @@ export const SideBar = () => {
           >
             Inicio/estadistica/compras
           </Link>
-          {user.tipo === "admin" ? (
+          {/* {user.tipo === "admin" ? (
             ""
           ) : (
             <Link
@@ -73,16 +73,7 @@ export const SideBar = () => {
           >
             Cargar ordenes/editar/etc
           </Link>
-          {/* <Link
-            to={"/ordenes-checkout"}
-            className={`${
-              location.pathname === "/ordenes-checkout"
-                ? "bg-sky-100"
-                : "bg-none"
-            } hover:text-sky-700 text-slate-700 text-sm transition-all py-3 px-3`}
-          >
-            Ordenes checkout
-          </Link> */}
+
           <Link
             to={"/proveedores"}
             className={`${
@@ -90,7 +81,7 @@ export const SideBar = () => {
             } hover:text-sky-700 text-slate-700 text-sm transition-all py-3 px-3`}
           >
             Proveedores/crear/editar
-          </Link>
+          </Link> */}
         </div>
       ) : (
         <div className="flex flex-col justify-center">

@@ -59,7 +59,7 @@ export const ModalActualizarProveedor = ({ idObtenida }) => {
 
   return (
     <dialog id="my_modal_editar_proveedor" className="modal">
-      <div className="modal-box">
+      <div className="modal-box rounded-none">
         <form method="dialog">
           {/* if there is a button in form, it will close the modal */}
           <button className="btn btn-sm btn-circle btn-ghost bg-red-100 hover:bg-red-200 text-red-800 hover:text-red-800 absolute right-2 top-2">

@@ -128,16 +128,6 @@ export const Productos = () => {
     setIsEliminar(false);
   };
 
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, 1500);
-
-    return () => clearTimeout(timer);
-  }, []);
-
   return (
     <section className="min-h-screen max-h-full bg-gray-100/40 w-full h-full">
       <ToastContainer />

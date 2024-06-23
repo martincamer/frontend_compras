@@ -8,116 +8,77 @@ import ApexChartColumnProveedores from "../../../components/charts/ChartTree";
 import ApexChartComprobantes from "../../../components/charts/ChartFourty";
 
 export const Home = () => {
-  const { ordenesMensuales } = useOrdenesContext();
+  const { ordenesMensuales, ordenes } = useOrdenesContext();
   const { proveedores } = useProductosContext();
   const [comprobantesMensuales, setComprobantesMensuales] = useState([]);
 
   useEffect(() => {
     const obtenerDatos = async () => {
-      const respuesta = await client.get("/comprobantes-mes");
+      const respuesta = await client.get("/comprobantes");
 
       setComprobantesMensuales(respuesta.data);
     };
     obtenerDatos();
   }, []);
 
-  const totalProveedores = proveedores.reduce((accumulator, currentValue) => {
-    return accumulator + parseInt(currentValue.total);
-  }, 0);
-
-  console.log(totalProveedores);
-
-  const fechaActual = new Date();
-  const numeroDiaActual = fechaActual.getDay(); // Obtener el día del mes actual
-
-  const nombresDias = [
-    "Domingo",
-    "Lunes",
-    "Martes",
-    "Miércoles",
-    "Jueves",
-    "Viernes",
-    "Sábado",
-  ];
-
-  const numeroMesActual = fechaActual.getMonth() + 1; // Obtener el mes actual
-  const nombresMeses = [
-    "Enero",
-
-    "Febrero",
-    "Marzo",
-    "Abril",
-    "Mayo",
-    "Junio",
-    "Julio",
-    "Agosto",
-    "Septiembre",
-    "Octubre",
-    "Noviembre",
-    "Diciembre",
-  ];
-  const nombreMesActual = nombresMeses[numeroMesActual - 1]; // Obtener el nombre del mes actual
-
-  const nombreDiaActual = nombresDias[numeroDiaActual]; // Obtener el nombre del día actual
-
-  const totalFinalAcumulado = ordenesMensuales.reduce((total, orden) => {
-    if (orden.datos && orden.datos.productoSeleccionado) {
-      const totalOrden = orden.datos.productoSeleccionado.reduce(
-        (subtotal, producto) => {
-          return subtotal + parseInt(producto.totalFinal);
-        },
-        0
-      );
-      return total + totalOrden;
-    }
-    return total;
-  }, 0);
-
-  console.log(ordenesMensuales);
-
-  const calculateCategoryTotals = () => {
-    const categoryTotals = {};
-
-    // Iterate through invoices
-    ordenesMensuales.forEach((invoice) => {
-      // Extract product details
-      const products = invoice.datos.productoSeleccionado;
-
-      // Iterate through products
-      products.forEach((product) => {
-        const category = product.categoria;
-        const totalFinal = parseInt(product.totalFinal);
-
-        // Update total spent for the category
-        if (category in categoryTotals) {
-          categoryTotals[category] += totalFinal;
-        } else {
-          categoryTotals[category] = totalFinal;
-        }
-      });
-    });
-
-    // Convert categoryTotals to array format
-    const categoryTotalsArray = Object.keys(categoryTotals).map((category) => ({
-      category,
-      total: categoryTotals[category],
-    }));
-
-    return categoryTotalsArray;
+  const handleFechaInicioChange = (e) => {
+    setFechaInicio(e.target.value);
   };
 
-  // Call the function to category totals
-  const categoryTotalsData = calculateCategoryTotals();
+  const handleFechaFinChange = (e) => {
+    setFechaFin(e.target.value);
+  };
 
-  const [isLoading, setIsLoading] = useState(true);
+  // Obtener el primer día del mes actual
+  const today = new Date();
+  const firstDayOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
+  const lastDayOfMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0);
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, 1500);
+  // Convertir las fechas en formato YYYY-MM-DD para los inputs tipo date
+  const fechaInicioPorDefecto = firstDayOfMonth.toISOString().split("T")[0];
+  const fechaFinPorDefecto = lastDayOfMonth.toISOString().split("T")[0];
 
-    return () => clearTimeout(timer);
-  }, []);
+  // Estado inicial de las fechas con el rango del mes actual
+  const [fechaInicio, setFechaInicio] = useState(fechaInicioPorDefecto);
+  const [fechaFin, setFechaFin] = useState(fechaFinPorDefecto);
+
+  // Filtro por rango de fechas (si están definidas)
+  const fechaInicioObj = new Date(fechaInicio);
+  const fechaFinObj = new Date(fechaFin);
+
+  let filteredDataRemuneraciones = ordenes.filter((item) => {
+    const fechaOrden = new Date(item.created_at);
+    return fechaOrden >= fechaInicioObj && fechaOrden <= fechaFinObj;
+  });
+
+  let filteredDataProveedores = proveedores.filter((item) => {
+    const fechaOrden = new Date(item.created_at);
+    return fechaOrden >= fechaInicioObj && fechaOrden <= fechaFinObj;
+  });
+
+  let filteredDataComprobantes = comprobantesMensuales.filter((item) => {
+    const fechaOrden = new Date(item.created_at);
+    return fechaOrden >= fechaInicioObj && fechaOrden <= fechaFinObj;
+  });
+
+  const totalAcumulado = filteredDataComprobantes.reduce((acumulado, item) => {
+    const totalNum = parseFloat(item.total); // Convertir a número
+    return acumulado + totalNum;
+  }, 0); // Inicia la acumulación desde cero
+
+  const totalProveedores = filteredDataProveedores.reduce(
+    (accumulator, currentValue) => {
+      return accumulator + parseInt(currentValue.total);
+    },
+    0
+  );
+
+  const totalFinalAcumulado = filteredDataRemuneraciones.reduce(
+    (accumulator, currentValue) => {
+      return accumulator + parseInt(currentValue.precio_final);
+    },
+    0
+  );
 
   // Determina la semana actual
   const getStartOfWeek = (date) => {
@@ -128,7 +89,8 @@ export const Home = () => {
 
   // Filtra productos cargados en la semana actual y agrega el proveedor
   const startOfWeek = getStartOfWeek(new Date());
-  const productosDeEstaSemana = ordenesMensuales
+
+  const productosDeEstaSemana = ordenes
     .filter((orden) => new Date(orden.created_at) >= startOfWeek)
     .reduce((productos, orden) => {
       // Agrega todos los productos de las órdenes recientes al arreglo de productos
@@ -144,11 +106,6 @@ export const Home = () => {
       return productos;
     }, []);
 
-  const totalAcumulado = comprobantesMensuales.reduce((acumulado, item) => {
-    const totalNum = parseFloat(item.total); // Convertir a número
-    return acumulado + totalNum;
-  }, 0); // Inicia la acumulación desde cero
-
   return (
     <section className="bg-gray-100/40 w-full min-h-full max-h-full px-12 max-md:px-4 flex flex-col gap-12 max-md:gap-8 py-10 h-[100vh] overflow-y-scroll scroll-bar max-md:py-20">
       <div>
@@ -157,6 +114,26 @@ export const Home = () => {
             <h2 className="text-xl font-bold text-sky-400 bg-white max-md:text-sm">
               Dashboard de compras del mes
             </h2>
+          </div>
+        </div>
+        <div className="flex gap-2 my-2 w-1/4 max-md:w-full">
+          <div className="bg-white py-2 px-3 text-sm font-bold w-full border border-sky-500 cursor-pointer flex items-center">
+            <input
+              value={fechaInicio}
+              onChange={handleFechaInicioChange}
+              type="date"
+              className="outline-none text-slate-600 w-full max-md:text-sm uppercase bg-white"
+              placeholder="Fecha de inicio"
+            />
+          </div>
+          <div className="bg-white py-2 px-3 text-sm font-bold w-full border border-sky-500 cursor-pointer flex items-center">
+            <input
+              value={fechaFin}
+              onChange={handleFechaFinChange}
+              type="date"
+              className="outline-none text-slate-600 w-full max-md:text-sm uppercase bg-white"
+              placeholder="Fecha fin"
+            />
           </div>
         </div>
 
@@ -202,28 +179,28 @@ export const Home = () => {
 
           <Card
             description="Total ordenes generadas en el mes"
-            value={ordenesMensuales.length}
-            change={`${Number(ordenesMensuales.length % 100).toFixed(2)} %`}
+            value={ordenes.length}
+            change={`${Number(ordenes.length % 100).toFixed(2)} %`}
             changeColor="bg-green-500"
-            porcentaje={ordenesMensuales.length}
+            porcentaje={ordenes.length}
             color={"rgb(34 197 94)"}
           />
         </div>
       </div>
 
       <div className="grid grid-cols-2 gap-5 mb-10 z-0 max-md:grid-cols-1 max-md:gap-16">
-        <ApexChart ordenesMensuales={ordenesMensuales} />
-        <ApexChartColumn ordenesMensuales={ordenesMensuales} />
+        <ApexChart ordenesMensuales={filteredDataRemuneraciones} />
+        <ApexChartColumn ordenesMensuales={filteredDataRemuneraciones} />
       </div>
 
       <div className="grid grid-cols-2 gap-5 mb-10 z-0 max-md:grid-cols-1 max-md:gap-20">
         <ApexChartColumnProveedores
           totalProveedores={totalProveedores}
-          proveedores={proveedores}
+          proveedores={filteredDataProveedores}
         />
         <ApexChartComprobantes
           total={totalAcumulado}
-          comprobantes={comprobantesMensuales}
+          comprobantes={filteredDataComprobantes}
         />
       </div>
 

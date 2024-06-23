@@ -117,102 +117,6 @@ export const ModalComprobante = ({
     }
   };
 
-  // const [params, setParams] = useState("");
-  // const [proveedor, setProveedor] = useState("");
-  // const [total, setTotal] = useState("");
-  // const [imagen, setImagen] = useState(null);
-
-  // const uploadFile = async (type) => {
-  //   const data = new FormData();
-  //   data.append("file", type === "image" ? imagen : "");
-  //   data.append("upload_preset", type === "image" ? "imagenes" : "-");
-
-  //   try {
-  //     // let cloudName = process.env.REACT_APP_CLOUDINARY_CLOUD_NAME;
-  //     let resourceType = type === "image" ? "image" : "video";
-  //     let api = `https://api.cloudinary.com/v1_1/de4aqqalo/${resourceType}/upload`;
-
-  //     const res = await axios.post(api, data);
-  //     const { secure_url } = res.data;
-  //     console.log(secure_url);
-  //     return secure_url;
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   setParams(datos.id);
-  //   setProveedor(datos.proveedor);
-  // }, [datos.id]);
-
-  // const onSubmit = async (e) => {
-  //   e.preventDefault();
-
-  //   const imgUrl = await uploadFile("image");
-
-  //   const data = {
-  //     params,
-  //     proveedor,
-  //     total,
-  //     imagen: imgUrl,
-  //   };
-
-  //   try {
-  //     // Enviar el formulario con la URL de la imagen actualizada
-  //     const res = await client.post(`/crear-comprobante`, data);
-  //     toast.success("¡Comprobante creado correctamente espera 3 segundos!", {
-  //       position: "top-center",
-  //       autoClose: 3000,
-  //       hideProgressBar: true,
-  //       closeOnClick: true,
-  //       pauseOnHover: true,
-  //       draggable: true,
-  //       theme: "light",
-  //       style: {
-  //         padding: "10px",
-  //         background: "#b8ffb8",
-  //         color: "#009900",
-  //         borderRadius: "15px",
-  //         boxShadow: "none",
-  //       },
-  //     });
-
-  //     setTimeout(() => {
-  //       location.reload();
-  //     }, 1500);
-  //   } catch (error) {
-  //     console.error("Error al agregar el comprobante:", error);
-  //     toast.error("Error al crear el comprobante", {
-  //       position: "top-center",
-  //       autoClose: 3000,
-  //       hideProgressBar: true,
-  //       closeOnClick: true,
-  //       pauseOnHover: true,
-  //       draggable: true,
-  //       theme: "light",
-  //       style: {
-  //         padding: "10px",
-  //         background: "#ffb8b8",
-  //         color: "#990000",
-  //         borderRadius: "15px",
-  //       },
-  //     });
-  //   }
-  // };
-
-  // const [previewUrl, setPreviewUrl] = useState(null);
-
-  // const handleFileChange = (e) => {
-  //   const file = e.target.files[0];
-  //   if (file) {
-  //     setImagen(file);
-  //     // Crear una URL para la vista previa
-  //     const url = URL.createObjectURL(file);
-  //     setPreviewUrl(url);
-  //   }
-  // };
-
   return (
     <Menu as="div" className="z-50">
       <Transition appear show={isOpen} as={Fragment}>
@@ -262,7 +166,7 @@ export const ModalComprobante = ({
               leaveFrom="opacity-100 scale-100"
               leaveTo="opacity-0 scale-95"
             >
-              <div className="inline-block w-1/3 p-6 my-8 overflow-hidden text-left align-middle transition-all transform bg-white shadow-xl rounded-3xl max-md:w-full max-md:h-full">
+              <div className="inline-block w-1/3 p-6 my-8 overflow-hidden text-left align-middle transition-all transform bg-white shadow-xl rounded-none max-md:w-full max-md:h-full">
                 <div className="flex justify-end">
                   <button
                     type="button"

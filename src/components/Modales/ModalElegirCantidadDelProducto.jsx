@@ -111,7 +111,7 @@ export const ModalElegirCantidadDelProducto = ({
               leaveFrom="opacity-100 scale-100"
               leaveTo="opacity-0 scale-95"
             >
-              <div className="inline-block w-5/6 max-md:w-full p-6 my-8 overflow-hidden max-md:h-[300px] max-md:overflow-y-scroll text-left align-middle transition-all transform bg-white shadow-xl rounded-3xl">
+              <div className="inline-block w-5/6 max-md:w-full p-6 my-8 overflow-hidden max-md:h-[300px] max-md:overflow-y-scroll text-left align-middle transition-all transform bg-white shadow-xl rounded-none">
                 <div className="flex justify-end">
                   <button
                     type="button"
@@ -139,62 +139,62 @@ export const ModalElegirCantidadDelProducto = ({
                   PRODUCTO SELECCIONADO
                 </div>
 
-                <div className="overflow-x-auto rounded-xl border border-gray-200 shadow">
-                  <table className="min-w-full divide-y-2 divide-gray-200 bg-white text-sm">
-                    <thead className="ltr:text-left rtl:text-right">
+                <div className="border border-sky-300 rounded-none">
+                  <table className="table">
+                    <thead className="">
                       <tr>
-                        <th className="whitespace-nowrap px-4 py-4 uppercase font-bold text-sm text-gray-900">
+                        <th className="px-4 py-4 uppercase font-bold text-sm text-gray-900">
                           DETALLE
                         </th>
-                        <th className="whitespace-nowrap px-4 py-4 uppercase font-bold text-sm text-gray-900">
+                        <th className="px-4 py-4 uppercase font-bold text-sm text-gray-900">
                           CATEGORIA
                         </th>
-                        <th className="whitespace-nowrap px-4 py-4 uppercase font-bold text-sm text-gray-900">
+                        <th className="px-4 py-4 uppercase font-bold text-sm text-gray-900">
                           PRECIO POR UND $
                         </th>
-                        <th className="whitespace-nowrap px-4 py-4 uppercase font-bold text-sm text-gray-900">
+                        <th className="px-4 py-4 uppercase font-bold text-sm text-gray-900">
                           CANTIDAD
                         </th>
-                        <th className="whitespace-nowrap px-4 py-4 uppercase font-bold text-sm text-gray-900">
+                        <th className="px-4 py-4 uppercase font-bold text-sm text-gray-900">
                           SELECCIONAR IVA
                         </th>
-                        <th className="whitespace-nowrap px-4 py-4 uppercase font-bold text-sm text-gray-900">
+                        <th className="px-4 py-4 uppercase font-bold text-sm text-gray-900">
                           TOTAL FINAL
                         </th>
-                        <th className="whitespace-nowrap px-4 py-4 uppercase font-bold text-sm text-gray-900">
+                        <th className="px-4 py-4 uppercase font-bold text-sm text-gray-900">
                           TOTAL FINAL CON IVA
                         </th>
                       </tr>
                     </thead>
 
-                    <tbody className="divide-y divide-gray-200">
+                    <tbody>
                       <tr key={producto.id}>
-                        <td className="whitespace-nowrap px-4 py-3 font-medium text-gray-900 uppercase">
+                        <td className="px-4 py-3 font-medium text-gray-900 uppercase">
                           {producto?.detalle}
                         </td>
-                        <td className="whitespace-nowrap px-4 py-3 font-medium text-gray-900 uppercase">
+                        <td className="px-4 py-3 font-medium text-gray-900 uppercase">
                           {producto?.categoria}
                         </td>
-                        <td className="whitespace-nowrap px-4 py-3 font-medium text-gray-900 uppercase">
+                        <td className="px-4 py-3 font-medium text-gray-900 uppercase">
                           <input
                             value={precio_und}
-                            className="border-slate-300 py-2 px-4 border-[1px] rounded-xl shadow"
+                            className="py-2 px-4 border border-sky-300 shadow-none outline-none"
                             type="text"
                             onChange={(e) => setPrecio(e.target.value)}
                           />
                         </td>
-                        <td className="whitespace-nowrap px-4 py-3 font-medium text-gray-900 uppercase">
+                        <td className="px-4 py-3 font-medium text-gray-900 uppercase">
                           <input
                             value={cantidad}
-                            className="border-slate-300 py-2 px-4 border-[1px] rounded-xl shadow"
+                            className="py-2 px-4 border border-sky-300 shadow-none outline-none"
                             type="text"
                             onChange={(e) => setCantidad(e.target.value)}
                           />
                         </td>
-                        <td className="whitespace-nowrap px-4 py-3 font-medium text-gray-900 uppercase">
+                        <td className="px-4 py-3 font-medium text-gray-900 uppercase">
                           <select
                             value={iva}
-                            className="border-slate-300 py-2.5 bg-white uppercase px-4 border-[1px] rounded-xl shadow"
+                            className="py-2 px-4 border border-sky-300 shadow-none outline-none"
                             type="text"
                             onChange={(e) => setIva(Number(e.target.value))}
                           >
@@ -203,7 +203,7 @@ export const ModalElegirCantidadDelProducto = ({
                             <option value={1.21}>21.00</option>
                           </select>
                         </td>
-                        <td className="whitespace-nowrap px-4 py-3 font-bold text-gray-900 uppercase">
+                        <td className="px-4 py-3 font-bold text-gray-900 uppercase">
                           {Number(precio_und * cantidad).toLocaleString(
                             "es-AR",
                             {
@@ -212,7 +212,7 @@ export const ModalElegirCantidadDelProducto = ({
                             }
                           )}
                         </td>
-                        <td className="whitespace-nowrap px-4 py-3 font-bold text-gray-900 uppercase">
+                        <td className="px-4 py-3 font-bold text-gray-900 uppercase">
                           {iva === 0
                             ? Number(precio_und * cantidad).toLocaleString(
                                 "es-AR",
@@ -252,7 +252,7 @@ export const ModalElegirCantidadDelProducto = ({
                       closeModal();
                     }}
                     type="button"
-                    className="bg-green-200 text-green-600 rounded-xl py-2 px-4 text-sm flex gap-2 items-center"
+                    className="bg-sky-400 text-white hover:bg-orange-500 transition-all font-semibold rounded-full capitalize py-1.5 px-4 text-sm flex gap-2 items-center"
                   >
                     CREAR EL PRODUCTO/ORDEN
                     <svg
