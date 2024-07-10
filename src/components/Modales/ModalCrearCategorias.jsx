@@ -140,7 +140,7 @@ export const ModalCrearCategorias = ({
                       viewBox="0 0 24 24"
                       strokeWidth={1.5}
                       stroke="currentColor"
-                      className="w-6 h-6"
+                      className="w-4 h-4"
                     >
                       <path
                         strokeLinecap="round"
@@ -162,29 +162,16 @@ export const ModalCrearCategorias = ({
                     <input
                       {...register("detalle")}
                       type="text"
-                      className="py-2 px-4 font-semibold uppercase text-sm border border-sky-300 outline-none w-1/4"
+                      className="py-2 px-4 font-semibold uppercase text-sm border border-blue-500 rounded outline-none w-1/4"
                       placeholder="DETALLE DE LA CATEGORIA"
                     />
                   </div>
                   <div>
                     <button
                       type="submit"
-                      className="group relative transition-all ease-in-out bg-sky-400 text-white uppercase font-semibold py-2 text-xs text-center px-4 rounded-full flex items-center justify-center"
+                      className="group relative bg-blue-500 hover:bg-orange-500 transition-all text-white uppercase font-semibold py-2 text-xs text-center px-4 rounded-full flex items-center justify-center"
                     >
                       Crear nueva categoria
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                        className="w-6 h-6 ml-2 icon opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                      >
-                        <path
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
-                        />
-                      </svg>
                     </button>
                   </div>
                 </form>
@@ -214,7 +201,7 @@ export const ModalCrearCategorias = ({
                             viewBox="0 0 24 24"
                             strokeWidth={1.5}
                             stroke="currentColor"
-                            className="w-10 h-10 text-sky-500 bg-sky-100 py-2 px-2 rounded-xl cursor-pointer"
+                            className="w-10 h-10 text-blue-500 bg-blue-100 py-2 px-2 rounded-xl cursor-pointer"
                           >
                             <path
                               strokeLinecap="round"

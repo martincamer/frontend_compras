@@ -281,7 +281,7 @@ export const ModalCrearOrden = ({ isOpen, closeModal }) => {
                       <select
                         value={proveedor}
                         onChange={handleProveedorChange}
-                        className="py-2.5 px-4 uppercase placeholder:text-slate-400 text-slate-700 font-semibold text-sm bg-white border-sky-400 border rounded-none outline-none"
+                        className="py-2 px-4 uppercase placeholder:text-slate-400 text-slate-700 font-semibold text-sm bg-white border-blue-500 rounded border outline-none"
                         placeholder="PROVEEDOR DE LA ORDEN"
                       >
                         <option value={"seleccionar"} className="uppercase">
@@ -306,7 +306,7 @@ export const ModalCrearOrden = ({ isOpen, closeModal }) => {
                         value={localidad}
                         onChange={(e) => setLocalidad(e.target.value)}
                         type="text"
-                        className="py-2 px-4 uppercase placeholder:text-slate-400 text-slate-700 font-semibold text-sm bg-white border-sky-400 border rounded-none outline-none"
+                        className="py-2 px-4 uppercase placeholder:text-slate-400 text-slate-700 font-semibold text-sm bg-white border-blue-500 rounded border outline-none"
                         placeholder="LOCALIDAD"
                       />
                     </div>
@@ -318,7 +318,7 @@ export const ModalCrearOrden = ({ isOpen, closeModal }) => {
                         value={provincia}
                         onChange={(e) => setProvincia(e.target.value)}
                         type="text"
-                        className="py-2 px-4 uppercase placeholder:text-slate-400 text-slate-700 font-semibold text-sm bg-white border-sky-400 border rounded-none outline-none"
+                        className="py-2 px-4 uppercase placeholder:text-slate-400 text-slate-700 font-semibold text-sm bg-white border-blue-500 rounded border outline-none"
                         placeholder="NUMERO DE LA FACT O REM"
                       />
                     </div>
@@ -329,7 +329,7 @@ export const ModalCrearOrden = ({ isOpen, closeModal }) => {
                       <input
                         value={numero_factura}
                         onChange={(e) => setNumeroFactura(e.target.value)}
-                        className="py-2 px-4 uppercase placeholder:text-slate-400 text-slate-700 font-semibold text-sm bg-white border-sky-400 border rounded-none outline-none"
+                        className="py-2 px-4 uppercase placeholder:text-slate-400 text-slate-700 font-semibold text-sm bg-white border-blue-500 rounded border outline-none"
                         placeholder="NUMERO DE LA FACT O REM"
                       />
                     </div>
@@ -341,7 +341,7 @@ export const ModalCrearOrden = ({ isOpen, closeModal }) => {
                         value={fecha_factura}
                         onChange={(e) => setFechaFactura(e.target.value)}
                         type="date"
-                        className="py-2 px-4 uppercase placeholder:text-slate-400 text-slate-700 font-semibold text-sm bg-white border-sky-400 border rounded-none outline-none"
+                        className="py-2 px-4 uppercase placeholder:text-slate-400 text-slate-700 font-semibold text-sm bg-white border-blue-500 rounded border outline-none"
                       />
                     </div>
                   </div>
@@ -354,37 +354,23 @@ export const ModalCrearOrden = ({ isOpen, closeModal }) => {
                       onChange={(e) => setDetalle(e.target.value)}
                       type="text"
                       placeholder="ESCRIBIR UN MENSAJE O DETALLAR ALGO."
-                      className="py-2 px-4 uppercase placeholder:text-slate-400 text-slate-700 font-semibold text-sm bg-white border-sky-400 border rounded-none outline-none"
+                      className="py-2 px-4 uppercase placeholder:text-slate-400 text-slate-700 font-semibold text-sm bg-white border-blue-500 rounded border outline-none"
                     />
                   </div>
                   <div className="flex gap-2">
                     <button
                       type="button"
                       onClick={() => openProducto()}
-                      className="bg-green-500/90 font-semibold text-white py-2 px-6 rounded  text-sm"
+                      className="bg-green-500/90 font-semibold text-white py-1 px-6 rounded text-sm"
                     >
-                      CARGAR PRODUCTO
+                      Cargar nuevo producto
                     </button>
                     <button
                       type="button"
                       onClick={() => openModalProducto()}
-                      className="bg-sky-500/90 font-semibold text-white py-2 px-6 rounded  text-sm flex gap-2 items-center"
+                      className="bg-blue-500 font-semibold text-white py-1.5 px-6 rounded text-sm"
                     >
-                      CREAR PRODUCTO INEXISTENTE
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        strokeWidth={1.5}
-                        stroke="currentColor"
-                        className="w-6 h-6"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
-                        />
-                      </svg>
+                      Crear producto inexistente
                     </button>
                   </div>
 
@@ -441,7 +427,7 @@ export const ModalCrearOrden = ({ isOpen, closeModal }) => {
                                 (p.iva === 1.21 && "IVA DEL 21.00") ||
                                 (p.iva === 0 && "NO TIENE IVA")}
                             </td>
-                            <td className="whitespace-nowrap px-4 py-4  uppercase text-sm font-bold text-sky-500">
+                            <td className="whitespace-nowrap px-4 py-4  uppercase text-sm font-bold text-blue-500">
                               {Number(p.totalFinalIva).toLocaleString("es-AR", {
                                 style: "currency",
                                 currency: "ARS",
@@ -528,21 +514,21 @@ export const ModalCrearOrden = ({ isOpen, closeModal }) => {
                     </table>
                   </div>
                   <div className="flex flex-col gap-2">
-                    <p className=" font-normal py-2 px-5 uppercase text-sm rounded-xl text-sky-700 flex gap-2 items-center">
+                    <p className=" font-normal py-2 px-5 uppercase text-sm rounded-xl text-blue-700 flex gap-2 items-center">
                       <span className="underline font-bold"> subtotal </span>
-                      <span className="bg-sky-100 py-2 px-4 text-base rounded-xl font-bold">
+                      <span className="bg-blue-50 py-2 px-4 text-base rounded-xl font-bold">
                         {totalesFinales.toLocaleString("es-AR", {
                           style: "currency",
                           currency: "ARS",
                         })}
                       </span>
                     </p>
-                    <p className=" font-normal py-2 px-5 uppercase text-sm rounded-xl text-sky-700 flex gap-2 items-center">
+                    <p className=" font-normal py-2 px-5 uppercase text-sm rounded-xl text-blue-700 flex gap-2 items-center">
                       <span className="underline font-bold">
                         {" "}
                         total iva agregado{" "}
                       </span>
-                      <span className="bg-sky-100 py-2 px-4 text-base rounded-xl font-bold">
+                      <span className="bg-blue-50 py-2 px-4 text-base rounded-xl font-bold">
                         {Number(
                           totalFinalSumSinIva - totalesFinales
                         ).toLocaleString("es-AR", {
@@ -570,23 +556,9 @@ export const ModalCrearOrden = ({ isOpen, closeModal }) => {
                   <div className="pb-4">
                     <button
                       type="submit"
-                      class="group relative bg-sky-400 hover:bg-sky-500/90s text-white transition-all ease-in-out font-normal uppercase text-sm py-3 px-6 rounded-full flex items-center justify-center gap-2"
+                      class="group relative bg-blue-500 hover:bg-orange-500 text-white transition-all ease-in-out font-semibold text-sm py-3 px-6 rounded-full flex items-center justify-center gap-2"
                     >
-                      CREAR ORDEN NUEVA
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        strokeWidth={1.5}
-                        stroke="currentColor"
-                        className="w-6 h-6"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0 1 11.186 0Z"
-                        />
-                      </svg>
+                      Guardar la orden de compra
                     </button>
                   </div>
                 </form>

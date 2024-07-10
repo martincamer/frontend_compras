@@ -8,11 +8,7 @@ import client from "../../api/axios";
 export const ModalCrearProveedor = ({ isOpen, closeModal }) => {
   const { setProveedores } = useProductosContext();
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm();
+  const { register, handleSubmit } = useForm();
 
   const onSubmit = handleSubmit(async (data) => {
     const res = await client.post("/crear-proveedor", data);
@@ -93,7 +89,7 @@ export const ModalCrearProveedor = ({ isOpen, closeModal }) => {
                 <div className="flex justify-end">
                   <button
                     type="button"
-                    className="inline-flex justify-center px-2 py-2 text-sm text-red-900 bg-red-100 border border-transparent rounded-xl hover:bg-red-200 duration-300 cursor-pointer max-md:text-xs"
+                    className="inline-flex justify-center px-2 py-2 text-sm text-red-900 bg-red-100 border border-transparent rounded-full hover:bg-red-200 duration-300 cursor-pointer max-md:text-xs"
                     onClick={closeModal}
                   >
                     <svg
@@ -102,7 +98,7 @@ export const ModalCrearProveedor = ({ isOpen, closeModal }) => {
                       viewBox="0 0 24 24"
                       strokeWidth={1.5}
                       stroke="currentColor"
-                      className="w-6 h-6"
+                      className="w-4 h-4"
                     >
                       <path
                         strokeLinecap="round"
@@ -124,7 +120,7 @@ export const ModalCrearProveedor = ({ isOpen, closeModal }) => {
                     <input
                       {...register("proveedor")}
                       type="text"
-                      className="py-2 px-4 uppercase placeholder:text-slate-400 text-slate-700 font-semibold text-sm bg-white border-sky-400 border rounded-none outline-none"
+                      className="py-2 px-4 uppercase placeholder:text-slate-400 text-slate-700 font-semibold text-sm bg-white border-blue-500 border rounded outline-none"
                       placeholder="DETALLE DEL PROVEEDOR"
                     />
                   </div>
@@ -135,7 +131,7 @@ export const ModalCrearProveedor = ({ isOpen, closeModal }) => {
                     <input
                       {...register("localidad")}
                       type="text"
-                      className="py-2 px-4 uppercase placeholder:text-slate-400 text-slate-700 font-semibold text-sm bg-white border-sky-400 border rounded-none outline-none"
+                      className="py-2 px-4 uppercase placeholder:text-slate-400 text-slate-700 font-semibold text-sm bg-white border-blue-500 border rounded outline-none"
                       placeholder="LOCALIDAD DEL PROVEEDOR"
                     />
                   </div>
@@ -146,29 +142,16 @@ export const ModalCrearProveedor = ({ isOpen, closeModal }) => {
                     <input
                       {...register("provincia")}
                       type="text"
-                      className="py-2 px-4 uppercase placeholder:text-slate-400 text-slate-700 font-semibold text-sm bg-white border-sky-400 border rounded-none outline-none"
+                      className="py-2 px-4 uppercase placeholder:text-slate-400 text-slate-700 font-semibold text-sm bg-white border-blue-500 border rounded outline-none"
                       placeholder="PROVINCIA DEL PROVEEDOR"
                     />
                   </div>
                   <div>
                     <button
                       type="submit"
-                      class="group relative hover:bg-sky-500 hover:text-white transition-all ease-in-out bg-sky-100 text-sky-600 font-semibold uppercase text-sm py-2 px-4 rounded-xl flex items-center justify-center"
+                      class="group relative hover:bg-orange-500 text-white transition-all ease-in-out bg-blue-500 font-bold text-sm py-2 px-4 rounded-full flex items-center justify-center"
                     >
                       Crear nuevo proveedor
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                        class="w-6 h-6 ml-2 icon opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                      >
-                        <path
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
-                        />
-                      </svg>
                     </button>
                   </div>
                 </form>

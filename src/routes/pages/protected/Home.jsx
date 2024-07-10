@@ -3,12 +3,12 @@ import { useOrdenesContext } from "../../../context/OrdenesProvider";
 import { useProductosContext } from "../../../context/ProductosProvider";
 import ApexChart from "../../../components/charts/ChartOne";
 import ApexChartColumn from "../../../components/charts/ChartTwo";
-import client from "../../../api/axios";
 import ApexChartColumnProveedores from "../../../components/charts/ChartTree";
 import ApexChartComprobantes from "../../../components/charts/ChartFourty";
+import client from "../../../api/axios";
 
 export const Home = () => {
-  const { ordenesMensuales, ordenes } = useOrdenesContext();
+  const { ordenes } = useOrdenesContext();
   const { proveedores } = useProductosContext();
   const [comprobantesMensuales, setComprobantesMensuales] = useState([]);
 
@@ -51,10 +51,10 @@ export const Home = () => {
     return fechaOrden >= fechaInicioObj && fechaOrden <= fechaFinObj;
   });
 
-  let filteredDataProveedores = proveedores.filter((item) => {
-    const fechaOrden = new Date(item.created_at);
-    return fechaOrden >= fechaInicioObj && fechaOrden <= fechaFinObj;
-  });
+  // let filteredDataProveedores = proveedores.filter((item) => {
+  //   const fechaOrden = new Date(item.created_at);
+  //   return fechaOrden >= fechaInicioObj && fechaOrden <= fechaFinObj;
+  // });
 
   let filteredDataComprobantes = comprobantesMensuales.filter((item) => {
     const fechaOrden = new Date(item.created_at);
@@ -66,12 +66,9 @@ export const Home = () => {
     return acumulado + totalNum;
   }, 0); // Inicia la acumulación desde cero
 
-  const totalProveedores = filteredDataProveedores.reduce(
-    (accumulator, currentValue) => {
-      return accumulator + parseInt(currentValue.total);
-    },
-    0
-  );
+  const totalProveedores = proveedores.reduce((accumulator, currentValue) => {
+    return accumulator + parseInt(currentValue.total);
+  }, 0);
 
   const totalFinalAcumulado = filteredDataRemuneraciones.reduce(
     (accumulator, currentValue) => {
@@ -110,14 +107,14 @@ export const Home = () => {
     <section className="bg-gray-100/40 w-full min-h-full max-h-full px-12 max-md:px-4 flex flex-col gap-12 max-md:gap-8 py-10 h-[100vh] overflow-y-scroll scroll-bar max-md:py-20">
       <div>
         <div className="mb-8 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-          <div className="bg-white py-4 px-6 shadow-xl max-md:py-2 max-md:px-2 max-md:text-center">
-            <h2 className="text-xl font-bold text-sky-400 bg-white max-md:text-sm">
-              Dashboard de compras del mes
+          <div className="bg-white py-4 px-6 border border-blue-500 max-md:py-2 max-md:px-2 max-md:text-center">
+            <h2 className="text-xl font-bold text-blue-500 bg-white max-md:text-sm">
+              Panel de compras
             </h2>
           </div>
         </div>
         <div className="flex gap-2 my-2 w-1/4 max-md:w-full">
-          <div className="bg-white py-2 px-3 text-sm font-bold w-full border border-sky-500 cursor-pointer flex items-center">
+          <div className="bg-white py-2 px-3 text-sm font-bold w-full border border-blue-500 cursor-pointer flex items-center">
             <input
               value={fechaInicio}
               onChange={handleFechaInicioChange}
@@ -126,7 +123,7 @@ export const Home = () => {
               placeholder="Fecha de inicio"
             />
           </div>
-          <div className="bg-white py-2 px-3 text-sm font-bold w-full border border-sky-500 cursor-pointer flex items-center">
+          <div className="bg-white py-2 px-3 text-sm font-bold w-full border border-blue-500 cursor-pointer flex items-center">
             <input
               value={fechaFin}
               onChange={handleFechaFinChange}
@@ -196,7 +193,7 @@ export const Home = () => {
       <div className="grid grid-cols-2 gap-5 mb-10 z-0 max-md:grid-cols-1 max-md:gap-20">
         <ApexChartColumnProveedores
           totalProveedores={totalProveedores}
-          proveedores={filteredDataProveedores}
+          proveedores={proveedores}
         />
         <ApexChartComprobantes
           total={totalAcumulado}
@@ -204,7 +201,7 @@ export const Home = () => {
         />
       </div>
 
-      <div className="bg-white border shadow-lg py-10 px-10 rounded">
+      <div className="bg-white py-10 px-10 rounded">
         <div>
           <p className="font-semibold text-gray-800 mb-4">
             Reporte de productos cargados en la semana.
@@ -258,7 +255,7 @@ const Card = ({
   color,
 }) => {
   return (
-    <div className="xl:p-7.5 shadow-xl bg-white dark:border-gray-600 dark:bg-gray-800 md:p-6 max-md:p-3 rounded">
+    <div className="xl:p-7.5 bg-white dark:border-gray-600 dark:bg-gray-800 md:p-6 max-md:p-3 rounded border border-blue-500">
       <div className="flex items-center justify-between">
         <div>
           <h3 className="mb-4 text-2xl font-bold text-gray-900 dark:text-white max-md:text-xl">

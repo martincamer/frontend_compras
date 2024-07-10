@@ -134,26 +134,26 @@ export const Productos = () => {
       <div className="bg-white mb-4 h-10 flex">
         <Link
           to={"/"}
-          className="bg-sky-100 flex h-full px-4 justify-center items-center font-bold text-sky-600"
+          className="bg-blue-100 flex h-full px-4 justify-center items-center font-bold text-blue-600"
         >
           Inicio
         </Link>{" "}
         <Link
           to={"/productos"}
-          className="bg-sky-500 flex h-full px-4 justify-center items-center font-bold text-white"
+          className="bg-blue-500 flex h-full px-4 justify-center items-center font-bold text-white"
         >
           Productos
         </Link>
       </div>
       <div className="mx-5 my-10 bg-white py-6 px-6">
-        <p className="font-bold text-sky-600 text-xl">
+        <p className="font-bold text-blue-600 text-xl">
           Crea tus productos en esta sección y actualiza los precios.
         </p>
       </div>
       <div className="mx-5 py-2 flex gap-2 items-center max-md:px-0 max-md:py-0 max-md:flex-col max-md:items-start border-b-[1px] border-slate-300 pb-4 max-md:pb-4 max-md:mx-2">
         <button
           onClick={() => openModal()}
-          className="bg-sky-400 py-3 px-6 rounded text-sm text-white font-medium uppercase max-md:text-xs flex gap-2 items-center hover:shadow-md transition-all hover:bg-sky-500/90"
+          className="bg-blue-400 py-3 px-6 rounded text-sm text-white font-medium uppercase max-md:text-xs flex gap-2 items-center hover:shadow-md transition-all hover:bg-blue-500/90"
         >
           Crear nuevo producto
           <svg
@@ -215,7 +215,7 @@ export const Productos = () => {
 
       <div className="max-md:mt-2 mt-5 ">
         {/* <div className="max-md:px-2 bg-white py-4 px-3 mx-5">
-          <p className="uppercase text-sky-500 font-semibold text-sm underline">
+          <p className="uppercase text-blue-500 font-semibold text-sm underline">
             Tabla de productos
           </p>
         </div> */}
@@ -225,17 +225,17 @@ export const Productos = () => {
           <input
             type="text"
             placeholder="Buscar por detalle o el codigo...."
-            className="text-sm py-2.5 px-5 bg-white text-slate-700 font-bold uppercase w-1/4 outline-none cursor-pointer border border-sky-300"
+            className="text-sm py-2.5 px-5 bg-white text-slate-700 font-bold uppercase w-1/4 outline-none cursor-pointer border border-blue-500"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
           {/* Selector de categoría */}
           <select
-            className="text-sm py-2.5 px-5 bg-white text-slate-700 font-bold uppercase w-1/4 outline-none cursor-pointer border border-sky-300"
+            className="text-sm py-2.5 px-5 bg-white text-slate-700 font-bold uppercase w-1/4 outline-none cursor-pointer border border-blue-500"
             value={selectedCategory}
             onChange={(e) => setSelectedCategory(e.target.value)}
           >
-            <option className="font-bold text-sky-500" value="all">
+            <option className="font-bold text-blue-500" value="all">
               Todas las categorías
             </option>
             {categorias.map((c) => (
@@ -269,7 +269,7 @@ export const Productos = () => {
             </thead>
 
             <tbody className="divide-y divide-gray-200">
-              {currentProducts.map((p) => (
+              {filteredProducts.map((p) => (
                 <tr key={p.id}>
                   <th className="whitespace-nowrap px-4 py-4 font-semibold text-gray-900 uppercase text-xs">
                     {p.id}
@@ -280,7 +280,7 @@ export const Productos = () => {
                   <th className="whitespace-nowrap px-4 py-4 text-gray-700 uppercase text-xs">
                     {p.categoria}
                   </th>
-                  <th className="whitespace-nowrap px-4 py-4  uppercase text-xs font-bold text-sky-600">
+                  <th className="whitespace-nowrap px-4 py-4  uppercase text-xs font-bold text-blue-600">
                     {Number(p.precio_und).toLocaleString("es-AR", {
                       style: "currency",
                       currency: "ARS",
@@ -310,9 +310,9 @@ export const Productos = () => {
                       </div>
                       <ul
                         tabIndex={0}
-                        className="dropdown-content z-[1] menu p-3 border-sky-300 border bg-white w-52 gap-2"
+                        className="dropdown-content z-[1] menu p-3 border-blue-500 border bg-white w-52 gap-2"
                       >
-                        <button className="hover:text-sky-500 transition-all text-left hover:underline">
+                        <button className="hover:text-blue-500 transition-all text-left hover:underline">
                           <span
                             onClick={() => {
                               handleID(p.id), openEditProducto();
@@ -339,11 +339,11 @@ export const Productos = () => {
           </table>
         </div>
       </div>
-      <div className="mt-3 flex justify-center items-center space-x-2 pb-10">
+      {/* <div className="mt-3 flex justify-center items-center space-x-2 pb-10">
         <button
           onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
           disabled={currentPage === 1}
-          className="bg-sky-300 py-2 px-3 rounded-md text-sm font-medium text-gray-700 hover:bg-sky-400 hover:text-white focus:outline-none focus:bg-gray-100 cursor-pointer"
+          className="bg-blue-300 py-2 px-3 rounded-md text-sm font-medium text-gray-700 hover:bg-blue-500 hover:text-white focus:outline-none focus:bg-gray-100 cursor-pointer"
         >
           <FaArrowLeft />
         </button>
@@ -353,8 +353,10 @@ export const Productos = () => {
               <button
                 onClick={() => paginate(number)}
                 className={`${
-                  currentPage === number ? "bg-sky-200" : "bg-sky-300"
-                } py-2 px-3 rounded-md text-sm font-medium text-gray-700 hover:text-white hover:bg-sky-500 focus:outline-none focus:bg-sky-300`}
+                  currentPage === number
+                    ? "bg-blue-500 text-white"
+                    : "bg-blue-500 text-white"
+                } py-2 px-3 rounded-md text-sm font-medium text-gray-700 hover:text-white hover:bg-blue-500 focus:outline-none focus:bg-blue-300`}
               >
                 {number}
               </button>
@@ -366,11 +368,11 @@ export const Productos = () => {
             setCurrentPage((prev) => Math.min(prev + 1, totalPages))
           }
           disabled={currentPage === totalPages}
-          className="bg-sky-300 py-2 px-3 rounded-md text-sm font-medium text-gray-700 hover:bg-sky-400 hover:text-white focus:outline-none focus:bg-gray-100 cursor-pointer"
+          className="bg-blue-300 py-2 px-3 rounded-md text-sm font-medium text-gray-700 hover:bg-blue-500 hover:text-white focus:outline-none focus:bg-gray-100 cursor-pointer"
         >
           <FaArrowRight />
         </button>
-      </div>
+      </div> */}
 
       <ModalCrearProductos isOpen={isOpen} closeModal={closeModal} />
       <ModalCrearCategorias

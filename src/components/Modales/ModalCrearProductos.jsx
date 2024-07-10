@@ -113,7 +113,7 @@ export const ModalCrearProductos = ({ isOpen, closeModal }) => {
                       viewBox="0 0 24 24"
                       strokeWidth={1.5}
                       stroke="currentColor"
-                      className="w-6 h-6"
+                      className="w-4 h-4"
                     >
                       <path
                         strokeLinecap="round"
@@ -136,7 +136,7 @@ export const ModalCrearProductos = ({ isOpen, closeModal }) => {
                       onChange={(e) => setDetale(e.target.value)}
                       value={detalle}
                       type="text"
-                      className="py-2 px-4 font-semibold uppercase text-sm border border-sky-300 outline-none"
+                      className="py-2 px-4 font-semibold uppercase text-sm border border-blue-500 rounded outline-none"
                       placeholder="DETALLE DEL PRODUCTO"
                     />
                   </div>
@@ -148,7 +148,7 @@ export const ModalCrearProductos = ({ isOpen, closeModal }) => {
                     <div className="flex gap-2 items-center">
                       <select
                         type="text"
-                        className="py-2 px-4 font-semibold uppercase text-sm border border-sky-300 outline-none w-full"
+                        className="py-2 px-4 font-semibold uppercase text-sm border border-blue-500 rounded outline-none w-full"
                         onChange={(e) => setCategoria(e.target.value)}
                         value={categoria}
                       >
@@ -172,7 +172,7 @@ export const ModalCrearProductos = ({ isOpen, closeModal }) => {
                         }
                         className="cursor-pointer"
                       >
-                        <IoMdAdd className="text-3xl border border-sky-300 py-0.5 px-0.5" />
+                        <IoMdAdd className="text-3xl border border-blue-500 rounded py-0.5 px-0.5" />
                       </div>
                     </div>
                   </div>
@@ -181,7 +181,7 @@ export const ModalCrearProductos = ({ isOpen, closeModal }) => {
                     <label className="text-sm text-slate-700 uppercase">
                       Precio
                     </label>
-                    <div className="py-2 px-4 font-semibold uppercase text-sm border border-sky-300 outline-none flex gap-2">
+                    <div className="py-2 px-4 font-semibold uppercase text-sm border border-blue-500 rounded outline-none flex gap-2">
                       <span className="text-lg text-slate-700">$</span>
                       <input
                         onChange={(e) => setPrecio(e.target.value)}
@@ -192,7 +192,7 @@ export const ModalCrearProductos = ({ isOpen, closeModal }) => {
                       />
                     </div>
                     <div className="mt-2">
-                      <span className="bg-sky-100 text-sm font-semibold py-2 px-6 rounded uppercase  text-sky-600">
+                      <span className="bg-blue-50 text-sm font-bold py-2 px-6 rounded uppercase  text-blue-600">
                         {Number(precio_und).toLocaleString("es-AR", {
                           style: "currency",
                           currency: "ARS",
@@ -204,7 +204,7 @@ export const ModalCrearProductos = ({ isOpen, closeModal }) => {
                   <div>
                     <button
                       type="submit"
-                      className="bg-sky-400 py-2 px-8 font-semibold hover:bg-orange-500 transition-all rounded-full text-white uppercase text-xs"
+                      className="bg-blue-500 py-2 px-8 font-semibold hover:bg-orange-500 transition-all rounded-full text-white uppercase text-xs"
                     >
                       Crear nuevo producto
                     </button>

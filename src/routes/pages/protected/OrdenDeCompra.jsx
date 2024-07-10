@@ -36,11 +36,17 @@ export const OrdenDeCompra = () => {
 
   const { ordenes } = useOrdenesContext();
 
-  console.log(ordenes);
+  const today = new Date();
+  const firstDayOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
+  const lastDayOfMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0);
+
+  // Convertir las fechas en formato YYYY-MM-DD para los inputs tipo date
+  const fechaInicioPorDefecto = firstDayOfMonth.toISOString().split("T")[0];
+  const fechaFinPorDefecto = lastDayOfMonth.toISOString().split("T")[0];
 
   const [searchTerm, setSearchTerm] = useState("");
-  const [startDate, setStartDate] = useState("");
-  const [endDate, setEndDate] = useState("");
+  const [startDate, setStartDate] = useState(fechaInicioPorDefecto);
+  const [endDate, setEndDate] = useState(fechaFinPorDefecto);
 
   // Filtrar por fabrica_sucursal
   const filteredOrdenes = ordenes.filter((orden) =>
@@ -119,19 +125,19 @@ export const OrdenDeCompra = () => {
       <div className="bg-white mb-4 h-10 flex">
         <Link
           to={"/"}
-          className="bg-sky-100 flex h-full px-4 justify-center items-center font-bold text-sky-600"
+          className="bg-sky-100 flex h-full px-4 justify-center items-center font-bold text-blue-600"
         >
           Inicio
         </Link>{" "}
         <Link
           to={"/ordenes"}
-          className="bg-sky-500 flex h-full px-4 justify-center items-center font-bold text-white"
+          className="bg-blue-500 flex h-full px-4 justify-center items-center font-bold text-white"
         >
           Compras
         </Link>
       </div>
       <div className="bg-white py-5 px-5 mx-5 mt-10">
-        <h3 className="text-xl font-bold text-sky-500">
+        <h3 className="text-xl font-bold text-blue-500">
           Crea nuevas ordenes de compra
         </h3>
       </div>
@@ -145,7 +151,7 @@ export const OrdenDeCompra = () => {
             className="dropdown-content z-[1] menu p-2 mt-2 bg-white w-[800px] border"
           >
             <div className="py-5 px-5 grid grid-cols-3 gap-5 w-full">
-              <div className="flex flex-col gap-1 border border-sky-300 py-3 px-3">
+              <div className="flex flex-col gap-1 border border-blue-500 py-3 px-3">
                 <p className="font-medium text-sm">
                   Total en ordenes generadas del mes.
                 </p>
@@ -157,11 +163,11 @@ export const OrdenDeCompra = () => {
                 </p>
               </div>
 
-              <div className="flex flex-col gap-1 border border-sky-300 py-3 px-3">
+              <div className="flex flex-col gap-1 border border-blue-500 py-3 px-3">
                 <p className="font-medium text-sm">
                   Total en ordenes filtradas del mes/semanal/etc.
                 </p>
-                <p className="font-bold text-lg text-sky-500">
+                <p className="font-bold text-lg text-blue-500">
                   {totalPrecioFinalFiltradas.toLocaleString("es-AR", {
                     style: "currency",
                     currency: "ARS",
@@ -183,7 +189,7 @@ export const OrdenDeCompra = () => {
           onClick={() =>
             document.getElementById("my_modal_compras").showModal()
           }
-          className="font-bold text-sm bg-sky-400 py-2 px-4 text-white rounded"
+          className="font-bold text-sm bg-blue-500 py-2 px-4 text-white rounded"
         >
           Ver ordenes de compra/comparar/filtrar/etc
         </button>
@@ -191,7 +197,7 @@ export const OrdenDeCompra = () => {
       <div className="mx-10 py-2 flex gap-2 items-center max-md:px-0 max-md:py-0 max-md:flex-col max-md:items-start border-b-[1px] border-slate-300 pb-4 max-md:pb-4 max-md:mx-2">
         <button
           onClick={() => openModal()}
-          className="bg-sky-400  py-3 px-5 rounded text-sm text-white font-semibold uppercase max-md:text-xs flex gap-2 items-center hover:bg-sky-500 hover:text-white transition-all ease-in-out"
+          className="bg-blue-500  py-2 px-5 rounded text-sm text-white font-semibold max-md:text-xs flex gap-2 items-center hover:bg-orange-500 hover:text-white transition-all ease-in-out"
         >
           Crear nueva orden
           <svg
@@ -212,7 +218,7 @@ export const OrdenDeCompra = () => {
       </div>
 
       <div className="bg-white my-5 mx-5 py-4 px-5 flex gap-2">
-        <div className="w-1/3 border border-sky-500 py-1 px-3 text-sm font-semibold flex items-center justify-between">
+        <div className="w-1/3 border border-blue-500 py-1 px-3 text-sm font-semibold flex items-center justify-between">
           <input
             className="w-full outline-none"
             type="text"
@@ -220,16 +226,16 @@ export const OrdenDeCompra = () => {
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
-          <CgSearch className="text-sky-500" />
+          <CgSearch className="text-blue-500" />
         </div>
 
-        <div className="border-sky-500 border py-1.5 px-3 text-sm font-bold flex">
+        <div className="border-blue-500 border py-1.5 px-3 text-sm font-bold flex">
           {/* Filtrador por fecha específica */}
           <div className="flex gap-2 items-center">
             <div className="flex gap-2 items-center">
               Fecha anterior{" "}
               <input
-                className="border border-sky-500 py-1 px-3 outline-none"
+                className="border border-blue-500 py-1 px-3 outline-none"
                 type="date"
                 value={startDate}
                 onChange={(e) => setStartDate(e.target.value)}
@@ -238,7 +244,7 @@ export const OrdenDeCompra = () => {
             <div className="flex gap-2 items-center">
               Fecha actual{" "}
               <input
-                className="border border-sky-500 py-1 px-3 outline-none"
+                className="border border-blue-500 py-1 px-3 outline-none"
                 type="date"
                 value={endDate}
                 onChange={(e) => setEndDate(e.target.value)}
@@ -248,7 +254,7 @@ export const OrdenDeCompra = () => {
 
           {/* Filtrador por fecha del mes */}
           <button
-            className="bg-sky-500 text-white px-4 py-1 ml-4 rounded-full text-xs hover:bg-orange-500 transition-all"
+            className="bg-blue-500 text-white px-4 py-1 ml-4 rounded-full text-xs hover:bg-orange-500 transition-all"
             onClick={() => setStartDate("")}
           >
             Mostrar del mes actual
@@ -288,9 +294,9 @@ export const OrdenDeCompra = () => {
                 </th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-200">
+            <tbody className="">
               {sortedOrdenes.map((p) => (
-                <tr className="hover:bg-gray-100/50 transition-all" key={p.id}>
+                <tr className="" key={p.id}>
                   <th className="whitespace-nowrap px-4 py-4 text-gray-700 font-bold uppercase text-xs">
                     {p.id}
                   </th>
@@ -308,7 +314,7 @@ export const OrdenDeCompra = () => {
                   </th>
                   <th className="whitespace-nowrap px-4 py-4  uppercase text-xs">
                     <div className="flex">
-                      <p className="bg-sky-500 py-1.5 rounded text-white font-bold px-3">
+                      <p className="bg-blue-500 py-1.5 rounded text-white font-bold px-3">
                         {Number(p.precio_final).toLocaleString("es-AR", {
                           style: "currency",
                           currency: "ARS",
@@ -356,9 +362,9 @@ export const OrdenDeCompra = () => {
                       </div>
                       <ul
                         tabIndex={0}
-                        className="dropdown-content z-[1] menu p-3 border-sky-300 border bg-white w-52 gap-2"
+                        className="dropdown-content z-[1] menu p-3 border-blue-500 border bg-white w-52 gap-2"
                       >
-                        <button className="hover:text-sky-500 transition-all text-left hover:underline">
+                        <button className="hover:text-blue-500 transition-all text-left hover:underline">
                           <span
                             onClick={() => {
                               handleID(p.id), openProductos();
@@ -369,7 +375,7 @@ export const OrdenDeCompra = () => {
                           </span>
                         </button>
                         <button
-                          className="hover:text-sky-500 transition-all text-left hover:underline"
+                          className="hover:text-blue-500 transition-all text-left hover:underline"
                           onClick={() => {
                             handleID(p.id),
                               document
@@ -379,7 +385,7 @@ export const OrdenDeCompra = () => {
                         >
                           Actualizar estado
                         </button>
-                        <button className="hover:text-sky-500 transition-all text-left hover:underline">
+                        <button className="hover:text-blue-500 transition-all text-left hover:underline">
                           <span
                             onClick={() => {
                               handleID(p.id), openModalEditarOrden();
@@ -392,7 +398,7 @@ export const OrdenDeCompra = () => {
 
                         <Link
                           to={`/orden/${p.id}`}
-                          className="hover:text-sky-500 transition-all text-left capitalize hover:underline"
+                          className="hover:text-blue-500 transition-all text-left capitalize hover:underline"
                         >
                           Ver orden
                         </Link>

@@ -34,54 +34,6 @@ export const ModalCompararPrecios = () => {
     filtrarPorRangoFecha();
   };
 
-  //   const handleCategoriaChange = (event) => {
-  //     const categoria = event.target.value;
-  //     setCategoriaSeleccionada(categoria);
-
-  //     // Filtrar productos por la categoría seleccionada
-  //     if (categoria !== "") {
-  //       const productosAgrupados = new Map();
-
-  //       // Recorrer las órdenes filtradas y agregar los productos correspondientes
-  //       ordenesFiltradas.forEach((orden) => {
-  //         orden.datos.productoSeleccionado.forEach((producto) => {
-  //           if (producto.categoria === categoria) {
-  //             const key = producto.detalle.toLowerCase(); // Usamos el detalle como clave, asegurándonos de ser case-insensitive
-  //             const proveedor = orden.proveedor;
-  //             const precio_und = parseFloat(producto.precio_und); // Convertir el precio a número
-
-  //             // Verificar si ya existe el detalle en el mapa
-  //             if (productosAgrupados.has(key)) {
-  //               // Si ya existe, agregar el proveedor si no está presente y actualizar el precio si es menor
-  //               const existingProducto = productosAgrupados.get(key);
-  //               if (!existingProducto.proveedores.includes(proveedor)) {
-  //                 existingProducto.proveedores.push(proveedor);
-  //               }
-  //               //   if (precio_und < existingProducto.precio_und) {
-  //               //     existingProducto.precio_und = precio_und;
-  //               //   }
-  //             } else {
-  //               // Si no existe, inicializar con el primer producto encontrado
-  //               productosAgrupados.set(key, {
-  //                 ...producto,
-  //                 proveedores: [proveedor],
-  //                 precio_und: precio_und,
-  //                 fecha: orden.created_at, // Agregar la fecha created_at al producto
-  //               });
-  //             }
-  //           }
-  //         });
-  //       });
-
-  //       // Convertir el mapa de productos agrupados de nuevo a un array de productos
-  //       const productosFiltrados = Array.from(productosAgrupados.values());
-
-  //       // Mostrar todos los productos y proveedores asociados, evitando duplicados
-  //       setProductosFiltrados(productosFiltrados);
-  //     } else {
-  //       setProductosFiltrados([]);
-  //     }
-  //   };
   const handleCategoriaChange = (event) => {
     const categoria = event.target.value;
     setCategoriaSeleccionada(categoria);
@@ -140,9 +92,6 @@ export const ModalCompararPrecios = () => {
     }
   };
 
-  console.log("ord", ordenesFiltradas);
-  console.log("productos", productosFiltrados);
-
   return (
     <dialog id="my_modal_comparar_precios" className="modal">
       <div className="modal-box max-w-full h-full max-h-full w-full rounded-none scroll-bar">
@@ -162,24 +111,24 @@ export const ModalCompararPrecios = () => {
 
         <form onSubmit={handleFiltrarClick}>
           <div className="flex space-x-4">
-            <div className="border border-sky-300 flex items-center gap-2 px-2 py-2">
+            <div className="border border-blue-500 flex items-center gap-2 px-2 py-2">
               <label className="text-sm font-bold" htmlFor="fechaInicio">
                 Fecha de inicio:
               </label>
               <input
-                className="text-sky-500 text-sm font-bold outline-none border border-sky-200 py-1 px-2"
+                className="text-blue-500 text-sm font-bold outline-none border border-blue-500 rounded py-1 px-2"
                 type="date"
                 id="fechaInicio"
                 value={fechaInicio}
                 onChange={(e) => setFechaInicio(e.target.value)}
               />
             </div>
-            <div className="border border-sky-300 flex items-center gap-2 px-2 py-2">
+            <div className="border border-blue-500 flex items-center gap-2 px-2 py-2">
               <label className="text-sm font-bold" htmlFor="fechaFin">
                 Fecha fin:
               </label>
               <input
-                className="text-sky-500 text-sm font-bold outline-none border border-sky-200 py-1 px-2"
+                className="text-blue-500 text-sm font-bold outline-none border border-blue-500 rounded py-1 px-2"
                 type="date"
                 id="fechaFin"
                 value={fechaFin}
@@ -189,7 +138,7 @@ export const ModalCompararPrecios = () => {
             <div className="flex items-center">
               <button
                 type="submit"
-                className="text-sm font-bold bg-sky-400 py-2 px-4 text-white rounded-full"
+                className="text-sm font-bold bg-blue-500 py-2 px-4 text-white rounded-full"
               >
                 Filtrar
               </button>
@@ -201,12 +150,12 @@ export const ModalCompararPrecios = () => {
             Seleccionar categoría:
           </label>
           <select
-            className="border border-sky-300 px-2 py-1.5 text-sm font-semibold outline-none uppercase"
+            className="border border-blue-500 px-2 py-1.5 text-sm font-semibold outline-none uppercase"
             id="categoria"
             value={categoriaSeleccionada}
             onChange={handleCategoriaChange}
           >
-            <option className="font-bold uppercase text-sky-400" value="">
+            <option className="font-bold uppercase text-blue-400" value="">
               Seleccione una categoría
             </option>
             {/* Obtener las categorías únicas de las órdenes filtradas */}
@@ -227,7 +176,7 @@ export const ModalCompararPrecios = () => {
               onClick={() =>
                 document.getElementById("my_modal_view_productos").showModal()
               }
-              className="font-semibold text-sm border-sky-300 text-sky-500 border rounded-full py-1.5 px-4 hover:shadow transition-all hover:border-orange-500 hover:text-orange-500"
+              className="font-semibold text-sm border-blue-500 text-blue-500 border rounded-full py-1.5 px-4 hover:shadow transition-all hover:border-orange-500 hover:text-orange-500"
             >
               Descargar o imprimir
             </button>
@@ -246,7 +195,7 @@ export const ModalCompararPrecios = () => {
                 <div className="flex flex-col gap-1 divide-y divide-gray-200">
                   <p className="font-bold text-gray-800">
                     <strong>Descripción:</strong>{" "}
-                    <span className="capitalize text-sky-500">
+                    <span className="capitalize text-blue-500">
                       {producto.detalle}
                     </span>
                   </p>
@@ -261,7 +210,7 @@ export const ModalCompararPrecios = () => {
                           className="flex items-center py-1"
                         >
                           <p className="capitalize">{proveedor.nombre} - </p>
-                          <p className="font-semibold text-sky-500 ml-1">
+                          <p className="font-semibold text-blue-500 ml-1">
                             {Number(proveedor.precio_und).toLocaleString(
                               "es-AR",
                               {

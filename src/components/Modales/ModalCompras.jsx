@@ -84,24 +84,24 @@ export const ModalCompras = () => {
 
         <form onSubmit={handleFiltrarClick}>
           <div className="flex space-x-4">
-            <div className="border border-sky-300 flex items-center gap-2 px-2 py-2">
+            <div className="border border-blue-500 flex items-center gap-2 px-2 py-2">
               <label className="text-sm font-bold" htmlFor="fechaInicio">
                 Fecha de inicio:
               </label>
               <input
-                className="text-sky-500 text-sm font-bold outline-none border border-sky-200 py-1 px-2"
+                className="text-blue-500 text-sm font-bold outline-none border border-blue-500 py-1 px-2"
                 type="date"
                 id="fechaInicio"
                 value={fechaInicio}
                 onChange={(e) => setFechaInicio(e.target.value)}
               />
             </div>
-            <div className="border border-sky-300 flex items-center gap-2 px-2 py-2">
+            <div className="border border-blue-500 flex items-center gap-2 px-2 py-2">
               <label className="text-sm font-bold" htmlFor="fechaFin">
                 Fecha fin:
               </label>
               <input
-                className="text-sky-500 text-sm font-bold outline-none border border-sky-200 py-1 px-2"
+                className="text-blue-500 text-sm font-bold outline-none border border-blue-500 py-1 px-2"
                 type="date"
                 id="fechaFin"
                 value={fechaFin}
@@ -111,7 +111,7 @@ export const ModalCompras = () => {
             <div className="flex items-center">
               <button
                 type="submit"
-                className="text-sm font-bold bg-sky-400 py-2 px-4 text-white rounded-full"
+                className="text-sm font-bold bg-blue-500 py-2 px-4 text-white rounded-full"
               >
                 Filtrar
               </button>
@@ -124,11 +124,11 @@ export const ModalCompras = () => {
             </label>
             <select
               id="proveedor"
-              className="text-sm font-bold outline-none border border-sky-200 py-1 px-2 ml-2 capitalize"
+              className="text-sm font-bold outline-none border border-blue-500 py-1 px-2 ml-2 capitalize"
               value={proveedorSeleccionado}
               onChange={handleProveedorChange}
             >
-              <option className="text-sky-400 font-bold" value="">
+              <option className="text-blue-500 font-bold" value="">
                 Todos los proveedores
               </option>
               {listaProveedores.map((proveedor) => (
@@ -146,16 +146,16 @@ export const ModalCompras = () => {
               onClick={() =>
                 document.getElementById("my_modal_proveedores").showModal()
               }
-              className="bg-sky-400 mt-2 py-1.5 px-4 rounded-full text-white text-sm font-semibold ml-3"
+              className="bg-blue-500 hover mt-2 py-1.5 px-4 rounded-full text-white text-sm font-semibold ml-3"
             >
               Imprimir o descargar compras por proveedor
             </button>
           </div>
         </form>
-        <div className="bg-sky-50 py-5 px-10 mt-5 flex gap-12">
+        <div className="bg-blue-50 py-5 px-10 mt-5 flex gap-12">
           <div>
             <p className="font-bold text-sm">Total en compras filtradas</p>
-            <p className="font-extrabold text-sky-500 text-xl">
+            <p className="font-extrabold text-blue-500 text-xl">
               {" "}
               {Number(precioFinalTotal).toLocaleString("es-AR", {
                 style: "currency",
@@ -165,7 +165,7 @@ export const ModalCompras = () => {
           </div>{" "}
           <div>
             <p className="font-bold text-sm">Total sin iva en compras</p>
-            <p className="font-extrabold text-sky-500 text-xl">
+            <p className="font-extrabold text-blue-500 text-xl">
               {" "}
               {Number(precioFinalIva).toLocaleString("es-AR", {
                 style: "currency",
@@ -175,7 +175,7 @@ export const ModalCompras = () => {
           </div>
           <div>
             <p className="font-bold text-sm">Total iva en compras</p>
-            <p className="font-extrabold text-sky-500 text-xl">
+            <p className="font-extrabold text-blue-500 text-xl">
               {" "}
               {Number(precioFinalTotal - precioFinalIva).toLocaleString(
                 "es-AR",
@@ -238,7 +238,7 @@ export const ModalCompras = () => {
                     </th>
                     <th className="whitespace-nowrap px-4 py-4  uppercase text-xs">
                       <div className="flex">
-                        <p className="bg-sky-500 py-1.5 rounded text-white font-bold px-3">
+                        <p className="bg-blue-500 py-1.5 rounded text-white font-bold px-3">
                           {Number(p.precio_final).toLocaleString("es-AR", {
                             style: "currency",
                             currency: "ARS",

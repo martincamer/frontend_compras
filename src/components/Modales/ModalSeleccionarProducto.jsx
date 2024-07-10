@@ -100,7 +100,7 @@ export const ModalSeleccionarProducto = ({
                 <div className="flex justify-end">
                   <button
                     type="button"
-                    className="inline-flex justify-center px-2 py-2 text-sm text-red-900 bg-red-100 border border-transparent rounded-xl hover:bg-red-200 duration-300 cursor-pointer max-md:text-xs"
+                    className="inline-flex justify-center px-2 py-2 text-sm text-red-900 bg-red-100 border border-transparent rounded-full hover:bg-red-200 duration-300 cursor-pointer max-md:text-xs"
                     onClick={closeModal}
                   >
                     <svg
@@ -109,7 +109,7 @@ export const ModalSeleccionarProducto = ({
                       viewBox="0 0 24 24"
                       strokeWidth={1.5}
                       stroke="currentColor"
-                      className="w-6 h-6"
+                      className="w-4 h-4"
                     >
                       <path
                         strokeLinecap="round"
@@ -124,7 +124,7 @@ export const ModalSeleccionarProducto = ({
                   SELECCIONAR PRODUCTO/COMPRA
                 </div>
 
-                <div className=" flex bg-white border-sky-500 border py-2 px-4 font-bold text-sm w-1/3 mb-2">
+                <div className=" flex bg-white border-blue-500 border py-2 px-4 font-bold text-sm w-1/3 mb-2">
                   <input
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
@@ -149,7 +149,7 @@ export const ModalSeleccionarProducto = ({
                 </div>
 
                 <div className="">
-                  <table className="table border border-sky-300">
+                  <table className="table border border-blue-500">
                     <thead className="ltr:text-left rtl:text-right">
                       <tr>
                         <th className="whitespace-nowrap px-4 py-4 uppercase font-bold text-sm text-gray-900">
@@ -176,7 +176,7 @@ export const ModalSeleccionarProducto = ({
                           <td className="whitespace-nowrap px-4 py-3 font-medium text-gray-900 uppercase">
                             {p.categoria}
                           </td>
-                          <td className="whitespace-nowrap px-4 py-3 font-extrabold text-sky-500 uppercase">
+                          <td className="whitespace-nowrap px-4 py-3 font-extrabold text-blue-500 uppercase">
                             {Number(p.precio_und).toLocaleString("es-AR", {
                               style: "currency",
                               currency: "ARS",
@@ -188,7 +188,7 @@ export const ModalSeleccionarProducto = ({
                                 handleID(p.id), openModalProductoSeleccionado();
                               }}
                               type="button"
-                              className="border border-sky-400 text-sky-500 px-2 py-2 capitalize transition-all ease-linear"
+                              className="border border-orange-400 text-blue-500 px-2 py-2 capitalize transition-all ease-linear"
                             >
                               Seleccionar producto
                             </button>

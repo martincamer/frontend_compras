@@ -76,7 +76,7 @@ export const ModalObtenerCompra = ({ isOpen, closeModal, obtenerId }) => {
                     viewBox="0 0 24 24"
                     strokeWidth={1.5}
                     stroke="currentColor"
-                    className="w-6 h-6"
+                    className="w-4 h-4"
                   >
                     <path
                       strokeLinecap="round"
@@ -89,7 +89,7 @@ export const ModalObtenerCompra = ({ isOpen, closeModal, obtenerId }) => {
 
               <div className="text-sm text-slate-700 mb-3 border-b-[1px] uppercase font-bold pb-2 flex gap-4 items-center">
                 COMPROBANTE DE PAGO NUMERO{" "}
-                <span className="text-sky-600 text-lg bg-sky-100 py-1 px-4 rounded-xl">
+                <span className="text-blue-600 text-lg bg-blue-100 py-1 px-4 rounded-xl">
                   {datos.id}
                 </span>
               </div>
@@ -97,21 +97,21 @@ export const ModalObtenerCompra = ({ isOpen, closeModal, obtenerId }) => {
               <div className="py-2 flex flex-col gap-2">
                 <p className="uppercase font-bold text-sm text-slate-700 flex gap-3">
                   <span className="underline"> Fecha de creación </span>
-                  <span className="text-sky-600 font-normal">
+                  <span className="text-blue-600 font-normal">
                     {datos?.created_at?.split("T")[0]}
                   </span>
                 </p>
 
                 <p className="uppercase font-bold text-sm text-slate-700 flex gap-3">
                   <span className="underline"> Proveedor </span>
-                  <span className="text-sky-600 font-normal">
+                  <span className="text-blue-600 font-normal">
                     {datos.proveedor}
                   </span>
                 </p>
 
                 <p className="uppercase font-bold text-sm text-slate-700 flex gap-3">
                   <span className="underline"> Total del comprobante </span>
-                  <span className="text-sky-600 font-bold">
+                  <span className="text-blue-600 font-bold">
                     {Number(datos.total).toLocaleString("es-AR", {
                       style: "currency",
                       currency: "ARS",
@@ -169,9 +169,9 @@ export const ModalObtenerCompra = ({ isOpen, closeModal, obtenerId }) => {
                 <div>
                   <button
                     onClick={handleToggleImagenAmpliada}
-                    className="text-sm text-white bg-green-500/90 py-2.5 px-6 font-semibold rounded-full flex gap-2 items-center"
+                    className="text-sm text-white bg-green-500 py-2.5 px-6 font-semibold rounded-full flex gap-2 items-center"
                   >
-                    VER COMPROBANTE IMAGEN GRANDE
+                    Ver imagen del comprobante
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       fill="none"

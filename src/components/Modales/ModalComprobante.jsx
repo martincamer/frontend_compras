@@ -179,7 +179,7 @@ export const ModalComprobante = ({
                       viewBox="0 0 24 24"
                       strokeWidth={1.5}
                       stroke="currentColor"
-                      className="w-6 h-6"
+                      className="w-4 h-4"
                     >
                       <path
                         strokeLinecap="round"
@@ -209,7 +209,7 @@ export const ModalComprobante = ({
                     <input
                       onChange={(e) => setTotal(e.target.value)}
                       type="text"
-                      className="border-sky-300 border py-2 px-3 font-semibold text-sm outline-none"
+                      className="border-blue-500 rounded border py-2 px-3 font-semibold text-sm outline-none"
                       placeholder="PONER EL TOTAL"
                     />
                     <div className="flex">
@@ -222,7 +222,7 @@ export const ModalComprobante = ({
                     </div>
                   </div>
 
-                  <div className="border border-sky-300 py-2 px-3 mt-4">
+                  <div className="border border-blue-500 rounded py-2 px-3 mt-4">
                     <label
                       className="uppercase text-slate-700 text-sm font-semibold"
                       htmlFor="fileUpload"
@@ -235,7 +235,7 @@ export const ModalComprobante = ({
                       accept="image/*,video/*,application/pdf"
                       id="fileUpload"
                       onChange={handleFileChange}
-                      className="w-full file-input file-input-info bg-sky-100"
+                      className="w-full file-input file-input-warning bg-blue-100 outline-none"
                     />
                   </div>
 
@@ -270,7 +270,7 @@ export const ModalComprobante = ({
 
                   <div className="mt-3">
                     <button
-                      className="bg-sky-400 py-2 text-xs px-6 rounded-full font-semibold text-white uppercase flex gap-2 items-center hover:bg-orange-500 transition-all"
+                      className="bg-blue-500 py-2 text-xs px-6 rounded-full font-semibold text-white flex gap-2 items-center hover:bg-orange-500 transition-all"
                       type="submit"
                     >
                       CREAR COMPROBANTE

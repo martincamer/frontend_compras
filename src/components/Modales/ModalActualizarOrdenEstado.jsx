@@ -71,10 +71,10 @@ export const ModalActualizarOrdenEstado = ({ idObtenida }) => {
             <select
               value={estado}
               onChange={(e) => setEstado(e.target.value)}
-              className="py-2.5 px-4 uppercase placeholder:text-slate-400 text-slate-700 font-semibold text-sm bg-white border-sky-400 border rounded-none outline-none"
+              className="py-2.5 px-4 uppercase placeholder:text-slate-400 text-slate-700 font-semibold text-sm bg-white border-blue-500 border rounded outline-none"
               placeholder="PROVEEDOR DE LA ORDEN"
             >
-              <option className="capitalize font-bold text-sky-500">
+              <option className="capitalize font-bold text-blue-500">
                 Seleccionar el estado
               </option>
               <option value={"pendiente"} className="capitalize font-semibold">
@@ -90,7 +90,7 @@ export const ModalActualizarOrdenEstado = ({ idObtenida }) => {
           </div>
 
           <div>
-            <button className="bg-sky-500 text-white hover:bg-orange-500 transition-all font-semibold text-sm py-1.5 px-6 rounded-full mt-3">
+            <button className="bg-blue-500 text-white hover:bg-orange-500 transition-all font-semibold text-sm py-1.5 px-6 rounded-full mt-3">
               Actualizar el estado
             </button>
           </div>

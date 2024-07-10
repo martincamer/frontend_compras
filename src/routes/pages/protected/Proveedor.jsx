@@ -70,8 +70,17 @@ export const Proveedor = () => {
 
   const [currentPage, setCurrentPage] = useState(1);
   const [productsPerPage] = useState(10);
-  const [fechaInicial, setFechaInicial] = useState("");
-  const [fechaFinal, setFechaFinal] = useState("");
+
+  const today = new Date();
+  const firstDayOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
+  const lastDayOfMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0);
+
+  // Convertir las fechas en formato YYYY-MM-DD para los inputs tipo date
+  const fechaInicioPorDefecto = firstDayOfMonth.toISOString().split("T")[0];
+  const fechaFinPorDefecto = lastDayOfMonth.toISOString().split("T")[0];
+
+  const [fechaInicial, setFechaInicial] = useState(fechaInicioPorDefecto);
+  const [fechaFinal, setFechaFinal] = useState(fechaFinPorDefecto);
 
   const orderByCreatedAtDescending = (a, b) => {
     return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
@@ -116,7 +125,7 @@ export const Proveedor = () => {
     );
   };
 
-  const productosFiltrados = currentProducts.filter(filtrarPorFecha);
+  const productosFiltrados = sortedComprobantes.filter(filtrarPorFecha);
 
   const resetFechas = () => {
     setFechaFinal("");
@@ -168,16 +177,16 @@ export const Proveedor = () => {
       <div className="bg-white mb-4 h-10 flex">
         <Link
           to={"/proveedores"}
-          className="bg-sky-100 flex h-full px-4 justify-center items-center font-bold text-sky-600"
+          className="bg-sky-100 flex h-full px-4 justify-center items-center font-bold text-blue-600"
         >
           Proveedores
         </Link>{" "}
-        <Link className="bg-sky-500 flex h-full px-4 justify-center items-center font-bold text-white capitalize">
+        <Link className="bg-blue-500 flex h-full px-4 justify-center items-center font-bold text-white capitalize">
           Proveedor {datos.proveedor}
         </Link>
       </div>
       <div className="bg-white py-5 px-5 mx-5 mt-10">
-        <h3 className="text-xl font-bold text-sky-500">
+        <h3 className="text-xl font-bold text-blue-500">
           Observa el proveedor y carga comprobantes, pone la cuenta al día de
           proveedor{" "}
           <span className="text-slate-600 capitalize">{datos.proveedor}</span>.
@@ -194,8 +203,8 @@ export const Proveedor = () => {
             className="dropdown-content z-[1] menu p-2 mt-2 bg-white w-[800px] border"
           >
             <div className="py-5 px-5 grid grid-cols-3 gap-5 w-full">
-              <div className="flex flex-col gap-1 border border-sky-300 py-3 px-3">
-                <p className="font-medium text-sm text-sky-500">
+              <div className="flex flex-col gap-1 border border-blue-500 py-3 px-3">
+                <p className="font-medium text-sm text-blue-500">
                   Total en comprobantes cargados del mes.
                 </p>
                 <p className="font-bold text-lg">
@@ -206,7 +215,7 @@ export const Proveedor = () => {
                 </p>
               </div>
 
-              <div className="flex flex-col justify-center gap-1 border border-sky-300 py-3 px-3">
+              <div className="flex flex-col justify-center gap-1 border border-blue-500 py-3 px-3">
                 <p className="font-medium text-sm">
                   Total de deuda del proveedor.
                 </p>
@@ -217,11 +226,11 @@ export const Proveedor = () => {
                   })}
                 </p>
               </div>
-              <div className="flex flex-col gap-1 border border-sky-300 py-3 px-3">
+              <div className="flex flex-col gap-1 border border-blue-500 py-3 px-3">
                 <p className="font-medium text-sm">
                   Total en comprobantes filtrados.
                 </p>
-                <p className="font-bold text-lg text-sky-500">
+                <p className="font-bold text-lg text-blue-500">
                   {Number(totalEnComprobantesFiltrados)?.toLocaleString(
                     "es-AR",
                     {
@@ -242,7 +251,7 @@ export const Proveedor = () => {
         <div className="mx-5 py-2 flex max-md:flex-col gap-2 items-center max-md:px-0 max-md:py-0 max-md:items-start border-b-[1px] border-slate-300 pb-4 max-md:pb-4 max-md:mx-2 max-md:overflow-x-scroll scrollbar-hidden">
           <button
             onClick={() => openComprobante()}
-            className="text-sm text-white bg-sky-400 py-3 px-6 rounded font-bold uppercase max-md:text-xs flex gap-2 items-center transition-all ease-linear"
+            className="text-sm text-white bg-blue-500 py-3 px-6 rounded font-bold max-md:text-xs flex gap-2 items-center transition-all ease-linear"
           >
             Cargar nuevo comprobante de pago
             <svg
@@ -264,7 +273,7 @@ export const Proveedor = () => {
             onClick={() => {
               handleID(params.id), openModal();
             }}
-            className=" text-sm text-white bg-orange-400 py-3 px-6 rounded font-semibold uppercase max-md:text-xs flex gap-2 items-center transition-all ease-linear"
+            className=" text-sm text-white bg-orange-500 py-3 px-6 rounded font-semibold max-md:text-xs flex gap-2 items-center transition-all ease-linear"
           >
             Editar el saldo del proveedor
             <svg
@@ -285,8 +294,8 @@ export const Proveedor = () => {
         </div>
       )}
 
-      <div className="mx-5 mt-6 bg-white py-6 px-4 border-sky-300 border">
-        <p className="underline text-sky-400 uppercase font-semibold">
+      <div className="mx-5 mt-6 bg-white py-6 px-4 border-blue-500 border">
+        <p className="text-blue-500 font-bold">
           Tabla de comprobantes cargados del mes
         </p>
       </div>
@@ -296,7 +305,7 @@ export const Proveedor = () => {
           type="date"
           value={fechaInicial}
           onChange={(e) => setFechaInicial(e.target.value)}
-          className="px-4 py-2 border border-sky-300 text-sm uppercase font-semibold"
+          className="px-4 py-2 border border-blue-500 rounded text-sm uppercase font-semibold"
         />
 
         <span className="uppercase font-bold text-sm text-slate-700">
@@ -306,12 +315,12 @@ export const Proveedor = () => {
           type="date"
           value={fechaFinal}
           onChange={(e) => setFechaFinal(e.target.value)}
-          className="px-4 py-2 border border-sky-300 text-sm uppercase font-semibold"
+          className="px-4 py-2 border border-blue-500 rounded text-sm uppercase font-semibold"
         />
 
         <div>
           <button
-            className="uppercase text-sm bg-red-100 text-red-800 py-2 px-4 rounded font-bold"
+            className="text-sm bg-orange-500 text-white py-2 px-4 rounded font-bold"
             type="button"
             onClick={() => resetFechas()}
           >
@@ -320,7 +329,7 @@ export const Proveedor = () => {
         </div>
       </div>
 
-      <div className="mt-6 mx-8">
+      <div className="mt-6 mx-8 mb-20">
         <table className="min-w-full divide-y-2 bg-white text-sm table rounded-none">
           <thead className="text-left">
             <tr>
@@ -357,9 +366,9 @@ export const Proveedor = () => {
                     currency: "ARS",
                   })}
                 </th>
-                <td className="whitespace-nowrap px-4 py-6 text-green-800 uppercase text-xs font-bold">
+                <td className="whitespace-nowrap px-4 py-6 text-white uppercase text-xs font-bold">
                   {" "}
-                  <span className="bg-green-100 py-2 px-5 rounded">
+                  <span className="bg-green-500 py-2 px-5 rounded">
                     {Number(p.total).toLocaleString("es-AR", {
                       style: "currency",
                       currency: "ARS",
@@ -393,13 +402,13 @@ export const Proveedor = () => {
                     </div>
                     <ul
                       tabIndex={0}
-                      className="dropdown-content z-[1] menu p-3 border-sky-300 border bg-white w-52 gap-2"
+                      className="dropdown-content z-[1] menu p-3 border-blue-500 border bg-white w-52 gap-2"
                     >
                       <Link
                         onClick={() => {
                           handleID(p.id), openComprobanteModal();
                         }}
-                        className="hover:text-sky-500 transition-all text-left hover:underline font-semibold capitalize"
+                        className="hover:text-blue-500 transition-all text-left hover:underline font-semibold capitalize"
                       >
                         Ver comprobante
                       </Link>
@@ -407,7 +416,7 @@ export const Proveedor = () => {
                       <Link
                         target="_blank"
                         to={`/pdf-comprobante/${p.id}`}
-                        className="hover:text-sky-500 transition-all text-left hover:underline font-semibold capitalize"
+                        className="hover:text-blue-500 transition-all text-left hover:underline font-semibold capitalize"
                       >
                         Descargar comprob.
                       </Link>
@@ -433,11 +442,11 @@ export const Proveedor = () => {
           </tbody>
         </table>
       </div>
-      <div className="mt-3 flex justify-center items-center space-x-2 pb-10">
+      {/* <div className="mt-3 flex justify-center items-center space-x-2 pb-10">
         <button
           onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
           disabled={currentPage === 1}
-          className="bg-sky-300 py-2 px-3 rounded-md text-sm font-medium text-gray-700 hover:bg-sky-400 hover:text-white focus:outline-none focus:bg-gray-100 cursor-pointer"
+          className="bg-blue-300 py-2 px-3 rounded-md text-sm font-medium text-gray-700 hover:bg-blue-400 hover:text-white focus:outline-none focus:bg-gray-100 cursor-pointer"
         >
           <FaArrowLeft />
         </button>
@@ -447,8 +456,8 @@ export const Proveedor = () => {
               <button
                 onClick={() => paginate(number)}
                 className={`${
-                  currentPage === number ? "bg-sky-200" : "bg-sky-300"
-                } py-2 px-3 rounded-md text-sm font-medium text-gray-700 hover:text-white hover:bg-sky-500 focus:outline-none focus:bg-sky-300`}
+                  currentPage === number ? "bg-blue-200" : "bg-blue-300"
+                } py-2 px-3 rounded-md text-sm font-medium text-gray-700 hover:text-white hover:bg-blue-500 focus:outline-none focus:bg-blue-300`}
               >
                 {number}
               </button>
@@ -460,11 +469,11 @@ export const Proveedor = () => {
             setCurrentPage((prev) => Math.min(prev + 1, totalPages))
           }
           disabled={currentPage === totalPages}
-          className="bg-sky-300 py-2 px-3 rounded-md text-sm font-medium text-gray-700 hover:bg-sky-400 hover:text-white focus:outline-none focus:bg-gray-100 cursor-pointer"
+          className="bg-blue-300 py-2 px-3 rounded-md text-sm font-medium text-gray-700 hover:bg-blue-400 hover:text-white focus:outline-none focus:bg-gray-100 cursor-pointer"
         >
           <FaArrowRight />
         </button>
-      </div>
+      </div> */}
       <ModalComprobante
         setComprobantes={setComprobantes}
         isOpen={isOpenComprobante}
@@ -511,7 +520,7 @@ const ImagenModal = ({ archivo }) => {
   return (
     <>
       <td
-        className="bg-sky-100 text-sky-600 py-2 px-5 rounded font-bold text-xs"
+        className="bg-blue-500 text-white py-2 px-5 rounded font-bold text-xs cursor-pointer"
         onClick={() => setShowModal(true)}
       >
         VER COMPROBANTE

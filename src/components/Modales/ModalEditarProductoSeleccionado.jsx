@@ -184,7 +184,7 @@ export const ModalEditarProductoSeleccionado = ({
                   EDITAR PRODUCTO SELECCIONADO
                 </div>
 
-                <div className=" border-sky-400 border">
+                <div className=" border-blue-500 border">
                   <table className="table">
                     <thead className="">
                       <tr>
@@ -211,7 +211,7 @@ export const ModalEditarProductoSeleccionado = ({
                         <td className="px-4 py-3 font-medium text-gray-900 uppercase">
                           <input
                             value={precio_und}
-                            className="border-sky-400 py-2.5 bg-white uppercase px-4 border"
+                            className="border-blue-500 py-2.5 bg-white uppercase px-4 border"
                             type="text"
                             onChange={(e) => setPrecio(e.target.value)}
                           />
@@ -219,7 +219,7 @@ export const ModalEditarProductoSeleccionado = ({
                         <td className="px-4 py-3 font-medium text-gray-900 uppercase">
                           <input
                             value={cantidad}
-                            className="border-sky-400 py-2.5 bg-white uppercase px-4 border"
+                            className="border-blue-500 py-2.5 bg-white uppercase px-4 border"
                             type="text"
                             onChange={(e) => setCantidad(e.target.value)}
                           />
@@ -227,7 +227,7 @@ export const ModalEditarProductoSeleccionado = ({
                         <td className="px-4 py-3 font-medium text-gray-900 uppercase">
                           <select
                             value={iva}
-                            className="border-sky-400 py-2.5 bg-white uppercase px-4 border"
+                            className="border-blue-500 py-2.5 bg-white uppercase px-4 border"
                             type="text"
                             onChange={(e) => setIva(Number(e.target.value))}
                           >
@@ -273,23 +273,9 @@ export const ModalEditarProductoSeleccionado = ({
                       //   closeModal();
                     }}
                     type="button"
-                    className="bg-green-200 text-green-600 rounded-xl py-2 px-4 text-sm flex gap-2 items-center"
+                    className="bg-green-500 text-white rounded-full py-2 px-4 text-sm flex gap-2 items-center font-semibold"
                   >
-                    EDITAR PRODUCTO
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      strokeWidth={1.5}
-                      stroke="currentColor"
-                      className="w-6 h-6"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0 1 11.186 0Z"
-                      />
-                    </svg>
+                    Actualizar el producto de la orden
                   </button>
                 </div>
               </div>

@@ -106,7 +106,7 @@ export const ModalEditarSaldoProveedor = ({
                       viewBox="0 0 24 24"
                       strokeWidth={1.5}
                       stroke="currentColor"
-                      className="w-6 h-6"
+                      className="w-4 h-4"
                     >
                       <path
                         strokeLinecap="round"
@@ -133,7 +133,7 @@ export const ModalEditarSaldoProveedor = ({
                       value={total}
                       onChange={(e) => setTotal(e.target.value)}
                       type="text"
-                      className="border-sky-300 border py-2 px-3 font-semibold text-sm outline-none"
+                      className="border-blue-500 rounded border py-2 px-3 font-semibold text-sm outline-none"
                       placeholder="PONER EL TOTAL"
                     />
                     <div className="flex">
@@ -148,10 +148,10 @@ export const ModalEditarSaldoProveedor = ({
 
                   <div className="mt-3">
                     <button
-                      className="bg-sky-400 py-2.5 px-6 rounded-full font-semibold text-white uppercase text-xs flex gap-2 items-center hover:bg-orange-500 transition-all"
+                      className="bg-blue-500 py-2.5 px-6 rounded-full font-semibold text-white text-sm flex gap-2 items-center hover:bg-orange-500 transition-all"
                       type="submit"
                     >
-                      EDITAR SALDO DEL PROVEEDOR
+                      Actualizar el saldo del proveedor
                     </button>
                   </div>
                 </form>

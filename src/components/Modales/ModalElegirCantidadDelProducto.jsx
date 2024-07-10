@@ -139,7 +139,7 @@ export const ModalElegirCantidadDelProducto = ({
                   PRODUCTO SELECCIONADO
                 </div>
 
-                <div className="border border-sky-300 rounded-none">
+                <div className="border border-blue-500 rounded-none">
                   <table className="table">
                     <thead className="">
                       <tr>
@@ -178,7 +178,7 @@ export const ModalElegirCantidadDelProducto = ({
                         <td className="px-4 py-3 font-medium text-gray-900 uppercase">
                           <input
                             value={precio_und}
-                            className="py-2 px-4 border border-sky-300 shadow-none outline-none"
+                            className="py-2 px-4 border border-blue-500 shadow-none outline-none"
                             type="text"
                             onChange={(e) => setPrecio(e.target.value)}
                           />
@@ -186,7 +186,7 @@ export const ModalElegirCantidadDelProducto = ({
                         <td className="px-4 py-3 font-medium text-gray-900 uppercase">
                           <input
                             value={cantidad}
-                            className="py-2 px-4 border border-sky-300 shadow-none outline-none"
+                            className="py-2 px-4 border border-blue-500 shadow-none outline-none"
                             type="text"
                             onChange={(e) => setCantidad(e.target.value)}
                           />
@@ -194,7 +194,7 @@ export const ModalElegirCantidadDelProducto = ({
                         <td className="px-4 py-3 font-medium text-gray-900 uppercase">
                           <select
                             value={iva}
-                            className="py-2 px-4 border border-sky-300 shadow-none outline-none"
+                            className="py-2 px-4 border border-blue-500 shadow-none outline-none"
                             type="text"
                             onChange={(e) => setIva(Number(e.target.value))}
                           >
@@ -252,23 +252,9 @@ export const ModalElegirCantidadDelProducto = ({
                       closeModal();
                     }}
                     type="button"
-                    className="bg-sky-400 text-white hover:bg-orange-500 transition-all font-semibold rounded-full capitalize py-1.5 px-4 text-sm flex gap-2 items-center"
+                    className="bg-blue-500 text-white hover:bg-orange-500 transition-all font-semibold rounded-full py-1.5 px-4 text-sm flex gap-2 items-center"
                   >
-                    CREAR EL PRODUCTO/ORDEN
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      strokeWidth={1.5}
-                      stroke="currentColor"
-                      className="w-6 h-6"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
-                      />
-                    </svg>
+                    Crear el producto para la orden
                   </button>
                 </div>
 

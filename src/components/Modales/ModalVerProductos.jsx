@@ -68,7 +68,7 @@ export const ModalVerProductos = ({
                 leaveFrom="opacity-100 scale-100"
                 leaveTo="opacity-0 scale-95"
               >
-                <div className="inline-block w-2/3 max-md:w-full p-6 my-8 overflow-hidden max-md:h-[300px] max-md:overflow-y-scroll text-left align-middle transition-all transform bg-white shadow-xl rounded-3xl max-md:hidden">
+                <div className="inline-block w-2/3 max-md:w-full p-6 my-8 overflow-hidden max-md:h-[300px] max-md:overflow-y-scroll text-left align-middle transition-all transform bg-white shadow-xl rounded-none max-md:hidden">
                   <div className="flex justify-end">
                     <button
                       type="button"
@@ -81,7 +81,7 @@ export const ModalVerProductos = ({
                         viewBox="0 0 24 24"
                         strokeWidth={1.5}
                         stroke="currentColor"
-                        className="w-6 h-6"
+                        className="w-4 h-4"
                       >
                         <path
                           strokeLinecap="round"

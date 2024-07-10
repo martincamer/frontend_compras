@@ -72,7 +72,7 @@ const ApexChartColumnProveedores = ({ proveedores, totalProveedores }) => {
   ];
 
   return (
-    <div className="bg-white shadow-xl border py-5 px-5 relative mb-6 h-full">
+    <div className="bg-white py-10 px-10 z-[100] border-blue-500 border relative rounded">
       <div className="overflow-y-scroll h-[50vh] scroll-bar" id="chart">
         <ReactApexChart
           options={chartOptions}

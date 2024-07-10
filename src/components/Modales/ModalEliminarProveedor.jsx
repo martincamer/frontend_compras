@@ -34,7 +34,7 @@ export const ModalEliminarProveedor = ({ idObtenida }) => {
   };
   return (
     <dialog id="my_modal_eliminar_proveedor" className="modal">
-      <div className="modal-box">
+      <div className="modal-box rounded-none">
         <form method="dialog">
           {/* if there is a button in form, it will close the modal */}
           <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">

@@ -74,12 +74,13 @@ export const ModalActualizarProveedor = ({ idObtenida }) => {
         >
           <div className="flex flex-col gap-1">
             <label className="text-sm text-slate-700 uppercase">
-              Proveedor de la orden
+              Proveedor
             </label>
             <input
               {...register("proveedor")}
-              className="py-2.5 px-4 uppercase placeholder:text-slate-400 text-slate-700 font-semibold text-sm bg-white border-sky-400 border rounded-none outline-none"
-              placeholder="Proveedor de la orden"
+              type="text"
+              className="py-2 px-4 uppercase placeholder:text-slate-400 text-slate-700 font-semibold text-sm bg-white border-blue-500 border rounded outline-none"
+              placeholder="DETALLE DEL PROVEEDOR"
             />
           </div>
           <div className="flex flex-col gap-1">
@@ -88,8 +89,9 @@ export const ModalActualizarProveedor = ({ idObtenida }) => {
             </label>
             <input
               {...register("localidad")}
-              className="py-2.5 px-4 uppercase placeholder:text-slate-400 text-slate-700 font-semibold text-sm bg-white border-sky-400 border rounded-none outline-none"
-              placeholder="Localidad del proveedor"
+              type="text"
+              className="py-2 px-4 uppercase placeholder:text-slate-400 text-slate-700 font-semibold text-sm bg-white border-blue-500 border rounded outline-none"
+              placeholder="LOCALIDAD DEL PROVEEDOR"
             />
           </div>
           <div className="flex flex-col gap-1">
@@ -98,12 +100,16 @@ export const ModalActualizarProveedor = ({ idObtenida }) => {
             </label>
             <input
               {...register("provincia")}
-              className="py-2.5 px-4 uppercase placeholder:text-slate-400 text-slate-700 font-semibold text-sm bg-white border-sky-400 border rounded-none outline-none"
-              placeholder="Provincia del proveedor"
+              type="text"
+              className="py-2 px-4 uppercase placeholder:text-slate-400 text-slate-700 font-semibold text-sm bg-white border-blue-500 border rounded outline-none"
+              placeholder="PROVINCIA DEL PROVEEDOR"
             />
           </div>
           <div>
-            <button className="bg-sky-500 text-white hover:bg-orange-500 transition-all font-semibold text-sm py-1.5 px-6 rounded-full mt-3">
+            <button
+              type="submit"
+              class="group relative hover:bg-orange-500 text-white transition-all ease-in-out bg-blue-500 font-bold text-sm py-2 px-4 rounded-full flex items-center justify-center"
+            >
               Actualizar el proveedor
             </button>
           </div>
