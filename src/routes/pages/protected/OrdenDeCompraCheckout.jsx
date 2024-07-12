@@ -4,7 +4,6 @@ import { useOrdenesContext } from "../../../context/OrdenesProvider";
 import { useProductosContext } from "../../../context/ProductosProvider";
 import { Link } from "react-router-dom";
 import { ModalVerProductos } from "../../../components/Modales/ModalVerProductos";
-import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 
 export const OrdenDeCompraCheckout = () => {

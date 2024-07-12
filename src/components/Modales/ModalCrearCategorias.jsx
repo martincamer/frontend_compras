@@ -127,7 +127,7 @@ export const ModalCrearCategorias = ({
               leaveFrom="opacity-100 scale-100"
               leaveTo="opacity-0 scale-95"
             >
-              <div className="inline-block w-1/2 max-md:w-full p-6 my-8 overflow-hidden max-md:h-[300px] max-md:overflow-y-scroll text-left align-middle transition-all transform bg-white rounded-none">
+              <div className="inline-block w-1/2 max-md:w-full p-6 my-8 overflow-hidden max-md:h-[50vh] max-md:overflow-y-scroll text-left align-middle transition-all transform bg-white rounded-none">
                 <div className="flex justify-end">
                   <button
                     type="button"
@@ -162,7 +162,7 @@ export const ModalCrearCategorias = ({
                     <input
                       {...register("detalle")}
                       type="text"
-                      className="py-2 px-4 font-semibold uppercase text-sm border border-blue-500 rounded outline-none w-1/4"
+                      className="py-2 px-4 font-semibold uppercase text-sm border border-blue-500 rounded outline-none w-1/4 max-md:w-full"
                       placeholder="DETALLE DE LA CATEGORIA"
                     />
                   </div>
@@ -182,7 +182,7 @@ export const ModalCrearCategorias = ({
                       Categorias creadas
                     </p>
                   </div>
-                  <div className="py-2 px-0 grid grid-cols-3 gap-3">
+                  <div className="py-2 px-0 grid grid-cols-3 gap-3 max-md:grid-cols-1">
                     {categorias.map((c) => (
                       <div
                         className="border-slate-300 border-[1px] py-2 px-3 rounded-xl flex gap-2 items-center justify-between"

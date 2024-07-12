@@ -111,7 +111,7 @@ export const ModalElegirCantidadDelProducto = ({
               leaveFrom="opacity-100 scale-100"
               leaveTo="opacity-0 scale-95"
             >
-              <div className="inline-block w-5/6 max-md:w-full p-6 my-8 overflow-hidden max-md:h-[300px] max-md:overflow-y-scroll text-left align-middle transition-all transform bg-white shadow-xl rounded-none">
+              <div className="inline-block w-5/6 max-md:w-full p-6 my-8 overflow-hidden max-md:overflow-y-scroll text-left align-middle transition-all transform bg-white shadow-xl rounded-none">
                 <div className="flex justify-end">
                   <button
                     type="button"
@@ -139,7 +139,7 @@ export const ModalElegirCantidadDelProducto = ({
                   PRODUCTO SELECCIONADO
                 </div>
 
-                <div className="border border-blue-500 rounded-none">
+                <div className="border border-blue-500 rounded-none max-md:overflow-x-auto">
                   <table className="table">
                     <thead className="">
                       <tr>

@@ -172,9 +172,9 @@ export const Proveedor = () => {
   const handleID = (id) => setObtenerId(id);
 
   return (
-    <section className="max-h-full min-h-screen h-full w-full">
+    <section className="max-h-full min-h-screen h-full w-full max-md:py-12">
       <ToastContainer />
-      <div className="bg-white mb-4 h-10 flex">
+      <div className="bg-white mb-4 h-10 flex max-md:hidden">
         <Link
           to={"/proveedores"}
           className="bg-sky-100 flex h-full px-4 justify-center items-center font-bold text-blue-600"
@@ -185,7 +185,7 @@ export const Proveedor = () => {
           Proveedor {datos.proveedor}
         </Link>
       </div>
-      <div className="bg-white py-5 px-5 mx-5 mt-10">
+      <div className="bg-white py-5 px-5 mx-5 mt-10 max-md:mt-5">
         <h3 className="text-xl font-bold text-blue-500">
           Observa el proveedor y carga comprobantes, pone la cuenta al día de
           proveedor{" "}
@@ -193,16 +193,16 @@ export const Proveedor = () => {
         </h3>
       </div>
 
-      <div className="bg-white py-5 px-5 mx-5 my-10">
+      <div className="bg-white py-5 px-5 mx-5 my-10 max-md:my-5">
         <div className="dropdown dropdown-bottom">
           <button className="font-bold text-sm bg-rose-400 py-2 px-4 text-white rounded">
             Ver estadisticas de compras
           </button>
           <ul
             tabIndex={0}
-            className="dropdown-content z-[1] menu p-2 mt-2 bg-white w-[800px] border"
+            className="dropdown-content z-[1] menu p-2 mt-2 bg-white w-[800px] border max-md:w-80"
           >
-            <div className="py-5 px-5 grid grid-cols-3 gap-5 w-full">
+            <div className="py-5 px-5 grid grid-cols-3 gap-5 w-full max-md:grid-cols-1">
               <div className="flex flex-col gap-1 border border-blue-500 py-3 px-3">
                 <p className="font-medium text-sm text-blue-500">
                   Total en comprobantes cargados del mes.
@@ -248,7 +248,7 @@ export const Proveedor = () => {
       {user.tipo === "admin" ? (
         ""
       ) : (
-        <div className="mx-5 py-2 flex max-md:flex-col gap-2 items-center max-md:px-0 max-md:py-0 max-md:items-start border-b-[1px] border-slate-300 pb-4 max-md:pb-4 max-md:mx-2 max-md:overflow-x-scroll scrollbar-hidden">
+        <div className="mx-5 py-2 flex max-md:flex-col gap-2 items-center max-md:items-start border-b-[1px] border-slate-300 pb-4 max-md:pb-4 max-md:mx-2 max-md:overflow-x-scroll scrollbar-hidden max-md:bg-white max-md:px-5 max-md:py-5 max-md:h-[10vh] max-md:overflow-y-auto">
           <button
             onClick={() => openComprobante()}
             className="text-sm text-white bg-blue-500 py-3 px-6 rounded font-bold max-md:text-xs flex gap-2 items-center transition-all ease-linear"
@@ -300,7 +300,7 @@ export const Proveedor = () => {
         </p>
       </div>
 
-      <div className="flex gap-4 mb-1 mt-6 mx-9 items-center">
+      <div className="flex gap-4 mb-1 mt-6 mx-9 max-md:mx-5 items-center max-md:bg-white max-md:px-5 max-md:py-5">
         <input
           type="date"
           value={fechaInicial}
@@ -308,7 +308,7 @@ export const Proveedor = () => {
           className="px-4 py-2 border border-blue-500 rounded text-sm uppercase font-semibold"
         />
 
-        <span className="uppercase font-bold text-sm text-slate-700">
+        <span className="uppercase font-bold text-sm text-slate-700 max-md:hidden">
           desde
         </span>
         <input
@@ -320,7 +320,7 @@ export const Proveedor = () => {
 
         <div>
           <button
-            className="text-sm bg-orange-500 text-white py-2 px-4 rounded font-bold"
+            className="text-sm bg-orange-500 text-white py-2 px-4 rounded font-bold max-md:hidden"
             type="button"
             onClick={() => resetFechas()}
           >
@@ -329,7 +329,7 @@ export const Proveedor = () => {
         </div>
       </div>
 
-      <div className="mt-6 mx-8 mb-20">
+      <div className="mt-6 mx-8 mb-20 max-md:mx-5 max-md:overflow-x-auto">
         <table className="min-w-full divide-y-2 bg-white text-sm table rounded-none">
           <thead className="text-left">
             <tr>
@@ -346,10 +346,10 @@ export const Proveedor = () => {
                 Ver comprobante
               </th>
               <th className="whitespace-nowrap px-4 py-4 text-gray-900 uppercase font-bol text-xs">
-                Acciones
+                Fecha de creación
               </th>
               <th className="whitespace-nowrap px-4 py-4 text-gray-900 uppercase font-bol text-xs">
-                Fecha de creación
+                Acciones
               </th>
             </tr>
           </thead>
@@ -377,6 +377,10 @@ export const Proveedor = () => {
                 </td>
                 <td>
                   <ImagenModal archivo={p.imagen} />
+                </td>
+                <td className="whitespace-nowrap px-4 py-6 font-medium text-gray-900 uppercase text-xs">
+                  {p?.created_at?.split("T")[0]} / <strong>HORA:</strong>{" "}
+                  {p?.created_at?.split("T")[1]}
                 </td>
                 <td className="whitespace-nowrap px-4 py-6 text-gray-700 uppercase text-xs cursor-pointer space-x-2">
                   <div className="dropdown dropdown-left z-1">
@@ -413,13 +417,13 @@ export const Proveedor = () => {
                         Ver comprobante
                       </Link>
 
-                      <Link
+                      {/* <Link
                         target="_blank"
                         to={`/pdf-comprobante/${p.id}`}
                         className="hover:text-blue-500 transition-all text-left hover:underline font-semibold capitalize"
                       >
                         Descargar comprob.
-                      </Link>
+                      </Link> */}
 
                       <button
                         onClick={() => {
@@ -433,47 +437,12 @@ export const Proveedor = () => {
                     </ul>
                   </div>
                 </td>
-                <td className="whitespace-nowrap px-4 py-6 font-medium text-gray-900 uppercase text-xs">
-                  {p?.created_at?.split("T")[0]} / <strong>HORA:</strong>{" "}
-                  {p?.created_at?.split("T")[1]}
-                </td>
               </tr>
             ))}
           </tbody>
         </table>
       </div>
-      {/* <div className="mt-3 flex justify-center items-center space-x-2 pb-10">
-        <button
-          onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
-          disabled={currentPage === 1}
-          className="bg-blue-300 py-2 px-3 rounded-md text-sm font-medium text-gray-700 hover:bg-blue-400 hover:text-white focus:outline-none focus:bg-gray-100 cursor-pointer"
-        >
-          <FaArrowLeft />
-        </button>
-        <ul className="flex space-x-2">
-          {getPageNumbers().map((number) => (
-            <li key={number} className="cursor-pointer">
-              <button
-                onClick={() => paginate(number)}
-                className={`${
-                  currentPage === number ? "bg-blue-200" : "bg-blue-300"
-                } py-2 px-3 rounded-md text-sm font-medium text-gray-700 hover:text-white hover:bg-blue-500 focus:outline-none focus:bg-blue-300`}
-              >
-                {number}
-              </button>
-            </li>
-          ))}
-        </ul>
-        <button
-          onClick={() =>
-            setCurrentPage((prev) => Math.min(prev + 1, totalPages))
-          }
-          disabled={currentPage === totalPages}
-          className="bg-blue-300 py-2 px-3 rounded-md text-sm font-medium text-gray-700 hover:bg-blue-400 hover:text-white focus:outline-none focus:bg-gray-100 cursor-pointer"
-        >
-          <FaArrowRight />
-        </button>
-      </div> */}
+
       <ModalComprobante
         setComprobantes={setComprobantes}
         isOpen={isOpenComprobante}

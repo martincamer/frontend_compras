@@ -129,9 +129,9 @@ export const Productos = () => {
   };
 
   return (
-    <section className="min-h-screen max-h-full bg-gray-100/40 w-full h-full">
+    <section className="min-h-screen max-h-full bg-gray-100/40 w-full h-full max-md:py-12">
       <ToastContainer />
-      <div className="bg-white mb-4 h-10 flex">
+      <div className="bg-white mb-4 h-10 flex max-md:hidden">
         <Link
           to={"/"}
           className="bg-blue-100 flex h-full px-4 justify-center items-center font-bold text-blue-600"
@@ -145,12 +145,12 @@ export const Productos = () => {
           Productos
         </Link>
       </div>
-      <div className="mx-5 my-10 bg-white py-6 px-6">
+      <div className="mx-5 my-10 bg-white py-6 px-6 max-md:my-5">
         <p className="font-bold text-blue-600 text-xl">
           Crea tus productos en esta sección y actualiza los precios.
         </p>
       </div>
-      <div className="mx-5 py-2 flex gap-2 items-center max-md:px-0 max-md:py-0 max-md:flex-col max-md:items-start border-b-[1px] border-slate-300 pb-4 max-md:pb-4 max-md:mx-2">
+      <div className="mx-5 py-2 flex gap-2 items-center max-md:px-0 max-md:py-0 max-md:flex-col max-md:items-start border-b-[1px] border-slate-300 pb-4 max-md:pb-4 max-md:mx-5">
         <button
           onClick={() => openModal()}
           className="bg-blue-400 py-3 px-6 rounded text-sm text-white font-medium uppercase max-md:text-xs flex gap-2 items-center hover:shadow-md transition-all hover:bg-blue-500/90"
@@ -214,24 +214,18 @@ export const Productos = () => {
       </div>
 
       <div className="max-md:mt-2 mt-5 ">
-        {/* <div className="max-md:px-2 bg-white py-4 px-3 mx-5">
-          <p className="uppercase text-blue-500 font-semibold text-sm underline">
-            Tabla de productos
-          </p>
-        </div> */}
-
-        <div className="mt-5 mx-5 flex gap-2">
+        <div className="mt-5 mx-5 flex gap-2 max-md:flex-col">
           {/* Buscador */}
           <input
             type="text"
             placeholder="Buscar por detalle o el codigo...."
-            className="text-sm py-2.5 px-5 bg-white text-slate-700 font-bold uppercase w-1/4 outline-none cursor-pointer border border-blue-500"
+            className="text-sm py-2.5 px-5 bg-white text-slate-700 font-bold uppercase w-1/4  max-md:w-auto outline-none cursor-pointer border border-blue-500"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
           {/* Selector de categoría */}
           <select
-            className="text-sm py-2.5 px-5 bg-white text-slate-700 font-bold uppercase w-1/4 outline-none cursor-pointer border border-blue-500"
+            className="text-sm py-2.5 px-5 bg-white text-slate-700 font-bold uppercase w-1/4  max-md:w-auto outline-none cursor-pointer border border-blue-500"
             value={selectedCategory}
             onChange={(e) => setSelectedCategory(e.target.value)}
           >
@@ -246,7 +240,7 @@ export const Productos = () => {
           </select>
         </div>
 
-        <div className="mx-5 my-5">
+        <div className="mx-5 my-5 max-md:overflow-x-auto">
           <table className="min-w-full divide-y-2 table text-xs rounded-none bg-white">
             <thead className="text-left">
               <tr className="">

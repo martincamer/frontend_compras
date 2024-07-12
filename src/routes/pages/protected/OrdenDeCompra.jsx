@@ -120,9 +120,9 @@ export const OrdenDeCompra = () => {
   const closeModalEditarOrden = () => setOpenModalEditarOrden(false);
 
   return (
-    <section className="max-h-full min-h-screen bg-gray-100/40 w-full h-full max-md:px-4">
+    <section className="max-h-full min-h-screen bg-gray-100/40 w-full h-full max-md:py-12">
       <ToastContainer />
-      <div className="bg-white mb-4 h-10 flex">
+      <div className="bg-white mb-4 h-10 flex max-md:hidden">
         <Link
           to={"/"}
           className="bg-sky-100 flex h-full px-4 justify-center items-center font-bold text-blue-600"
@@ -136,21 +136,21 @@ export const OrdenDeCompra = () => {
           Compras
         </Link>
       </div>
-      <div className="bg-white py-5 px-5 mx-5 mt-10">
+      <div className="bg-white py-5 px-5 mx-5 mt-10 max-md:mt-5">
         <h3 className="text-xl font-bold text-blue-500">
           Crea nuevas ordenes de compra
         </h3>
       </div>
-      <div className="bg-white py-5 px-5 mx-5 my-10 flex gap-3">
+      <div className="bg-white py-5 px-5 mx-5 my-10 flex gap-3 max-md:my-5 max-md:flex-col">
         <div className="dropdown dropdown-bottom">
           <button className="font-bold text-sm bg-rose-400 py-2 px-4 text-white rounded">
             Ver estadisticas de compras
           </button>
           <ul
             tabIndex={0}
-            className="dropdown-content z-[1] menu p-2 mt-2 bg-white w-[800px] border"
+            className="dropdown-content z-[1] menu p-2 mt-2 bg-white w-[800px] border max-md:w-80"
           >
-            <div className="py-5 px-5 grid grid-cols-3 gap-5 w-full">
+            <div className="py-5 px-5 grid grid-cols-3 gap-5 w-full max-md:grid-cols-1">
               <div className="flex flex-col gap-1 border border-blue-500 py-3 px-3">
                 <p className="font-medium text-sm">
                   Total en ordenes generadas del mes.
@@ -181,7 +181,7 @@ export const OrdenDeCompra = () => {
           onClick={() =>
             document.getElementById("my_modal_comparar_precios").showModal()
           }
-          className="font-bold text-sm bg-green-400 py-2 px-4 text-white rounded"
+          className="font-bold text-sm bg-green-400 py-2 px-4 text-white rounded max-md:hidden"
         >
           Ver productos/comparar/proveedores/etc
         </button>
@@ -189,12 +189,12 @@ export const OrdenDeCompra = () => {
           onClick={() =>
             document.getElementById("my_modal_compras").showModal()
           }
-          className="font-bold text-sm bg-blue-500 py-2 px-4 text-white rounded"
+          className="font-bold text-sm bg-blue-500 py-2 px-4 text-white rounded max-md:hidden"
         >
           Ver ordenes de compra/comparar/filtrar/etc
         </button>
       </div>
-      <div className="mx-10 py-2 flex gap-2 items-center max-md:px-0 max-md:py-0 max-md:flex-col max-md:items-start border-b-[1px] border-slate-300 pb-4 max-md:pb-4 max-md:mx-2">
+      <div className="mx-10 max-md:mx-5 py-2 flex gap-2 items-center max-md:px-0 max-md:py-0 max-md:flex-col max-md:items-start border-b-[1px] border-slate-300 pb-4 max-md:pb-4 max-md:mx-2">
         <button
           onClick={() => openModal()}
           className="bg-blue-500  py-2 px-5 rounded text-sm text-white font-semibold max-md:text-xs flex gap-2 items-center hover:bg-orange-500 hover:text-white transition-all ease-in-out"
@@ -217,8 +217,8 @@ export const OrdenDeCompra = () => {
         </button>
       </div>
 
-      <div className="bg-white my-5 mx-5 py-4 px-5 flex gap-2">
-        <div className="w-1/3 border border-blue-500 py-1 px-3 text-sm font-semibold flex items-center justify-between">
+      <div className="bg-white my-5 mx-5 py-4 px-5 flex max-md:flex-col gap-2">
+        <div className="w-1/3 max-md:w-auto border border-blue-500 py-1 px-3 text-sm font-semibold flex items-center justify-between">
           <input
             className="w-full outline-none"
             type="text"
@@ -229,9 +229,9 @@ export const OrdenDeCompra = () => {
           <CgSearch className="text-blue-500" />
         </div>
 
-        <div className="border-blue-500 border py-1.5 px-3 text-sm font-bold flex">
+        <div className="border-blue-500 border py-1.5 px-3 text-sm font-bold flex max-md:flex-col max-md:gap-3 max-md:items-start">
           {/* Filtrador por fecha específica */}
-          <div className="flex gap-2 items-center">
+          <div className="flex gap-2 items-center max-md:flex-col">
             <div className="flex gap-2 items-center">
               Fecha anterior{" "}
               <input
@@ -254,7 +254,7 @@ export const OrdenDeCompra = () => {
 
           {/* Filtrador por fecha del mes */}
           <button
-            className="bg-blue-500 text-white px-4 py-1 ml-4 rounded-full text-xs hover:bg-orange-500 transition-all"
+            className="hidden bg-blue-500 text-white px-4 py-1 ml-4 rounded-full text-xs hover:bg-orange-500 transition-all"
             onClick={() => setStartDate("")}
           >
             Mostrar del mes actual
@@ -263,7 +263,7 @@ export const OrdenDeCompra = () => {
       </div>
 
       <div className="bg-white transition-all ease-linear mt-6 mx-5 py-5 px-2 mb-10">
-        <div className="overflow-y-scroll scroll-bar h-[100vh] px-4">
+        <div className="max-md:overflow-x-auto px-4">
           {" "}
           <table className="min-w-full table text-xs cursor-pointer">
             <thead className="text-left">

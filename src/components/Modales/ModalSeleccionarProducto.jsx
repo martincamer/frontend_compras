@@ -96,7 +96,7 @@ export const ModalSeleccionarProducto = ({
               leaveFrom="opacity-100 scale-100"
               leaveTo="opacity-0 scale-95"
             >
-              <div className="inline-block w-3/4 max-md:w-full p-6 my-8 overflow-hidden max-md:h-[300px] max-md:overflow-y-scroll text-left align-middle transition-all transform bg-white shadow-xl rounded-none">
+              <div className="inline-block w-3/4 max-md:w-full p-6 my-8 overflow-hidden max-md:h-[50vh] max-md:overflow-y-scroll text-left align-middle transition-all transform bg-white shadow-xl rounded-none">
                 <div className="flex justify-end">
                   <button
                     type="button"
@@ -124,7 +124,7 @@ export const ModalSeleccionarProducto = ({
                   SELECCIONAR PRODUCTO/COMPRA
                 </div>
 
-                <div className=" flex bg-white border-blue-500 border py-2 px-4 font-bold text-sm w-1/3 mb-2">
+                <div className=" flex bg-white border-blue-500 border py-2 px-4 font-bold text-sm w-1/3 mb-2 max-md:w-auto">
                   <input
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
@@ -148,7 +148,7 @@ export const ModalSeleccionarProducto = ({
                   </svg>
                 </div>
 
-                <div className="">
+                <div className="max-md:overflow-x-auto">
                   <table className="table border border-blue-500">
                     <thead className="ltr:text-left rtl:text-right">
                       <tr>

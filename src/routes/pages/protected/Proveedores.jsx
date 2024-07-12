@@ -117,9 +117,9 @@ export const Proveedores = () => {
   );
 
   return (
-    <section className="w-full min-h-screen h-full max-h-full">
+    <section className="w-full min-h-screen h-full max-h-full max-md:py-12">
       <ToastContainer />
-      <div className="bg-white mb-4 h-10 flex">
+      <div className="bg-white mb-4 h-10 flex max-md:hidden">
         <Link
           to={"/"}
           className="bg-sky-100 flex h-full px-4 justify-center items-center font-bold text-blue-600"
@@ -133,22 +133,22 @@ export const Proveedores = () => {
           Proveedores
         </Link>
       </div>
-      <div className="bg-white py-5 px-5 mx-5 my-10">
+      <div className="bg-white py-5 px-5 mx-5 my-10 max-md:my-5">
         <h3 className="text-xl font-bold text-blue-500">
           Crea nuevos proveedores, carga comprobantes, etc.
         </h3>
       </div>
 
-      <div className="bg-white py-5 px-5 mx-5 my-10">
+      <div className="bg-white py-5 px-5 mx-5 my-10 max-md:my-5">
         <div className="dropdown dropdown-bottom">
           <button className="font-bold text-sm bg-rose-400 py-2 px-4 text-white rounded">
             Ver estadisticas de los proveedores
           </button>
           <ul
             tabIndex={0}
-            className="dropdown-content z-[1] menu p-2 mt-2 bg-white w-[800px] border"
+            className="dropdown-content z-[1] menu p-2 mt-2 bg-white w-[800px] border max-md:w-80"
           >
-            <div className="py-5 px-5 grid grid-cols-3 gap-5 w-full">
+            <div className="py-5 px-5 grid grid-cols-3 gap-5 w-full max-md:grid-cols-1">
               <div className="flex flex-col gap-1 border border-blue-500 py-3 px-3">
                 <p className="font-medium text-sm">
                   Total en proveedores/deuda
@@ -180,7 +180,7 @@ export const Proveedores = () => {
         </div>
       </div>
 
-      <div className="mx-5 py-2 flex gap-2 items-center max-md:px-0 max-md:py-0 max-md:flex-col max-md:items-start border-b-[1px] border-slate-300 pb-4 max-md:pb-4 max-md:mx-2">
+      <div className="mx-5 py-2 flex gap-2 items-center max-md:flex-col max-md:items-start border-b-[1px] border-slate-300 pb-4 max-md:pb-4 max-md:mx-5 max-md:bg-white max-md:px-4 max-md:py-5 max-md:h-[10vh] max-md:overflow-y-auto">
         <button
           onClick={() => openModal()}
           className="text-white bg-blue-500 py-2.5 px-6 rounded font-bold max-md:text-xs flex gap-2 items-center transition-all ease-linear text-sm"
@@ -219,7 +219,7 @@ export const Proveedores = () => {
         </button>
       </div>
 
-      <div className="mt-6 w-1/3 border border-blue-500 py-3 px-3 text-sm font-semibold flex items-center justify-between bg-white mx-5">
+      <div className="mt-6 w-1/3 border border-blue-500 py-3 px-3 text-sm font-semibold flex items-center justify-between bg-white mx-5 max-md:w-auto">
         <input
           className="w-full outline-none"
           type="text"
@@ -230,7 +230,7 @@ export const Proveedores = () => {
         <CgSearch className="text-blue-500" />
       </div>
 
-      <div className="mt-6 cursor-pointer mx-5 mb-20">
+      <div className="mt-6 cursor-pointer mx-5 mb-20 max-md:overflow-x-auto">
         <table className="min-w-full bg-white table rounded-none">
           <thead className="text-left">
             <tr>
@@ -277,7 +277,7 @@ export const Proveedores = () => {
                     })}
                   </span>
                 </th>
-                <th>
+                <th className="max-md:hidden">
                   <div className="flex">
                     <p
                       className={`${
@@ -289,6 +289,19 @@ export const Proveedores = () => {
                       {p.total > 0
                         ? "Deudas con el proveedor, pagar ahora"
                         : "Sin deudas con el proveedor.."}
+                    </p>
+                  </div>
+                </th>
+                <th className="md:hidden">
+                  <div className="flex">
+                    <p
+                      className={`${
+                        p.total > 0
+                          ? "bg-orange-100 text-orange-500"
+                          : "bg-green-100 text-green-500"
+                      } py-1 px-3 rounded`}
+                    >
+                      {p.total > 0 ? "Debe" : "Limpio"}
                     </p>
                   </div>
                 </th>

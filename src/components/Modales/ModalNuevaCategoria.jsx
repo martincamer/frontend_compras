@@ -44,7 +44,7 @@ export const ModalNuevaCategoria = () => {
 
   return (
     <dialog id="my_modal_categoria" className="modal">
-      <div className="modal-box">
+      <div className="modal-box rounded-none">
         <form method="dialog">
           {/* if there is a button in form, it will close the modal */}
           <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
@@ -60,7 +60,7 @@ export const ModalNuevaCategoria = () => {
             <input
               {...register("detalle")}
               type="text"
-              className="py-2 px-4 font-semibold uppercase text-sm border border-sky-300 outline-none"
+              className="py-2 px-4 font-semibold uppercase text-sm border border-blue-500 rounded outline-none"
               placeholder="Nombre de la categoria"
             />
           </div>
@@ -68,7 +68,7 @@ export const ModalNuevaCategoria = () => {
           <div className="mt-3">
             <button
               type="submit"
-              className="bg-sky-400 py-2 px-8 font-semibold hover:bg-orange-500 transition-all rounded-full text-white uppercase text-xs"
+              className="bg-blue-500 py-2 px-8 font-semibold hover:bg-orange-500 transition-all rounded-full text-white uppercase text-xs"
             >
               Guardar la categoria
             </button>

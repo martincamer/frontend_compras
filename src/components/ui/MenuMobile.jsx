@@ -27,11 +27,11 @@ export const MenuMobile = () => {
     >
       {/* Botón de menú */}
       <div className={`py-4 px-4 ${isOpen ? "flex justify-between " : ""}`}>
-        <button className="text-3xl text-sky-500" onClick={handleToggle}>
+        <button className="text-3xl text-blue-500" onClick={handleToggle}>
           {isOpen ? <IoCloseOutline /> : <IoMenuOutline />}
         </button>
         {isOpen && (
-          <p className="bg-sky-500 py-1 px-2 rounded-xl text-sm text-white capitalize">
+          <p className="bg-blue-500 py-1 px-2 rounded-xl text-sm text-white capitalize">
             {user?.username}
           </p>
         )}
@@ -42,8 +42,8 @@ export const MenuMobile = () => {
             onClick={() => setIsOpen(!isOpen)}
             to={"/"}
             className={`${
-              location.pathname === "/" ? "bg-sky-100" : "bg-none"
-            } hover:text-sky-700 text-slate-700 text-sm transition-all py-3 px-3`}
+              location.pathname === "/" ? "bg-blue-100" : "bg-none"
+            } hover:text-blue-700 text-slate-700 text-sm transition-all py-3 px-3`}
           >
             Inicio/estadistica/compras
           </Link>
@@ -54,8 +54,8 @@ export const MenuMobile = () => {
               onClick={() => setIsOpen(!isOpen)}
               to={"/productos"}
               className={`${
-                location.pathname === "/productos" ? "bg-sky-100" : "bg-none"
-              } hover:text-sky-700 text-slate-700 text-sm transition-all py-3 px-3`}
+                location.pathname === "/productos" ? "bg-blue-100" : "bg-none"
+              } hover:text-blue-700 text-slate-700 text-sm transition-all py-3 px-3`}
             >
               Crear productos/ver/etc
             </Link>
@@ -64,28 +64,28 @@ export const MenuMobile = () => {
             onClick={() => setIsOpen(!isOpen)}
             to={"/ordenes"}
             className={`${
-              location.pathname === "/ordenes" ? "bg-sky-100" : "bg-none"
-            } hover:text-sky-700 text-slate-700 text-sm transition-all py-3 px-3`}
+              location.pathname === "/ordenes" ? "bg-blue-100" : "bg-none"
+            } hover:text-blue-700 text-slate-700 text-sm transition-all py-3 px-3`}
           >
             Crear ordenes/ver/editar
           </Link>
-          <Link
+          {/* <Link
             onClick={() => setIsOpen(!isOpen)}
             to={"/ordenes-checkout"}
             className={`${
               location.pathname === "/ordenes-checkout"
-                ? "bg-sky-100"
+                ? "bg-blue-100"
                 : "bg-none"
-            } hover:text-sky-700 text-slate-700 text-sm transition-all py-3 px-3`}
+            } hover:text-blue-700 text-slate-700 text-sm transition-all py-3 px-3`}
           >
             Ver ordenes finalizadas/ver/editar
-          </Link>
+          </Link> */}
           <Link
             onClick={() => setIsOpen(!isOpen)}
             to={"/proveedores"}
             className={`${
-              location.pathname === "/proveedores" ? "bg-sky-100" : "bg-none"
-            } hover:text-sky-700 text-slate-700 text-sm transition-all py-3 px-3`}
+              location.pathname === "/proveedores" ? "bg-blue-100" : "bg-none"
+            } hover:text-blue-700 text-slate-700 text-sm transition-all py-3 px-3`}
           >
             Crear proveedores/ver saldos/editar
           </Link>
@@ -95,8 +95,8 @@ export const MenuMobile = () => {
               onClick={() => setIsOpen(!isOpen)}
               to={"/cuentas"}
               className={`${
-                location.pathname === "/cuentas" ? "bg-sky-100" : "bg-none"
-              } hover:text-sky-700 text-slate-700 text-sm transition-all py-3 px-3`}
+                location.pathname === "/cuentas" ? "bg-blue-100" : "bg-none"
+              } hover:text-blue-700 text-slate-700 text-sm transition-all py-3 px-3`}
             >
               Crear cuentas/editar/administrar
             </Link>

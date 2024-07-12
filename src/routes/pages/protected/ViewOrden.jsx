@@ -20,36 +20,36 @@ export const ViewOrden = () => {
   }, [params.id]);
 
   return (
-    <section className="min-h-screen max-h-full h-full">
+    <section className="min-h-screen max-h-full h-full max-md:py-12 w-full max-w-full">
       <ToastContainer />
-      <div className="bg-white mb-4 h-10 flex">
+      <div className="bg-white mb-4 h-10 flex max-md:hidden">
         <Link
           to={"/ordenes"}
-          className="bg-sky-100 flex h-full px-4 justify-center items-center font-bold text-sky-600"
+          className="bg-blue-100 flex h-full px-4 justify-center items-center font-bold text-blue-600"
         >
           Compras
         </Link>{" "}
-        <Link className="bg-sky-500 flex h-full px-4 justify-center items-center font-bold text-white">
+        <Link className="bg-blue-500 flex h-full px-4 justify-center items-center font-bold text-white">
           Compra obtenida N° {params.id}
         </Link>
       </div>
-      <div className="bg-white py-5 px-5 mx-5 mt-10">
-        <h3 className="text-xl font-bold text-sky-500">
+      <div className="bg-white py-5 px-5 mx-5 mt-10 max-md:mt-5">
+        <h3 className="text-xl font-bold text-blue-500">
           Observa tu orden de compra facturada del proveedor{" "}
           <span className="capitalize text-black">{orden.proveedor}</span>
         </h3>
       </div>
-      <div className="bg-white py-5 px-5 mx-5 my-10">
+      <div className="bg-white py-5 px-5 mx-5 my-10 max-md:my-5">
         <div className="dropdown dropdown-bottom">
           <button className="font-bold text-sm bg-rose-400 py-2 px-4 text-white rounded">
             Ver estadistica de la compra
           </button>
           <ul
             tabIndex={0}
-            className="dropdown-content z-[1] menu p-2 mt-2 bg-white w-[800px] border"
+            className="dropdown-content z-[1] menu p-2 mt-2 bg-white w-[800px] border max-md:w-80"
           >
-            <div className="py-5 px-5 grid grid-cols-3 gap-5 w-full">
-              <div className="flex flex-col gap-1 border border-sky-300 py-3 px-3">
+            <div className="py-5 px-5 grid grid-cols-3 gap-5 w-full max-md:grid-cols-1">
+              <div className="flex flex-col gap-1 border border-blue-500 py-3 px-3">
                 <p className="font-medium text-sm">
                   Total de la orden + el iva.
                 </p>
@@ -65,34 +65,34 @@ export const ViewOrden = () => {
         </div>
       </div>
 
-      <div className="bg-white mt-4 border-sky-300 transition-all ease-linear cursor-pointer hover:shadow-md border-[1px] py-5 px-5 shadow-lg mx-4 max-md:mx-0 max-md:w-auto">
+      <div className="bg-white mt-4 border-blue-500 transition-all ease-linear cursor-pointer hover:shadow-md border-[1px] py-5 px-5 shadow-lg mx-4 max-md:w-auto max-md:overflow-x-auto max-md:mx-5">
         <div>
-          <h5 className="underline text-sky-400 font-semibold">
+          <h5 className="underline text-blue-600 font-semibold">
             DATOS DE LA COMPRA
           </h5>
         </div>
         <div className="mt-2 flex gap-5">
-          <p className="text-slate-700 uppercase text-sm border-r pr-3 border-sky-300">
+          <p className="text-slate-700 uppercase text-sm border-r pr-3 border-blue-500">
             <span className="font-bold">Numero de la compra: </span>
             {orden.id}
           </p>
 
-          <p className="text-slate-700 uppercase text-sm border-r pr-3 border-sky-300">
+          <p className="text-slate-700 uppercase text-sm border-r pr-3 border-blue-500">
             <span className="font-bold">Proveedor: </span>
             {orden.proveedor}
           </p>
 
-          <p className="text-slate-700 uppercase text-sm border-r pr-3 border-sky-300">
+          <p className="text-slate-700 uppercase text-sm border-r pr-3 border-blue-500">
             <span className="font-bold">Localidad: </span>
             {orden.localidad}
           </p>
 
-          <p className="text-slate-700 uppercase text-sm border-r pr-3 border-sky-300">
+          <p className="text-slate-700 uppercase text-sm border-r pr-3 border-blue-500">
             <span className="font-bold">Provincia: </span>
             {orden.provincia}
           </p>
 
-          <p className="text-slate-700 uppercase text-sm border-r pr-3 border-sky-300">
+          <p className="text-slate-700 uppercase text-sm border-r pr-3 border-blue-500">
             <span className="font-bold">Numero Fact/Remito: </span>
             N° {orden.numero_factura}
           </p>
@@ -105,14 +105,14 @@ export const ViewOrden = () => {
 
       <div className="mx-5 mt-5 max-md:mx-0">
         <div>
-          <h5 className="bg-white py-5 px-5 text-sky-500 font-bold text-base border-sky-300 border max-md:mx-5">
+          <h5 className="bg-white py-5 px-5 text-blue-500 font-bold text-base border-blue-500 border max-md:mx-5">
             PRODUCTOS
           </h5>
         </div>
-        <div className="mt-2 grid grid-cols-5 gap-2 max-md:grid-cols-1">
+        <div className="mt-2 grid grid-cols-5 gap-2 max-md:grid-cols-1 max-md:mx-5">
           {orden?.datos?.productoSeleccionado?.map((producto) => (
             <div
-              className="bg-white hover:shadow-md transition-all ease-linear cursor-pointer py-4 px-4 border-sky-300 border-[1px] max-md:rounded-none"
+              className="bg-white hover:shadow-md transition-all ease-linear cursor-pointer py-4 px-4 border-blue-500 border-[1px] max-md:rounded-none"
               key={producto.id}
             >
               <p className="text-slate-700 uppercase text-sm">
@@ -130,7 +130,7 @@ export const ViewOrden = () => {
                   currency: "ARS",
                 })}
               </p>
-              <p className="uppercase text-sm font-semibold text-sky-500">
+              <p className="uppercase text-sm font-semibold text-blue-500">
                 <span className="font-bold">Cantidad: </span>
                 {producto.cantidad}
               </p>
@@ -166,7 +166,7 @@ export const ViewOrden = () => {
                 </button>
                 <button
                   type="button"
-                  className="bg-sky-100 text-sky-700 text-sm py-2 px-4 rounded-xl flex items-center gap-1 font-semibold"
+                  className="bg-blue-100 text-blue-700 text-sm py-2 px-4 rounded-xl flex items-center gap-1 font-semibold"
                 >
                   {Number(producto.totalFinalIva).toLocaleString("es-AR", {
                     style: "currency",

@@ -184,7 +184,7 @@ export const ModalEditarProductoSeleccionado = ({
                   EDITAR PRODUCTO SELECCIONADO
                 </div>
 
-                <div className=" border-blue-500 border">
+                <div className=" border-blue-500 border max-md:overflow-x-auto">
                   <table className="table">
                     <thead className="">
                       <tr>
