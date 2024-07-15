@@ -150,10 +150,10 @@ export const Productos = () => {
           Crea tus productos en esta sección y actualiza los precios.
         </p>
       </div>
-      <div className="mx-5 py-2 flex gap-2 items-center max-md:px-0 max-md:py-0 max-md:flex-col max-md:items-start border-b-[1px] border-slate-300 pb-4 max-md:pb-4 max-md:mx-5">
+      <div className="mx-5 py-1 flex gap-2 items-center max-md:px-0 max-md:py-0 max-md:flex-col max-md:items-start border-b-[1px] border-slate-300 pb-4 max-md:pb-4 max-md:mx-5">
         <button
           onClick={() => openModal()}
-          className="bg-blue-400 py-3 px-6 rounded text-sm text-white font-medium uppercase max-md:text-xs flex gap-2 items-center hover:shadow-md transition-all hover:bg-blue-500/90"
+          className="bg-blue-500 py-1.5 px-6 rounded text-sm text-white font-medium max-md:text-xs flex gap-2 items-center hover:shadow-md transition-all hover:bg-blue-500/90"
         >
           Crear nuevo producto
           <svg
@@ -172,7 +172,7 @@ export const Productos = () => {
           </svg>
         </button>
         <button
-          className="bg-orange-500/90 py-3 px-6 rounded text-sm text-white font-medium uppercase max-md:text-xs flex gap-2 items-center hover:shadow-md transition-all hover:bg-orange-500/80"
+          className="bg-orange-500 py-1.5 px-6 rounded text-sm text-white font-medium max-md:text-xs flex gap-2 items-center hover:shadow-md transition-all hover:bg-orange-500/80"
           onClick={() => openModalCategorias()}
         >
           Crear nuevas categorias/editar/etc
@@ -192,7 +192,7 @@ export const Productos = () => {
           </svg>
         </button>
         <PDFDownloadLink
-          className="bg-green-500/90 py-3 px-6 rounded text-sm text-white font-medium uppercase max-md:text-xs flex gap-2 items-center hover:shadow-md transition-all hover:bg-green-500/80"
+          className="bg-green-500 py-1.5 px-6 rounded text-sm text-white font-medium max-md:text-xs flex gap-2 items-center hover:shadow-md transition-all hover:bg-green-500/80"
           document={<ListaDePrecios datos={productos} />}
         >
           Descargar lista de precios
@@ -333,40 +333,6 @@ export const Productos = () => {
           </table>
         </div>
       </div>
-      {/* <div className="mt-3 flex justify-center items-center space-x-2 pb-10">
-        <button
-          onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
-          disabled={currentPage === 1}
-          className="bg-blue-300 py-2 px-3 rounded-md text-sm font-medium text-gray-700 hover:bg-blue-500 hover:text-white focus:outline-none focus:bg-gray-100 cursor-pointer"
-        >
-          <FaArrowLeft />
-        </button>
-        <ul className="flex space-x-2">
-          {getPageNumbers().map((number) => (
-            <li key={number} className="cursor-pointer">
-              <button
-                onClick={() => paginate(number)}
-                className={`${
-                  currentPage === number
-                    ? "bg-blue-500 text-white"
-                    : "bg-blue-500 text-white"
-                } py-2 px-3 rounded-md text-sm font-medium text-gray-700 hover:text-white hover:bg-blue-500 focus:outline-none focus:bg-blue-300`}
-              >
-                {number}
-              </button>
-            </li>
-          ))}
-        </ul>
-        <button
-          onClick={() =>
-            setCurrentPage((prev) => Math.min(prev + 1, totalPages))
-          }
-          disabled={currentPage === totalPages}
-          className="bg-blue-300 py-2 px-3 rounded-md text-sm font-medium text-gray-700 hover:bg-blue-500 hover:text-white focus:outline-none focus:bg-gray-100 cursor-pointer"
-        >
-          <FaArrowRight />
-        </button>
-      </div> */}
 
       <ModalCrearProductos isOpen={isOpen} closeModal={closeModal} />
       <ModalCrearCategorias
