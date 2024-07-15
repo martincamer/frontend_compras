@@ -5,11 +5,11 @@ import { useOrdenesContext } from "../../../context/OrdenesProvider";
 import { ModalEliminar } from "../../../components/Modales/ModalEliminar";
 import { ModalVerProductos } from "../../../components/Modales/ModalVerProductos";
 import { ModalEditarOrdenTotal } from "../../../components/Modales/ModalEditarOrdenTotal";
-import { Link } from "react-router-dom";
-import { CgSearch } from "react-icons/cg";
 import { ModalActualizarOrdenEstado } from "../../../components/Modales/ModalActualizarOrdenEstado";
 import { ModalCompararPrecios } from "../../../components/Modales/ModalCompararPrecios";
 import { ModalCompras } from "../../../components/Modales/ModalCompras";
+import { Link } from "react-router-dom";
+import { CgSearch } from "react-icons/cg";
 
 export const OrdenDeCompra = () => {
   const [isOpenEliminar, setIsOpenEliminar] = useState(false);
@@ -194,7 +194,7 @@ export const OrdenDeCompra = () => {
           Ver ordenes de compra/comparar/filtrar/etc
         </button>
       </div>
-      <div className="mx-10 max-md:mx-5 py-2 flex gap-2 items-center max-md:px-0 max-md:py-0 max-md:flex-col max-md:items-start border-b-[1px] border-slate-300 pb-4 max-md:pb-4 max-md:mx-2">
+      <div className="mx-10 py-2 flex gap-2 items-center max-md:px-0 max-md:py-0 max-md:flex-col max-md:items-start border-b-[1px] border-slate-300 pb-4 max-md:pb-4 max-md:mx-2">
         <button
           onClick={() => openModal()}
           className="bg-blue-500  py-2 px-5 rounded text-sm text-white font-semibold max-md:text-xs flex gap-2 items-center hover:bg-orange-500 hover:text-white transition-all ease-in-out"

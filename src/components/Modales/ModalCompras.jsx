@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { useOrdenesContext } from "../../context/OrdenesProvider";
 import { ModalProveedores } from "./ModalProveedores";
+import { ModalObtenerOrdenDeCompra } from "./ModalOrdenDeCompra";
+import { useObtenerId } from "../../helpers/obtenerId";
 
 export const ModalCompras = () => {
   const { ordenes } = useOrdenesContext();
@@ -8,6 +10,8 @@ export const ModalCompras = () => {
   const [fechaFin, setFechaFin] = useState("");
   const [ordenesFiltradas, setOrdenesFiltradas] = useState([]);
   const [proveedorSeleccionado, setProveedorSeleccionado] = useState("");
+
+  const { handleObtenerId, idObtenida } = useObtenerId();
 
   const filtrarPorRangoFecha = () => {
     // Validar que ambas fechas estén seleccionadas
@@ -262,18 +266,36 @@ export const ModalCompras = () => {
                         </p>
                       </div>
                     </th>
+                    <th className="whitespace-nowrap px-4 py-4 text-gray-700 text-sm cursor-pointer">
+                      <div className="flex">
+                        <button
+                          onClick={() => {
+                            handleObtenerId(p.id),
+                              document
+                                .getElementById("my_modal_orden_compra")
+                                .showModal();
+                          }}
+                          type="button"
+                          className="bg-blue-500 py-1 px-4 rounded text-white"
+                        >
+                          Descargar orden
+                        </button>
+                      </div>
+                    </th>
                   </tr>
                 ))}
               </tbody>
             </table>
           </div>
         </div>
+
         <ModalProveedores
           fechaFin={fechaFin}
           fechaInicio={fechaInicio}
           compras={ordenesFiltradas}
           total={precioFinalTotal}
         />
+        <ModalObtenerOrdenDeCompra idObtenida={idObtenida} />
       </div>
     </dialog>
   );
