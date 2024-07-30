@@ -67,7 +67,7 @@ export const ModalFiltrarComprobantes = ({}) => {
   console.log(agrupadosPorProveedor);
   return (
     <dialog id="my_modal_proveedores" className="modal">
-      <div className="modal-box max-w-6xl h-full rounded-none scrollbar-hidden">
+      <div className="modal-box max-w-6xl h-full rounded-md scrollbar-hidden">
         <form method="dialog">
           {/* if there is a button in form, it will close the modal */}
           <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
@@ -75,8 +75,8 @@ export const ModalFiltrarComprobantes = ({}) => {
           </button>
         </form>
         <div>
-          <p className="font-semibold text-blue-500 text-lg">
-            Filtrar comprobantes por fecha
+          <p className="font-bold text-gray-900 text-lg">
+            Filtrar comprobantes por fecha.
           </p>
         </div>
         <div className="flex gap-6 items-center max-md:flex-col max-md:items-start mt-5">
@@ -85,7 +85,7 @@ export const ModalFiltrarComprobantes = ({}) => {
               Fecha de inicio
             </label>
             <input
-              className="text-sm bg-white py-2 px-3 font-bold border-blue-500 border cursor-pointer text-blue-500 outline-none"
+              className="text-sm bg-white py-2 px-3 font-bold border-gray-300 rounded-md border cursor-pointer outline-none"
               type="date"
               value={fechaInicio}
               onChange={(e) => setFechaInicio(e.target.value)}
@@ -96,7 +96,7 @@ export const ModalFiltrarComprobantes = ({}) => {
               Fecha fin
             </label>
             <input
-              className="text-sm bg-white py-2 px-3 font-bold border-blue-500 border cursor-pointer text-blue-500 outline-none"
+              className="text-sm bg-white py-2 px-3 font-bold border-gray-300 rounded-md border cursor-pointer outline-none"
               type="date"
               value={fechaFin}
               onChange={(e) => setFechaFin(e.target.value)}
@@ -104,7 +104,7 @@ export const ModalFiltrarComprobantes = ({}) => {
 
             <button
               onClick={buscarIngresosPorFecha}
-              className="bg-white border-blue-300 border-[1px] px-2 py-2 flex gap-3 text-slate-700 hover:shadow-md transtion-all ease-in-out duration-200 max-md:py-1"
+              className="bg-white border-gray-300 rounded-full border-[1px] px-2 py-2 flex gap-3 text-slate-700 hover:shadow-md transtion-all ease-in-out duration-200 max-md:py-1"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"

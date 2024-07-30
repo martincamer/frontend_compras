@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useProductosContext } from "../../../context/ProductosProvider";
 import { FaSearch } from "react-icons/fa";
 import { FaDeleteLeft } from "react-icons/fa6";
@@ -10,66 +10,18 @@ import {
   showSuccessToastError,
 } from "../../../helpers/toast";
 import { useForm } from "react-hook-form";
+import { CgMenuRightAlt } from "react-icons/cg";
+import { useObtenerId } from "../../../helpers/obtenerId";
+import { PDFDownloadLink } from "@react-pdf/renderer";
+import { ListaDePrecios } from "../../../components/pdf/ListaDePrecios";
 
 export const Productos = () => {
   const { productos, categorias } = useProductosContext();
 
-  const fechaActual = new Date();
-  const numeroDiaActual = fechaActual.getDay(); // Obtener el día del mes actual
-
-  const nombresDias = [
-    "Domingo",
-    "Lunes",
-    "Martes",
-    "Miércoles",
-    "Jueves",
-    "Viernes",
-    "Sábado",
-  ];
-
-  const numeroMesActual = fechaActual.getMonth() + 1; // Obtener el mes actual
-  const nombresMeses = [
-    "Enero",
-    "Febrero",
-    "Marzo",
-    "Abril",
-    "Mayo",
-    "Junio",
-    "Julio",
-    "Agosto",
-    "Septiembre",
-    "Octubre",
-    "Noviembre",
-    "Diciembre",
-  ];
-  const nombreMesActual = nombresMeses[numeroMesActual - 1]; // Obtener el nombre del mes actual
-
-  const nombreDiaActual = nombresDias[numeroDiaActual]; // Obtener el nombre del día actual
-
-  const [isOpen, setIsOpen] = useState(false);
-
-  const openModal = () => {
-    setIsOpen(true);
-  };
-
-  const closeModal = () => {
-    setIsOpen(false);
-  };
-
-  const [isOpenCategorias, setIsOpenCategorias] = useState(false);
-
-  const openModalCategorias = () => {
-    setIsOpenCategorias(true);
-  };
-
-  const closeModalCategorias = () => {
-    setIsOpenCategorias(false);
-  };
+  const { handleObtenerId, idObtenida } = useObtenerId();
 
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("all");
-  const [currentPage, setCurrentPage] = useState(1);
-  const [productsPerPage] = useState(10);
 
   // Filtrar productos antes de la paginación
   const filteredProducts = productos.filter((product) => {
@@ -81,53 +33,6 @@ export const Productos = () => {
 
     return searchTermMatches && categoryMatches;
   });
-
-  // Obtener índices de paginación para productos filtrados
-  const indexOfLastProduct = currentPage * productsPerPage;
-  const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
-
-  const currentProducts = filteredProducts.slice(
-    indexOfFirstProduct,
-    indexOfLastProduct
-  );
-
-  const paginate = (pageNumber) => setCurrentPage(pageNumber);
-
-  const totalPages = Math.ceil(filteredProducts.length / productsPerPage);
-
-  const getPageNumbers = () => {
-    const pageNumbers = [];
-    const maxPages = Math.min(currentPage + 4, totalPages); // Mostrar hasta 5 páginas
-    const startPage = Math.max(1, maxPages - 4); // Comenzar desde la página adecuada
-    for (let i = startPage; i <= maxPages; i++) {
-      pageNumbers.push(i);
-    }
-    return pageNumbers;
-  };
-
-  const [editarProducto, setEditarProducto] = useState(false);
-
-  const [OBTENERID, setObtenerId] = useState(null);
-
-  const handleID = (id) => setObtenerId(id);
-
-  const openEditProducto = () => {
-    setEditarProducto(true);
-  };
-
-  const closeEditProducto = () => {
-    setEditarProducto(false);
-  };
-
-  const [isOpenEliminar, setIsEliminar] = useState(false);
-
-  const openEliminar = () => {
-    setIsEliminar(true);
-  };
-
-  const closeEliminar = () => {
-    setIsEliminar(false);
-  };
 
   return (
     <section className="w-full h-full min-h-screen max-h-full">
@@ -154,80 +59,17 @@ export const Productos = () => {
         >
           Ver categorias
         </button>
-        <button
-          onClick={() =>
-            document.getElementById("my_modal_precios").showModal()
-          }
-          type="button"
+        <PDFDownloadLink
+          fileName="Lista de precios-sector-compras."
+          document={<ListaDePrecios datos={productos} />}
           className="bg-blue-500 py-1 px-4 rounded-md text-white font-semibold text-sm"
         >
           Ver lista de precios
-        </button>
-      </div>
-      {/* <div className="mx-5 py-1 flex gap-2 items-center max-md:px-0 max-md:py-0 max-md:flex-col max-md:items-start border-b-[1px] border-slate-300 pb-4 max-md:pb-4 max-md:mx-5">
-        <button
-          onClick={() => openModal()}
-          className="bg-primary py-1.5 px-6 rounded text-sm text-white font-medium max-md:text-xs flex gap-2 items-center hover:shadow-md transition-all hover:bg-blue-500/90"
-        >
-          Crear nuevo producto
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth={1.5}
-            stroke="currentColor"
-            className="w-6 h-6"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
-            />
-          </svg>
-        </button>
-        <button
-          className="bg-orange-500 py-1.5 px-6 rounded text-sm text-white font-medium max-md:text-xs flex gap-2 items-center hover:shadow-md transition-all hover:bg-orange-500/80"
-          onClick={() => openModalCategorias()}
-        >
-          Crear nuevas categorias/editar/etc
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth={1.5}
-            stroke="currentColor"
-            className="w-6 h-6"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="m4.5 15.75 7.5-7.5 7.5 7.5"
-            />
-          </svg>
-        </button>
-        <PDFDownloadLink
-          className="bg-green-500 py-1.5 px-6 rounded text-sm text-white font-medium max-md:text-xs flex gap-2 items-center hover:shadow-md transition-all hover:bg-green-500/80"
-          document={<ListaDePrecios datos={productos} />}
-        >
-          Descargar lista de precios
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth={1.5}
-            stroke="currentColor"
-            className="w-6 h-6"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m.75 12 3 3m0 0 3-3m-3 3v-6m-1.5-9H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z"
-            />
-          </svg>
         </PDFDownloadLink>
-      </div> */}
-      <div className="mt-5 mx-5 flex gap-2">
-        <div className="border border-gray-300 flex items-center gap-2 px-2 py-1.5 text-sm rounded-md w-1/5">
+      </div>
+
+      <div className="mt-5 mx-5 flex gap-2 max-md:flex-col">
+        <div className="border border-gray-300 flex items-center gap-2 px-2 py-1.5 text-sm rounded-md w-1/5 max-md:w-full">
           <input
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
@@ -248,7 +90,7 @@ export const Productos = () => {
               Todas las categorías
             </option>
             {categorias.map((c) => (
-              <option className="font-semibold" key={c.id}>
+              <option className="font-semibold capitalize" key={c.id}>
                 {c?.detalle}
               </option>
             ))}
@@ -257,7 +99,7 @@ export const Productos = () => {
       </div>
 
       <div>
-        <div className="max-md:overflow-x-auto mx-5 mt-10">
+        <div className="max-md:overflow-x-auto mx-5 my-10 max-md:h-[100vh] scrollbar-hidden">
           <table className="table">
             <thead className="text-left font-bold text-gray-900 text-sm">
               <tr className="">
@@ -285,27 +127,42 @@ export const Productos = () => {
                       </p>
                     </div>
                   </td>
-                  <td className="">
+                  <td className="max-md:block hidden">
+                    <div className="flex gap-3 items-center">
+                      <button
+                        type="button"
+                        onClick={() => {
+                          handleObtenerId(p.id),
+                            document
+                              .getElementById("my_modal_actualizar_producto")
+                              .showModal();
+                        }}
+                        className="bg-blue-500 py-1 px-2 rounded-md text-xs font-semibold text-white"
+                      >
+                        Actualizar
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          handleObtenerId(p.id),
+                            document
+                              .getElementById("my_modal_eliminar")
+                              .showModal();
+                        }}
+                        className="bg-red-500 py-1 px-2 rounded-md text-xs font-semibold text-white"
+                      >
+                        Eliminar
+                      </button>
+                    </div>
+                  </td>
+                  <td className="max-md:hidden">
                     <div className="dropdown dropdown-left z-1">
                       <div
                         tabIndex={0}
                         role="button"
-                        className="hover:bg-gray-800 hover:text-white rounded-full px-2 py-2 transition-all"
+                        className="hover:bg-gray-800 hover:text-white rounded-full px-1 py-1 transition-all"
                       >
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          strokeWidth={1.5}
-                          stroke="currentColor"
-                          className="w-6 h-6"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            d="M10.5 6h9.75M10.5 6a1.5 1.5 0 1 1-3 0m3 0a1.5 1.5 0 1 0-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-9.75 0h9.75"
-                          />
-                        </svg>
+                        <CgMenuRightAlt className="text-2xl" />
                       </div>
                       <ul
                         tabIndex={0}
@@ -314,16 +171,24 @@ export const Productos = () => {
                         <li className="text-xs font-semibold hover:bg-gray-800 rounded-md hover:text-white">
                           <span
                             onClick={() => {
-                              handleID(p.id), openEditProducto();
+                              handleObtenerId(p.id),
+                                document
+                                  .getElementById(
+                                    "my_modal_actualizar_producto"
+                                  )
+                                  .showModal();
                             }}
                           >
-                            Editar producto
+                            Actualizar producto
                           </span>
                         </li>
                         <li className="text-xs font-semibold hover:bg-gray-800 rounded-md hover:text-white">
                           <span
                             onClick={() => {
-                              handleID(p.id), openEliminar();
+                              handleObtenerId(p.id),
+                                document
+                                  .getElementById("my_modal_eliminar")
+                                  .showModal();
                             }}
                           >
                             Eliminar producto
@@ -341,6 +206,8 @@ export const Productos = () => {
 
       <ModalCategorias />
       <ModalCrearProducto />
+      <ModalActualizarProducto idObtenida={idObtenida} />
+      <ModalEliminar idObtenida={idObtenida} />
     </section>
   );
 };
@@ -367,6 +234,10 @@ export const ModalCrearProducto = () => {
       setDetale("");
       setProveedor("");
       setCategoria("");
+
+      document.getElementById("my_modal_crear_producto").close();
+
+      showSuccessToast("Producto creado correctamente");
     } catch (error) {
       console.error("Error al enviar el producto:", error);
     }
@@ -380,7 +251,7 @@ export const ModalCrearProducto = () => {
 
   return (
     <dialog id="my_modal_crear_producto" className="modal">
-      <div className="modal-box rounded-md">
+      <div className="modal-box rounded-md max-md:h-full max-md:w-full max-md:max-h-full max-md:rounded-none">
         <form method="dialog">
           {/* if there is a button in form, it will close the modal */}
           <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
@@ -399,8 +270,8 @@ export const ModalCrearProducto = () => {
               onChange={(e) => setDetale(e.target.value)}
               value={detalle}
               type="text"
-              className="rounded-md border border-gray-300 py-2 px-2 text-sm font-medium uppercase outline-none focus:shadow-md"
-              placeholder="Detalle del producto"
+              className="rounded-md border border-gray-300 py-2 px-2 text-sm font-medium placeholder:normal-case capitalize outline-none focus:shadow-md"
+              placeholder="Escribe el nombre del producto.."
             />
           </div>
 
@@ -417,7 +288,7 @@ export const ModalCrearProducto = () => {
                   Seleccionar la categoria
                 </option>
                 {categorias.map((c) => (
-                  <option className="font-semibold" key={c.id}>
+                  <option className="font-semibold capitalize" key={c.id}>
                     {c.detalle}
                   </option>
                 ))}
@@ -480,6 +351,149 @@ export const ModalCrearProducto = () => {
   );
 };
 
+export const ModalActualizarProducto = ({ idObtenida }) => {
+  const { setProductos, categorias } = useProductosContext();
+
+  const [precio_und, setPrecio] = useState("");
+  const [detalle, setDetale] = useState("");
+  const [categoria, setCategoria] = useState("");
+
+  useEffect(() => {
+    async function loadData() {
+      const res = await client.get(`/producto/${idObtenida}`);
+
+      setDetale(res.data.detalle);
+      setCategoria(res.data.categoria);
+      setPrecio(res.data.precio_und);
+    }
+    loadData();
+  }, [idObtenida]);
+
+  const onSubmit = async (e) => {
+    e.preventDefault();
+
+    const datosProducto = { precio_und, detalle, categoria };
+
+    const res = await client.put(
+      `/editar-producto/${idObtenida}`,
+      datosProducto
+    );
+
+    setProductos(res.data);
+
+    document.getElementById("my_modal_actualizar_producto").close();
+
+    showSuccessToast("Producto actualizado");
+  };
+
+  const [isEditable, setIsEditable] = useState(false);
+
+  const handleInputClick = (index) => {
+    setIsEditable(true);
+  };
+
+  return (
+    <dialog id="my_modal_actualizar_producto" className="modal">
+      <div className="modal-box rounded-md max-md:h-full max-md:w-full max-md:max-h-full max-md:rounded-none">
+        <form method="dialog">
+          {/* if there is a button in form, it will close the modal */}
+          <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
+            ✕
+          </button>
+        </form>
+        {/* <h3 className="font-bold text-xl">Cargar producto nuevo.</h3>
+        <p className="py-0.5 text-sm font-medium">
+          En esta ventana podras cargar nuevos productos, para las ordenes de
+          compra, lista de precios, etc.
+        </p> */}
+        <form onSubmit={onSubmit} className="flex flex-col gap-3 mt-3">
+          <div className="flex flex-col gap-1">
+            <label className="font-bold text-sm">Detalle del producto</label>
+            <input
+              onChange={(e) => setDetale(e.target.value)}
+              value={detalle}
+              type="text"
+              className="rounded-md border border-gray-300 py-2 px-2 text-sm font-medium placeholder:normal-case capitalize outline-none focus:shadow-md"
+              placeholder="Escribe el nombre del producto.."
+            />
+          </div>
+
+          <div className="flex flex-col gap-1">
+            <label className="font-bold text-sm">Seleccionar categoria</label>
+            <div className="flex gap-2 items-center">
+              <select
+                type="text"
+                className="rounded-md border border-gray-300 py-2 px-2 text-sm font-medium capitalize outline-none focus:shadow-md"
+                onChange={(e) => setCategoria(e.target.value)}
+                value={categoria}
+              >
+                <option className="font-bold text-primary" value="">
+                  Seleccionar la categoria
+                </option>
+                {categorias.map((c) => (
+                  <option className="font-semibold capitalize" key={c.id}>
+                    {c.detalle}
+                  </option>
+                ))}
+              </select>
+              <div
+                onClick={() =>
+                  document
+                    .getElementById("my_modal_crear_categoria")
+                    .showModal()
+                }
+                className="cursor-pointer"
+              >
+                <IoMdAdd className="text-2xl border border-gray-300 rounded-md py-0.5 px-0.5" />
+              </div>
+            </div>
+          </div>
+
+          <div onClick={handleInputClick}>
+            {isEditable ? (
+              <div className="flex flex-col gap-2">
+                <label className="font-bold text-sm">
+                  Precio unidad del producto
+                </label>
+                <input
+                  onChange={(e) => setPrecio(e.target.value)}
+                  value={precio_und || 0}
+                  onBlur={() => {
+                    setIsEditable(false);
+                  }}
+                  type="text"
+                  className="rounded-md border border-gray-300 py-2 px-2 text-sm font-bold capitalize outline-none focus:shadow-md"
+                />
+              </div>
+            ) : (
+              <div className="flex flex-col gap-2">
+                <label className="font-bold text-sm">
+                  Precio unidad del producto
+                </label>
+
+                <p className="rounded-md border border-gray-300 py-2 px-2 text-sm font-bold capitalize outline-none focus:shadow-md">
+                  {formatearDinero(Number(precio_und) || 0)}
+                </p>
+              </div>
+            )}
+          </div>
+
+          <div>
+            <button
+              type="submit"
+              className="py-1.5 px-6 bg-primary hover:shadow-md text-white transition-all rounded-md font-semibold text-sm"
+            >
+              Actualizar el producto
+            </button>
+          </div>
+        </form>
+
+        <ModalCrearCategoria />
+      </div>
+    </dialog>
+  );
+};
+
 export const ModalCrearCategoria = () => {
   const { register, handleSubmit } = useForm();
 
@@ -493,7 +507,7 @@ export const ModalCrearCategoria = () => {
     showSuccessToast("Creado correctamente");
 
     document.getElementById("my_modal_crear_categoria").close();
-    document.getElementById("my_modal_crear_producto").close();
+    // document.getElementById("my_modal_crear_producto").close();
   });
 
   return (
@@ -542,7 +556,7 @@ export const ModalCategorias = () => {
 
   return (
     <dialog id="my_modal_categorias" className="modal">
-      <div className="modal-box rounded-md max-w-3xl">
+      <div className="modal-box rounded-md max-w-3xl max-md:h-full max-md:w-full max-md:max-h-full max-md:rounded-none">
         <form method="dialog">
           {/* if there is a button in form, it will close the modal */}
           <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
@@ -557,7 +571,7 @@ export const ModalCategorias = () => {
           En esta ventana podras cargar una nueva categoria, eliminarla, etc.
         </p>
 
-        <div className="mt-2">
+        <div className="mt-2 max-md:mt-5">
           <button
             onClick={() =>
               document.getElementById("my_modal_crear_categoria").showModal()
@@ -569,7 +583,7 @@ export const ModalCategorias = () => {
           </button>
         </div>
 
-        <div className="grid grid-cols-4 gap-3 mt-3">
+        <div className="grid grid-cols-4 gap-3 mt-3 max-md:grid-cols-2">
           {categorias.map((c) => (
             <div className="flex gap-2 py-1 px-2 border border-gray-300 rounded-md text-sm font-bold capitalize justify-between items-center">
               {c.detalle}{" "}
@@ -580,6 +594,79 @@ export const ModalCategorias = () => {
             </div>
           ))}
         </div>
+      </div>
+    </dialog>
+  );
+};
+
+const ModalEliminar = ({ idObtenida }) => {
+  const { handleSubmit } = useForm();
+
+  const { setProductos } = useProductosContext();
+
+  const onSubmit = async (formData) => {
+    try {
+      const productosData = {
+        datos: {
+          ...formData,
+        },
+      };
+
+      const res = await client.delete(`/producto/${idObtenida}`, productosData);
+
+      setProductos(res.data);
+
+      document.getElementById("my_modal_eliminar").close();
+
+      showSuccessToastError("Eliminado correctamente");
+    } catch (error) {
+      console.error("Error creating product:", error);
+    }
+  };
+
+  return (
+    <dialog id="my_modal_eliminar" className="modal">
+      <div className="modal-box rounded-md max-w-md">
+        <form method="dialog">
+          {/* if there is a button in form, it will close the modal */}
+          <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
+            ✕
+          </button>
+        </form>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <div>
+            <img
+              className="w-44 mx-auto"
+              src="https://app.holded.com/assets/img/document/doc_delete.png"
+            />
+          </div>
+          <div className="font-semibold text-sm text-gray-400 text-center">
+            REFERENCIA {idObtenida}
+          </div>
+          <div className="font-semibold text-[#FD454D] text-lg text-center">
+            Eliminar el producto seleccionado..
+          </div>
+          <div className="text-sm text-gray-400 text-center mt-1">
+            El producto no podra ser recuperado nunca mas...
+          </div>
+          <div className="mt-4 text-center w-full px-16">
+            <button
+              type="submit"
+              className="bg-red-500 py-1 px-4 text-center font-bold text-white text-sm rounded-md w-full"
+            >
+              Confirmar
+            </button>{" "}
+            <button
+              type="button"
+              onClick={() =>
+                document.getElementById("my_modal_eliminar").close()
+              }
+              className="bg-orange-100 py-1 px-4 text-center font-bold text-orange-600 mt-2 text-sm rounded-md w-full"
+            >
+              Cancelar
+            </button>
+          </div>
+        </form>
       </div>
     </dialog>
   );

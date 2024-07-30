@@ -72,7 +72,7 @@ const ApexChartColumnProveedores = ({ proveedores, totalProveedores }) => {
   ];
 
   return (
-    <div className="bg-white py-10 px-10 z-[100] border-blue-500 border relative rounded">
+    <div className="bg-white py-10 px-10 z-[100] border-gray-300 border relative rounded">
       <div className="overflow-y-scroll h-[50vh] scroll-bar" id="chart">
         <ReactApexChart
           options={chartOptions}
@@ -87,7 +87,7 @@ const ApexChartColumnProveedores = ({ proveedores, totalProveedores }) => {
           <p className="font-semibold text-base text-gray-500">
             Total deuda con proveedores
           </p>
-          <p className="font-bold text-lg mt-1 text-red-700">
+          <p className="font-bold text-lg mt-1 text-red-500">
             {totalProveedores.toLocaleString("es-AR", {
               style: "currency",
               currency: "ARS",

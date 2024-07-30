@@ -1,12 +1,16 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "../../context/AuthProvider";
+import { MenuMobile } from "./MenuMobile";
 
 export const Navbar = () => {
   const { signout } = useAuth();
 
   return (
     <header className="bg-gray-800 py-5 px-10 flex items-center justify-between max-md:items-end max-md:justify-end">
+      <div className="hidden max-md:block">
+        <MenuMobile />
+      </div>
       <div className="flex gap-10 items-center max-md:hidden">
         <Link to={"/"} className="cursor-pointer">
           <img src="https://app.holded.com/assets/img/brand/holded-logo.svg" />
@@ -44,10 +48,10 @@ export const Navbar = () => {
               className="dropdown-content menu bg-white p-1 rounded-md w-52 text-sm font-medium shadow-xl gap-1"
             >
               <li className="hover:bg-gray-800 hover:text-white rounded-md">
-                <Link to={"/productos"}>Cargar ordenes</Link>
+                <Link to={"/ordenes"}>Cargar ordenes</Link>
               </li>{" "}
               <li className="hover:bg-gray-800 hover:text-white rounded-md">
-                <Link to={"/productos"}>Presupuestos</Link>
+                <Link to={"-"}>Presupuestos</Link>
               </li>{" "}
             </ul>
           </div>
@@ -67,11 +71,11 @@ export const Navbar = () => {
               className="dropdown-content menu bg-white p-1 rounded-md w-52 text-sm font-medium shadow-xl gap-1"
             >
               <li className="hover:bg-gray-800 hover:text-white rounded-md">
-                <Link to={"/productos"}>Cargar proveedores</Link>
+                <Link to={"/proveedores"}>Cargar proveedores</Link>
               </li>{" "}
-              <li className="hover:bg-gray-800 hover:text-white rounded-md">
+              {/* <li className="hover:bg-gray-800 hover:text-white rounded-md">
                 <Link to={"/productos"}>Cargar pagos</Link>
-              </li>{" "}
+              </li>{" "} */}
             </ul>
           </div>
         </div>

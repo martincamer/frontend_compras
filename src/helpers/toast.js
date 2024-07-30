@@ -9,7 +9,7 @@ const customToastStyle = {
   fontWeight: "semibold",
   backgroundColor: "#fff", // Color de fondo verde (success)
   color: "#0005", // Color de texto blanco
-  borderRadius: "0px",
+  borderRadius: "4px",
 };
 
 export const showSuccessToastError = (message) => {

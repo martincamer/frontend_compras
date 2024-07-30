@@ -1,15 +1,24 @@
-import { useState } from "react";
-import { ToastContainer } from "react-toastify";
-import { ModalCrearOrden } from "../../../components/Modales/ModalCrearOrden";
+import { useEffect, useState } from "react";
 import { useOrdenesContext } from "../../../context/OrdenesProvider";
-import { ModalEliminar } from "../../../components/Modales/ModalEliminar";
 import { ModalVerProductos } from "../../../components/Modales/ModalVerProductos";
 import { ModalEditarOrdenTotal } from "../../../components/Modales/ModalEditarOrdenTotal";
 import { ModalActualizarOrdenEstado } from "../../../components/Modales/ModalActualizarOrdenEstado";
 import { ModalCompararPrecios } from "../../../components/Modales/ModalCompararPrecios";
 import { ModalCompras } from "../../../components/Modales/ModalCompras";
 import { Link } from "react-router-dom";
-import { CgSearch } from "react-icons/cg";
+import { CgMenuRightAlt, CgSearch } from "react-icons/cg";
+import { useProductosContext } from "../../../context/ProductosProvider";
+import { FaEdit, FaSearch } from "react-icons/fa";
+import { formatearDinero } from "../../../helpers/formatearDinero";
+import { useObtenerId } from "../../../helpers/obtenerId";
+import { FaDeleteLeft } from "react-icons/fa6";
+import {
+  showSuccessToast,
+  showSuccessToastError,
+} from "../../../helpers/toast";
+import client from "../../../api/axios";
+import { IoMdAdd } from "react-icons/io";
+import { useForm } from "react-hook-form";
 
 export const OrdenDeCompra = () => {
   const [isOpenEliminar, setIsOpenEliminar] = useState(false);
@@ -119,39 +128,35 @@ export const OrdenDeCompra = () => {
 
   const closeModalEditarOrden = () => setOpenModalEditarOrden(false);
 
+  const { handleObtenerId, idObtenida } = useObtenerId();
+
   return (
-    <section className="max-h-full min-h-screen bg-gray-100/40 w-full h-full max-md:py-12">
-      <ToastContainer />
-      <div className="bg-white mb-4 h-10 flex max-md:hidden">
-        <Link
-          to={"/"}
-          className="bg-sky-100 flex h-full px-4 justify-center items-center font-bold text-blue-600"
+    <section className="w-full h-full min-h-screen max-h-full">
+      <div className="bg-gray-100 py-10 px-10 flex justify-between items-center max-md:flex-col max-md:gap-3">
+        <p className="font-bold text-gray-900 text-xl">Sector de productos.</p>
+        <button
+          onClick={() =>
+            document
+              .getElementById("my_modal_crear_orden_de_compra")
+              .showModal()
+          }
+          type="button"
+          className="bg-primary py-1 px-4 rounded-md text-white font-semibold text-sm"
         >
-          Inicio
-        </Link>{" "}
-        <Link
-          to={"/ordenes"}
-          className="bg-blue-500 flex h-full px-4 justify-center items-center font-bold text-white"
-        >
-          Compras
-        </Link>
+          Crear nueva orden de compra
+        </button>
       </div>
-      <div className="bg-white py-5 px-5 mx-5 mt-10 max-md:mt-5">
-        <h3 className="text-xl font-bold text-blue-500">
-          Crea nuevas ordenes de compra
-        </h3>
-      </div>
-      <div className="bg-white py-5 px-5 mx-5 my-10 flex gap-3 max-md:my-5 max-md:flex-col">
-        <div className="dropdown dropdown-bottom">
-          <button className="font-bold text-sm bg-rose-400 py-2 px-4 text-white rounded">
+      <div className="bg-white py-5 px-5 mx-0 mt-10 flex gap-3 max-md:my-5 max-md:flex-col max-md:mt-3">
+        <div className="dropdown dropdown-bottom dropdown-hover">
+          <button className="font-bold text-sm bg-primary py-1 px-4 text-white rounded">
             Ver estadisticas de compras
           </button>
           <ul
             tabIndex={0}
-            className="dropdown-content z-[1] menu p-2 mt-2 bg-white w-[800px] border max-md:w-80"
+            className="dropdown-content z-[1] menu p-2 mt-0.5 bg-gray-800 rounded-md w-[800px] max-md:w-80"
           >
             <div className="py-5 px-5 grid grid-cols-3 gap-5 w-full max-md:grid-cols-1">
-              <div className="flex flex-col gap-1 border border-blue-500 py-3 px-3">
+              <div className="flex flex-col gap-1 bg-white rounded-md py-3 px-3">
                 <p className="font-medium text-sm">
                   Total en ordenes generadas del mes.
                 </p>
@@ -163,11 +168,11 @@ export const OrdenDeCompra = () => {
                 </p>
               </div>
 
-              <div className="flex flex-col gap-1 border border-blue-500 py-3 px-3">
+              <div className="flex flex-col gap-1 bg-white rounded-md py-3 px-3">
                 <p className="font-medium text-sm">
                   Total en ordenes filtradas del mes/semanal/etc.
                 </p>
-                <p className="font-bold text-lg text-blue-500">
+                <p className="font-bold text-lg text-primary">
                   {totalPrecioFinalFiltradas.toLocaleString("es-AR", {
                     style: "currency",
                     currency: "ARS",
@@ -181,7 +186,7 @@ export const OrdenDeCompra = () => {
           onClick={() =>
             document.getElementById("my_modal_comparar_precios").showModal()
           }
-          className="font-bold text-sm bg-green-400 py-2 px-4 text-white rounded max-md:hidden"
+          className="font-bold text-sm bg-green-500 py-1 px-4 text-white rounded max-md:hidden"
         >
           Ver productos/comparar/proveedores/etc
         </button>
@@ -189,140 +194,76 @@ export const OrdenDeCompra = () => {
           onClick={() =>
             document.getElementById("my_modal_compras").showModal()
           }
-          className="font-bold text-sm bg-blue-500 py-2 px-4 text-white rounded max-md:hidden"
+          className="font-bold text-sm bg-blue-500 py-1 px-4 text-white rounded max-md:hidden"
         >
           Ver ordenes de compra/comparar/filtrar/etc
         </button>
       </div>
-      <div className="mx-10 py-2 flex gap-2 items-center max-md:px-0 max-md:py-0 max-md:flex-col max-md:items-start border-b-[1px] border-slate-300 pb-4 max-md:pb-4 max-md:mx-2">
-        <button
-          onClick={() => openModal()}
-          className="bg-blue-500  py-2 px-5 rounded text-sm text-white font-semibold max-md:text-xs flex gap-2 items-center hover:bg-orange-500 hover:text-white transition-all ease-in-out"
-        >
-          Crear nueva orden
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth={1.5}
-            stroke="currentColor"
-            className="w-6 h-6"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 0 0 2.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 0 0-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 0 0 .75-.75 2.25 2.25 0 0 0-.1-.664m-5.8 0A2.251 2.251 0 0 1 13.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25ZM6.75 12h.008v.008H6.75V12Zm0 3h.008v.008H6.75V15Zm0 3h.008v.008H6.75V18Z"
-            />
-          </svg>
-        </button>
-      </div>
 
-      <div className="bg-white my-5 mx-5 py-4 px-5 flex max-md:flex-col gap-2">
-        <div className="w-1/3 max-md:w-auto border border-blue-500 py-1 px-3 text-sm font-semibold flex items-center justify-between">
+      <div className="bg-white  mx-5 max-md:mx-5 my-4 flex max-md:flex-col gap-2">
+        <div className="border border-gray-300 flex items-center gap-2 px-2 py-1.5 text-sm rounded-md w-1/5 max-md:w-full">
           <input
-            className="w-full outline-none"
-            type="text"
-            placeholder="Buscar por proveedores existentes..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
+            type="text"
+            className="outline-none font-medium w-full"
+            placeholder="Buscar por el proveedor..."
           />
-          <CgSearch className="text-blue-500" />
+          <FaSearch className="text-gray-700" />
         </div>
 
-        <div className="border-blue-500 border py-1.5 px-3 text-sm font-bold flex max-md:flex-col max-md:gap-3 max-md:items-start">
-          {/* Filtrador por fecha específica */}
-          <div className="flex gap-2 items-center max-md:flex-col">
-            <div className="flex gap-2 items-center">
-              Fecha anterior{" "}
-              <input
-                className="border border-blue-500 py-1 px-3 outline-none"
-                type="date"
-                value={startDate}
-                onChange={(e) => setStartDate(e.target.value)}
-              />
-            </div>
-            <div className="flex gap-2 items-center">
-              Fecha actual{" "}
-              <input
-                className="border border-blue-500 py-1 px-3 outline-none"
-                type="date"
-                value={endDate}
-                onChange={(e) => setEndDate(e.target.value)}
-              />
-            </div>
-          </div>
-
-          {/* Filtrador por fecha del mes */}
-          <button
-            className="hidden bg-blue-500 text-white px-4 py-1 ml-4 rounded-full text-xs hover:bg-orange-500 transition-all"
-            onClick={() => setStartDate("")}
-          >
-            Mostrar del mes actual
-          </button>
+        <div className="flex gap-2 items-center ">
+          <input
+            className="border border-gray-300 text-sm rounded-md font-medium py-2 max-md:py-1 px-3 outline-none"
+            type="date"
+            value={startDate}
+            onChange={(e) => setStartDate(e.target.value)}
+          />
+          <input
+            className="border border-gray-300 text-sm rounded-md font-medium py-2 max-md:py-1 px-3 outline-none"
+            type="date"
+            value={endDate}
+            onChange={(e) => setEndDate(e.target.value)}
+          />
         </div>
       </div>
 
-      <div className="bg-white transition-all ease-linear mt-6 mx-5 py-5 px-2 mb-10">
-        <div className="max-md:overflow-x-auto px-4">
-          {" "}
-          <table className="min-w-full table text-xs cursor-pointer">
-            <thead className="text-left">
+      <div>
+        <div className="max-md:overflow-x-auto mx-5 my-10 max-md:h-[100vh] scrollbar-hidden">
+          <table className="table">
+            <thead className="text-left font-bold text-gray-900 text-sm">
               <tr>
-                <th className="whitespace-nowrap px-4 py-4 text-slate-700 uppercase font-bold text-xs">
-                  Numero
-                </th>
-                <th className="whitespace-nowrap px-4 py-4 text-slate-700 uppercase font-bold text-xs">
-                  Proveedor
-                </th>
-                <th className="whitespace-nowrap px-4 py-4 text-slate-700 uppercase font-bold text-xs">
-                  Numero Factura
-                </th>
-                <th className="whitespace-nowrap px-4 py-4 text-slate-700 uppercase font-bold text-xs">
-                  Fecha de la factura
-                </th>
-                <th className="whitespace-nowrap px-4 py-4 text-slate-700 uppercase font-bold text-xs">
-                  Fecha de creación
-                </th>
-                <th className="whitespace-nowrap px-4 py-4 text-slate-700 uppercase font-bold text-xs">
-                  Total Facturado
-                </th>
-                <th className="whitespace-nowrap px-4 py-4 text-slate-700 uppercase font-bold text-xs">
-                  Estado
-                </th>
-                <th className="whitespace-nowrap px-4 py-4 text-slate-700 uppercase font-bold text-xs">
-                  Acciones
-                </th>
+                <th>Numero</th>
+                <th>Proveedor</th>
+                <th>Numero Factura</th>
+                <th>Fecha de la factura</th>
+                <th>Fecha de creación</th>
+                <th>Total Facturado</th>
+                <th>Estado</th>
+                <th>Acciones</th>
               </tr>
             </thead>
-            <tbody className="">
+            <tbody className="text-xs capitalize font-medium">
               {sortedOrdenes.map((p) => (
                 <tr className="" key={p.id}>
-                  <th className="whitespace-nowrap px-4 py-4 text-gray-700 font-bold uppercase text-xs">
-                    {p.id}
-                  </th>
-                  <th className="whitespace-nowrap px-4 py-4 text-gray-700 uppercase text-xs">
-                    {p.proveedor}
-                  </th>
-                  <th className="whitespace-nowrap px-4 py-4  uppercase text-xs">
-                    N° {p.numero_factura}
-                  </th>
-                  <th className="whitespace-nowrap px-4 py-4  uppercase text-xs">
+                  <td>{p.id}</td>
+                  <td>{p.proveedor}</td>
+                  <td>N° {p.numero_factura}</td>
+                  <td>
                     {new Date(p.fecha_factura).toLocaleDateString("ars")}
-                  </th>{" "}
-                  <th className="whitespace-nowrap px-4 py-4  uppercase text-xs">
-                    {new Date(p.created_at).toLocaleDateString("ars")}
-                  </th>
-                  <th className="whitespace-nowrap px-4 py-4  uppercase text-xs">
+                  </td>{" "}
+                  <td>{new Date(p.created_at).toLocaleDateString("ars")}</td>
+                  <td className="">
                     <div className="flex">
-                      <p className="bg-blue-500 py-1.5 rounded text-white font-bold px-3">
+                      <p className="bg-green-100/90 py-1.5 rounded text-green-700 font-bold px-3">
                         {Number(p.precio_final).toLocaleString("es-AR", {
                           style: "currency",
                           currency: "ARS",
                         })}
                       </p>
                     </div>
-                  </th>
-                  <th className="whitespace-nowrap px-4 py-4 text-gray-700 uppercase text-sm cursor-pointer">
+                  </td>
+                  <td className="whitespace-nowrap px-4 py-4 text-gray-700 uppercase text-xs cursor-pointer">
                     <div className="flex">
                       <p
                         className={`${
@@ -332,39 +273,26 @@ export const OrdenDeCompra = () => {
                             "bg-red-50 text-red-600") ||
                           (p.estado === "aceptada" &&
                             "bg-green-50 text-green-600")
-                        } py-1 px-2 rounded capitalize text-sm`}
+                        } py-1 px-2 rounded capitalize text-xs font-semibold`}
                       >
                         {p.estado}
                       </p>
                     </div>
-                  </th>
-                  <th className="whitespace-nowrap px-4 py-4 text-gray-700 uppercase text-xs cursor-pointer space-x-2 flex">
+                  </td>
+                  <td>
                     <div className="dropdown dropdown-left z-1">
                       <div
                         tabIndex={0}
                         role="button"
-                        className="hover:bg-gray-200 rounded-full px-2 py-2 transition-all"
+                        className="hover:bg-gray-700 hover:text-white rounded-full px-1 py-1 transition-all"
                       >
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          strokeWidth={1.5}
-                          stroke="currentColor"
-                          className="w-7 h-7"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            d="M10.5 6h9.75M10.5 6a1.5 1.5 0 1 1-3 0m3 0a1.5 1.5 0 1 0-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-9.75 0h9.75"
-                          />
-                        </svg>
+                        <CgMenuRightAlt className="text-2xl" />
                       </div>
                       <ul
                         tabIndex={0}
-                        className="dropdown-content z-[1] menu p-3 border-blue-500 border bg-white w-52 gap-2"
+                        className="dropdown-content z-[1] menu p-1 border border-gray-300 rounded-md bg-white shadow-xl w-52 gap-1"
                       >
-                        <button className="hover:text-blue-500 transition-all text-left hover:underline">
+                        <li className="text-xs font-semibold hover:bg-gray-800 rounded-md hover:text-white">
                           <span
                             onClick={() => {
                               handleID(p.id), openProductos();
@@ -373,47 +301,54 @@ export const OrdenDeCompra = () => {
                           >
                             Ver Productos
                           </span>
-                        </button>
-                        <button
-                          className="hover:text-blue-500 transition-all text-left hover:underline"
-                          onClick={() => {
-                            handleID(p.id),
-                              document
-                                .getElementById("my_modal_actualizar_estado")
-                                .showModal();
-                          }}
-                        >
-                          Actualizar estado
-                        </button>
-                        <button className="hover:text-blue-500 transition-all text-left hover:underline">
+                        </li>
+                        <li className="text-xs font-semibold hover:bg-gray-800 rounded-md hover:text-white">
+                          <button
+                            onClick={() => {
+                              handleID(p.id),
+                                document
+                                  .getElementById("my_modal_actualizar_estado")
+                                  .showModal();
+                            }}
+                          >
+                            Actualizar estado
+                          </button>
+                        </li>
+                        <li className="text-xs font-semibold hover:bg-gray-800 rounded-md hover:text-white">
                           <span
                             onClick={() => {
-                              handleID(p.id), openModalEditarOrden();
+                              handleObtenerId(p.id),
+                                document
+                                  .getElementById(
+                                    "my_modal_actualizar_orden_de_compra"
+                                  )
+                                  .showModal();
                             }}
                             className=""
                           >
-                            Editar
+                            Actualizar orden
                           </span>
-                        </button>
+                        </li>
 
-                        <Link
-                          to={`/orden/${p.id}`}
-                          className="hover:text-blue-500 transition-all text-left capitalize hover:underline"
-                        >
-                          Ver orden
-                        </Link>
+                        <li className="text-xs font-semibold hover:bg-gray-800 rounded-md hover:text-white">
+                          <Link to={`/orden/${p.id}`}>Ver orden</Link>
+                        </li>
 
-                        <button
-                          onClick={() => {
-                            handleID(p.id), openEliminar();
-                          }}
-                          className="hover:text-red-500 transition-all text-left capitalize hover:underline"
-                        >
-                          Eliminar
-                        </button>
+                        <li className="text-xs font-semibold hover:bg-gray-800 rounded-md hover:text-white">
+                          <button
+                            onClick={() => {
+                              handleObtenerId(p.id),
+                                document
+                                  .getElementById("my_modal_eliminar")
+                                  .showModal();
+                            }}
+                          >
+                            Eliminar
+                          </button>
+                        </li>
                       </ul>
                     </div>
-                  </th>
+                  </td>
                 </tr>
               ))}
             </tbody>
@@ -421,16 +356,8 @@ export const OrdenDeCompra = () => {
         </div>
       </div>
 
-      <ModalCrearOrden
-        obtenerId={obtenerId}
-        isOpen={isOpen}
-        closeModal={closeModal}
-      />
-      <ModalEliminar
-        eliminarModal={isOpenEliminar}
-        closeEliminar={closeEliminar}
-        obtenerId={obtenerId}
-      />
+      <ModalCrearOrdenDeCompra />
+
       <ModalVerProductos
         isOpen={isProductos}
         closeModal={closeProductos}
@@ -444,8 +371,2189 @@ export const OrdenDeCompra = () => {
       />
 
       <ModalActualizarOrdenEstado idObtenida={obtenerId} />
+
       <ModalCompararPrecios />
       <ModalCompras />
+
+      <ModalEliminar idObtenida={idObtenida} />
+
+      <ModalActualizarOrdenDeCompra id={idObtenida} />
     </section>
+  );
+};
+
+export const ModalActualizarOrdenDeCompra = ({ id }) => {
+  const { setOrdenes } = useOrdenesContext();
+
+  const { proveedores, setProveedores } = useProductosContext();
+
+  useEffect(() => {
+    async function loadData() {
+      const respuesta = await client.get("/proveedores");
+      setProveedores(respuesta.data);
+    }
+
+    loadData();
+  }, []);
+
+  const [proveedor, setProveedor] = useState("");
+  const [numero_factura, setNumeroFactura] = useState("");
+  const [detalle, setDetalle] = useState("");
+  const [fecha_factura, setFechaFactura] = useState("");
+  const [localidad, setLocalidad] = useState("");
+  const [provincia, setProvincia] = useState("");
+  const [iva, setIva] = useState(1.21);
+
+  const [productoSeleccionado, setProductoSeleccionado] = useState([]);
+
+  const { handleObtenerId, idObtenida, setIdObtenida } = useObtenerId();
+
+  const addToProductos = (
+    id,
+    detalle,
+    categoria,
+    precio_und,
+    cantidad,
+    totalFinal,
+    totalFinalIva,
+    iva,
+    cantidadFaltante
+  ) => {
+    const newProducto = {
+      id,
+      detalle,
+      categoria,
+      precio_und,
+      cantidad,
+      totalFinal,
+      totalFinalIva,
+      iva,
+      cantidadFaltante: 0,
+    };
+
+    const productoSeleccionadoItem = productoSeleccionado.find((item) => {
+      return item.id === id;
+    });
+
+    document
+      .getElementById("my_modal_producto_seleccionado_en_actualizar")
+      .close();
+    document.getElementById("my_modal_producto_compra_en_actualizar").close();
+
+    if (productoSeleccionadoItem) {
+      setTimeout(() => {
+        // setErrorProducto(false);
+      }, 2000);
+      setErrorProducto(true);
+    } else {
+      setProductoSeleccionado([...productoSeleccionado, newProducto]);
+      // setErrorProducto(false);
+    }
+  };
+
+  useEffect(() => {
+    async function loadData() {
+      const respuesta = await client.get(`/orden/${id}`);
+
+      const fecha = new Date(respuesta.data.fecha_factura);
+      const formattedDate = fecha.toISOString().split("T")[0]; // Extracting only the date part
+
+      setIva(respuesta.data.iva);
+      setProveedor(respuesta.data.proveedor);
+      setLocalidad(respuesta.data.localidad);
+      setProvincia(respuesta.data.provincia);
+      setDetalle(respuesta.data.detalle);
+      setFechaFactura(formattedDate);
+      setNumeroFactura(respuesta.data.numero_factura);
+      setDetalle(respuesta.data.detalle);
+      setProductoSeleccionado(respuesta.data.datos.productoSeleccionado);
+      console.log("asdsad", respuesta.data.datos.productoSeleccionado);
+    }
+
+    loadData();
+  }, [id]);
+
+  const deleteProducto = (id) => {
+    const itemIndex = productoSeleccionado.findIndex((item) => item.id === id);
+
+    if (itemIndex !== -1) {
+      const newItem = [...productoSeleccionado];
+      newItem.splice(itemIndex, 1); // Corrected line
+      setProductoSeleccionado(newItem);
+    }
+  };
+
+  const totalesFinales = productoSeleccionado.reduce((total, producto) => {
+    return total + Number(producto?.totalFinal);
+  }, 0);
+
+  const totalFinalSumSinIva = productoSeleccionado.reduce(
+    (accumulator, currentValue) => {
+      return accumulator + currentValue.totalFinalIva;
+    },
+    0
+  );
+
+  const onSubmit = async (e) => {
+    e.preventDefault();
+
+    const datosOrden = {
+      proveedor,
+      numero_factura,
+      precio_final: Number(totalFinalSumSinIva),
+      fecha_factura,
+      localidad,
+      provincia,
+      detalle,
+      datos: { productoSeleccionado },
+      iva,
+    };
+
+    const datos = {
+      proveedor,
+      total: Number(totalFinalSumSinIva),
+    };
+
+    const res = await client.put(`/editar-orden/${id}`, datosOrden);
+
+    setOrdenes(res.data.ordenes);
+    setProveedores(res.data.proveedores);
+
+    // setProductoSeleccionado([]);
+    // setProveedor("");
+    // setNumeroFactura("");
+    // setDetalle("");
+    // setFechaFactura("");
+    // setLocalidad("");
+    // setProvincia("");
+
+    showSuccessToast("Orden finalizada..");
+
+    handleObtenerId(null);
+
+    document.getElementById("my_modal_actualizar_orden_de_compra").close();
+  };
+
+  const handleProveedorChange = (e) => {
+    const selectedProveedor = e.target.value;
+    setProveedor(selectedProveedor);
+
+    // Buscar la localidad correspondiente al proveedor seleccionado
+    const selectedProveedorData = proveedores.find(
+      (p) => p.proveedor === selectedProveedor
+    );
+    if (selectedProveedorData) {
+      setLocalidad(selectedProveedorData.localidad);
+      setProvincia(selectedProveedorData.provincia);
+    } else {
+      setLocalidad("");
+      setProvincia("");
+    }
+  };
+
+  return (
+    <dialog id="my_modal_actualizar_orden_de_compra" className="modal">
+      <div className="modal-box max-w-full h-full scroll-bar rounded-md  max-md:h-full max-md:w-full max-md:max-h-full max-md:rounded-none">
+        <form method="dialog">
+          {/* if there is a button in form, it will close the modal */}
+          <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
+            ✕
+          </button>
+        </form>
+
+        <h3 className="font-bold text-xl">Actualizar la orden de compra.</h3>
+        <p className="py-0.5 text-sm font-medium">
+          En esta ventana podras cargar una actualizar la orden de compra,
+          productos, etc.
+        </p>
+
+        <form onSubmit={onSubmit} className="flex flex-col gap-3 mt-4">
+          <div className="grid grid-cols-4 gap-2 max-md:grid-cols-1">
+            <div className="flex flex-col gap-2">
+              <label className="text-sm font-bold">Proveedor de la orden</label>
+              <select
+                value={proveedor}
+                onChange={handleProveedorChange}
+                className="capitalize font-semibold text-sm border border-gray-300 rounded-md py-2 px-2 outline-none focus:shadow-md cursor-pointer transition-all"
+                placeholder="PROVEEDOR DE LA ORDEN"
+              >
+                <option
+                  className="font-bold text-primary"
+                  value={"seleccionar"}
+                >
+                  Seleccionar el proveedor
+                </option>
+                {proveedores.map((p, index) => (
+                  <option
+                    className="font-semibold text-gray-800"
+                    key={index}
+                    value={p.proveedor}
+                  >
+                    {p.proveedor}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div className="flex flex-col gap-2">
+              <label className="text-sm font-medium">Localidad</label>
+              <input
+                value={localidad}
+                onChange={(e) => setLocalidad(e.target.value)}
+                type="text"
+                className="capitalize font-semibold text-sm border border-gray-300 rounded-md py-2 px-2 outline-none focus:shadow-md cursor-pointer transition-all"
+                placeholder="Escribir la localidad."
+              />
+            </div>
+            <div className="flex flex-col gap-2">
+              <label className="text-sm font-medium">Provincia</label>
+              <input
+                value={provincia}
+                onChange={(e) => setProvincia(e.target.value)}
+                type="text"
+                className="capitalize font-semibold text-sm border border-gray-300 rounded-md py-2 px-2 outline-none focus:shadow-md cursor-pointer transition-all"
+                placeholder="Escribe la provincia del proveedor."
+              />
+            </div>
+            <div className="flex flex-col gap-2">
+              <label className="text-sm font-medium">
+                Numero del remito o factura de compra
+              </label>
+              <input
+                value={numero_factura}
+                onChange={(e) => setNumeroFactura(e.target.value)}
+                className="capitalize font-medium text-sm border border-gray-300 rounded-md py-2 px-2 outline-none focus:shadow-md cursor-pointer transition-all"
+                placeholder="Escribe el numero..."
+              />
+            </div>
+            <div className="flex flex-col gap-2">
+              <label className="text-sm font-medium">
+                Fecha del remito o factura de compra
+              </label>
+              <input
+                value={fecha_factura}
+                onChange={(e) => setFechaFactura(e.target.value)}
+                type="date"
+                className="font-medium text-sm border border-gray-300 rounded-md py-2 px-2 outline-none focus:shadow-md cursor-pointer transition-all"
+              />
+            </div>
+          </div>
+          <div className="flex flex-col gap-2 w-1/6 max-md:w-auto">
+            <label className="text-sm font-bold">
+              Detallar algo mensaje,etc.
+            </label>
+            <textarea
+              value={detalle}
+              onChange={(e) => setDetalle(e.target.value)}
+              type="text"
+              placeholder="Detallar algo de la orden de compra.."
+              className="font-medium text-sm border border-gray-300 rounded-md py-2 px-2 outline-none focus:shadow-md cursor-pointer transition-all"
+            />
+          </div>
+          <div className="flex gap-2 max-md:flex-col">
+            <button
+              onClick={() =>
+                document
+                  .getElementById("my_modal_producto_compra_en_actualizar")
+                  .showModal()
+              }
+              type="button"
+              className="bg-primary font-semibold text-white py-1 px-6 rounded text-sm max-md:py-2"
+            >
+              Cargar nuevo producto
+            </button>
+            <button
+              onClick={() =>
+                document.getElementById("my_modal_crear_producto").showModal()
+              }
+              type="button"
+              className="bg-blue-500 font-semibold text-white py-1.5 px-6 rounded text-sm max-md:py-2"
+            >
+              Crear producto inexistente
+            </button>
+          </div>
+
+          <div className="max-md:overflow-x-auto">
+            <table className="table">
+              <thead className="font-bold text-gray-900 text-sm">
+                <tr>
+                  <th>Detalle</th>
+                  <th>Categoria</th>
+                  <th>Precio Und</th>
+                  <th>Total</th>
+                  <th>Iva Seleccionado</th>
+                  <th>Total final con iva</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody className="text-xs capitalize font-medium">
+                {productoSeleccionado.map((p) => (
+                  <tr key={p.id}>
+                    <td>{p.detalle}</td>
+                    <td>{p.categoria}</td>
+                    <td className="font-bold text-primary">
+                      {Number(p.precio_und).toLocaleString("es-AR", {
+                        style: "currency",
+                        currency: "ARS",
+                      })}
+                    </td>
+                    <td className="font-bold text-gray-900">
+                      {Number(p.totalFinal).toLocaleString("es-AR", {
+                        style: "currency",
+                        currency: "ARS",
+                      })}
+                    </td>
+                    <td>
+                      {(p.iva === 1.105 && "IVA DEL 10.05") ||
+                        (p.iva === 1.21 && "IVA DEL 21.00") ||
+                        (p.iva === 0 && "NO TIENE IVA")}
+                    </td>
+                    <td>
+                      <div className="flex">
+                        <p className="bg-primary py-1 px-2 rounded-md text-white font-bold">
+                          {Number(p.totalFinalIva).toLocaleString("es-AR", {
+                            style: "currency",
+                            currency: "ARS",
+                          })}
+                        </p>
+                      </div>
+                    </td>
+                    <td>
+                      <div className="flex gap-2">
+                        <FaEdit
+                          onClick={() => {
+                            handleObtenerId(p.id),
+                              document
+                                .getElementById(
+                                  "my_modal_actualizar_producto_en_actualizar"
+                                )
+                                .showModal();
+                          }}
+                          className="text-xl cursor-pointer text-blue-600"
+                        />
+                        <FaDeleteLeft
+                          onClick={() => deleteProducto(p.id)}
+                          className="text-xl cursor-pointer text-red-500"
+                        />
+                      </div>
+                    </td>
+                    <td className="hidden">
+                      <div className="dropdown dropdown-left z-1">
+                        <div
+                          tabIndex={0}
+                          role="button"
+                          className="hover:bg-slate-100 rounded-full px-2 py-2 transition-all"
+                        >
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            strokeWidth={1.5}
+                            stroke="currentColor"
+                            className="w-7 h-7"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              d="M10.5 6h9.75M10.5 6a1.5 1.5 0 1 1-3 0m3 0a1.5 1.5 0 1 0-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-9.75 0h9.75"
+                            />
+                          </svg>
+                        </div>
+                        <ul
+                          tabIndex={0}
+                          className="dropdown-content z-[1] menu p-2 shadow-lg border bg-base-100 rounded-box w-52 gap-2"
+                        >
+                          <li>
+                            <span
+                              onClick={() => {
+                                handleID(p.id), openProductoEditar();
+                              }}
+                              className="bg-green-500/90 font-semibold text-white py-2 px-6 rounded-full  text-sm flex justify-between hover:bg-green-500"
+                            >
+                              EDITAR
+                              <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                strokeWidth={1.5}
+                                stroke="currentColor"
+                                className="w-5 h-5"
+                              >
+                                <path
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10"
+                                />
+                              </svg>
+                            </span>
+                          </li>
+                          <li>
+                            <span
+                              onClick={() => deleteProducto(p.id)}
+                              className="bg-red-500/90 font-semibold text-white py-2 px-6 rounded-full  text-sm flex justify-between hover:bg-red-500"
+                            >
+                              ELIMINAR
+                              <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                strokeWidth={1.5}
+                                stroke="currentColor"
+                                className="w-5 h-5"
+                              >
+                                <path
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0"
+                                />
+                              </svg>
+                            </span>
+                          </li>
+                        </ul>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <div className="flex gap-2 bg-gray-800 py-5 rounded-md mt-4 max-md:flex-col">
+            <p className="font-normal py-2 px-5 text-sm rounded-xl text-white flex gap-1 items-center max-md:flex-col max-md:items-start">
+              <span className="font-bold">Subtotal</span>
+              <span className="py-2 px-4 text-base text-white rounded-xl font-bold">
+                {totalesFinales.toLocaleString("es-AR", {
+                  style: "currency",
+                  currency: "ARS",
+                })}
+              </span>
+            </p>
+            <p className="font-normal py-2 px-5 text-sm rounded-xl text-white flex gap-1 items-center max-md:flex-col max-md:items-start">
+              <span className="font-bold">Total iva agregado</span>
+              <span className="py-2 px-4 text-base rounded-xl font-bold">
+                {Number(totalFinalSumSinIva - totalesFinales).toLocaleString(
+                  "es-AR",
+                  {
+                    style: "currency",
+                    currency: "ARS",
+                  }
+                )}
+              </span>
+            </p>
+            <p className=" font-normal py-2 px-5 text-sm rounded-xl text-white flex gap-2 items-center max-md:flex-col max-md:items-start">
+              <span className=" font-bold">
+                {" "}
+                Total final con <span>ivas</span> seleccionado{" "}
+              </span>{" "}
+              <span className="bg-primary py-2 px-4 text-base rounded-xl font-bold">
+                {Number(totalFinalSumSinIva).toLocaleString("es-AR", {
+                  style: "currency",
+                  currency: "ARS",
+                })}
+              </span>
+            </p>
+          </div>
+          <div className="pb-4">
+            <button
+              type="submit"
+              className="py-1.5 px-6 bg-primary hover:shadow-md text-white transition-all rounded-md font-semibold text-sm"
+            >
+              Actualizar la orden de compra
+            </button>
+          </div>
+        </form>
+
+        <ModalCargarProductoCompraEnActualizar
+          addToProductos={addToProductos}
+        />
+        <ModalEditarProductoCompraEnActualizar
+          idObtenida={idObtenida}
+          productoSeleccionado={productoSeleccionado}
+          setProductoSeleccionado={setProductoSeleccionado}
+        />
+        <ModalCrearProducto />
+      </div>
+    </dialog>
+  );
+};
+
+export const ModalEditarProductoCompraEnActualizar = ({
+  idObtenida,
+  productoSeleccionado,
+  setProductoSeleccionado,
+}) => {
+  const [precio_und, setPrecio] = useState("");
+  const [categoria, setCategorias] = useState("");
+  const [detalle, setDetalle] = useState("");
+  const [cantidad, setCantidad] = useState("");
+  const [iva, setIva] = useState(0);
+
+  const { productos, setProductos } = useProductosContext();
+
+  useEffect(() => {
+    // Buscar el cliente seleccionado dentro de datosCliente
+    const clienteEncontrado = productoSeleccionado.find(
+      (cliente) => cliente.id === idObtenida
+    );
+
+    // Si se encuentra el cliente, establecer los valores de los campos del formulario
+    if (clienteEncontrado) {
+      setPrecio(clienteEncontrado.precio_und);
+      setCantidad(clienteEncontrado.cantidad);
+      setCategorias(clienteEncontrado.categoria);
+      setDetalle(clienteEncontrado.detalle);
+      setIva(clienteEncontrado.iva);
+    }
+  }, [idObtenida, productoSeleccionado]);
+
+  const handleCliente = () => {
+    const totalFinal = precio_und * cantidad;
+    const totalFinalIva =
+      Number(iva) === 0
+        ? Number(precio_und * cantidad)
+        : Number(precio_und * cantidad * iva);
+
+    // Crear un nuevo objeto de cliente con los datos actualizados
+    const clienteActualizado = {
+      id: idObtenida,
+      detalle,
+      categoria,
+      precio_und,
+      cantidad,
+      totalFinal,
+      totalFinalIva,
+      iva,
+      cantidadFaltante: 0,
+    };
+
+    // Actualizar la lista de clientes con los datos actualizados
+    const datosClienteActualizados = productoSeleccionado.map(
+      (clienteExistente) => {
+        if (clienteExistente.id === idObtenida) {
+          return clienteActualizado;
+        }
+        return clienteExistente;
+      }
+    );
+
+    // Actualizar el estado con la lista de clientes actualizada
+    setProductoSeleccionado(datosClienteActualizados);
+
+    document
+      .getElementById("my_modal_actualizar_producto_en_actualizar")
+      .close();
+  };
+
+  const handleSubmitPrecioUnd = async () => {
+    try {
+      const res = await client.put(
+        `/editar-producto/precio-detalle/${detalle}`,
+        {
+          precio_und,
+        }
+      );
+
+      console.log(res);
+      const productoEncontrado = productos.find(
+        (producto) => producto.detalle === detalle
+      );
+
+      if (!productoEncontrado) {
+        console.error("Producto no encontrado");
+        return;
+      }
+
+      // Actualizar solo el campo precio_und del producto encontrado
+      const productoActualizado = {
+        ...productoEncontrado,
+        precio_und: precio_und,
+      };
+
+      // Crear un nuevo array de productos con el producto actualizado
+      const nuevosProductos = productos.map((producto) =>
+        producto.id === productoActualizado.id ? productoActualizado : producto
+      );
+
+      // Actualizar el estado de productos con el nuevo array que incluye el producto actualizado
+      setProductos(nuevosProductos);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const [isEditable, setIsEditable] = useState(false);
+
+  const handleInputClick = (index) => {
+    setIsEditable(true);
+  };
+
+  return (
+    <dialog id="my_modal_actualizar_producto_en_actualizar" className="modal">
+      <div className="modal-box max-w-6xl rounded-md">
+        <form method="dialog">
+          {/* if there is a button in form, it will close the modal */}
+          <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
+            ✕
+          </button>
+        </form>
+
+        <div className="max-md:overflow-x-auto">
+          <table className="table">
+            <thead className="font-bold text-gray-800 text-sm">
+              <tr>
+                <th>Precio por und $</th>
+                <th>Cantidad</th>
+                <th>Seleccionar iva</th>
+                <th>Total final</th>
+                <th>Total final con iva</th>
+              </tr>
+            </thead>
+
+            <tbody className="divide-y divide-gray-200">
+              <tr>
+                <td className="cursor-pointer" onClick={handleInputClick}>
+                  {isEditable ? (
+                    <input
+                      value={precio_und}
+                      onChange={(e) => setPrecio(e.target.value)}
+                      onBlur={() => {
+                        setIsEditable(false);
+                      }}
+                      type="text"
+                      className="py-2 px-2 border border-gray-300 rounded-md outline-none"
+                    />
+                  ) : (
+                    <p className="py-2 px-2 border border-gray-300 rounded-md outline-none font-bold">
+                      {formatearDinero(Number(precio_und))}
+                    </p>
+                  )}
+                </td>
+                <td className="px-4 py-3 font-medium text-gray-900 uppercase">
+                  <input
+                    value={cantidad || 0}
+                    className="py-2 px-2 border border-gray-300 rounded-md outline-none"
+                    type="text"
+                    onChange={(e) => setCantidad(e.target.value)}
+                  />
+                </td>
+                <td className="px-4 py-3 font-medium text-gray-900 uppercase">
+                  <select
+                    value={iva}
+                    className="py-2 px-2 border border-gray-300 rounded-md outline-none"
+                    type="text"
+                    onChange={(e) => setIva(Number(e.target.value))}
+                  >
+                    <option className="font-bold text-primary" value={0}>
+                      NO LLEVA IVA
+                    </option>
+                    <option className="font-semibold" value={1.105}>
+                      10.5
+                    </option>
+                    <option className="font-semibold" value={1.21}>
+                      21.00
+                    </option>
+                  </select>
+                </td>
+                <td className="px-4 py-3 font-bold text-gray-900 uppercase">
+                  {Number(precio_und * cantidad).toLocaleString("es-AR", {
+                    style: "currency",
+                    currency: "ARS",
+                  })}
+                </td>
+                <td className="px-4 py-3 font-bold text-gray-900 uppercase">
+                  {iva === 0
+                    ? Number(precio_und * cantidad).toLocaleString("es-AR", {
+                        style: "currency",
+                        currency: "ARS",
+                      })
+                    : Number(
+                        Number(precio_und * cantidad) * iva
+                      ).toLocaleString("es-AR", {
+                        style: "currency",
+                        currency: "ARS",
+                      })}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div className="mt-4">
+          <button
+            onClick={() => {
+              handleCliente();
+              handleSubmitPrecioUnd();
+            }}
+            type="button"
+            className="py-1.5 px-6 bg-primary hover:shadow-md text-white transition-all rounded-md font-semibold text-sm"
+          >
+            Actualizar el producto de la orden
+          </button>
+        </div>
+      </div>
+    </dialog>
+  );
+};
+
+export const ModalCargarProductoCompraEnActualizar = ({ addToProductos }) => {
+  const { productos } = useProductosContext();
+
+  const { handleObtenerId, idObtenida } = useObtenerId();
+
+  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("all");
+
+  // Filtrar productos por término de búsqueda y categoría seleccionada
+  const filteredProducts = productos?.filter((product) => {
+    return (
+      product?.detalle?.toLowerCase().includes(searchTerm?.toLowerCase()) &&
+      (selectedCategory === "all" || product?.categoria === selectedCategory)
+    );
+  });
+
+  return (
+    <dialog id="my_modal_producto_compra_en_actualizar" className="modal">
+      <div className="modal-box rounded-md max-w-7xl scroll-bar h-[60vh]">
+        <form method="dialog">
+          {/* if there is a button in form, it will close the modal */}
+          <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
+            ✕
+          </button>
+        </form>
+
+        <div className="border border-gray-300 flex items-center gap-2 px-2 py-1.5 text-sm rounded-md w-1/3 max-md:w-full mb-3">
+          <input
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            type="text"
+            className="outline-none font-medium w-full"
+            placeholder="Buscar por nombre del producto.."
+          />
+          <FaSearch className="text-gray-700" />
+        </div>
+
+        <div className="max-md:overflow-x-auto">
+          <table className="table">
+            <thead className="text-gray-800 text-sm">
+              <tr>
+                <th>Detalle</th>
+                <th>Categoria</th>
+                <th>Precio und $</th>
+                <th></th>
+              </tr>
+            </thead>
+
+            <tbody className="text-xs capitalize font-medium">
+              {filteredProducts.map((p) => (
+                <tr key={p.id}>
+                  <td>{p.detalle}</td>
+                  <td>{p.categoria}</td>
+                  <th>{formatearDinero(Number(p.precio_und))}</th>
+                  <td>
+                    <button
+                      onClick={() => {
+                        handleObtenerId(p.id),
+                          document
+                            .getElementById(
+                              "my_modal_producto_seleccionado_en_actualizar"
+                            )
+                            .showModal();
+                      }}
+                      type="button"
+                      className="bg-primary px-2 py-1 rounded-md font-bold text-white hover:shadow-sm transition-all"
+                    >
+                      Seleccionar producto
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        <ModalProductoSeleccionadoEnActualizar
+          addToProductos={addToProductos}
+          idObtenida={idObtenida}
+        />
+      </div>
+    </dialog>
+  );
+};
+
+export const ModalProductoSeleccionadoEnActualizar = ({
+  addToProductos,
+  idObtenida,
+}) => {
+  const { productos, setProductos } = useProductosContext();
+
+  const [producto, setProducto] = useState([]);
+  const [precio_und, setPrecio] = useState("");
+  const [cantidad, setCantidad] = useState("");
+  const [iva, setIva] = useState(0);
+
+  const handleSubmitPrecioUnd = async () => {
+    const res = await client.put(`/editar-producto/precio/${idObtenida}`, {
+      precio_und,
+    });
+
+    const productoEncontrado = productos.find(
+      (producto) => producto.id === idObtenida
+    );
+
+    if (!productoEncontrado) {
+      console.error("Producto no encontrado");
+      return;
+    }
+
+    // Actualizar solo el campo precio_und del producto encontrado
+    const productoActualizado = {
+      ...productoEncontrado,
+      precio_und: precio_und,
+    };
+
+    // Crear un nuevo array de productos con el producto actualizado
+    const nuevosProductos = productos.map((producto) =>
+      producto.id === productoActualizado.id ? productoActualizado : producto
+    );
+
+    // Actualizar el estado de productos con el nuevo array que incluye el producto actualizado
+    setProductos(nuevosProductos);
+  };
+
+  useEffect(() => {
+    async function laodData() {
+      const res = await client.get(`/producto/${idObtenida}`);
+
+      setProducto(res.data);
+      setPrecio(res.data.precio_und);
+    }
+
+    setCantidad("");
+
+    laodData();
+  }, [idObtenida]);
+
+  // Función para generar un ID numérico aleatorio
+  function generarID() {
+    return Math.floor(Math.random() * 1000000).toString(); // Genera un número aleatorio de hasta 6 dígitos
+  }
+
+  const [isEditable, setIsEditable] = useState(false);
+
+  const handleInputClick = (index) => {
+    setIsEditable(true);
+  };
+
+  return (
+    <dialog id="my_modal_producto_seleccionado_en_actualizar" className="modal">
+      <div className="modal-box rounded-md max-w-6xl">
+        <form method="dialog">
+          {/* if there is a button in form, it will close the modal */}
+          <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
+            ✕
+          </button>
+        </form>
+
+        <div className="max-md:overflow-x-auto">
+          <table className="table">
+            <thead className="font-bold text-gray-800 text-sm">
+              <tr>
+                <th>Detalle</th>
+                <th>Categoria</th>
+                <th>Precio por und $</th>
+                <th>Cantidad</th>
+                <th>Seleccionar iva</th>
+                <th>Total final</th>
+                <th>Total final con iva</th>
+              </tr>
+            </thead>
+
+            <tbody className="capitalize text-xs font-medium">
+              <tr key={producto.id}>
+                <td>{producto?.detalle}</td>
+                <td>{producto?.categoria}</td>
+                <td className="cursor-pointer" onClick={handleInputClick}>
+                  {isEditable ? (
+                    <input
+                      value={precio_und}
+                      onChange={(e) => setPrecio(e.target.value)}
+                      onBlur={() => {
+                        setIsEditable(false);
+                      }}
+                      type="text"
+                      className="py-2 px-2 border border-gray-300 rounded-md outline-none"
+                    />
+                  ) : (
+                    <p className="py-2 px-2 border border-gray-300 rounded-md outline-none font-bold">
+                      {formatearDinero(Number(precio_und))}
+                    </p>
+                  )}
+                </td>
+                <td className="px-4 py-3 font-medium text-gray-900 uppercase">
+                  <input
+                    value={cantidad || 0}
+                    className="py-2 px-2 border border-gray-300 rounded-md outline-none"
+                    type="text"
+                    onChange={(e) => setCantidad(e.target.value)}
+                  />
+                </td>
+                <td className="px-4 py-3 font-medium text-gray-900 uppercase">
+                  <select
+                    value={iva}
+                    className="py-2 px-2 border border-gray-300 rounded-md outline-none"
+                    type="text"
+                    onChange={(e) => setIva(Number(e.target.value))}
+                  >
+                    <option className="font-bold text-primary" value={0}>
+                      NO LLEVA IVA
+                    </option>
+                    <option className="font-semibold" value={1.105}>
+                      10.5
+                    </option>
+                    <option className="font-semibold" value={1.21}>
+                      21.00
+                    </option>
+                  </select>
+                </td>
+                <td className="px-4 py-3 font-bold text-gray-900 uppercase">
+                  {Number(precio_und * cantidad).toLocaleString("es-AR", {
+                    style: "currency",
+                    currency: "ARS",
+                  })}
+                </td>
+                <td className="px-4 py-3 font-bold text-gray-900 uppercase">
+                  {iva === 0
+                    ? Number(precio_und * cantidad).toLocaleString("es-AR", {
+                        style: "currency",
+                        currency: "ARS",
+                      })
+                    : Number(
+                        Number(precio_und * cantidad) * iva
+                      ).toLocaleString("es-AR", {
+                        style: "currency",
+                        currency: "ARS",
+                      })}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div className="mt-4">
+          <button
+            onClick={() => {
+              const randomID = generarID();
+              addToProductos(
+                parseInt(`${producto?.id}${randomID}`, 10), // Combina el ID del producto con el ID aleatorio
+                producto?.detalle,
+                producto?.categoria,
+                precio_und,
+                cantidad,
+                Number(precio_und * cantidad),
+                Number(iva) === 0
+                  ? Number(precio_und * cantidad)
+                  : Number(precio_und * cantidad * iva), // Usar precio_und * cantidad si el IVA es cero
+                Number(iva)
+              );
+              handleSubmitPrecioUnd();
+            }}
+            type="button"
+            className="py-1.5 px-6 bg-primary hover:shadow-md text-white transition-all rounded-md font-semibold text-sm"
+          >
+            Cargar producto..
+          </button>
+        </div>
+      </div>
+    </dialog>
+  );
+};
+
+export const ModalCrearOrdenDeCompra = () => {
+  const { setOrdenes } = useOrdenesContext();
+
+  const { proveedores, setProveedores } = useProductosContext();
+
+  useEffect(() => {
+    async function loadData() {
+      const respuesta = await client.get("/proveedores");
+      setProveedores(respuesta.data);
+    }
+
+    loadData();
+  }, []);
+
+  const [isOpenProductoNew, setIsOpenProductoNew] = useState(false);
+
+  const openModalProducto = () => {
+    setIsOpenProductoNew(true);
+  };
+
+  const closeModalProducto = () => {
+    setIsOpenProductoNew(false);
+  };
+
+  const [proveedor, setProveedor] = useState("");
+  const [numero_factura, setNumeroFactura] = useState("");
+  const [detalle, setDetalle] = useState("");
+  const [fecha_factura, setFechaFactura] = useState("");
+  const [localidad, setLocalidad] = useState("");
+  const [provincia, setProvincia] = useState("");
+  const [socket, setSocket] = useState(null);
+  const [iva, setIva] = useState(1.21);
+
+  const [OBTENERID, setObtenerId] = useState(null);
+  const [productoSeleccionado, setProductoSeleccionado] = useState([]);
+
+  const handleID = (id) => setObtenerId(id);
+
+  const addToProductos = (
+    id,
+    detalle,
+    categoria,
+    precio_und,
+    cantidad,
+    totalFinal,
+    totalFinalIva,
+    iva,
+    cantidadFaltante
+  ) => {
+    const newProducto = {
+      id,
+      detalle,
+      categoria,
+      precio_und,
+      cantidad,
+      totalFinal,
+      totalFinalIva,
+      iva,
+      cantidadFaltante: 0,
+    };
+
+    const productoSeleccionadoItem = productoSeleccionado.find((item) => {
+      return item.id === id;
+    });
+
+    document.getElementById("my_modal_producto_seleccionado").close();
+    document.getElementById("my_modal_producto_compra").close();
+
+    if (productoSeleccionadoItem) {
+      setTimeout(() => {
+        // setErrorProducto(false);
+      }, 2000);
+      setErrorProducto(true);
+    } else {
+      setProductoSeleccionado([...productoSeleccionado, newProducto]);
+      // setErrorProducto(false);
+    }
+  };
+
+  const deleteProducto = (id) => {
+    const itemIndex = productoSeleccionado.findIndex((item) => item.id === id);
+
+    if (itemIndex !== -1) {
+      const newItem = [...productoSeleccionado];
+      newItem.splice(itemIndex, 1); // Corrected line
+      setProductoSeleccionado(newItem);
+    }
+  };
+
+  const totalesFinales = productoSeleccionado.reduce((total, producto) => {
+    return total + Number(producto?.totalFinal);
+  }, 0);
+
+  const totalFinalSumSinIva = productoSeleccionado.reduce(
+    (accumulator, currentValue) => {
+      return accumulator + currentValue.totalFinalIva;
+    },
+    0
+  );
+
+  const onSubmit = async (e) => {
+    e.preventDefault();
+
+    const datosOrden = {
+      proveedor,
+      numero_factura,
+      precio_final: Number(totalFinalSumSinIva),
+      fecha_factura,
+      localidad,
+      provincia,
+      detalle,
+      datos: { productoSeleccionado },
+      iva,
+    };
+
+    const datos = {
+      proveedor,
+      total: Number(totalFinalSumSinIva),
+    };
+
+    const res = await client.post("/crear-orden-nueva", datosOrden);
+    const resProveedor = await client.put(
+      `/actualizar-proveedor-compra`,
+      datos
+    );
+
+    setOrdenes(res.data.ordenes);
+    setProveedores(resProveedor.data);
+
+    setProductoSeleccionado([]);
+    setProveedor("");
+    setNumeroFactura("");
+    setDetalle("");
+    setFechaFactura("");
+    setLocalidad("");
+    setProvincia("");
+
+    showSuccessToast("Orden finalizada..");
+
+    document.getElementById("my_modal_crear_orden_de_compra").close();
+  };
+
+  const [isOpenProducto, setIsOpenProducto] = useState(false);
+
+  const openProducto = () => {
+    setIsOpenProducto(true);
+  };
+
+  const closeProducto = () => {
+    setIsOpenProducto(false);
+  };
+
+  const [isOpenProductoEditar, setIsOpenProductoEditar] = useState(false);
+
+  const openProductoEditar = () => {
+    setIsOpenProductoEditar(true);
+  };
+
+  const closeProductoEditar = () => {
+    setIsOpenProductoEditar(false);
+  };
+
+  const handleProveedorChange = (e) => {
+    const selectedProveedor = e.target.value;
+    setProveedor(selectedProveedor);
+
+    // Buscar la localidad correspondiente al proveedor seleccionado
+    const selectedProveedorData = proveedores.find(
+      (p) => p.proveedor === selectedProveedor
+    );
+    if (selectedProveedorData) {
+      setLocalidad(selectedProveedorData.localidad);
+      setProvincia(selectedProveedorData.provincia);
+    } else {
+      setLocalidad("");
+      setProvincia("");
+    }
+  };
+
+  const { handleObtenerId, idObtenida } = useObtenerId();
+
+  return (
+    <dialog id="my_modal_crear_orden_de_compra" className="modal">
+      <div className="modal-box max-w-full h-full scroll-bar rounded-md  max-md:h-full max-md:w-full max-md:max-h-full max-md:rounded-none">
+        <form method="dialog">
+          {/* if there is a button in form, it will close the modal */}
+          <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
+            ✕
+          </button>
+        </form>
+
+        <h3 className="font-bold text-xl">Cargar nueva orden de compra.</h3>
+        <p className="py-0.5 text-sm font-medium">
+          En esta ventana podras cargar una nueva orden de compra, productos,
+          etc.
+        </p>
+
+        <form onSubmit={onSubmit} className="flex flex-col gap-3 mt-4">
+          <div className="grid grid-cols-4 gap-2 max-md:grid-cols-1">
+            <div className="flex flex-col gap-2">
+              <label className="text-sm font-bold">Proveedor de la orden</label>
+              <select
+                value={proveedor}
+                onChange={handleProveedorChange}
+                className="capitalize font-semibold text-sm border border-gray-300 rounded-md py-2 px-2 outline-none focus:shadow-md cursor-pointer transition-all"
+                placeholder="PROVEEDOR DE LA ORDEN"
+              >
+                <option
+                  className="font-bold text-primary"
+                  value={"seleccionar"}
+                >
+                  Seleccionar el proveedor
+                </option>
+                {proveedores.map((p, index) => (
+                  <option
+                    className="font-semibold text-gray-800"
+                    key={index}
+                    value={p.proveedor}
+                  >
+                    {p.proveedor}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div className="flex flex-col gap-2">
+              <label className="text-sm font-medium">Localidad</label>
+              <input
+                value={localidad}
+                onChange={(e) => setLocalidad(e.target.value)}
+                type="text"
+                className="capitalize font-semibold text-sm border border-gray-300 rounded-md py-2 px-2 outline-none focus:shadow-md cursor-pointer transition-all"
+                placeholder="Escribir la localidad."
+              />
+            </div>
+            <div className="flex flex-col gap-2">
+              <label className="text-sm font-medium">Provincia</label>
+              <input
+                value={provincia}
+                onChange={(e) => setProvincia(e.target.value)}
+                type="text"
+                className="capitalize font-semibold text-sm border border-gray-300 rounded-md py-2 px-2 outline-none focus:shadow-md cursor-pointer transition-all"
+                placeholder="Escribe la provincia del proveedor."
+              />
+            </div>
+            <div className="flex flex-col gap-2">
+              <label className="text-sm font-medium">
+                Numero del remito o factura de compra
+              </label>
+              <input
+                value={numero_factura}
+                onChange={(e) => setNumeroFactura(e.target.value)}
+                className="capitalize font-medium text-sm border border-gray-300 rounded-md py-2 px-2 outline-none focus:shadow-md cursor-pointer transition-all"
+                placeholder="Escribe el numero..."
+              />
+            </div>
+            <div className="flex flex-col gap-2">
+              <label className="text-sm font-medium">
+                Fecha del remito o factura de compra
+              </label>
+              <input
+                value={fecha_factura}
+                onChange={(e) => setFechaFactura(e.target.value)}
+                type="date"
+                className="font-medium text-sm border border-gray-300 rounded-md py-2 px-2 outline-none focus:shadow-md cursor-pointer transition-all"
+              />
+            </div>
+          </div>
+          <div className="flex flex-col gap-2 w-1/6 max-md:w-auto">
+            <label className="text-sm font-bold">
+              Detallar algo mensaje,etc.
+            </label>
+            <textarea
+              value={detalle}
+              onChange={(e) => setDetalle(e.target.value)}
+              type="text"
+              placeholder="Detallar algo de la orden de compra.."
+              className="font-medium text-sm border border-gray-300 rounded-md py-2 px-2 outline-none focus:shadow-md cursor-pointer transition-all"
+            />
+          </div>
+          <div className="flex gap-2 max-md:flex-col">
+            <button
+              onClick={() =>
+                document.getElementById("my_modal_producto_compra").showModal()
+              }
+              type="button"
+              className="bg-primary font-semibold text-white py-1 px-6 rounded text-sm max-md:py-2"
+            >
+              Cargar nuevo producto
+            </button>
+            <button
+              onClick={() =>
+                document.getElementById("my_modal_crear_producto").showModal()
+              }
+              type="button"
+              className="bg-blue-500 font-semibold text-white py-1.5 px-6 rounded text-sm max-md:py-2"
+            >
+              Crear producto inexistente
+            </button>
+          </div>
+
+          <div className="max-md:overflow-x-auto">
+            <table className="table">
+              <thead className="font-bold text-gray-900 text-sm">
+                <tr>
+                  <th>Detalle</th>
+                  <th>Categoria</th>
+                  <th>Precio Und</th>
+                  <th>Total</th>
+                  <th>Iva Seleccionado</th>
+                  <th>Total final con iva</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody className="text-xs capitalize font-medium">
+                {productoSeleccionado.map((p) => (
+                  <tr key={p.id}>
+                    <td>{p.detalle}</td>
+                    <td>{p.categoria}</td>
+                    <td className="font-bold text-primary">
+                      {Number(p.precio_und).toLocaleString("es-AR", {
+                        style: "currency",
+                        currency: "ARS",
+                      })}
+                    </td>
+                    <td className="font-bold text-gray-900">
+                      {Number(p.totalFinal).toLocaleString("es-AR", {
+                        style: "currency",
+                        currency: "ARS",
+                      })}
+                    </td>
+                    <td>
+                      {(p.iva === 1.105 && "IVA DEL 10.05") ||
+                        (p.iva === 1.21 && "IVA DEL 21.00") ||
+                        (p.iva === 0 && "NO TIENE IVA")}
+                    </td>
+                    <td>
+                      <div className="flex">
+                        <p className="bg-primary py-1 px-2 rounded-md text-white font-bold">
+                          {Number(p.totalFinalIva).toLocaleString("es-AR", {
+                            style: "currency",
+                            currency: "ARS",
+                          })}
+                        </p>
+                      </div>
+                    </td>
+                    <td>
+                      <div className="flex gap-2">
+                        <FaEdit
+                          onClick={() => {
+                            handleObtenerId(p.id),
+                              document
+                                .getElementById("my_modal_actualizar_producto")
+                                .showModal();
+                          }}
+                          className="text-xl cursor-pointer text-blue-600"
+                        />
+                        <FaDeleteLeft
+                          onClick={() => deleteProducto(p.id)}
+                          className="text-xl cursor-pointer text-red-500"
+                        />
+                      </div>
+                    </td>
+                    <td className="hidden">
+                      <div className="dropdown dropdown-left z-1">
+                        <div
+                          tabIndex={0}
+                          role="button"
+                          className="hover:bg-slate-100 rounded-full px-2 py-2 transition-all"
+                        >
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            strokeWidth={1.5}
+                            stroke="currentColor"
+                            className="w-7 h-7"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              d="M10.5 6h9.75M10.5 6a1.5 1.5 0 1 1-3 0m3 0a1.5 1.5 0 1 0-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-9.75 0h9.75"
+                            />
+                          </svg>
+                        </div>
+                        <ul
+                          tabIndex={0}
+                          className="dropdown-content z-[1] menu p-2 shadow-lg border bg-base-100 rounded-box w-52 gap-2"
+                        >
+                          <li>
+                            <span
+                              onClick={() => {
+                                handleID(p.id), openProductoEditar();
+                              }}
+                              className="bg-green-500/90 font-semibold text-white py-2 px-6 rounded-full  text-sm flex justify-between hover:bg-green-500"
+                            >
+                              EDITAR
+                              <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                strokeWidth={1.5}
+                                stroke="currentColor"
+                                className="w-5 h-5"
+                              >
+                                <path
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10"
+                                />
+                              </svg>
+                            </span>
+                          </li>
+                          <li>
+                            <span
+                              onClick={() => deleteProducto(p.id)}
+                              className="bg-red-500/90 font-semibold text-white py-2 px-6 rounded-full  text-sm flex justify-between hover:bg-red-500"
+                            >
+                              ELIMINAR
+                              <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                strokeWidth={1.5}
+                                stroke="currentColor"
+                                className="w-5 h-5"
+                              >
+                                <path
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0"
+                                />
+                              </svg>
+                            </span>
+                          </li>
+                        </ul>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <div className="flex gap-2 bg-gray-800 py-5 rounded-md mt-4 max-md:flex-col">
+            <p className="font-normal py-2 px-5 text-sm rounded-xl text-white flex gap-1 items-center max-md:flex-col max-md:items-start">
+              <span className="font-bold">Subtotal</span>
+              <span className="py-2 px-4 text-base text-white rounded-xl font-bold">
+                {totalesFinales.toLocaleString("es-AR", {
+                  style: "currency",
+                  currency: "ARS",
+                })}
+              </span>
+            </p>
+            <p className="font-normal py-2 px-5 text-sm rounded-xl text-white flex gap-1 items-center max-md:flex-col max-md:items-start">
+              <span className="font-bold">Total iva agregado</span>
+              <span className="py-2 px-4 text-base rounded-xl font-bold">
+                {Number(totalFinalSumSinIva - totalesFinales).toLocaleString(
+                  "es-AR",
+                  {
+                    style: "currency",
+                    currency: "ARS",
+                  }
+                )}
+              </span>
+            </p>
+            <p className=" font-normal py-2 px-5 text-sm rounded-xl text-white flex gap-2 items-center max-md:flex-col max-md:items-start">
+              <span className=" font-bold">
+                {" "}
+                Total final con <span>ivas</span> seleccionado{" "}
+              </span>{" "}
+              <span className="bg-primary py-2 px-4 text-base rounded-xl font-bold">
+                {Number(totalFinalSumSinIva).toLocaleString("es-AR", {
+                  style: "currency",
+                  currency: "ARS",
+                })}
+              </span>
+            </p>
+          </div>
+          <div className="pb-4">
+            <button
+              type="submit"
+              className="py-1.5 px-6 bg-primary hover:shadow-md text-white transition-all rounded-md font-semibold text-sm"
+            >
+              Guardar la orden de compra
+            </button>
+          </div>
+        </form>
+
+        <ModalCargarProductoCompra addToProductos={addToProductos} />
+        <ModalEditarProductoOrdenCompra
+          idObtenida={idObtenida}
+          productoSeleccionado={productoSeleccionado}
+          setProductoSeleccionado={setProductoSeleccionado}
+        />
+        <ModalCrearProducto />
+      </div>
+    </dialog>
+  );
+};
+
+export const ModalEditarProductoOrdenCompra = ({
+  idObtenida,
+  productoSeleccionado,
+  setProductoSeleccionado,
+}) => {
+  const [precio_und, setPrecio] = useState("");
+  const [categoria, setCategorias] = useState("");
+  const [detalle, setDetalle] = useState("");
+  const [cantidad, setCantidad] = useState("");
+  const [iva, setIva] = useState(0);
+
+  const { productos, setProductos } = useProductosContext();
+
+  useEffect(() => {
+    // Buscar el cliente seleccionado dentro de datosCliente
+    const clienteEncontrado = productoSeleccionado.find(
+      (cliente) => cliente.id === idObtenida
+    );
+
+    // Si se encuentra el cliente, establecer los valores de los campos del formulario
+    if (clienteEncontrado) {
+      setPrecio(clienteEncontrado.precio_und);
+      setCantidad(clienteEncontrado.cantidad);
+      setCategorias(clienteEncontrado.categoria);
+      setDetalle(clienteEncontrado.detalle);
+      setIva(clienteEncontrado.iva);
+    }
+  }, [idObtenida, productoSeleccionado]);
+
+  const handleCliente = () => {
+    const totalFinal = precio_und * cantidad;
+    const totalFinalIva =
+      Number(iva) === 0
+        ? Number(precio_und * cantidad)
+        : Number(precio_und * cantidad * iva);
+
+    // Crear un nuevo objeto de cliente con los datos actualizados
+    const clienteActualizado = {
+      id: idObtenida,
+      detalle,
+      categoria,
+      precio_und,
+      cantidad,
+      totalFinal,
+      totalFinalIva,
+      iva,
+      cantidadFaltante: 0,
+    };
+
+    // Actualizar la lista de clientes con los datos actualizados
+    const datosClienteActualizados = productoSeleccionado.map(
+      (clienteExistente) => {
+        if (clienteExistente.id === idObtenida) {
+          return clienteActualizado;
+        }
+        return clienteExistente;
+      }
+    );
+
+    // Actualizar el estado con la lista de clientes actualizada
+    setProductoSeleccionado(datosClienteActualizados);
+
+    document.getElementById("my_modal_actualizar_producto").close();
+  };
+
+  const handleSubmitPrecioUnd = async () => {
+    try {
+      const res = await client.put(
+        `/editar-producto/precio-detalle/${detalle}`,
+        {
+          precio_und,
+        }
+      );
+
+      console.log(res);
+      const productoEncontrado = productos.find(
+        (producto) => producto.detalle === detalle
+      );
+
+      if (!productoEncontrado) {
+        console.error("Producto no encontrado");
+        return;
+      }
+
+      // Actualizar solo el campo precio_und del producto encontrado
+      const productoActualizado = {
+        ...productoEncontrado,
+        precio_und: precio_und,
+      };
+
+      // Crear un nuevo array de productos con el producto actualizado
+      const nuevosProductos = productos.map((producto) =>
+        producto.id === productoActualizado.id ? productoActualizado : producto
+      );
+
+      // Actualizar el estado de productos con el nuevo array que incluye el producto actualizado
+      setProductos(nuevosProductos);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const [isEditable, setIsEditable] = useState(false);
+
+  const handleInputClick = (index) => {
+    setIsEditable(true);
+  };
+
+  return (
+    <dialog id="my_modal_actualizar_producto" className="modal">
+      <div className="modal-box max-w-6xl rounded-md">
+        <form method="dialog">
+          {/* if there is a button in form, it will close the modal */}
+          <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
+            ✕
+          </button>
+        </form>
+
+        <div className="max-md:overflow-x-auto">
+          <table className="table">
+            <thead className="font-bold text-gray-800 text-sm">
+              <tr>
+                <th>Precio por und $</th>
+                <th>Cantidad</th>
+                <th>Seleccionar iva</th>
+                <th>Total final</th>
+                <th>Total final con iva</th>
+              </tr>
+            </thead>
+
+            <tbody className="divide-y divide-gray-200">
+              <tr>
+                <td className="cursor-pointer" onClick={handleInputClick}>
+                  {isEditable ? (
+                    <input
+                      value={precio_und}
+                      onChange={(e) => setPrecio(e.target.value)}
+                      onBlur={() => {
+                        setIsEditable(false);
+                      }}
+                      type="text"
+                      className="py-2 px-2 border border-gray-300 rounded-md outline-none"
+                    />
+                  ) : (
+                    <p className="py-2 px-2 border border-gray-300 rounded-md outline-none font-bold">
+                      {formatearDinero(Number(precio_und))}
+                    </p>
+                  )}
+                </td>
+                <td className="px-4 py-3 font-medium text-gray-900 uppercase">
+                  <input
+                    value={cantidad || 0}
+                    className="py-2 px-2 border border-gray-300 rounded-md outline-none"
+                    type="text"
+                    onChange={(e) => setCantidad(e.target.value)}
+                  />
+                </td>
+                <td className="px-4 py-3 font-medium text-gray-900 uppercase">
+                  <select
+                    value={iva}
+                    className="py-2 px-2 border border-gray-300 rounded-md outline-none"
+                    type="text"
+                    onChange={(e) => setIva(Number(e.target.value))}
+                  >
+                    <option className="font-bold text-primary" value={0}>
+                      NO LLEVA IVA
+                    </option>
+                    <option className="font-semibold" value={1.105}>
+                      10.5
+                    </option>
+                    <option className="font-semibold" value={1.21}>
+                      21.00
+                    </option>
+                  </select>
+                </td>
+                <td className="px-4 py-3 font-bold text-gray-900 uppercase">
+                  {Number(precio_und * cantidad).toLocaleString("es-AR", {
+                    style: "currency",
+                    currency: "ARS",
+                  })}
+                </td>
+                <td className="px-4 py-3 font-bold text-gray-900 uppercase">
+                  {iva === 0
+                    ? Number(precio_und * cantidad).toLocaleString("es-AR", {
+                        style: "currency",
+                        currency: "ARS",
+                      })
+                    : Number(
+                        Number(precio_und * cantidad) * iva
+                      ).toLocaleString("es-AR", {
+                        style: "currency",
+                        currency: "ARS",
+                      })}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div className="mt-4">
+          <button
+            onClick={() => {
+              handleCliente();
+              handleSubmitPrecioUnd();
+            }}
+            type="button"
+            className="py-1.5 px-6 bg-primary hover:shadow-md text-white transition-all rounded-md font-semibold text-sm"
+          >
+            Actualizar el producto de la orden
+          </button>
+        </div>
+      </div>
+    </dialog>
+  );
+};
+
+export const ModalCargarProductoCompra = ({ addToProductos }) => {
+  const { productos } = useProductosContext();
+
+  const { handleObtenerId, idObtenida } = useObtenerId();
+
+  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("all");
+
+  // Filtrar productos por término de búsqueda y categoría seleccionada
+  const filteredProducts = productos?.filter((product) => {
+    return (
+      product?.detalle?.toLowerCase().includes(searchTerm?.toLowerCase()) &&
+      (selectedCategory === "all" || product?.categoria === selectedCategory)
+    );
+  });
+
+  return (
+    <dialog id="my_modal_producto_compra" className="modal">
+      <div className="modal-box rounded-md max-w-7xl scroll-bar h-[60vh]">
+        <form method="dialog">
+          {/* if there is a button in form, it will close the modal */}
+          <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
+            ✕
+          </button>
+        </form>
+
+        <div className="border border-gray-300 flex items-center gap-2 px-2 py-1.5 text-sm rounded-md w-1/3 max-md:w-full mb-3">
+          <input
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            type="text"
+            className="outline-none font-medium w-full"
+            placeholder="Buscar por nombre del producto.."
+          />
+          <FaSearch className="text-gray-700" />
+        </div>
+
+        <div className="max-md:overflow-x-auto">
+          <table className="table">
+            <thead className="text-gray-800 text-sm">
+              <tr>
+                <th>Detalle</th>
+                <th>Categoria</th>
+                <th>Precio und $</th>
+                <th></th>
+              </tr>
+            </thead>
+
+            <tbody className="text-xs capitalize font-medium">
+              {filteredProducts.map((p) => (
+                <tr key={p.id}>
+                  <td>{p.detalle}</td>
+                  <td>{p.categoria}</td>
+                  <th>{formatearDinero(Number(p.precio_und))}</th>
+                  <td>
+                    <button
+                      onClick={() => {
+                        handleObtenerId(p.id),
+                          document
+                            .getElementById("my_modal_producto_seleccionado")
+                            .showModal();
+                      }}
+                      type="button"
+                      className="bg-primary px-2 py-1 rounded-md font-bold text-white hover:shadow-sm transition-all"
+                    >
+                      Seleccionar producto
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        <ModalProductoSeleccionado
+          addToProductos={addToProductos}
+          idObtenida={idObtenida}
+        />
+      </div>
+    </dialog>
+  );
+};
+
+export const ModalProductoSeleccionado = ({ addToProductos, idObtenida }) => {
+  const { productos, setProductos } = useProductosContext();
+
+  const [producto, setProducto] = useState([]);
+  const [precio_und, setPrecio] = useState("");
+  const [cantidad, setCantidad] = useState("");
+  const [iva, setIva] = useState(0);
+
+  const handleSubmitPrecioUnd = async () => {
+    const res = await client.put(`/editar-producto/precio/${idObtenida}`, {
+      precio_und,
+    });
+
+    const productoEncontrado = productos.find(
+      (producto) => producto.id === idObtenida
+    );
+
+    if (!productoEncontrado) {
+      console.error("Producto no encontrado");
+      return;
+    }
+
+    // Actualizar solo el campo precio_und del producto encontrado
+    const productoActualizado = {
+      ...productoEncontrado,
+      precio_und: precio_und,
+    };
+
+    // Crear un nuevo array de productos con el producto actualizado
+    const nuevosProductos = productos.map((producto) =>
+      producto.id === productoActualizado.id ? productoActualizado : producto
+    );
+
+    // Actualizar el estado de productos con el nuevo array que incluye el producto actualizado
+    setProductos(nuevosProductos);
+  };
+
+  useEffect(() => {
+    async function laodData() {
+      const res = await client.get(`/producto/${idObtenida}`);
+
+      setProducto(res.data);
+      setPrecio(res.data.precio_und);
+    }
+
+    setCantidad("");
+
+    laodData();
+  }, [idObtenida]);
+
+  // Función para generar un ID numérico aleatorio
+  function generarID() {
+    return Math.floor(Math.random() * 1000000).toString(); // Genera un número aleatorio de hasta 6 dígitos
+  }
+
+  const [isEditable, setIsEditable] = useState(false);
+
+  const handleInputClick = (index) => {
+    setIsEditable(true);
+  };
+
+  return (
+    <dialog id="my_modal_producto_seleccionado" className="modal">
+      <div className="modal-box rounded-md max-w-6xl">
+        <form method="dialog">
+          {/* if there is a button in form, it will close the modal */}
+          <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
+            ✕
+          </button>
+        </form>
+
+        <div className="max-md:overflow-x-auto">
+          <table className="table">
+            <thead className="font-bold text-gray-800 text-sm">
+              <tr>
+                <th>Detalle</th>
+                <th>Categoria</th>
+                <th>Precio por und $</th>
+                <th>Cantidad</th>
+                <th>Seleccionar iva</th>
+                <th>Total final</th>
+                <th>Total final con iva</th>
+              </tr>
+            </thead>
+
+            <tbody className="capitalize text-xs font-medium">
+              <tr key={producto.id}>
+                <td>{producto?.detalle}</td>
+                <td>{producto?.categoria}</td>
+                <td className="cursor-pointer" onClick={handleInputClick}>
+                  {isEditable ? (
+                    <input
+                      value={precio_und}
+                      onChange={(e) => setPrecio(e.target.value)}
+                      onBlur={() => {
+                        setIsEditable(false);
+                      }}
+                      type="text"
+                      className="py-2 px-2 border border-gray-300 rounded-md outline-none"
+                    />
+                  ) : (
+                    <p className="py-2 px-2 border border-gray-300 rounded-md outline-none font-bold">
+                      {formatearDinero(Number(precio_und))}
+                    </p>
+                  )}
+                </td>
+                <td className="px-4 py-3 font-medium text-gray-900 uppercase">
+                  <input
+                    value={cantidad || 0}
+                    className="py-2 px-2 border border-gray-300 rounded-md outline-none"
+                    type="text"
+                    onChange={(e) => setCantidad(e.target.value)}
+                  />
+                </td>
+                <td className="px-4 py-3 font-medium text-gray-900 uppercase">
+                  <select
+                    value={iva}
+                    className="py-2 px-2 border border-gray-300 rounded-md outline-none"
+                    type="text"
+                    onChange={(e) => setIva(Number(e.target.value))}
+                  >
+                    <option className="font-bold text-primary" value={0}>
+                      NO LLEVA IVA
+                    </option>
+                    <option className="font-semibold" value={1.105}>
+                      10.5
+                    </option>
+                    <option className="font-semibold" value={1.21}>
+                      21.00
+                    </option>
+                  </select>
+                </td>
+                <td className="px-4 py-3 font-bold text-gray-900 uppercase">
+                  {Number(precio_und * cantidad).toLocaleString("es-AR", {
+                    style: "currency",
+                    currency: "ARS",
+                  })}
+                </td>
+                <td className="px-4 py-3 font-bold text-gray-900 uppercase">
+                  {iva === 0
+                    ? Number(precio_und * cantidad).toLocaleString("es-AR", {
+                        style: "currency",
+                        currency: "ARS",
+                      })
+                    : Number(
+                        Number(precio_und * cantidad) * iva
+                      ).toLocaleString("es-AR", {
+                        style: "currency",
+                        currency: "ARS",
+                      })}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div className="mt-4">
+          <button
+            onClick={() => {
+              const randomID = generarID();
+              addToProductos(
+                parseInt(`${producto?.id}${randomID}`, 10), // Combina el ID del producto con el ID aleatorio
+                producto?.detalle,
+                producto?.categoria,
+                precio_und,
+                cantidad,
+                Number(precio_und * cantidad),
+                Number(iva) === 0
+                  ? Number(precio_und * cantidad)
+                  : Number(precio_und * cantidad * iva), // Usar precio_und * cantidad si el IVA es cero
+                Number(iva)
+              );
+              handleSubmitPrecioUnd();
+            }}
+            type="button"
+            className="py-1.5 px-6 bg-primary hover:shadow-md text-white transition-all rounded-md font-semibold text-sm"
+          >
+            Cargar producto..
+          </button>
+        </div>
+      </div>
+    </dialog>
+  );
+};
+
+export const ModalCrearProducto = () => {
+  const [precio_und, setPrecio] = useState("");
+  const [detalle, setDetale] = useState("");
+  const [proveedor, setProveedor] = useState("");
+  const [categoria, setCategoria] = useState("");
+
+  const { categorias, setProductos } = useProductosContext();
+
+  const onSubmit = async (e) => {
+    e.preventDefault();
+
+    const datosProducto = { precio_und, detalle, proveedor: "", categoria };
+
+    try {
+      const res = await client.post("/crear-producto", datosProducto);
+
+      setProductos(res.data);
+
+      setPrecio("");
+      setDetale("");
+      setProveedor("");
+      setCategoria("");
+
+      document.getElementById("my_modal_crear_producto").close();
+
+      showSuccessToast("Producto creado correctamente");
+    } catch (error) {
+      console.error("Error al enviar el producto:", error);
+    }
+  };
+
+  const [isEditable, setIsEditable] = useState(false);
+
+  const handleInputClick = (index) => {
+    setIsEditable(true);
+  };
+
+  return (
+    <dialog id="my_modal_crear_producto" className="modal">
+      <div className="modal-box rounded-md max-md:h-full max-md:w-full max-md:max-h-full max-md:rounded-none">
+        <form method="dialog">
+          {/* if there is a button in form, it will close the modal */}
+          <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
+            ✕
+          </button>
+        </form>
+        <h3 className="font-bold text-xl">Cargar producto nuevo.</h3>
+        <p className="py-0.5 text-sm font-medium">
+          En esta ventana podras cargar nuevos productos, para las ordenes de
+          compra, lista de precios, etc.
+        </p>
+        <form onSubmit={onSubmit} className="flex flex-col gap-3 mt-3">
+          <div className="flex flex-col gap-1">
+            <label className="font-bold text-sm">Detalle del producto</label>
+            <input
+              onChange={(e) => setDetale(e.target.value)}
+              value={detalle}
+              type="text"
+              className="rounded-md border border-gray-300 py-2 px-2 text-sm font-medium placeholder:normal-case capitalize outline-none focus:shadow-md"
+              placeholder="Escribe el nombre del producto.."
+            />
+          </div>
+
+          <div className="flex flex-col gap-1">
+            <label className="font-bold text-sm">Seleccionar categoria</label>
+            <div className="flex gap-2 items-center">
+              <select
+                type="text"
+                className="rounded-md border border-gray-300 py-2 px-2 text-sm font-medium capitalize outline-none focus:shadow-md"
+                onChange={(e) => setCategoria(e.target.value)}
+                value={categoria}
+              >
+                <option className="font-bold text-primary" value="">
+                  Seleccionar la categoria
+                </option>
+                {categorias.map((c) => (
+                  <option className="font-semibold capitalize" key={c.id}>
+                    {c.detalle}
+                  </option>
+                ))}
+              </select>
+              <div
+                onClick={() =>
+                  document
+                    .getElementById("my_modal_crear_categoria")
+                    .showModal()
+                }
+                className="cursor-pointer"
+              >
+                <IoMdAdd className="text-2xl border border-gray-300 rounded-md py-0.5 px-0.5" />
+              </div>
+            </div>
+          </div>
+
+          <div onClick={handleInputClick}>
+            {isEditable ? (
+              <div className="flex flex-col gap-2">
+                <label className="font-bold text-sm">
+                  Precio unidad del producto
+                </label>
+                <input
+                  onChange={(e) => setPrecio(e.target.value)}
+                  value={precio_und || 0}
+                  onBlur={() => {
+                    setIsEditable(false);
+                  }}
+                  type="text"
+                  className="rounded-md border border-gray-300 py-2 px-2 text-sm font-bold capitalize outline-none focus:shadow-md"
+                />
+              </div>
+            ) : (
+              <div className="flex flex-col gap-2">
+                <label className="font-bold text-sm">
+                  Precio unidad del producto
+                </label>
+
+                <p className="rounded-md border border-gray-300 py-2 px-2 text-sm font-bold capitalize outline-none focus:shadow-md">
+                  {formatearDinero(Number(precio_und) || 0)}
+                </p>
+              </div>
+            )}
+          </div>
+
+          <div>
+            <button
+              type="submit"
+              className="py-1.5 px-6 bg-primary hover:shadow-md text-white transition-all rounded-md font-semibold text-sm"
+            >
+              Crear nuevo producto
+            </button>
+          </div>
+        </form>
+
+        {/* <ModalCrearCategoria /> */}
+      </div>
+    </dialog>
+  );
+};
+
+const ModalEliminar = ({ idObtenida }) => {
+  const { handleSubmit } = useForm();
+
+  const { setOrdenes } = useOrdenesContext();
+
+  const onSubmit = async (formData) => {
+    try {
+      const productosData = {
+        datos: {
+          ...formData,
+        },
+      };
+
+      const res = await client.delete(
+        `/eliminar-orden/${idObtenida}`,
+        productosData
+      );
+
+      setOrdenes(res.data.ordenes);
+
+      document.getElementById("my_modal_eliminar").close();
+
+      showSuccessToastError("Eliminado correctamente");
+    } catch (error) {
+      console.error("Error creating product:", error);
+    }
+  };
+
+  return (
+    <dialog id="my_modal_eliminar" className="modal">
+      <div className="modal-box rounded-md max-w-md">
+        <form method="dialog">
+          {/* if there is a button in form, it will close the modal */}
+          <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
+            ✕
+          </button>
+        </form>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <div>
+            <img
+              className="w-44 mx-auto"
+              src="https://app.holded.com/assets/img/document/doc_delete.png"
+            />
+          </div>
+          <div className="font-semibold text-sm text-gray-400 text-center">
+            REFERENCIA {idObtenida}
+          </div>
+          <div className="font-semibold text-[#FD454D] text-lg text-center">
+            Eliminar la orden seleccionado..
+          </div>
+          <div className="text-sm text-gray-400 text-center mt-1">
+            El documento no podra ser recuperado nunca mas...
+          </div>
+          <div className="mt-4 text-center w-full px-16">
+            <button
+              type="submit"
+              className="bg-red-500 py-1 px-4 text-center font-bold text-white text-sm rounded-md w-full"
+            >
+              Confirmar
+            </button>{" "}
+            <button
+              type="button"
+              onClick={() =>
+                document.getElementById("my_modal_eliminar").close()
+              }
+              className="bg-orange-100 py-1 px-4 text-center font-bold text-orange-600 mt-2 text-sm rounded-md w-full"
+            >
+              Cancelar
+            </button>
+          </div>
+        </form>
+      </div>
+    </dialog>
   );
 };

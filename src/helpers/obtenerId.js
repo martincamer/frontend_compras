@@ -7,5 +7,5 @@ export const useObtenerId = () => {
     setIdObtenida(id);
   };
 
-  return { handleObtenerId, idObtenida };
+  return { handleObtenerId, idObtenida, setIdObtenida };
 };

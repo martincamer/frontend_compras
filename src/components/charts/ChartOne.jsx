@@ -67,7 +67,7 @@ const ApexChart = ({ ordenesMensuales }) => {
   }, 0);
 
   return (
-    <div className="bg-white py-10 px-10 z-[100] border-blue-500 border relative rounded">
+    <div className="bg-white py-10 px-10 z-[100] border-gray-300 border relative rounded">
       <div id="chart">
         <ReactApexChart
           options={chartOptions}
@@ -81,7 +81,7 @@ const ApexChart = ({ ordenesMensuales }) => {
           <p className="font-semibold text-base text-gray-500">
             Total final en ordenes
           </p>
-          <p className="font-bold text-lg mt-1 text-orange-500">
+          <p className="font-bold text-lg mt-1 text-primary">
             {totalFinalAcumulado.toLocaleString("es-AR", {
               style: "currency",
               currency: "ARS",

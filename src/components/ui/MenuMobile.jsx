@@ -23,15 +23,23 @@ export const MenuMobile = () => {
     <div
       className={`${
         isOpen ? "w-64 opacity-1" : "w-0 opacity-1"
-      } transition-all ease-linear flex flex-col bg-white min-h-[220vh] max-h-full h-full z-[100] border-r max-md:fixed md:hidden`}
+      } transition-all ease-linear flex flex-col bg-white h-full z-[1000] fixed top-0 bottom-0 left-0 border-r max-md:fixed md:hidden`}
     >
       {/* Botón de menú */}
-      <div className={`py-4 px-4 ${isOpen ? "flex justify-between " : ""}`}>
-        <button className="text-3xl text-blue-500" onClick={handleToggle}>
-          {isOpen ? <IoCloseOutline /> : <IoMenuOutline />}
+      <div
+        className={`py-5 px-6 ${
+          isOpen ? "flex justify-between items-center" : ""
+        }`}
+      >
+        <button className="text-4xl" onClick={handleToggle}>
+          {isOpen ? (
+            <IoCloseOutline className="text-primary" />
+          ) : (
+            <IoMenuOutline className="text-white" />
+          )}
         </button>
         {isOpen && (
-          <p className="bg-blue-500 py-1 px-2 rounded-xl text-sm text-white capitalize">
+          <p className="bg-primary py-1 px-2 rounded-xl text-sm text-white capitalize">
             {user?.username}
           </p>
         )}
@@ -42,10 +50,10 @@ export const MenuMobile = () => {
             onClick={() => setIsOpen(!isOpen)}
             to={"/"}
             className={`${
-              location.pathname === "/" ? "bg-blue-100" : "bg-none"
-            } hover:text-blue-700 text-slate-700 text-sm transition-all py-3 px-3`}
+              location.pathname === "/" ? "bg-primary text-white" : "bg-none"
+            }   font-bold text-sm transition-all py-3 px-3`}
           >
-            Inicio/estadistica/compras
+            Inicio panel de compras
           </Link>
           {user.tipo === "admin" ? (
             ""
@@ -54,40 +62,35 @@ export const MenuMobile = () => {
               onClick={() => setIsOpen(!isOpen)}
               to={"/productos"}
               className={`${
-                location.pathname === "/productos" ? "bg-blue-100" : "bg-none"
-              } hover:text-blue-700 text-slate-700 text-sm transition-all py-3 px-3`}
+                location.pathname === "/productos"
+                  ? "bg-primary text-white"
+                  : "bg-none"
+              }   font-bold text-sm transition-all py-3 px-3`}
             >
-              Crear productos/ver/etc
+              Sector de productos
             </Link>
           )}
           <Link
             onClick={() => setIsOpen(!isOpen)}
             to={"/ordenes"}
             className={`${
-              location.pathname === "/ordenes" ? "bg-blue-100" : "bg-none"
-            } hover:text-blue-700 text-slate-700 text-sm transition-all py-3 px-3`}
-          >
-            Crear ordenes/ver/editar
-          </Link>
-          {/* <Link
-            onClick={() => setIsOpen(!isOpen)}
-            to={"/ordenes-checkout"}
-            className={`${
-              location.pathname === "/ordenes-checkout"
-                ? "bg-blue-100"
+              location.pathname === "/ordenes"
+                ? "bg-primary text-white"
                 : "bg-none"
-            } hover:text-blue-700 text-slate-700 text-sm transition-all py-3 px-3`}
+            }   font-bold text-sm transition-all py-3 px-3`}
           >
-            Ver ordenes finalizadas/ver/editar
-          </Link> */}
+            Sector ordenes de compra
+          </Link>
           <Link
             onClick={() => setIsOpen(!isOpen)}
             to={"/proveedores"}
             className={`${
-              location.pathname === "/proveedores" ? "bg-blue-100" : "bg-none"
-            } hover:text-blue-700 text-slate-700 text-sm transition-all py-3 px-3`}
+              location.pathname === "/proveedores"
+                ? "bg-primary text-white"
+                : "bg-none"
+            }   font-bold text-sm transition-all py-3 px-3`}
           >
-            Crear proveedores/ver saldos/editar
+            Sector de proveedores
           </Link>
 
           {user.tipo === "admin" && (

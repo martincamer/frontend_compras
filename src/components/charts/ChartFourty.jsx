@@ -61,7 +61,7 @@ const ApexChartComprobantes = ({ comprobantes, total }) => {
   ];
 
   return (
-    <div className="bg-white py-10 px-10 z-[100] border-blue-500 border relative rounded">
+    <div className="bg-white py-10 px-10 z-[100] border-gray-300 border relative rounded">
       <div id="chart">
         <ReactApexChart
           options={chartOptions}
@@ -75,7 +75,7 @@ const ApexChartComprobantes = ({ comprobantes, total }) => {
           <p className="font-semibold text-base text-gray-500">
             Total final en pagos/comprobantes
           </p>
-          <p className="font-bold text-lg mt-1 text-green-500">
+          <p className="font-bold text-lg mt-1 text-blue-500">
             {total.toLocaleString("es-AR", {
               style: "currency",
               currency: "ARS",

@@ -158,7 +158,7 @@ function App() {
                   <OrdenesProvider>
                     <main className="min-h-full max-h-full h-full">
                       <Navbar />
-                      <MenuMobile />
+                      {/* <MenuMobile /> */}
                       <Outlet />
                     </main>
                   </OrdenesProvider>

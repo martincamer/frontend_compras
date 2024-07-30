@@ -92,7 +92,7 @@ const ApexChart = ({ ordenesMensuales }) => {
   ];
 
   return (
-    <div className="bg-white py-10 px-10 z-[100] border-blue-500 border relative rounded">
+    <div className="bg-white py-10 px-10 z-[100] border-gray-300 border relative rounded">
       <div id="chart">
         <ReactApexChart
           options={chartOptions}

@@ -6,8 +6,15 @@ import { ModalObtenerCompra } from "../../../components/Modales/ModalObtenerComp
 import { ModalEditarSaldoProveedor } from "../../../components/Modales/ModalEditarSaldoProveedor";
 import { useAuth } from "../../../context/AuthProvider";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
-import { ModalEliminarComprobante } from "../../../components/Modales/ModalEliminarComprobante";
 import client from "../../../api/axios";
+import { CgMenuRightAlt } from "react-icons/cg";
+import {
+  showSuccessToast,
+  showSuccessToastError,
+} from "../../../helpers/toast";
+import { useProductosContext } from "../../../context/ProductosProvider";
+import { useObtenerId } from "../../../helpers/obtenerId";
+import { formatearDinero } from "../../../helpers/formatearDinero";
 
 export const Proveedor = () => {
   const { user } = useAuth();
@@ -171,39 +178,33 @@ export const Proveedor = () => {
 
   const handleID = (id) => setObtenerId(id);
 
-  return (
-    <section className="max-h-full min-h-screen h-full w-full max-md:py-12">
-      <ToastContainer />
-      <div className="bg-white mb-4 h-10 flex max-md:hidden">
-        <Link
-          to={"/proveedores"}
-          className="bg-sky-100 flex h-full px-4 justify-center items-center font-bold text-blue-600"
-        >
-          Proveedores
-        </Link>{" "}
-        <Link className="bg-blue-500 flex h-full px-4 justify-center items-center font-bold text-white capitalize">
-          Proveedor {datos.proveedor}
-        </Link>
-      </div>
-      <div className="bg-white py-5 px-5 mx-5 mt-10 max-md:mt-5">
-        <h3 className="text-xl font-bold text-blue-500">
-          Observa el proveedor y carga comprobantes, pone la cuenta al día de
-          proveedor{" "}
-          <span className="text-slate-600 capitalize">{datos.proveedor}</span>.
-        </h3>
-      </div>
+  const { handleObtenerId, idObtenida } = useObtenerId();
 
-      <div className="bg-white py-5 px-5 mx-5 my-10 max-md:my-5">
-        <div className="dropdown dropdown-bottom">
-          <button className="font-bold text-sm bg-rose-400 py-2 px-4 text-white rounded">
+  return (
+    <section className="w-full h-full min-h-screen max-h-full">
+      <div className="bg-gray-100 py-10 px-10 flex justify-between items-center max-md:flex-col max-md:gap-3">
+        <p className="font-bold text-gray-900 text-xl flex items-center gap-2">
+          Sector del proveedor{" "}
+          {/* <FaArrowRight className="text-gray-700 text-2xl" /> */}
+        </p>
+        <p className="font-medium text-xl">
+          Proveedor obtenido{" "}
+          <span className="font-bold capitalize text-primary">
+            {datos.proveedor}
+          </span>
+        </p>
+      </div>
+      <div className="bg-white py-8 px-5">
+        <div className="dropdown dropdown-bottom dropdown-hover">
+          <button className="font-bold text-sm bg-blue-500 py-2 px-4 text-white rounded">
             Ver estadisticas de compras
           </button>
           <ul
             tabIndex={0}
-            className="dropdown-content z-[1] menu p-2 mt-2 bg-white w-[800px] border max-md:w-80"
+            className="dropdown-content z-[1] menu p-2 mt-0.5 rounded-md bg-gray-800 w-[800px] max-md:w-80"
           >
             <div className="py-5 px-5 grid grid-cols-3 gap-5 w-full max-md:grid-cols-1">
-              <div className="flex flex-col gap-1 border border-blue-500 py-3 px-3">
+              <div className="flex flex-col gap-1 bg-white rounded-md py-3 px-3">
                 <p className="font-medium text-sm text-blue-500">
                   Total en comprobantes cargados del mes.
                 </p>
@@ -215,7 +216,7 @@ export const Proveedor = () => {
                 </p>
               </div>
 
-              <div className="flex flex-col justify-center gap-1 border border-blue-500 py-3 px-3">
+              <div className="flex flex-col gap-1 bg-white rounded-md py-3 px-3">
                 <p className="font-medium text-sm">
                   Total de deuda del proveedor.
                 </p>
@@ -226,7 +227,7 @@ export const Proveedor = () => {
                   })}
                 </p>
               </div>
-              <div className="flex flex-col gap-1 border border-blue-500 py-3 px-3">
+              <div className="flex flex-col gap-1 bg-white rounded-md py-3 px-3">
                 <p className="font-medium text-sm">
                   Total en comprobantes filtrados.
                 </p>
@@ -250,8 +251,13 @@ export const Proveedor = () => {
       ) : (
         <div className="mx-5 py-2 flex max-md:flex-col gap-2 items-center max-md:items-start border-b-[1px] border-slate-300 pb-4 max-md:pb-4 max-md:mx-2 max-md:overflow-x-scroll scrollbar-hidden max-md:bg-white max-md:px-5 max-md:py-5 max-md:h-[10vh] max-md:overflow-y-auto">
           <button
-            onClick={() => openComprobante()}
-            className="text-sm text-white bg-blue-500 py-3 px-6 rounded font-bold max-md:text-xs flex gap-2 items-center transition-all ease-linear"
+            // onClick={() => openComprobante()}
+            onClick={() =>
+              document
+                .getElementById("my_modal_cargar_comprobante_de_pago")
+                .showModal()
+            }
+            className="text-sm text-white bg-primary py-2 px-6 rounded font-bold max-md:text-xs flex gap-2 items-center transition-all ease-linear"
           >
             Cargar nuevo comprobante de pago
             <svg
@@ -269,11 +275,11 @@ export const Proveedor = () => {
               />
             </svg>
           </button>
-          <button
+          {/* <button
             onClick={() => {
               handleID(params.id), openModal();
             }}
-            className=" text-sm text-white bg-orange-500 py-3 px-6 rounded font-semibold max-md:text-xs flex gap-2 items-center transition-all ease-linear"
+            className=" text-sm text-white bg-green-500 py-2 px-6 rounded font-semibold max-md:text-xs flex gap-2 items-center transition-all ease-linear"
           >
             Editar el saldo del proveedor
             <svg
@@ -290,12 +296,12 @@ export const Proveedor = () => {
                 d="M12 6v12m-3-2.818.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.003-.659-1.106-.879-1.106-2.303 0-3.182s2.9-.879 4.006 0l.415.33M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
               />
             </svg>
-          </button>
+          </button> */}
         </div>
       )}
 
-      <div className="mx-5 mt-6 bg-white py-6 px-4 border-blue-500 border">
-        <p className="text-blue-500 font-bold">
+      <div className="mx-5 mt-6 bg-gray-800 py-5 px-5 rounded-md">
+        <p className="text-white font-bold">
           Tabla de comprobantes cargados del mes
         </p>
       </div>
@@ -305,70 +311,43 @@ export const Proveedor = () => {
           type="date"
           value={fechaInicial}
           onChange={(e) => setFechaInicial(e.target.value)}
-          className="px-4 py-2 border border-blue-500 rounded text-sm uppercase font-semibold"
+          className="px-4 py-2 border border-gray-300 rounded text-sm uppercase font-semibold"
         />
 
-        <span className="uppercase font-bold text-sm text-slate-700 max-md:hidden">
-          desde
-        </span>
         <input
           type="date"
           value={fechaFinal}
           onChange={(e) => setFechaFinal(e.target.value)}
-          className="px-4 py-2 border border-blue-500 rounded text-sm uppercase font-semibold"
+          className="px-4 py-2 border border-gray-300 rounded text-sm uppercase font-semibold"
         />
-
-        <div>
-          <button
-            className="text-sm bg-orange-500 text-white py-2 px-4 rounded font-bold max-md:hidden"
-            type="button"
-            onClick={() => resetFechas()}
-          >
-            Volver al mes normal/resetear
-          </button>
-        </div>
       </div>
 
-      <div className="mt-6 mx-8 mb-20 max-md:mx-5 max-md:overflow-x-auto">
-        <table className="min-w-full divide-y-2 bg-white text-sm table rounded-none">
-          <thead className="text-left">
+      <div className="max-md:overflow-x-auto mx-5 my-5 max-md:h-[100vh] scrollbar-hidden">
+        <table className="table">
+          <thead className="text-left font-bold text-gray-900 text-sm">
             <tr>
-              <th className="whitespace-nowrap px-4 py-4 text-gray-900 uppercase font-bol text-xs">
-                Numero °
-              </th>
-              <th className="whitespace-nowrap px-4 py-4 text-gray-900 uppercase font-bol text-xs">
-                Total del comprobante
-              </th>
-              <th className="whitespace-nowrap px-4 py-4 text-gray-900 uppercase font-bol text-xs">
-                Total del comprobante final
-              </th>
-              <th className="whitespace-nowrap px-4 py-4 text-gray-900 uppercase font-bol text-xs">
-                Ver comprobante
-              </th>
-              <th className="whitespace-nowrap px-4 py-4 text-gray-900 uppercase font-bol text-xs">
-                Fecha de creación
-              </th>
-              <th className="whitespace-nowrap px-4 py-4 text-gray-900 uppercase font-bol text-xs">
-                Acciones
-              </th>
+              <th>Numero °</th>
+              <th>Total del comprobante</th>
+              <th>Total del comprobante final</th>
+              <th>Ver comprobante</th>
+              <th>Fecha de creación</th>
+              <th>Acciones</th>
             </tr>
           </thead>
 
-          <tbody className="divide-y divide-gray-200">
+          <tbody className="text-xs capitalize font-medium">
             {productosFiltrados.map((p) => (
               <tr key={p.id}>
-                <th className="whitespace-nowrap px-4 py-6 text-gray-700 uppercase text-xs">
-                  {p.id}
-                </th>
-                <th className="whitespace-nowrap px-4 py-6 text-gray-700 uppercase text-xs">
+                <th>{p.id}</th>
+                <td>
                   {Number(p.total).toLocaleString("es-AR", {
                     style: "currency",
                     currency: "ARS",
                   })}
-                </th>
-                <td className="whitespace-nowrap px-4 py-6 text-white uppercase text-xs font-bold">
+                </td>
+                <td>
                   {" "}
-                  <span className="bg-green-500 py-2 px-5 rounded">
+                  <span className="bg-green-100/90 text-green-700 font-bold py-1.5 px-5 rounded">
                     {Number(p.total).toLocaleString("es-AR", {
                       style: "currency",
                       currency: "ARS",
@@ -378,7 +357,7 @@ export const Proveedor = () => {
                 <td>
                   <ImagenModal archivo={p.imagen} />
                 </td>
-                <td className="whitespace-nowrap px-4 py-6 font-medium text-gray-900 uppercase text-xs">
+                <td>
                   {p?.created_at?.split("T")[0]} / <strong>HORA:</strong>{" "}
                   {p?.created_at?.split("T")[1]}
                 </td>
@@ -387,53 +366,36 @@ export const Proveedor = () => {
                     <div
                       tabIndex={0}
                       role="button"
-                      className="hover:bg-gray-200 rounded-full px-2 py-2 transition-all"
+                      className="hover:bg-gray-800 hover:text-white rounded-full px-1 py-1 transition-all"
                     >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        strokeWidth={1.5}
-                        stroke="currentColor"
-                        className="w-7 h-7"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M10.5 6h9.75M10.5 6a1.5 1.5 0 1 1-3 0m3 0a1.5 1.5 0 1 0-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-9.75 0h9.75"
-                        />
-                      </svg>
+                      <CgMenuRightAlt className="text-2xl" />
                     </div>
                     <ul
                       tabIndex={0}
-                      className="dropdown-content z-[1] menu p-3 border-blue-500 border bg-white w-52 gap-2"
+                      className="dropdown-content z-[1] menu p-1 border border-gray-300 rounded-md bg-white shadow-xl w-52 gap-1"
                     >
-                      <Link
-                        onClick={() => {
-                          handleID(p.id), openComprobanteModal();
-                        }}
-                        className="hover:text-blue-500 transition-all text-left hover:underline font-semibold capitalize"
-                      >
-                        Ver comprobante
-                      </Link>
-
-                      {/* <Link
-                        target="_blank"
-                        to={`/pdf-comprobante/${p.id}`}
-                        className="hover:text-blue-500 transition-all text-left hover:underline font-semibold capitalize"
-                      >
-                        Descargar comprob.
-                      </Link> */}
-
-                      <button
-                        onClick={() => {
-                          handleID(p.id), openComprobanteEliminar();
-                        }}
-                        type="button"
-                        className="hover:text-red-500 transition-all text-left hover:underline font-semibold capitalize"
-                      >
-                        Eliminar comprob.
-                      </button>
+                      {/* <li className="text-xs font-semibold hover:bg-gray-800 rounded-md hover:text-white capitalize">
+                        <Link
+                          onClick={() => {
+                            handleID(p.id), openComprobanteModal();
+                          }}
+                        >
+                          Ver comprobante
+                        </Link>
+                      </li> */}
+                      <li className="text-xs font-semibold hover:bg-gray-800 rounded-md hover:text-white capitalize">
+                        <button
+                          onClick={() => {
+                            handleObtenerId(p.id),
+                              document
+                                .getElementById("my_modal_eliminar")
+                                .showModal();
+                          }}
+                          type="button"
+                        >
+                          Eliminar comprob.
+                        </button>
+                      </li>
                     </ul>
                   </div>
                 </td>
@@ -442,7 +404,14 @@ export const Proveedor = () => {
           </tbody>
         </table>
       </div>
-
+      <ModalCargarComprobanteDePago
+        setComprobantes={setComprobantes}
+        isOpen={isOpenComprobante}
+        closeModal={closeComprobante}
+        OBTENERID={params.id}
+        datos={datos}
+        setDatos={setDatos}
+      />
       <ModalComprobante
         setComprobantes={setComprobantes}
         isOpen={isOpenComprobante}
@@ -465,11 +434,9 @@ export const Proveedor = () => {
         params={params}
       />
 
-      <ModalEliminarComprobante
+      <ModalEliminar
         setComprobantes={setComprobantes}
-        eliminarModal={isOpenComprobanteEliminar}
-        closeEliminar={closeComprobanteEliminar}
-        obtenerId={obtenerId}
+        idObtenida={idObtenida}
         setDatos={setDatos}
       />
     </section>
@@ -489,16 +456,16 @@ const ImagenModal = ({ archivo }) => {
   return (
     <>
       <td
-        className="bg-blue-500 text-white py-2 px-5 rounded font-bold text-xs cursor-pointer"
+        className="bg-primary text-white py-1.5 px-5 rounded font-bold text-xs cursor-pointer"
         onClick={() => setShowModal(true)}
       >
-        VER COMPROBANTE
+        Ver comprobante
       </td>
       {showModal && (
         <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-gray-800 bg-opacity-75 z-50">
           <div className="bg-white p-8 w-full flex justify-center relative">
             <button
-              className="absolute top-0 right-0 m-4 text-red-700 bg-red-100 py-2 px-2 rounded-full hover:bg-red-200 transition-all ease-linear"
+              className="absolute top-0 right-0 m-4 text-gray-700  py-2 px-2 rounded-full hover:bg-gray-200 transition-all ease-linear"
               onClick={() => setShowModal(false)}
             >
               <svg
@@ -507,7 +474,7 @@ const ImagenModal = ({ archivo }) => {
                 viewBox="0 0 24 24"
                 strokeWidth={1.5}
                 stroke="currentColor"
-                className="w-6 h-6"
+                className="w-5 h-5"
               >
                 <path
                   strokeLinecap="round"
@@ -529,3 +496,269 @@ const ImagenModal = ({ archivo }) => {
 };
 
 export default ImagenModal;
+
+export const ModalCargarComprobanteDePago = ({
+  datos,
+  setComprobantes,
+  setDatos,
+}) => {
+  const [params, setParams] = useState(null);
+  const [proveedor, setProveedor] = useState("");
+  const [total, setTotal] = useState(0);
+  const [archivo, setArchivo] = useState(null);
+  const [previewUrl, setPreviewUrl] = useState(null);
+
+  const { setProveedores } = useProductosContext();
+
+  useEffect(() => {
+    setParams(datos.id);
+    setProveedor(datos.proveedor);
+  }, [datos.id]);
+
+  const uploadFile = async (type) => {
+    const data = new FormData();
+    data.append("file", archivo);
+    data.append("upload_preset", type === "image" ? "imagenes" : "documentos");
+
+    try {
+      const resourceType = type === "image" ? "image" : "raw";
+      const api = `https://api.cloudinary.com/v1_1/de4aqqalo/${resourceType}/upload`;
+
+      const res = await axios.post(api, data);
+      const { secure_url } = res.data;
+      console.log(secure_url);
+      return secure_url;
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const onSubmit = async (e) => {
+    e.preventDefault();
+
+    const fileType = archivo?.type?.startsWith("image/")
+      ? "image"
+      : archivo?.type === "application/pdf"
+      ? "pdf"
+      : "video";
+    const imgUrl = await uploadFile(fileType);
+
+    const data = {
+      params,
+      proveedor,
+      total,
+      imagen: imgUrl,
+    };
+
+    try {
+      const res = await client.post(`/crear-comprobante`, data);
+
+      console.log(res.data);
+
+      setComprobantes(res.data.comprobantes);
+      setProveedores(res.data.proveedores);
+
+      setDatos(res.data.proveedorActualizado);
+
+      document.getElementById("my_modal_cargar_comprobante_de_pago").close();
+
+      showSuccessToast("Comprobante cargado..");
+    } catch (error) {
+      console.error("Error al agregar el comprobante:", error);
+    }
+  };
+
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setArchivo(file);
+      const url = URL.createObjectURL(file);
+      setPreviewUrl(url);
+    }
+  };
+
+  const [isEditable, setIsEditable] = useState(false);
+
+  const handleInputClick = (index) => {
+    setIsEditable(true);
+  };
+
+  return (
+    <dialog id="my_modal_cargar_comprobante_de_pago" className="modal">
+      <div className="modal-box rounded-md max-w-xl">
+        <form method="dialog">
+          {/* if there is a button in form, it will close the modal */}
+          <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
+            ✕
+          </button>
+        </form>
+        <form
+          encType="multipart/form-data"
+          onSubmit={onSubmit}
+          className="py-5 flex flex-col items-start"
+        >
+          <div onClick={handleInputClick} className="cursor-pointer">
+            {isEditable ? (
+              <div className="flex flex-col gap-2">
+                <label className="font-bold text-sm">Total del pago</label>
+                <input
+                  onChange={(e) => setTotal(e.target.value)}
+                  value={total || 0}
+                  onBlur={() => {
+                    setIsEditable(false);
+                  }}
+                  type="text"
+                  className="rounded-md border border-gray-300 py-2 px-2 text-sm font-bold capitalize outline-none focus:shadow-md"
+                />
+              </div>
+            ) : (
+              <div className="flex flex-col gap-2">
+                <label className="font-bold text-sm">Total del pago</label>
+
+                <p className="rounded-md border border-gray-300 py-2 px-2 text-sm font-bold capitalize outline-none focus:shadow-md">
+                  {formatearDinero(Number(total) || 0)}
+                </p>
+              </div>
+            )}
+          </div>
+
+          <div className="border border-gray-300 rounded-md py-2 px-3 mt-4 flex flex-col gap-2">
+            <label
+              className=" text-slate-700 text-sm font-bold"
+              htmlFor="fileUpload"
+            >
+              Comprobante
+            </label>
+            <input
+              type="file"
+              accept="image/*,video/*,application/pdf"
+              id="fileUpload"
+              onChange={handleFileChange}
+              className="w-full file-input file-input-bordered outline-none"
+            />
+          </div>
+
+          {previewUrl && (
+            <div className="mt-2 flex flex-col gap-3 w-full">
+              <p className="uppercase text-slate-700 text-sm font-bold">
+                Vista Previa:
+              </p>
+              <div className="h-[300px] overflow-y-scroll scroll-bar px-2">
+                {archivo?.type?.startsWith("image/") ? (
+                  <img
+                    src={previewUrl}
+                    alt="Vista previa"
+                    className="h-[600px] w-full shadow"
+                  />
+                ) : archivo?.type === "application/pdf" ? (
+                  <iframe
+                    src={previewUrl}
+                    className="h-[600px] w-full shadow"
+                    title="Vista previa PDF"
+                  />
+                ) : (
+                  <video
+                    src={previewUrl}
+                    controls
+                    className="h-[600px] w-full rounded-2xl shadow max-w-full"
+                  />
+                )}
+              </div>
+            </div>
+          )}
+
+          <div className="mt-3">
+            <button
+              className="py-1.5 px-6 bg-primary hover:shadow-md text-white transition-all rounded-md font-semibold text-sm flex gap-2 items-center mt-6"
+              type="submit"
+            >
+              Cargar el pago
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor"
+                className="w-6 h-6"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M13.19 8.688a4.5 4.5 0 0 1 1.242 7.244l-4.5 4.5a4.5 4.5 0 0 1-6.364-6.364l1.757-1.757m13.35-.622 1.757-1.757a4.5 4.5 0 0 0-6.364-6.364l-4.5 4.5a4.5 4.5 0 0 0 1.242 7.244"
+                />
+              </svg>
+            </button>
+          </div>
+        </form>
+      </div>
+    </dialog>
+  );
+};
+
+const ModalEliminar = ({ idObtenida, setDatos, setComprobantes }) => {
+  const { setProveedores } = useProductosContext();
+
+  const handleEliminarOrden = async (id) => {
+    try {
+      const res = await client.delete(`/comprobante/${id}`);
+
+      setDatos(res.data.updatedProveedor);
+      setComprobantes(res.data.comprobantes);
+      setProveedores(res.data.proveedores);
+
+      showSuccessToastError("Comprobante eliminado");
+
+      document.getElementById("my_modal_eliminar").close();
+    } catch (error) {
+      console.error("Error al eliminar la orden:", error);
+    }
+  };
+
+  return (
+    <dialog id="my_modal_eliminar" className="modal">
+      <div className="modal-box rounded-md max-w-md">
+        <form method="dialog">
+          {/* if there is a button in form, it will close the modal */}
+          <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
+            ✕
+          </button>
+        </form>
+        <form>
+          <div>
+            <img
+              className="w-44 mx-auto"
+              src="https://app.holded.com/assets/img/document/doc_delete.png"
+            />
+          </div>
+          <div className="font-semibold text-sm text-gray-400 text-center">
+            REFERENCIA {idObtenida}
+          </div>
+          <div className="font-semibold text-[#FD454D] text-lg text-center">
+            Eliminar el producto seleccionado..
+          </div>
+          <div className="text-sm text-gray-400 text-center mt-1">
+            El producto no podra ser recuperado nunca mas...
+          </div>
+          <div className="mt-4 text-center w-full px-16">
+            <button
+              onClick={() => handleEliminarOrden(idObtenida)}
+              type="button"
+              className="bg-red-500 py-1 px-4 text-center font-bold text-white text-sm rounded-md w-full"
+            >
+              Confirmar
+            </button>{" "}
+            <button
+              type="button"
+              onClick={() =>
+                document.getElementById("my_modal_eliminar").close()
+              }
+              className="bg-orange-100 py-1 px-4 text-center font-bold text-orange-600 mt-2 text-sm rounded-md w-full"
+            >
+              Cancelar
+            </button>
+          </div>
+        </form>
+      </div>
+    </dialog>
+  );
+};

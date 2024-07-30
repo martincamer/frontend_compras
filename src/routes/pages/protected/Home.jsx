@@ -104,37 +104,33 @@ export const Home = () => {
     }, []);
 
   return (
-    <section className="bg-gray-100/40 w-full min-h-full max-h-full px-12 max-md:px-4 flex flex-col gap-12 max-md:gap-8 py-10 h-[100vh] overflow-y-scroll scroll-bar max-md:py-20">
+    <section className="w-full min-h-full max-h-full px-12 max-md:px-4 flex flex-col gap-12 max-md:gap-8 py-10 h-[100vh] overflow-y-scroll scroll-bar max-md:py-5">
       <div>
-        <div className="mb-8 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-          <div className="bg-white py-4 px-6 border border-blue-500 max-md:py-2 max-md:px-2 max-md:text-center">
-            <h2 className="text-xl font-bold text-blue-500 bg-white max-md:text-sm">
+        <div className="mb-8 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between bg-gray-800 py-5 px-5 rounded-md">
+          <div className="bg-white py-4 px-4 rounded-md max-md:py-2 max-md:px-2 max-md:text-center">
+            <h2 className="text-xl font-bold text-primary bg-white max-md:text-sm">
               Panel de compras
             </h2>
           </div>
         </div>
         <div className="flex gap-2 my-2 w-1/4 max-md:w-full">
-          <div className="bg-white py-2 px-3 text-sm font-bold w-full border border-blue-500 cursor-pointer flex items-center">
-            <input
-              value={fechaInicio}
-              onChange={handleFechaInicioChange}
-              type="date"
-              className="outline-none text-slate-600 w-full max-md:text-sm uppercase bg-white"
-              placeholder="Fecha de inicio"
-            />
-          </div>
-          <div className="bg-white py-2 px-3 text-sm font-bold w-full border border-blue-500 cursor-pointer flex items-center">
-            <input
-              value={fechaFin}
-              onChange={handleFechaFinChange}
-              type="date"
-              className="outline-none text-slate-600 w-full max-md:text-sm uppercase bg-white"
-              placeholder="Fecha fin"
-            />
-          </div>
+          <input
+            value={fechaInicio}
+            onChange={handleFechaInicioChange}
+            type="date"
+            className="outline-none text-slate-600 w-full max-md:text-sm uppercase bg-white border-gray-300 border py-2 px-2 rounded-md focus:shadow-md text-sm font-bold"
+            placeholder="Fecha de inicio"
+          />
+          <input
+            value={fechaFin}
+            onChange={handleFechaFinChange}
+            type="date"
+            className="outline-none text-slate-600 w-full max-md:text-sm uppercase bg-white border-gray-300 border py-2 px-2 rounded-md focus:shadow-md text-sm font-bold"
+            placeholder="Fecha fin"
+          />
         </div>
 
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-6 xl:grid-cols-3">
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 md:gap-2 xl:grid-cols-3">
           {/* Tarjeta 1 */}
           <Card
             description="Total gasto en compras del mes"
@@ -201,7 +197,7 @@ export const Home = () => {
         />
       </div>
 
-      <div className="bg-white py-10 px-10 rounded">
+      <div className="bg-white py-10 px-10 rounded hidden">
         <div>
           <p className="font-semibold text-gray-800 mb-4">
             Reporte de productos cargados en la semana.
@@ -255,7 +251,7 @@ const Card = ({
   color,
 }) => {
   return (
-    <div className="xl:p-7.5 bg-white dark:border-gray-600 dark:bg-gray-800 md:p-6 max-md:p-3 rounded border border-blue-500">
+    <div className="xl:p-7.5 bg-white dark:border-gray-600 dark:bg-gray-800 md:p-6 max-md:p-3 rounded border border-gray-300">
       <div className="flex items-center justify-between">
         <div>
           <h3 className="mb-4 text-2xl font-bold text-gray-900 dark:text-white max-md:text-xl">
