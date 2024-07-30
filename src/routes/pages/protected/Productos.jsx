@@ -1,14 +1,15 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useProductosContext } from "../../../context/ProductosProvider";
-import { ModalCrearProductos } from "../../../components/Modales/ModalCrearProductos";
-import { ModalCrearCategorias } from "../../../components/Modales/ModalCrearCategorias";
-import { ToastContainer } from "react-toastify";
-import { ModalEditarProducto } from "../../../components/Modales/ModalEditarProducto";
-import { ModalEliminarProducto } from "../../../components/Modales/ModalEliminarProducto";
-import { PDFDownloadLink } from "@react-pdf/renderer";
-import { Link } from "react-router-dom";
-import { ListaDePrecios } from "../../../components/pdf/ListaDePrecios";
-import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
+import { FaSearch } from "react-icons/fa";
+import { FaDeleteLeft } from "react-icons/fa6";
+import { IoMdAdd } from "react-icons/io";
+import { formatearDinero } from "../../../helpers/formatearDinero";
+import client from "../../../api/axios";
+import {
+  showSuccessToast,
+  showSuccessToastError,
+} from "../../../helpers/toast";
+import { useForm } from "react-hook-form";
 
 export const Productos = () => {
   const { productos, categorias } = useProductosContext();
@@ -129,31 +130,44 @@ export const Productos = () => {
   };
 
   return (
-    <section className="min-h-screen max-h-full bg-gray-100/40 w-full h-full max-md:py-12">
-      <ToastContainer />
-      <div className="bg-white mb-4 h-10 flex max-md:hidden">
-        <Link
-          to={"/"}
-          className="bg-blue-100 flex h-full px-4 justify-center items-center font-bold text-blue-600"
+    <section className="w-full h-full min-h-screen max-h-full">
+      <div className="bg-gray-100 py-10 px-10 flex justify-between items-center max-md:flex-col max-md:gap-3">
+        <p className="font-bold text-gray-900 text-xl">Sector de productos.</p>
+        <button
+          onClick={() =>
+            document.getElementById("my_modal_crear_producto").showModal()
+          }
+          type="button"
+          className="bg-primary py-1 px-4 rounded-md text-white font-semibold text-sm"
         >
-          Inicio
-        </Link>{" "}
-        <Link
-          to={"/productos"}
-          className="bg-blue-500 flex h-full px-4 justify-center items-center font-bold text-white"
+          Crear nuevo producto
+        </button>
+      </div>
+      <div className="px-5 pt-10 flex gap-2">
+        {" "}
+        <button
+          onClick={() =>
+            document.getElementById("my_modal_categorias").showModal()
+          }
+          type="button"
+          className="bg-primary py-1 px-4 rounded-md text-white font-semibold text-sm"
         >
-          Productos
-        </Link>
+          Ver categorias
+        </button>
+        <button
+          onClick={() =>
+            document.getElementById("my_modal_precios").showModal()
+          }
+          type="button"
+          className="bg-blue-500 py-1 px-4 rounded-md text-white font-semibold text-sm"
+        >
+          Ver lista de precios
+        </button>
       </div>
-      <div className="mx-5 my-10 bg-white py-6 px-6 max-md:my-5">
-        <p className="font-bold text-blue-600 text-xl">
-          Crea tus productos en esta sección y actualiza los precios.
-        </p>
-      </div>
-      <div className="mx-5 py-1 flex gap-2 items-center max-md:px-0 max-md:py-0 max-md:flex-col max-md:items-start border-b-[1px] border-slate-300 pb-4 max-md:pb-4 max-md:mx-5">
+      {/* <div className="mx-5 py-1 flex gap-2 items-center max-md:px-0 max-md:py-0 max-md:flex-col max-md:items-start border-b-[1px] border-slate-300 pb-4 max-md:pb-4 max-md:mx-5">
         <button
           onClick={() => openModal()}
-          className="bg-blue-500 py-1.5 px-6 rounded text-sm text-white font-medium max-md:text-xs flex gap-2 items-center hover:shadow-md transition-all hover:bg-blue-500/90"
+          className="bg-primary py-1.5 px-6 rounded text-sm text-white font-medium max-md:text-xs flex gap-2 items-center hover:shadow-md transition-all hover:bg-blue-500/90"
         >
           Crear nuevo producto
           <svg
@@ -211,21 +225,22 @@ export const Productos = () => {
             />
           </svg>
         </PDFDownloadLink>
-      </div>
-
-      <div className="max-md:mt-2 mt-5 ">
-        <div className="mt-5 mx-5 flex gap-2 max-md:flex-col">
-          {/* Buscador */}
+      </div> */}
+      <div className="mt-5 mx-5 flex gap-2">
+        <div className="border border-gray-300 flex items-center gap-2 px-2 py-1.5 text-sm rounded-md w-1/5">
           <input
-            type="text"
-            placeholder="Buscar por detalle o el codigo...."
-            className="text-sm py-2.5 px-5 bg-white text-slate-700 font-bold uppercase w-1/4  max-md:w-auto outline-none cursor-pointer border border-blue-500"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
+            type="text"
+            className="outline-none font-medium w-full"
+            placeholder="Buscar por nombre.."
           />
-          {/* Selector de categoría */}
+          <FaSearch className="text-gray-700" />
+        </div>
+
+        <div>
           <select
-            className="text-sm py-2.5 px-5 bg-white text-slate-700 font-bold uppercase w-1/4  max-md:w-auto outline-none cursor-pointer border border-blue-500"
+            className="border border-gray-300 flex items-center gap-2 w-full px-2 py-1.5 text-sm rounded-md outline-none font-semibold capitalize"
             value={selectedCategory}
             onChange={(e) => setSelectedCategory(e.target.value)}
           >
@@ -239,53 +254,43 @@ export const Productos = () => {
             ))}
           </select>
         </div>
+      </div>
 
-        <div className="mx-5 my-5 max-md:overflow-x-auto">
-          <table className="min-w-full divide-y-2 table text-xs rounded-none bg-white">
-            <thead className="text-left">
+      <div>
+        <div className="max-md:overflow-x-auto mx-5 mt-10">
+          <table className="table">
+            <thead className="text-left font-bold text-gray-900 text-sm">
               <tr className="">
-                <th className="whitespace-nowrap px-4 py-4 text-gray-500 uppercase font-bold text-xs">
-                  Codigo
-                </th>
-                <th className="whitespace-nowrap px-4 py-4 text-gray-500 uppercase font-bold text-xs">
-                  Detalle
-                </th>
-                <th className="whitespace-nowrap px-4 py-4 text-gray-500 uppercase font-bold text-xs">
-                  Categoria
-                </th>
-                <th className="whitespace-nowrap px-4 py-4 text-gray-500 uppercase font-bold text-xs">
-                  Precio Und
-                </th>
-                <th className="whitespace-nowrap px-4 py-4 text-gray-500 uppercase font-bold text-xs">
-                  Acciones
-                </th>
+                <th>Codigo</th>
+                <th>Detalle</th>
+                <th>Categoria</th>
+                <th>Precio Und</th>
+                <th>Acciones</th>
               </tr>
             </thead>
 
-            <tbody className="divide-y divide-gray-200">
+            <tbody className="text-xs capitalize font-medium">
               {filteredProducts.map((p) => (
                 <tr key={p.id}>
-                  <th className="whitespace-nowrap px-4 py-4 font-semibold text-gray-900 uppercase text-xs">
-                    {p.id}
-                  </th>
-                  <th className="whitespace-nowrap px-4 py-4 text-gray-700 uppercase text-xs">
-                    {p.detalle}
-                  </th>
-                  <th className="whitespace-nowrap px-4 py-4 text-gray-700 uppercase text-xs">
-                    {p.categoria}
-                  </th>
-                  <th className="whitespace-nowrap px-4 py-4  uppercase text-xs font-bold text-blue-600">
-                    {Number(p.precio_und).toLocaleString("es-AR", {
-                      style: "currency",
-                      currency: "ARS",
-                    })}
-                  </th>
-                  <th className="whitespace-nowrap px-4 py-4 text-gray-700 uppercase text-xs cursor-pointer space-x-2">
+                  <td>{p.id}</td>
+                  <td>{p.detalle}</td>
+                  <td>{p.categoria}</td>
+                  <td className="">
+                    <div className="flex">
+                      <p className="bg-gray-800 py-1.5 px-2 rounded-md text-white font-bold">
+                        {Number(p.precio_und).toLocaleString("es-AR", {
+                          style: "currency",
+                          currency: "ARS",
+                        })}
+                      </p>
+                    </div>
+                  </td>
+                  <td className="">
                     <div className="dropdown dropdown-left z-1">
                       <div
                         tabIndex={0}
                         role="button"
-                        className="hover:bg-gray-200 rounded-full px-2 py-2 transition-all"
+                        className="hover:bg-gray-800 hover:text-white rounded-full px-2 py-2 transition-all"
                       >
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
@@ -293,7 +298,7 @@ export const Productos = () => {
                           viewBox="0 0 24 24"
                           strokeWidth={1.5}
                           stroke="currentColor"
-                          className="w-7 h-7"
+                          className="w-6 h-6"
                         >
                           <path
                             strokeLinecap="round"
@@ -304,9 +309,9 @@ export const Productos = () => {
                       </div>
                       <ul
                         tabIndex={0}
-                        className="dropdown-content z-[1] menu p-3 border-blue-500 border bg-white w-52 gap-2"
+                        className="dropdown-content z-[1] menu p-1 border border-gray-300 rounded-md bg-white shadow-xl w-52 gap-1"
                       >
-                        <button className="hover:text-blue-500 transition-all text-left hover:underline">
+                        <li className="text-xs font-semibold hover:bg-gray-800 rounded-md hover:text-white">
                           <span
                             onClick={() => {
                               handleID(p.id), openEditProducto();
@@ -314,8 +319,8 @@ export const Productos = () => {
                           >
                             Editar producto
                           </span>
-                        </button>
-                        <button className="hover:text-red-500 transition-all text-left hover:underline">
+                        </li>
+                        <li className="text-xs font-semibold hover:bg-gray-800 rounded-md hover:text-white">
                           <span
                             onClick={() => {
                               handleID(p.id), openEliminar();
@@ -323,10 +328,10 @@ export const Productos = () => {
                           >
                             Eliminar producto
                           </span>
-                        </button>
+                        </li>
                       </ul>
                     </div>
-                  </th>
+                  </td>
                 </tr>
               ))}
             </tbody>
@@ -334,22 +339,248 @@ export const Productos = () => {
         </div>
       </div>
 
-      <ModalCrearProductos isOpen={isOpen} closeModal={closeModal} />
-      <ModalCrearCategorias
-        isOpenCategorias={isOpenCategorias}
-        closeModalCategorias={closeModalCategorias}
-      />
-      <ModalEditarProducto
-        isOpen={editarProducto}
-        closeModal={closeEditProducto}
-        OBTENERID={OBTENERID}
-      />
-
-      <ModalEliminarProducto
-        obtenerId={OBTENERID}
-        closeEliminar={closeEliminar}
-        eliminarModal={isOpenEliminar}
-      />
+      <ModalCategorias />
+      <ModalCrearProducto />
     </section>
+  );
+};
+
+export const ModalCrearProducto = () => {
+  const [precio_und, setPrecio] = useState("");
+  const [detalle, setDetale] = useState("");
+  const [proveedor, setProveedor] = useState("");
+  const [categoria, setCategoria] = useState("");
+
+  const { categorias, setProductos } = useProductosContext();
+
+  const onSubmit = async (e) => {
+    e.preventDefault();
+
+    const datosProducto = { precio_und, detalle, proveedor: "", categoria };
+
+    try {
+      const res = await client.post("/crear-producto", datosProducto);
+
+      setProductos(res.data);
+
+      setPrecio("");
+      setDetale("");
+      setProveedor("");
+      setCategoria("");
+    } catch (error) {
+      console.error("Error al enviar el producto:", error);
+    }
+  };
+
+  const [isEditable, setIsEditable] = useState(false);
+
+  const handleInputClick = (index) => {
+    setIsEditable(true);
+  };
+
+  return (
+    <dialog id="my_modal_crear_producto" className="modal">
+      <div className="modal-box rounded-md">
+        <form method="dialog">
+          {/* if there is a button in form, it will close the modal */}
+          <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
+            ✕
+          </button>
+        </form>
+        <h3 className="font-bold text-xl">Cargar producto nuevo.</h3>
+        <p className="py-0.5 text-sm font-medium">
+          En esta ventana podras cargar nuevos productos, para las ordenes de
+          compra, lista de precios, etc.
+        </p>
+        <form onSubmit={onSubmit} className="flex flex-col gap-3 mt-3">
+          <div className="flex flex-col gap-1">
+            <label className="font-bold text-sm">Detalle del producto</label>
+            <input
+              onChange={(e) => setDetale(e.target.value)}
+              value={detalle}
+              type="text"
+              className="rounded-md border border-gray-300 py-2 px-2 text-sm font-medium uppercase outline-none focus:shadow-md"
+              placeholder="Detalle del producto"
+            />
+          </div>
+
+          <div className="flex flex-col gap-1">
+            <label className="font-bold text-sm">Seleccionar categoria</label>
+            <div className="flex gap-2 items-center">
+              <select
+                type="text"
+                className="rounded-md border border-gray-300 py-2 px-2 text-sm font-medium capitalize outline-none focus:shadow-md"
+                onChange={(e) => setCategoria(e.target.value)}
+                value={categoria}
+              >
+                <option className="font-bold text-primary" value="">
+                  Seleccionar la categoria
+                </option>
+                {categorias.map((c) => (
+                  <option className="font-semibold" key={c.id}>
+                    {c.detalle}
+                  </option>
+                ))}
+              </select>
+              <div
+                onClick={() =>
+                  document
+                    .getElementById("my_modal_crear_categoria")
+                    .showModal()
+                }
+                className="cursor-pointer"
+              >
+                <IoMdAdd className="text-2xl border border-gray-300 rounded-md py-0.5 px-0.5" />
+              </div>
+            </div>
+          </div>
+
+          <div onClick={handleInputClick}>
+            {isEditable ? (
+              <div className="flex flex-col gap-2">
+                <label className="font-bold text-sm">
+                  Precio unidad del producto
+                </label>
+                <input
+                  onChange={(e) => setPrecio(e.target.value)}
+                  value={precio_und || 0}
+                  onBlur={() => {
+                    setIsEditable(false);
+                  }}
+                  type="text"
+                  className="rounded-md border border-gray-300 py-2 px-2 text-sm font-bold capitalize outline-none focus:shadow-md"
+                />
+              </div>
+            ) : (
+              <div className="flex flex-col gap-2">
+                <label className="font-bold text-sm">
+                  Precio unidad del producto
+                </label>
+
+                <p className="rounded-md border border-gray-300 py-2 px-2 text-sm font-bold capitalize outline-none focus:shadow-md">
+                  {formatearDinero(Number(precio_und) || 0)}
+                </p>
+              </div>
+            )}
+          </div>
+
+          <div>
+            <button
+              type="submit"
+              className="py-1.5 px-6 bg-primary hover:shadow-md text-white transition-all rounded-md font-semibold text-sm"
+            >
+              Crear nuevo producto
+            </button>
+          </div>
+        </form>
+
+        <ModalCrearCategoria />
+      </div>
+    </dialog>
+  );
+};
+
+export const ModalCrearCategoria = () => {
+  const { register, handleSubmit } = useForm();
+
+  const { setCategorias } = useProductosContext();
+
+  const onSubmit = handleSubmit(async (data) => {
+    const res = await client.post("/crear-categoria", data);
+
+    setCategorias(res.data);
+
+    showSuccessToast("Creado correctamente");
+
+    document.getElementById("my_modal_crear_categoria").close();
+    document.getElementById("my_modal_crear_producto").close();
+  });
+
+  return (
+    <dialog id="my_modal_crear_categoria" className="modal">
+      <div className="modal-box rounded-md max-w-sm">
+        <form method="dialog">
+          {/* if there is a button in form, it will close the modal */}
+          <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
+            ✕
+          </button>
+        </form>
+        <form onSubmit={onSubmit} className="flex flex-col gap-3">
+          <div className="flex flex-col gap-1">
+            <label className="font-bold text-sm">Nombre de la categoria</label>
+            <input
+              {...register("detalle")}
+              type="text"
+              className="rounded-md border border-gray-300 py-2 px-2 text-sm font-medium capitalize outline-none focus:shadow-md"
+              placeholder="Escribe de la categoria.."
+            />
+          </div>
+          <div>
+            <button
+              type="submit"
+              className="py-1.5 px-6 bg-blue-500 hover:shadow-md text-white transition-all rounded-md font-semibold text-sm"
+            >
+              Guardar la categoria
+            </button>
+          </div>
+        </form>
+      </div>
+    </dialog>
+  );
+};
+
+export const ModalCategorias = () => {
+  const { categorias, setCategorias } = useProductosContext();
+
+  const HandleEliminarCategoria = async (id) => {
+    const res = await client.delete(`/eliminar-categoria/${id}`);
+
+    setCategorias(res.data);
+
+    showSuccessToastError("Categoria eliminada");
+  };
+
+  return (
+    <dialog id="my_modal_categorias" className="modal">
+      <div className="modal-box rounded-md max-w-3xl">
+        <form method="dialog">
+          {/* if there is a button in form, it will close the modal */}
+          <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
+            ✕
+          </button>
+        </form>
+
+        <h3 className="font-bold text-xl">
+          Categorias cargadas en el sistema.
+        </h3>
+        <p className="py-0.5 text-sm font-medium">
+          En esta ventana podras cargar una nueva categoria, eliminarla, etc.
+        </p>
+
+        <div className="mt-2">
+          <button
+            onClick={() =>
+              document.getElementById("my_modal_crear_categoria").showModal()
+            }
+            type="button"
+            className="bg-primary py-1 px-4 rounded-md text-white font-semibold text-sm"
+          >
+            Crear nueva categoria
+          </button>
+        </div>
+
+        <div className="grid grid-cols-4 gap-3 mt-3">
+          {categorias.map((c) => (
+            <div className="flex gap-2 py-1 px-2 border border-gray-300 rounded-md text-sm font-bold capitalize justify-between items-center">
+              {c.detalle}{" "}
+              <FaDeleteLeft
+                className="text-red-600 text-xl cursor-pointer"
+                onClick={() => HandleEliminarCategoria(c.id)}
+              />
+            </div>
+          ))}
+        </div>
+      </div>
+    </dialog>
   );
 };

@@ -41,6 +41,7 @@ import "react-toastify/dist/ReactToastify.css";
 import "react-toastify/dist/ReactToastify.min.css";
 import { useEffect, useState } from "react";
 import { MenuMobile } from "./components/ui/MenuMobile";
+import { Navbar } from "./components/ui/Navbar";
 
 function App() {
   const { isAuth, user } = useAuth();
@@ -155,9 +156,9 @@ function App() {
               element={
                 <ProductosProvider>
                   <OrdenesProvider>
-                    <main className="min-h-full max-h-full h-full flex">
+                    <main className="min-h-full max-h-full h-full">
+                      <Navbar />
                       <MenuMobile />
-                      <SideBar />
                       <Outlet />
                     </main>
                   </OrdenesProvider>
@@ -178,9 +179,9 @@ export default App;
 
 const LoadingScreen = () => {
   return (
-    <div className="w-full h-screen flex items-center justify-center bg-gray-100">
+    <div className="w-full h-screen flex items-center justify-center bg-gray-100/80">
       <div className="flex flex-col items-center">
-        <div className="spinner-border animate-spin inline-block w-8 h-8 border-4 rounded-full border-t-blue-700 border-b-transparent"></div>
+        <div className="spinner-border animate-spin inline-block w-8 h-8 border-4 rounded-full border-primary border-b-transparent"></div>
         <p className="mt-4 text-lg font-bold text-gray-700">Cargando...</p>
       </div>
     </div>
