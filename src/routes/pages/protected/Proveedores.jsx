@@ -207,7 +207,7 @@ export const Proveedores = () => {
         </button>
       </div>
 
-      <div className="border border-gray-300 flex items-center gap-2 px-2 py-1.5 text-sm rounded-md w-1/5 max-md:w-full mx-5  my-5">
+      <div className="border border-gray-300 flex items-center gap-2 px-2 py-1.5 text-sm rounded-md w-1/5 max-md:w-auto mx-5  my-5">
         <input
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}

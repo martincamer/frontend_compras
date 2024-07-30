@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import client from "../../../api/axios";
 import { Link, useParams } from "react-router-dom";
 import { ModalEditarEntrega } from "../../../components/Modales/ModalEditarEntrega";
 import { ToastContainer } from "react-toastify";
+import client from "../../../api/axios";
 
 export const ViewOrdenCheckout = () => {
   const [orden, setOrden] = useState([]);

@@ -553,7 +553,7 @@ export const ModalActualizarOrdenDeCompra = ({ id }) => {
 
   return (
     <dialog id="my_modal_actualizar_orden_de_compra" className="modal">
-      <div className="modal-box max-w-full h-full scroll-bar rounded-md  max-md:h-full max-md:w-full max-md:max-h-full max-md:rounded-none">
+      <div className="modal-box max-w-full h-full scrollbar-hidden rounded-md  max-md:h-full max-md:w-full max-md:max-h-full max-md:rounded-none">
         <form method="dialog">
           {/* if there is a button in form, it will close the modal */}
           <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
@@ -1546,7 +1546,7 @@ export const ModalCrearOrdenDeCompra = () => {
 
   return (
     <dialog id="my_modal_crear_orden_de_compra" className="modal">
-      <div className="modal-box max-w-full h-full scroll-bar rounded-md  max-md:h-full max-md:w-full max-md:max-h-full max-md:rounded-none">
+      <div className="modal-box max-w-full h-full scrollbar-hidden rounded-md  max-md:h-full max-md:w-full max-md:max-h-full max-md:rounded-none">
         <form method="dialog">
           {/* if there is a button in form, it will close the modal */}
           <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
@@ -1663,7 +1663,7 @@ export const ModalCrearOrdenDeCompra = () => {
             </button>
           </div>
 
-          <div className="max-md:overflow-x-auto">
+          <div className="max-md:overflow-x-auto scrollbar-hidden">
             <table className="table">
               <thead className="font-bold text-gray-900 text-sm">
                 <tr>
@@ -2095,7 +2095,7 @@ export const ModalCargarProductoCompra = ({ addToProductos }) => {
 
   return (
     <dialog id="my_modal_producto_compra" className="modal">
-      <div className="modal-box rounded-md max-w-7xl scroll-bar h-[60vh]">
+      <div className="modal-box rounded-md max-w-7xl scroll-bar h-[60vh] max-md:w-full max-md:max-h-full max-md:h-full max-md:rounded-none max-md:py-14">
         <form method="dialog">
           {/* if there is a button in form, it will close the modal */}
           <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
@@ -2114,7 +2114,7 @@ export const ModalCargarProductoCompra = ({ addToProductos }) => {
           <FaSearch className="text-gray-700" />
         </div>
 
-        <div className="max-md:overflow-x-auto">
+        <div className="max-md:overflow-x-auto scrollbar-hidden">
           <table className="table">
             <thead className="text-gray-800 text-sm">
               <tr>
@@ -2230,7 +2230,7 @@ export const ModalProductoSeleccionado = ({ addToProductos, idObtenida }) => {
           </button>
         </form>
 
-        <div className="max-md:overflow-x-auto">
+        <div className="max-md:overflow-x-auto scrollbar-hidden">
           <table className="table">
             <thead className="font-bold text-gray-800 text-sm">
               <tr>
