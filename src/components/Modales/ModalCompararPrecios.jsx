@@ -104,31 +104,31 @@ export const ModalCompararPrecios = () => {
         <h3 className="font-bold text-lg">
           Filtrar productos de compras, compara precios, etc.
         </h3>
-        <p className="py-4">
+        <p className="pb-5">
           En esta sección podras filtrar productos comprados y comparar los
           precios de ellos.
         </p>
 
         <form onSubmit={handleFiltrarClick}>
           <div className="flex space-x-4">
-            <div className="border border-blue-500 flex items-center gap-2 px-2 py-2">
+            <div className="border border-gray-300 rounded-md flex items-center gap-2 px-2 py-2">
               <label className="text-sm font-bold" htmlFor="fechaInicio">
                 Fecha de inicio:
               </label>
               <input
-                className="text-blue-500 text-sm font-bold outline-none border border-blue-500 rounded py-1 px-2"
+                className=" text-sm font-bold outline-none border border-gray-300 rounded-md py-1 px-2"
                 type="date"
                 id="fechaInicio"
                 value={fechaInicio}
                 onChange={(e) => setFechaInicio(e.target.value)}
               />
             </div>
-            <div className="border border-blue-500 flex items-center gap-2 px-2 py-2">
+            <div className="border border-gray-300 rounded-md flex items-center gap-2 px-2 py-2">
               <label className="text-sm font-bold" htmlFor="fechaFin">
                 Fecha fin:
               </label>
               <input
-                className="text-blue-500 text-sm font-bold outline-none border border-blue-500 rounded py-1 px-2"
+                className=" text-sm font-bold outline-none border border-gray-300 rounded-md py-1 px-2"
                 type="date"
                 id="fechaFin"
                 value={fechaFin}
@@ -138,9 +138,9 @@ export const ModalCompararPrecios = () => {
             <div className="flex items-center">
               <button
                 type="submit"
-                className="text-sm font-bold bg-blue-500 py-2 px-4 text-white rounded-full"
+                className="text-sm font-bold bg-primary py-2 px-4 text-white rounded-md"
               >
-                Filtrar
+                Filtrar precios, compras.
               </button>
             </div>
           </div>
@@ -150,12 +150,12 @@ export const ModalCompararPrecios = () => {
             Seleccionar categoría:
           </label>
           <select
-            className="border border-blue-500 px-2 py-1.5 text-sm font-semibold outline-none uppercase"
+            className="border border-gray-300 rounded-md px-2 py-1.5 text-sm font-semibold outline-none uppercase"
             id="categoria"
             value={categoriaSeleccionada}
             onChange={handleCategoriaChange}
           >
-            <option className="font-bold uppercase text-blue-400" value="">
+            <option className="font-bold capitalize text-gray-400" value="">
               Seleccione una categoría
             </option>
             {/* Obtener las categorías únicas de las órdenes filtradas */}
@@ -176,7 +176,7 @@ export const ModalCompararPrecios = () => {
               onClick={() =>
                 document.getElementById("my_modal_view_productos").showModal()
               }
-              className="font-semibold text-sm border-blue-500 text-blue-500 border rounded-full py-1.5 px-4 hover:shadow transition-all hover:border-orange-500 hover:text-orange-500"
+              className="font-semibold text-sm border-blue-500 text-blue-500 border rounded-md py-1.5 px-4 hover:shadow transition-all hover:border-primary hover:text-primary"
             >
               Descargar o imprimir
             </button>

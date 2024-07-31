@@ -47,7 +47,7 @@ export const OrdenDeCompra = () => {
 
   const today = new Date();
   const firstDayOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
-  const lastDayOfMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0);
+  const lastDayOfMonth = new Date(today.getFullYear(), today.getMonth() + 1, 1);
 
   // Convertir las fechas en formato YYYY-MM-DD para los inputs tipo date
   const fechaInicioPorDefecto = firstDayOfMonth.toISOString().split("T")[0];
@@ -1867,10 +1867,10 @@ export const ModalEditarProductoOrdenCompra = ({
   productoSeleccionado,
   setProductoSeleccionado,
 }) => {
-  const [precio_und, setPrecio] = useState("");
+  const [precio_und, setPrecio] = useState(0);
   const [categoria, setCategorias] = useState("");
   const [detalle, setDetalle] = useState("");
-  const [cantidad, setCantidad] = useState("");
+  const [cantidad, setCantidad] = useState(0);
   const [iva, setIva] = useState(0);
 
   const { productos, setProductos } = useProductosContext();
@@ -2013,7 +2013,7 @@ export const ModalEditarProductoOrdenCompra = ({
                 </td>
                 <td className="px-4 py-3 font-medium text-gray-900 uppercase">
                   <input
-                    value={cantidad || 0}
+                    value={cantidad}
                     className="py-2 px-2 border border-gray-300 rounded-md outline-none"
                     type="text"
                     onChange={(e) => setCantidad(e.target.value)}
@@ -2163,8 +2163,8 @@ export const ModalProductoSeleccionado = ({ addToProductos, idObtenida }) => {
   const { productos, setProductos } = useProductosContext();
 
   const [producto, setProducto] = useState([]);
-  const [precio_und, setPrecio] = useState("");
-  const [cantidad, setCantidad] = useState("");
+  const [precio_und, setPrecio] = useState(0);
+  const [cantidad, setCantidad] = useState(0);
   const [iva, setIva] = useState(0);
 
   const handleSubmitPrecioUnd = async () => {
@@ -2204,7 +2204,7 @@ export const ModalProductoSeleccionado = ({ addToProductos, idObtenida }) => {
       setPrecio(res.data.precio_und);
     }
 
-    setCantidad("");
+    setCantidad(0);
 
     laodData();
   }, [idObtenida]);
@@ -2267,7 +2267,7 @@ export const ModalProductoSeleccionado = ({ addToProductos, idObtenida }) => {
                 </td>
                 <td className="px-4 py-3 font-medium text-gray-900 uppercase">
                   <input
-                    value={cantidad || 0}
+                    value={cantidad}
                     className="py-2 px-2 border border-gray-300 rounded-md outline-none"
                     type="text"
                     onChange={(e) => setCantidad(e.target.value)}

@@ -88,24 +88,24 @@ export const ModalCompras = () => {
 
         <form onSubmit={handleFiltrarClick}>
           <div className="flex space-x-4">
-            <div className="border border-blue-500 flex items-center gap-2 px-2 py-2">
+            <div className="border border-gray-300 rounded-md flex items-center gap-2 px-2 py-2">
               <label className="text-sm font-bold" htmlFor="fechaInicio">
                 Fecha de inicio:
               </label>
               <input
-                className="text-blue-500 text-sm font-bold outline-none border border-blue-500 py-1 px-2"
+                className=" text-sm font-bold outline-none border rounded-md border-gray-300 py-1 px-2"
                 type="date"
                 id="fechaInicio"
                 value={fechaInicio}
                 onChange={(e) => setFechaInicio(e.target.value)}
               />
             </div>
-            <div className="border border-blue-500 flex items-center gap-2 px-2 py-2">
+            <div className="border border-gray-300 rounded-md flex items-center gap-2 px-2 py-2">
               <label className="text-sm font-bold" htmlFor="fechaFin">
                 Fecha fin:
               </label>
               <input
-                className="text-blue-500 text-sm font-bold outline-none border border-blue-500 py-1 px-2"
+                className=" text-sm font-bold outline-none border rounded-md border-gray-300 py-1 px-2"
                 type="date"
                 id="fechaFin"
                 value={fechaFin}
@@ -115,9 +115,9 @@ export const ModalCompras = () => {
             <div className="flex items-center">
               <button
                 type="submit"
-                className="text-sm font-bold bg-blue-500 py-2 px-4 text-white rounded-full"
+                className="text-sm font-bold bg-primary py-2 px-4 text-white rounded-md"
               >
-                Filtrar
+                Filtrar ordenes..
               </button>
             </div>
           </div>
@@ -128,7 +128,7 @@ export const ModalCompras = () => {
             </label>
             <select
               id="proveedor"
-              className="text-sm font-bold outline-none border border-blue-500 py-1 px-2 ml-2 capitalize"
+              className="border border-gray-300 rounded-md px-2 py-1.5 text-sm font-semibold outline-none capitalize"
               value={proveedorSeleccionado}
               onChange={handleProveedorChange}
             >
@@ -150,16 +150,18 @@ export const ModalCompras = () => {
               onClick={() =>
                 document.getElementById("my_modal_proveedores").showModal()
               }
-              className="bg-blue-500 hover mt-2 py-1.5 px-4 rounded-full text-white text-sm font-semibold ml-3"
+              className="bg-blue-500 hover mt-2 py-1.5 px-4 rounded-md text-white text-sm font-semibold ml-3"
             >
               Imprimir o descargar compras por proveedor
             </button>
           </div>
         </form>
-        <div className="bg-blue-50 py-5 px-10 mt-5 flex gap-12">
+        <div className="bg-gray-800 rounded-md py-5 px-10 mt-5 flex gap-12">
           <div>
-            <p className="font-bold text-sm">Total en compras filtradas</p>
-            <p className="font-extrabold text-blue-500 text-xl">
+            <p className="font-bold text-sm text-gray-300">
+              Total en compras filtradas
+            </p>
+            <p className="font-extrabold text-white text-xl">
               {" "}
               {Number(precioFinalTotal).toLocaleString("es-AR", {
                 style: "currency",
@@ -168,8 +170,10 @@ export const ModalCompras = () => {
             </p>
           </div>{" "}
           <div>
-            <p className="font-bold text-sm">Total sin iva en compras</p>
-            <p className="font-extrabold text-blue-500 text-xl">
+            <p className="font-bold text-sm text-gray-300">
+              Total sin iva en compras
+            </p>
+            <p className="font-extrabold text-white text-xl">
               {" "}
               {Number(precioFinalIva).toLocaleString("es-AR", {
                 style: "currency",
@@ -178,8 +182,10 @@ export const ModalCompras = () => {
             </p>
           </div>
           <div>
-            <p className="font-bold text-sm">Total iva en compras</p>
-            <p className="font-extrabold text-blue-500 text-xl">
+            <p className="font-bold text-sm text-gray-300">
+              Total iva en compras
+            </p>
+            <p className="font-extrabold text-white text-xl">
               {" "}
               {Number(precioFinalTotal - precioFinalIva).toLocaleString(
                 "es-AR",
@@ -193,54 +199,31 @@ export const ModalCompras = () => {
         </div>
         <div className="bg-white transition-all ease-linear mt-4 py-5 px-2 mb-10">
           <div className="overflow-y-scroll scroll-bar h-[100vh] px-4">
-            <table className="min-w-full table text-xs cursor-pointer">
-              <thead className="text-left">
+            <table className="table">
+              <thead className="text-left font-bold text-gray-900 text-sm">
                 <tr>
-                  <th className="whitespace-nowrap px-4 py-4 text-slate-700 uppercase font-bold text-xs">
-                    Numero
-                  </th>
-                  <th className="whitespace-nowrap px-4 py-4 text-slate-700 uppercase font-bold text-xs">
-                    Proveedor
-                  </th>
-                  <th className="whitespace-nowrap px-4 py-4 text-slate-700 uppercase font-bold text-xs">
-                    Numero Factura
-                  </th>
-                  <th className="whitespace-nowrap px-4 py-4 text-slate-700 uppercase font-bold text-xs">
-                    Fecha de la factura
-                  </th>
-                  <th className="whitespace-nowrap px-4 py-4 text-slate-700 uppercase font-bold text-xs">
-                    Fecha de creación
-                  </th>
-                  <th className="whitespace-nowrap px-4 py-4 text-slate-700 uppercase font-bold text-xs">
-                    Total Facturado
-                  </th>
-                  <th className="whitespace-nowrap px-4 py-4 text-slate-700 uppercase font-bold text-xs">
-                    Estado
-                  </th>
+                  <th className="">Numero</th>
+                  <th className="">Proveedor</th>
+                  <th className="">Numero Factura</th>
+                  <th className="">Fecha de la factura</th>
+                  <th className="">Fecha de creación</th>
+                  <th className="">Total Facturado</th>
+                  <th className="">Estado</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-gray-200">
+              <tbody className="text-xs capitalize font-medium">
                 {ordenesFiltradas.map((p) => (
-                  <tr
-                    className="hover:bg-gray-100/50 transition-all"
-                    key={p.id}
-                  >
-                    <th className="whitespace-nowrap px-4 py-4 text-gray-700 font-bold uppercase text-xs">
-                      {p.id}
-                    </th>
-                    <th className="whitespace-nowrap px-4 py-4 text-gray-700 uppercase text-xs">
-                      {p.proveedor}
-                    </th>
-                    <th className="whitespace-nowrap px-4 py-4  uppercase text-xs">
-                      N° {p.numero_factura}
-                    </th>
-                    <th className="whitespace-nowrap px-4 py-4  uppercase text-xs">
+                  <tr className="" key={p.id}>
+                    <td className="">{p.id}</td>
+                    <td className="">{p.proveedor}</td>
+                    <td className="">N° {p.numero_factura}</td>
+                    <td className="">
                       {new Date(p.fecha_factura).toLocaleDateString("ars")}
-                    </th>{" "}
-                    <th className="whitespace-nowrap px-4 py-4  uppercase text-xs">
+                    </td>{" "}
+                    <td className="">
                       {new Date(p.created_at).toLocaleDateString("ars")}
-                    </th>
-                    <th className="whitespace-nowrap px-4 py-4  uppercase text-xs">
+                    </td>
+                    <td className="">
                       <div className="flex">
                         <p className="bg-blue-500 py-1.5 rounded text-white font-bold px-3">
                           {Number(p.precio_final).toLocaleString("es-AR", {
@@ -249,9 +232,9 @@ export const ModalCompras = () => {
                           })}
                         </p>
                       </div>
-                    </th>
-                    <th className="whitespace-nowrap px-4 py-4 text-gray-700 uppercase text-sm cursor-pointer">
-                      <div className="flex">
+                    </td>
+                    <td className="whitespace-nowrap px-4 py-4 text-gray-700 uppercase text-xs cursor-pointer">
+                      <div className="flex font-bold">
                         <p
                           className={`${
                             (p.estado === "pendiente" &&
@@ -265,8 +248,8 @@ export const ModalCompras = () => {
                           {p.estado}
                         </p>
                       </div>
-                    </th>
-                    <th className="whitespace-nowrap px-4 py-4 text-gray-700 text-sm cursor-pointer">
+                    </td>
+                    <td className="whitespace-nowrap px-4 py-4 text-gray-700 text-xs cursor-pointer">
                       <div className="flex">
                         <button
                           onClick={() => {
@@ -276,12 +259,12 @@ export const ModalCompras = () => {
                                 .showModal();
                           }}
                           type="button"
-                          className="bg-blue-500 py-1 px-4 rounded text-white"
+                          className="bg-blue-500 py-1 px-4 rounded text-white font-semibold"
                         >
                           Descargar orden
                         </button>
                       </div>
-                    </th>
+                    </td>
                   </tr>
                 ))}
               </tbody>
