@@ -507,7 +507,6 @@ export const ModalCrearCategoria = () => {
     showSuccessToast("Creado correctamente");
 
     document.getElementById("my_modal_crear_categoria").close();
-    // document.getElementById("my_modal_crear_producto").close();
   });
 
   return (
