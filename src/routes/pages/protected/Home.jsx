@@ -133,7 +133,7 @@ export const Home = () => {
         <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 md:gap-2 xl:grid-cols-3">
           {/* Tarjeta 1 */}
           <Card
-            description="Total gasto en compras del mes"
+            description="Total en gastos."
             value={totalFinalAcumulado.toLocaleString("es-AR", {
               style: "currency",
               currency: "ARS",
@@ -146,7 +146,7 @@ export const Home = () => {
 
           {/* Tarjeta 2 */}
           <Card
-            description="Deuda total proveedores"
+            description="Deuda total proveedores."
             value={totalProveedores.toLocaleString("es-AR", {
               style: "currency",
               currency: "ARS",
@@ -159,7 +159,7 @@ export const Home = () => {
 
           {/* Tarjeta 2 */}
           <Card
-            description="Total pagado a proveedores"
+            description="Total pagado a proveedores."
             value={totalAcumulado.toLocaleString("es-AR", {
               style: "currency",
               currency: "ARS",
@@ -171,7 +171,7 @@ export const Home = () => {
           />
 
           <Card
-            description="Total ordenes generadas en el mes"
+            description="Total ordenes generadas."
             value={ordenes.length}
             change={`${Number(ordenes.length % 100).toFixed(2)} %`}
             changeColor="bg-green-500"
