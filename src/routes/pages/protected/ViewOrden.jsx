@@ -4,6 +4,8 @@ import { ToastContainer } from "react-toastify";
 import { PDFDownloadLink } from "@react-pdf/renderer";
 import { ImprirmirComprobanteCompra } from "../../../components/pdf/ImprirmirComprobanteCompra";
 import client from "../../../api/axios";
+import { FaArrowLeft } from "react-icons/fa";
+import { ButtonLink } from "../../../components/ui/ButtonLink";
 
 export const ViewOrden = () => {
   const [orden, setOrden] = useState([]);
@@ -21,6 +23,7 @@ export const ViewOrden = () => {
 
   return (
     <section className="min-h-screen max-h-full h-full  w-full max-w-full">
+      <ButtonLink link={"/ordenes"} />
       <div className="bg-gray-100 py-14 px-10">
         <p className="font-bold text-xl">
           Orden de compra obtenida n° {params.id}, proveedor{" "}

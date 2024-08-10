@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { PDFDownloadLink } from "@react-pdf/renderer";
 import { PdfProveedores } from "../../../components/pdf/PdfProveedores";
 import { ModalFiltrarComprobantes } from "../../../components/Modales/ModalFiltrarComprobantes";
-import { FaSearch } from "react-icons/fa";
+import { FaCopy, FaSearch } from "react-icons/fa";
 import { CgMenuRightAlt, CgSearch } from "react-icons/cg";
 import { ModalActualizarProveedor } from "../../../components/Modales/ModalActualizarProveedor";
 import { useObtenerId } from "../../../helpers/obtenerId";
@@ -12,7 +12,10 @@ import { ModalEliminarProveedor } from "../../../components/Modales/ModalElimina
 import client from "../../../api/axios";
 import { useForm } from "react-hook-form";
 import { formatearDinero } from "../../../helpers/formatearDinero";
-import { showSuccessToastError } from "../../../helpers/toast";
+import {
+  showSuccessToast,
+  showSuccessToastError,
+} from "../../../helpers/toast";
 
 export const Proveedores = () => {
   const { proveedores } = useProductosContext();
@@ -177,6 +180,7 @@ export const Proveedores = () => {
 
       <div className="mx-5 flex gap-2 items-center max-md:flex-col max-md:items-start border-b-[1px] border-slate-300 pb-4 max-md:pb-4 max-md:mx-5 max-md:bg-white max-md:px-4 max-md:py-5 max-md:h-[10vh] max-md:overflow-y-auto">
         <PDFDownloadLink
+          fileName="PROVEEDORES - SALDOS."
           className="text-white bg-green-500 py-1.5 px-6 rounded font-bold max-md:text-xs flex gap-2 items-center transition-all ease-linear text-sm"
           document={<PdfProveedores datos={proveedores} />}
         >
@@ -309,6 +313,19 @@ export const Proveedores = () => {
                           onClick={() => {
                             handleObtenerId(p.id),
                               document
+                                .getElementById("my_modal_datos")
+                                .showModal();
+                          }}
+                          type="button"
+                        >
+                          Datos bancarios,etc.
+                        </button>{" "}
+                      </li>
+                      <li className="text-xs font-semibold hover:bg-gray-800 rounded-md hover:text-white">
+                        <button
+                          onClick={() => {
+                            handleObtenerId(p.id),
+                              document
                                 .getElementById("my_modal_editar_proveedor")
                                 .showModal();
                           }}
@@ -344,6 +361,7 @@ export const Proveedores = () => {
       <ModalFiltrarComprobantes />
       <ModalActualizarProveedor idObtenida={idObtenida} />
       <ModalEliminar idObtenida={idObtenida} />
+      <ModalVerDatos idObtenida={idObtenida} />
     </section>
   );
 };
@@ -372,7 +390,7 @@ export const ModalCrearProveedor = () => {
 
   return (
     <dialog id="my_modal_crear_proveedor" className="modal">
-      <div className="modal-box rounded-md max-md:h-full max-md:w-full max-md:max-h-full max-md:rounded-none">
+      <div className="modal-box rounded-md max-w-3xl max-md:h-full max-md:w-full max-md:max-h-full max-md:rounded-none">
         <form method="dialog">
           {/* if there is a button in form, it will close the modal */}
           <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
@@ -384,56 +402,127 @@ export const ModalCrearProveedor = () => {
           En esta ventana podras cargar nuevos proveedores.
         </p>
         <form onSubmit={onSubmit} className="flex flex-col gap-3 mt-3">
-          <div className="flex flex-col gap-1">
-            <label className="font-bold text-sm">Proveedor</label>
-            <input
-              placeholder="Escribir el proveedor"
-              {...register("proveedor")}
-              type="text"
-              className="rounded-md border border-gray-300 py-2 px-2 text-sm font-medium placeholder:normal-case capitalize outline-none focus:shadow-md"
-            />
-          </div>
-          <div className="flex flex-col gap-1">
-            <label className="font-bold text-sm">Localidad</label>
-            <input
-              placeholder="Escribir la localidad"
-              {...register("localidad")}
-              type="text"
-              className="rounded-md border border-gray-300 py-2 px-2 text-sm font-medium placeholder:normal-case capitalize outline-none focus:shadow-md"
-            />
-          </div>
-          <div className="flex flex-col gap-1">
-            <label className="font-bold text-sm">Provincia</label>
-            <input
-              placeholder="Escribir la provincia"
-              {...register("provincia")}
-              type="text"
-              className="rounded-md border border-gray-300 py-2 px-2 text-sm font-medium placeholder:normal-case capitalize outline-none focus:shadow-md"
-            />
-          </div>
-
-          <div onClick={handleInputClick}>
-            {isEditable ? (
-              <div className="flex flex-col gap-2">
-                <label className="font-bold text-sm">Deuda actual</label>
+          <div className="">
+            <div>
+              <p className="font-bold text-lg">Datos del proveedor</p>
+            </div>
+            <div className="grid grid-cols-2 gap-2 max-md:grid-cols-1">
+              <div className="flex flex-col gap-1">
+                <label className="font-bold text-sm">Proveedor</label>
                 <input
-                  {...register("total")}
-                  onBlur={() => {
-                    setIsEditable(false);
-                  }}
+                  placeholder="Escribir el proveedor"
+                  {...register("proveedor")}
                   type="text"
-                  className="rounded-md border border-gray-300 py-2 px-2 text-sm font-bold capitalize outline-none focus:shadow-md"
+                  className="rounded-md border border-gray-300 py-2 px-2 text-sm font-medium placeholder:normal-case capitalize outline-none focus:shadow-md"
                 />
               </div>
-            ) : (
-              <div className="flex flex-col gap-2">
-                <label className="font-bold text-sm">Deuda actual</label>
-
-                <p className="rounded-md border border-gray-300 py-2 px-2 text-sm font-bold capitalize outline-none focus:shadow-md">
-                  {formatearDinero(Number(total) || 0)}
-                </p>
+              <div className="flex flex-col gap-1">
+                <label className="font-bold text-sm">Localidad</label>
+                <input
+                  placeholder="Escribir la localidad"
+                  {...register("localidad")}
+                  type="text"
+                  className="rounded-md border border-gray-300 py-2 px-2 text-sm font-medium placeholder:normal-case capitalize outline-none focus:shadow-md"
+                />
               </div>
-            )}
+              <div className="flex flex-col gap-1">
+                <label className="font-bold text-sm">Provincia</label>
+                <input
+                  placeholder="Escribir la provincia"
+                  {...register("provincia")}
+                  type="text"
+                  className="rounded-md border border-gray-300 py-2 px-2 text-sm font-medium placeholder:normal-case capitalize outline-none focus:shadow-md"
+                />
+              </div>{" "}
+              <div className="flex flex-col gap-1">
+                <label className="font-bold text-sm">Telefono</label>
+                <input
+                  placeholder="Escribir el telefono"
+                  {...register("telefono")}
+                  type="text"
+                  className="rounded-md border border-gray-300 py-2 px-2 text-sm font-medium placeholder:normal-case capitalize outline-none focus:shadow-md"
+                />
+              </div>
+            </div>
+          </div>
+
+          <div className="">
+            <div>
+              <p className="font-bold text-lg">Datos bancarios</p>
+            </div>
+            <div className="grid grid-cols-2 gap-2 max-md:grid-cols-1">
+              <div className="flex flex-col gap-1">
+                <label className="font-bold text-sm">Numero de cuenta</label>
+                <input
+                  placeholder="Escribir el numero"
+                  {...register("numero_cuenta")}
+                  type="text"
+                  className="rounded-md border border-gray-300 py-2 px-2 text-sm font-medium placeholder:normal-case capitalize outline-none focus:shadow-md"
+                />
+              </div>
+              <div className="flex flex-col gap-1">
+                <label className="font-bold text-sm">Cuit</label>
+                <input
+                  placeholder="Escribir el cuit"
+                  {...register("cuit")}
+                  type="text"
+                  className="rounded-md border border-gray-300 py-2 px-2 text-sm font-medium placeholder:normal-case capitalize outline-none focus:shadow-md"
+                />
+              </div>
+              <div className="flex flex-col gap-1">
+                <label className="font-bold text-sm">Razón social</label>
+                <input
+                  placeholder="Escribir la razon social"
+                  {...register("razon_social")}
+                  type="text"
+                  className="rounded-md border border-gray-300 py-2 px-2 text-sm font-medium placeholder:normal-case capitalize outline-none focus:shadow-md"
+                />
+              </div>
+              <div className="flex flex-col gap-1">
+                <label className="font-bold text-sm">Cbu</label>
+                <input
+                  placeholder="Escribir el cbu"
+                  {...register("cbu")}
+                  type="text"
+                  className="rounded-md border border-gray-300 py-2 px-2 text-sm font-medium placeholder:normal-case capitalize outline-none focus:shadow-md"
+                />
+              </div>
+              <div className="flex flex-col gap-1">
+                <label className="font-bold text-sm">Alias</label>
+                <input
+                  placeholder="Escribir el alias"
+                  {...register("alias")}
+                  type="text"
+                  className="rounded-md border border-gray-300 py-2 px-2 text-sm font-medium placeholder:normal-case capitalize outline-none focus:shadow-md"
+                />
+              </div>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-2 max-md:grid-cols-1">
+            <div onClick={handleInputClick}>
+              {isEditable ? (
+                <div className="flex flex-col gap-2">
+                  <label className="font-bold text-sm">Deuda actual</label>
+                  <input
+                    {...register("total")}
+                    onBlur={() => {
+                      setIsEditable(false);
+                    }}
+                    type="text"
+                    className="rounded-md border border-gray-300 py-2 px-2 text-sm font-bold capitalize outline-none focus:shadow-md"
+                  />
+                </div>
+              ) : (
+                <div className="flex flex-col gap-2">
+                  <label className="font-bold text-sm">Deuda actual</label>
+
+                  <p className="rounded-md border border-gray-300 py-2 px-2 text-sm font-bold capitalize outline-none focus:shadow-md">
+                    {formatearDinero(Number(total) || 0)}
+                  </p>
+                </div>
+              )}
+            </div>
           </div>
 
           <div>
@@ -521,6 +610,87 @@ const ModalEliminar = ({ idObtenida }) => {
             </button>
           </div>
         </form>
+      </div>
+    </dialog>
+  );
+};
+
+const ModalVerDatos = ({ idObtenida }) => {
+  const [proveedor, setProveedor] = useState([]);
+
+  useEffect(() => {
+    const obtenerDatos = async () => {
+      const respuesta = await client.get(`/proveedor/${idObtenida}`);
+
+      setProveedor(respuesta.data);
+      console.log(respuesta);
+    };
+
+    obtenerDatos();
+  }, [idObtenida]);
+
+  console.log("proveedor", proveedor);
+
+  const handleCopy = () => {
+    const textToCopy = `
+      Proveedor: ${proveedor.proveedor || ""}
+      Telefono: ${proveedor.telefono || ""}
+      Numero de cuenta: ${proveedor.numero_cuenta || ""}
+      CUIT: ${proveedor.cuit || ""}
+      Razón Social: ${proveedor.razon_social || ""}
+      CBU: ${proveedor.cbu || ""}
+      Alias: ${proveedor.alias || ""}
+    `;
+    navigator.clipboard.writeText(textToCopy);
+    // alert("Datos copiados al portapapeles");
+
+    showSuccessToast("Datos copiados correctamente");
+
+    document.getElementById("my_modal_datos").close();
+  };
+
+  return (
+    <dialog id="my_modal_datos" className="modal">
+      <div className="modal-box max-w-2xl rounded-md">
+        <form method="dialog">
+          {/* if there is a button in form, it will close the modal */}
+          <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
+            ✕
+          </button>
+        </form>
+        <div>
+          <h3 className="text-lg font-bold">Datos bancarios, etc.</h3>
+          <div className="mt-4">
+            <p className="capitalize">
+              <strong>Proveedor:</strong> {proveedor.proveedor}
+            </p>{" "}
+            <p className="capitalize">
+              <strong>Telefono:</strong> {proveedor.telefono}
+            </p>
+            <p className="capitalize">
+              <strong>Numero de cuenta:</strong> {proveedor.numero_cuenta}
+            </p>
+            <p className="capitalize">
+              <strong>Cuit:</strong> {proveedor.cuit}
+            </p>
+            <p className="capitalize">
+              <strong>Razón Social:</strong> {proveedor.razon_social}
+            </p>
+            <p className="capitalize">
+              <strong>Cbu:</strong> {proveedor.cbu}
+            </p>
+            <p className="capitalize">
+              <strong>Alias:</strong> {proveedor.alias}
+            </p>
+          </div>
+
+          <button
+            className="bg-blue-500 px-4 py-1 rounded-md text-sm font-bold text-white mt-4 flex gap-2 items-center"
+            onClick={handleCopy}
+          >
+            Copiar Datos <FaCopy />
+          </button>
+        </div>
       </div>
     </dialog>
   );

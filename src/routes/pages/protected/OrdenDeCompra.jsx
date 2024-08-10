@@ -1972,7 +1972,7 @@ export const ModalEditarProductoOrdenCompra = ({
 
   return (
     <dialog id="my_modal_actualizar_producto" className="modal">
-      <div className="modal-box max-w-6xl rounded-md">
+      <div className="modal-box max-w-6xl rounded-md max-md:h-full max-md:max-h-full max-md:rounded-none max-md:w-full max-md:pt-10">
         <form method="dialog">
           {/* if there is a button in form, it will close the modal */}
           <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
@@ -2078,19 +2078,22 @@ export const ModalEditarProductoOrdenCompra = ({
 };
 
 export const ModalCargarProductoCompra = ({ addToProductos }) => {
-  const { productos } = useProductosContext();
+  const { productos, categorias } = useProductosContext();
 
   const { handleObtenerId, idObtenida } = useObtenerId();
 
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("all");
 
-  // Filtrar productos por término de búsqueda y categoría seleccionada
-  const filteredProducts = productos?.filter((product) => {
-    return (
-      product?.detalle?.toLowerCase().includes(searchTerm?.toLowerCase()) &&
-      (selectedCategory === "all" || product?.categoria === selectedCategory)
-    );
+  // Filtrar productos antes de la paginación
+  const filteredProducts = productos.filter((product) => {
+    const searchTermMatches =
+      product.detalle.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      product.id.toString().includes(searchTerm);
+    const categoryMatches =
+      selectedCategory === "all" || product.categoria === selectedCategory;
+
+    return searchTermMatches && categoryMatches;
   });
 
   return (
@@ -2103,15 +2106,34 @@ export const ModalCargarProductoCompra = ({ addToProductos }) => {
           </button>
         </form>
 
-        <div className="border border-gray-300 flex items-center gap-2 px-2 py-1.5 text-sm rounded-md w-1/3 max-md:w-full mb-3">
-          <input
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            type="text"
-            className="outline-none font-medium w-full"
-            placeholder="Buscar por nombre del producto.."
-          />
-          <FaSearch className="text-gray-700" />
+        <div className="flex gap-2 max-md:flex-col max-md:gap-0">
+          <div className="border border-gray-300 flex items-center gap-2 px-2 py-1.5 text-sm rounded-md w-1/3 max-md:w-full mb-3">
+            <input
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              type="text"
+              className="outline-none font-medium w-full"
+              placeholder="Buscar por nombre del producto.."
+            />
+            <FaSearch className="text-gray-700" />
+          </div>
+
+          <div>
+            <select
+              className="border border-gray-300 flex items-center gap-2 w-full px-2 py-1.5 text-sm rounded-md outline-none font-semibold capitalize"
+              value={selectedCategory}
+              onChange={(e) => setSelectedCategory(e.target.value)}
+            >
+              <option className="font-bold text-blue-500" value="all">
+                Todas las categorías
+              </option>
+              {categorias.map((c) => (
+                <option className="font-semibold capitalize" key={c.id}>
+                  {c?.detalle}
+                </option>
+              ))}
+            </select>
+          </div>
         </div>
 
         <div className="max-md:overflow-x-auto scrollbar-hidden">
@@ -2127,14 +2149,25 @@ export const ModalCargarProductoCompra = ({ addToProductos }) => {
 
             <tbody className="text-xs capitalize font-medium">
               {filteredProducts.map((p) => (
-                <tr key={p.id}>
-                  <td>{p.detalle}</td>
-                  <td>{p.categoria}</td>
+                <tr key={p?.id}>
+                  <td>{p?.detalle}</td>
+                  <td>{p?.categoria}</td>
                   <th>{formatearDinero(Number(p.precio_und))}</th>
-                  <td>
+                  <td className="md:hidden">
+                    <FaEdit
+                      className="text-primary text-xl"
+                      onClick={() => {
+                        handleObtenerId(p?.id),
+                          document
+                            .getElementById("my_modal_producto_seleccionado")
+                            .showModal();
+                      }}
+                    />
+                  </td>
+                  <td className="max-md:hidden">
                     <button
                       onClick={() => {
-                        handleObtenerId(p.id),
+                        handleObtenerId(p?.id),
                           document
                             .getElementById("my_modal_producto_seleccionado")
                             .showModal();
@@ -2222,7 +2255,7 @@ export const ModalProductoSeleccionado = ({ addToProductos, idObtenida }) => {
 
   return (
     <dialog id="my_modal_producto_seleccionado" className="modal">
-      <div className="modal-box rounded-md max-w-6xl">
+      <div className="modal-box rounded-md max-w-6xl max-md:w-full max-md:h-full max-md:rounded-none max-md:max-h-full max-md:pt-12">
         <form method="dialog">
           {/* if there is a button in form, it will close the modal */}
           <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
@@ -2344,7 +2377,7 @@ export const ModalProductoSeleccionado = ({ addToProductos, idObtenida }) => {
 };
 
 export const ModalCrearProducto = () => {
-  const [precio_und, setPrecio] = useState("");
+  const [precio_und, setPrecio] = useState(0);
   const [detalle, setDetale] = useState("");
   const [proveedor, setProveedor] = useState("");
   const [categoria, setCategoria] = useState("");
@@ -2361,7 +2394,7 @@ export const ModalCrearProducto = () => {
 
       setProductos(res.data);
 
-      setPrecio("");
+      setPrecio(0);
       setDetale("");
       setProveedor("");
       setCategoria("");
@@ -2445,7 +2478,7 @@ export const ModalCrearProducto = () => {
                 </label>
                 <input
                   onChange={(e) => setPrecio(e.target.value)}
-                  value={precio_und || 0}
+                  value={precio_und}
                   onBlur={() => {
                     setIsEditable(false);
                   }}

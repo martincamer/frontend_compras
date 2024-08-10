@@ -15,6 +15,7 @@ import {
 import { useProductosContext } from "../../../context/ProductosProvider";
 import { useObtenerId } from "../../../helpers/obtenerId";
 import { formatearDinero } from "../../../helpers/formatearDinero";
+import { ButtonLink } from "../../../components/ui/ButtonLink";
 
 export const Proveedor = () => {
   const { user } = useAuth();
@@ -182,6 +183,7 @@ export const Proveedor = () => {
 
   return (
     <section className="w-full h-full min-h-screen max-h-full">
+      <ButtonLink link={"/proveedores"} />
       <div className="bg-gray-100 py-10 px-10 flex justify-between items-center max-md:flex-col max-md:gap-3">
         <p className="font-bold text-gray-900 text-xl flex items-center gap-2">
           Sector del proveedor{" "}
