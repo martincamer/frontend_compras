@@ -22,6 +22,7 @@ import { ViewPdfProducto } from "./routes/pages/protected/ViewPdfProducto";
 import { Proveedores } from "./routes/pages/protected/Proveedores";
 import { Proveedor } from "./routes/pages/protected/Proveedor";
 import { ViewComprobantePdf } from "./routes/pages/protected/ViewComprobantePdf";
+import { Presupuestos } from "./routes/pages/protected/Presupuestos";
 /////////////////////////////////////FIN USER///////////////////////////////////////////
 
 ////////////////////////////////////ADMIN//////////////////////////////////////////////
@@ -104,6 +105,7 @@ function App() {
     <>
       <Route index path="/" element={<Home />} />
       <Route index path="/productos" element={<Productos />} />
+      <Route index path="/presupuestos" element={<Presupuestos />} />
       <Route index path="/ordenes" element={<OrdenDeCompra />} />
       <Route index path="/orden/:id" element={<ViewOrden />} />
       <Route index path="/proveedores" element={<Proveedores />} />

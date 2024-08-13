@@ -51,7 +51,7 @@ export const Navbar = () => {
                 <Link to={"/ordenes"}>Cargar ordenes</Link>
               </li>{" "}
               <li className="hover:bg-gray-800 hover:text-white rounded-md">
-                <Link to={"-"}>Presupuestos</Link>
+                <Link to={"/presupuestos"}>Presupuestos</Link>
               </li>{" "}
             </ul>
           </div>

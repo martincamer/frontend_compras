@@ -38,21 +38,18 @@ export const ModalCompararPrecios = () => {
     const categoria = event.target.value;
     setCategoriaSeleccionada(categoria);
 
-    // Filtrar productos por la categoría seleccionada
     if (categoria !== "") {
       const productosAgrupados = new Map();
 
-      // Recorrer las órdenes filtradas y agregar los productos correspondientes
       ordenesFiltradas.forEach((orden) => {
         orden.datos.productoSeleccionado.forEach((producto) => {
           if (producto.categoria === categoria) {
-            const key = producto.detalle.toLowerCase(); // Usamos el detalle como clave, asegurándonos de ser case-insensitive
+            const key = producto.detalle.toLowerCase();
             const proveedor = orden.proveedor;
-            const precio_und = parseFloat(producto.precio_und); // Convertir el precio a número
+            const precio_und = parseFloat(producto.precio_und);
+            const fecha = orden.created_at; // Agregar la fecha de la orden de compra
 
-            // Verificar si ya existe el detalle en el mapa
             if (productosAgrupados.has(key)) {
-              // Si ya existe, actualizar el precio para el proveedor si es menor
               const existingProducto = productosAgrupados.get(key);
               const proveedorIndex = existingProducto.proveedores.findIndex(
                 (p) => p.nombre === proveedor.nombre
@@ -62,6 +59,7 @@ export const ModalCompararPrecios = () => {
                 existingProducto.proveedores.push({
                   nombre: proveedor,
                   precio_und,
+                  fecha, // Agregar fecha aquí
                 });
               } else if (
                 precio_und <
@@ -69,23 +67,20 @@ export const ModalCompararPrecios = () => {
               ) {
                 existingProducto.proveedores[proveedorIndex].precio_und =
                   precio_und;
+                existingProducto.proveedores[proveedorIndex].fecha = fecha; // Actualizar fecha si el precio es menor
               }
             } else {
-              // Si no existe, inicializar con el primer producto encontrado
               productosAgrupados.set(key, {
                 ...producto,
-                proveedores: [{ nombre: proveedor, precio_und }],
-                fecha: orden.created_at, // Agregar la fecha created_at al producto
+                proveedores: [{ nombre: proveedor, precio_und, fecha }],
+                fecha, // Inicializar la fecha
               });
             }
           }
         });
       });
 
-      // Convertir el mapa de productos agrupados de nuevo a un array de productos
       const productosFiltrados = Array.from(productosAgrupados.values());
-
-      // Mostrar todos los productos y proveedores asociados, evitando duplicados
       setProductosFiltrados(productosFiltrados);
     } else {
       setProductosFiltrados([]);
@@ -207,7 +202,7 @@ export const ModalCompararPrecios = () => {
                       {producto.proveedores.map((proveedor) => (
                         <li
                           key={`${producto.detalle}-${proveedor.nombre}`}
-                          className="flex items-center py-1"
+                          className="flex flex-col py-1"
                         >
                           <p className="capitalize">{proveedor.nombre} - </p>
                           <p className="font-semibold text-blue-500 ml-1">
@@ -219,17 +214,15 @@ export const ModalCompararPrecios = () => {
                               }
                             )}
                           </p>
+                          <span className="text-gray-600">
+                            Fecha:{" "}
+                            {new Date(proveedor.fecha).toLocaleDateString(
+                              "es-AR"
+                            )}
+                          </span>
                         </li>
                       ))}
                     </ul>
-                  </div>
-                  <div className="flex items-center">
-                    <p className="font-bold text-gray-800">
-                      Fecha del producto/compra:
-                    </p>
-                    <span className="ml-1 text-gray-600">
-                      {new Date(producto.fecha).toLocaleDateString("es-AR")}
-                    </span>
                   </div>
                 </div>
               </li>

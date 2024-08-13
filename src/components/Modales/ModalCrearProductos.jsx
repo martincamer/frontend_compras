@@ -7,7 +7,7 @@ import client from "../../api/axios";
 import { ModalNuevaCategoria } from "./ModalNuevaCategoria";
 
 export const ModalCrearProductos = ({ isOpen, closeModal }) => {
-  const [precio_und, setPrecio] = useState("");
+  const [precio_und, setPrecio] = useState(0);
   const [detalle, setDetale] = useState("");
   const [proveedor, setProveedor] = useState("");
   const [categoria, setCategoria] = useState("");

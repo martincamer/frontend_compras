@@ -86,11 +86,11 @@ export const Productos = () => {
             value={selectedCategory}
             onChange={(e) => setSelectedCategory(e.target.value)}
           >
-            <option className="font-bold text-blue-500" value="all">
+            <option className="font-bold text-blue-500 text-xs" value="all">
               Todas las categorías
             </option>
             {categorias.map((c) => (
-              <option className="font-semibold capitalize" key={c.id}>
+              <option className="font-semibold uppercase text-xs" key={c.id}>
                 {c?.detalle}
               </option>
             ))}
@@ -115,8 +115,8 @@ export const Productos = () => {
               {filteredProducts.map((p) => (
                 <tr key={p.id}>
                   <td>{p.id}</td>
-                  <td>{p.detalle}</td>
-                  <td>{p.categoria}</td>
+                  <td className="uppercase">{p.detalle}</td>
+                  <td className="uppercase">{p.categoria}</td>
                   <td className="">
                     <div className="flex">
                       <p className="bg-gray-800 py-1.5 px-2 rounded-md text-white font-bold">
@@ -213,7 +213,7 @@ export const Productos = () => {
 };
 
 export const ModalCrearProducto = () => {
-  const [precio_und, setPrecio] = useState("");
+  const [precio_und, setPrecio] = useState(0);
   const [detalle, setDetale] = useState("");
   const [proveedor, setProveedor] = useState("");
   const [categoria, setCategoria] = useState("");
@@ -230,7 +230,7 @@ export const ModalCrearProducto = () => {
 
       setProductos(res.data);
 
-      setPrecio("");
+      setPrecio(0);
       setDetale("");
       setProveedor("");
       setCategoria("");
@@ -288,7 +288,10 @@ export const ModalCrearProducto = () => {
                   Seleccionar la categoria
                 </option>
                 {categorias.map((c) => (
-                  <option className="font-semibold capitalize" key={c.id}>
+                  <option
+                    className="font-semibold uppercase text-xs"
+                    key={c.id}
+                  >
                     {c.detalle}
                   </option>
                 ))}
@@ -314,7 +317,7 @@ export const ModalCrearProducto = () => {
                 </label>
                 <input
                   onChange={(e) => setPrecio(e.target.value)}
-                  value={precio_und || 0}
+                  value={precio_und}
                   onBlur={() => {
                     setIsEditable(false);
                   }}
@@ -354,7 +357,7 @@ export const ModalCrearProducto = () => {
 export const ModalActualizarProducto = ({ idObtenida }) => {
   const { setProductos, categorias } = useProductosContext();
 
-  const [precio_und, setPrecio] = useState("");
+  const [precio_und, setPrecio] = useState(0);
   const [detalle, setDetale] = useState("");
   const [categoria, setCategoria] = useState("");
 
@@ -396,16 +399,11 @@ export const ModalActualizarProducto = ({ idObtenida }) => {
     <dialog id="my_modal_actualizar_producto" className="modal">
       <div className="modal-box rounded-md max-md:h-full max-md:w-full max-md:max-h-full max-md:rounded-none">
         <form method="dialog">
-          {/* if there is a button in form, it will close the modal */}
           <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
             ✕
           </button>
         </form>
-        {/* <h3 className="font-bold text-xl">Cargar producto nuevo.</h3>
-        <p className="py-0.5 text-sm font-medium">
-          En esta ventana podras cargar nuevos productos, para las ordenes de
-          compra, lista de precios, etc.
-        </p> */}
+
         <form onSubmit={onSubmit} className="flex flex-col gap-3 mt-3">
           <div className="flex flex-col gap-1">
             <label className="font-bold text-sm">Detalle del producto</label>
@@ -431,7 +429,10 @@ export const ModalActualizarProducto = ({ idObtenida }) => {
                   Seleccionar la categoria
                 </option>
                 {categorias.map((c) => (
-                  <option className="font-semibold capitalize" key={c.id}>
+                  <option
+                    className="font-semibold uppercase text-xs"
+                    key={c.id}
+                  >
                     {c.detalle}
                   </option>
                 ))}
@@ -457,7 +458,7 @@ export const ModalActualizarProducto = ({ idObtenida }) => {
                 </label>
                 <input
                   onChange={(e) => setPrecio(e.target.value)}
-                  value={precio_und || 0}
+                  value={precio_und}
                   onBlur={() => {
                     setIsEditable(false);
                   }}
@@ -584,7 +585,7 @@ export const ModalCategorias = () => {
 
         <div className="grid grid-cols-4 gap-3 mt-3 max-md:grid-cols-2">
           {categorias.map((c) => (
-            <div className="flex gap-2 py-1 px-2 border border-gray-300 rounded-md text-sm font-bold capitalize justify-between items-center">
+            <div className="flex gap-2 py-1 px-2 border border-gray-300 rounded-md text-sm font-bold uppercase justify-between items-center">
               {c.detalle}{" "}
               <FaDeleteLeft
                 className="text-red-600 text-xl cursor-pointer"

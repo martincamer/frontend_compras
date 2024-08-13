@@ -182,6 +182,7 @@ export const ImprimirProductos = ({ productos, fechaInicio, fechaFin }) => {
                           display: "flex",
                           flexDirection: "row",
                           alignItems: "center",
+                          gap: "5",
                         }}
                       >
                         <Text
@@ -192,8 +193,8 @@ export const ImprimirProductos = ({ productos, fechaInicio, fechaFin }) => {
                             textTransform: "capitalize",
                           }}
                         >
-                          {proveedor.nombre} -{" "}
-                        </Text>
+                          {proveedor.nombre} -
+                        </Text>{" "}
                         <Text
                           style={{
                             fontFamily: "Montserrat",
@@ -207,13 +208,25 @@ export const ImprimirProductos = ({ productos, fechaInicio, fechaFin }) => {
                               style: "currency",
                               currency: "ARS",
                             }
+                          )}{" "}
+                          -
+                        </Text>{" "}
+                        <Text
+                          style={{
+                            fontFamily: "Montserrat",
+                            fontSize: 11,
+                            fontWeight: "bold",
+                          }}
+                        >
+                          {new Date(proveedor.fecha).toLocaleDateString(
+                            "es-AR"
                           )}
                         </Text>
                       </View>
                     ))}
                   </View>
                 </View>
-                <View>
+                {/* <View>
                   <Text
                     style={{
                       fontFamily: "Montserrat",
@@ -234,7 +247,7 @@ export const ImprimirProductos = ({ productos, fechaInicio, fechaFin }) => {
                   >
                     {new Date(producto.fecha).toLocaleDateString("es-AR")}
                   </Text>
-                </View>
+                </View> */}
               </View>
             </View>
           ))}

@@ -3,7 +3,7 @@ import { ImprimirProductos } from "../pdf/ImprimirProductos";
 export const ModalViewProductos = ({ fecha, fechaFin, productos }) => {
   return (
     <dialog id="my_modal_view_productos" className="modal">
-      <div className="modal-box max-w-6xl h-full scrollbar-hidden">
+      <div className="modal-box max-w-6xl  rounded-md h-full scrollbar-hidden">
         <form method="dialog">
           {/* if there is a button in form, it will close the modal */}
           <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">

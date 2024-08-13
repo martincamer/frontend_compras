@@ -66,15 +66,17 @@ export const Proveedor = () => {
 
   useEffect(() => {
     async function loadData() {
-      const res = await client.get(
-        `/comprobantes${params.id ? `?params=${params.id}` : ""}`
-      );
+      const res = await client.get(`/comprobantes/${params.id}`);
 
       setComprobantes(res.data);
+
+      console.log("asdasd", res.data);
     }
 
     loadData();
   }, [params.id]);
+
+  console.log("asdsad", params.id);
 
   const [currentPage, setCurrentPage] = useState(1);
   const [productsPerPage] = useState(10);
@@ -329,6 +331,7 @@ export const Proveedor = () => {
           <thead className="text-left font-bold text-gray-900 text-sm">
             <tr>
               <th>Numero °</th>
+              <th>Tipo de pago</th>
               <th>Total del comprobante</th>
               <th>Total del comprobante final</th>
               <th>Ver comprobante</th>
@@ -337,10 +340,11 @@ export const Proveedor = () => {
             </tr>
           </thead>
 
-          <tbody className="text-xs capitalize font-medium">
+          <tbody className="text-xs uppercase font-medium">
             {productosFiltrados.map((p) => (
               <tr key={p.id}>
                 <th>{p.id}</th>
+                <th>{p.tipo}</th>
                 <td>
                   {Number(p.total).toLocaleString("es-AR", {
                     style: "currency",
@@ -376,15 +380,6 @@ export const Proveedor = () => {
                       tabIndex={0}
                       className="dropdown-content z-[1] menu p-1 border border-gray-300 rounded-md bg-white shadow-xl w-52 gap-1"
                     >
-                      {/* <li className="text-xs font-semibold hover:bg-gray-800 rounded-md hover:text-white capitalize">
-                        <Link
-                          onClick={() => {
-                            handleID(p.id), openComprobanteModal();
-                          }}
-                        >
-                          Ver comprobante
-                        </Link>
-                      </li> */}
                       <li className="text-xs font-semibold hover:bg-gray-800 rounded-md hover:text-white capitalize">
                         <button
                           onClick={() => {
@@ -497,8 +492,6 @@ const ImagenModal = ({ archivo }) => {
   );
 };
 
-export default ImagenModal;
-
 export const ModalCargarComprobanteDePago = ({
   datos,
   setComprobantes,
@@ -507,6 +500,7 @@ export const ModalCargarComprobanteDePago = ({
   const [params, setParams] = useState(null);
   const [proveedor, setProveedor] = useState("");
   const [total, setTotal] = useState(0);
+  const [tipo, setTipo] = useState("");
   const [archivo, setArchivo] = useState(null);
   const [previewUrl, setPreviewUrl] = useState(null);
 
@@ -549,13 +543,12 @@ export const ModalCargarComprobanteDePago = ({
       params,
       proveedor,
       total,
+      tipo,
       imagen: imgUrl,
     };
 
     try {
       const res = await client.post(`/crear-comprobante`, data);
-
-      console.log(res.data);
 
       setComprobantes(res.data.comprobantes);
       setProveedores(res.data.proveedores);
@@ -565,6 +558,9 @@ export const ModalCargarComprobanteDePago = ({
       document.getElementById("my_modal_cargar_comprobante_de_pago").close();
 
       showSuccessToast("Comprobante cargado..");
+
+      setTipo("");
+      setTotal(0);
     } catch (error) {
       console.error("Error al agregar el comprobante:", error);
     }
@@ -584,6 +580,23 @@ export const ModalCargarComprobanteDePago = ({
   const handleInputClick = (index) => {
     setIsEditable(true);
   };
+
+  const paymentTypes = [
+    "Tarjeta de Crédito",
+    "Tarjeta de Débito",
+    "Transferencia Bancaria",
+    "Efectivo",
+    "Cheque",
+    "Pago Móvil",
+    "Criptomoneda",
+    "PayPal",
+    "Apple Pay",
+    "Google Pay",
+    "Tarjeta de Regalo",
+    "Débito Directo",
+    "Transferencia Electrónica",
+    "Giro Postal",
+  ];
 
   return (
     <dialog id="my_modal_cargar_comprobante_de_pago" className="modal">
@@ -622,6 +635,30 @@ export const ModalCargarComprobanteDePago = ({
                 </p>
               </div>
             )}
+          </div>
+
+          <div className="flex flex-col gap-2 mt-2">
+            <label className="font-bold text-sm">
+              Tipo de pago de la orden
+            </label>
+            <select
+              onChange={(e) => setTipo(e.target.value)}
+              value={tipo}
+              className="rounded-md border border-gray-300 py-2 px-2 text-sm font-bold capitalize outline-none focus:shadow-md"
+            >
+              <option className="font-bold text-primary">
+                Seleccione un tipo de pago
+              </option>
+              {paymentTypes.map((tipo) => (
+                <option
+                  className="font-semibold text-xs"
+                  key={tipo}
+                  value={tipo}
+                >
+                  {tipo}
+                </option>
+              ))}
+            </select>
           </div>
 
           <div className="border border-gray-300 rounded-md py-2 px-3 mt-4 flex flex-col gap-2">
