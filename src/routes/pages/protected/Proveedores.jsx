@@ -236,7 +236,7 @@ export const Proveedores = () => {
           <tbody className="text-xs capitalize font-medium">
             {filteredProveedores.map((p) => (
               <tr className="hover:bg-gray-100/40 transition-all" key={p.id}>
-                <td>{p.proveedor}</td>
+                <td className="uppercase">{p.proveedor}</td>
                 <td>
                   {Number(p.total).toLocaleString("es-AR", {
                     style: "currency",
