@@ -8,6 +8,7 @@ import { useAuth } from "../../../context/AuthProvider";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 import client from "../../../api/axios";
 import { CgMenuRightAlt } from "react-icons/cg";
+import axios from 'axios';
 import {
   showSuccessToast,
   showSuccessToastError,
