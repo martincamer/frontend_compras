@@ -150,6 +150,7 @@ const VerModelo = ({ idObtenida }) => {
     bienesDeUso = JSON.parse(cleanedBienesDeUso);
 
     console.log("asdsaddasdasdsadsadassadas", materiaPrima);
+    console.log("asdasdasd", bienesDeUso);
   } catch (error) {
     console.error("Error al parsear JSON:", error);
   }
