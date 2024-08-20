@@ -137,13 +137,9 @@ const VerModelo = ({ idObtenida }) => {
 
   try {
     // Primero, eliminamos las comillas externas y decodificamos el JSON dentro de las comillas
-    const cleanedMateriaPrima = vivienda.productos_materia_prima
-      .replace(/^"{|}"$/g, "")
-      .replace(/\\(.)/g, "$1");
+    const cleanedMateriaPrima = vivienda.productos_materia_prima;
 
-    const cleanedBienesDeUso = vivienda.productos_bienes_de_uso
-      .replace(/^"{|}"$/g, "")
-      .replace(/\\(.)/g, "$1");
+    const cleanedBienesDeUso = vivienda.productos_bienes_de_uso;
 
     // Parsear las cadenas JSON internas
     materiaPrima = JSON.parse(cleanedMateriaPrima);
