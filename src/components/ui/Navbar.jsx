@@ -4,7 +4,7 @@ import { useAuth } from "../../context/AuthProvider";
 import { MenuMobile } from "./MenuMobile";
 
 export const Navbar = () => {
-  const { signout } = useAuth();
+  const { signout, user } = useAuth();
 
   return (
     <header className="bg-gray-800 py-5 px-10 flex items-center justify-between max-md:items-end max-md:justify-end">
@@ -53,6 +53,13 @@ export const Navbar = () => {
               <li className="hover:bg-gray-800 hover:text-white rounded-md">
                 <Link to={"/presupuestos"}>Presupuestos</Link>
               </li>{" "}
+              {user.fabrica === "parque industrial" && (
+                <>
+                  <li className="hover:bg-gray-800 hover:text-white rounded-md">
+                    <Link to={"/viviendas-costos"}>Modelos casas</Link>
+                  </li>
+                </>
+              )}
             </ul>
           </div>
         </div>

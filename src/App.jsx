@@ -43,6 +43,7 @@ import "react-toastify/dist/ReactToastify.min.css";
 import { useEffect, useState } from "react";
 import { MenuMobile } from "./components/ui/MenuMobile";
 import { Navbar } from "./components/ui/Navbar";
+import { ViviendasCostos } from "./routes/pages/protected/ViviendasCostos";
 
 function App() {
   const { isAuth, user } = useAuth();
@@ -106,6 +107,7 @@ function App() {
       <Route index path="/" element={<Home />} />
       <Route index path="/productos" element={<Productos />} />
       <Route index path="/presupuestos" element={<Presupuestos />} />
+      <Route index path="/viviendas-costos" element={<ViviendasCostos />} />
       <Route index path="/ordenes" element={<OrdenDeCompra />} />
       <Route index path="/orden/:id" element={<ViewOrden />} />
       <Route index path="/proveedores" element={<Proveedores />} />
