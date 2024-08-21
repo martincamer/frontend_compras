@@ -77,7 +77,7 @@ export const ImprimirPdfViviendasPdf = ({
       <Page
         size="A4"
         style={{
-          padding: "40px 10px",
+          padding: "40px 20px",
           flexDirection: "column",
           display: "flex",
           gap: "10px",
@@ -120,7 +120,16 @@ export const ImprimirPdfViviendasPdf = ({
         <View style={styles.container}>
           {/* Encabezados de la tabla */}
           <View style={styles.row}>
-            <Text style={styles.header}>Desc.</Text>
+            <Text
+              style={[
+                styles.header,
+                {
+                  width: "30%",
+                },
+              ]}
+            >
+              Desc.
+            </Text>
             <Text style={styles.header}>Cat</Text>
             <Text style={styles.header}>Prec.</Text>
             <Text style={styles.header}>Cant.</Text>
@@ -131,7 +140,16 @@ export const ImprimirPdfViviendasPdf = ({
           {materiaPrimaActualizado.map((p) => (
             <View key={p.id} style={styles.row}>
               {/* <Text style={styles.cell}>{p.id}</Text> */}
-              <Text style={styles.cell}>{p.detalle}</Text>
+              <Text
+                style={[
+                  styles.cell,
+                  {
+                    width: "30%",
+                  },
+                ]}
+              >
+                {p.detalle}
+              </Text>
               <Text style={styles.cell}>{p.categoria}</Text>
               <Text style={styles.cell}>
                 {formatearDinero(Number(p.precio_und))}
