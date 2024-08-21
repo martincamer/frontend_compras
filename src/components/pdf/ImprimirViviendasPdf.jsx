@@ -58,7 +58,25 @@ export const ImprimirPdfViviendasPdf = ({
       textTransform: "uppercase",
       fontFamily: "Montserrat",
     },
+    header_width: {
+      width: "50%",
+      fontWeight: "bold",
+      flex: 1,
+      textAlign: "center",
+      fontSize: 10,
+      textTransform: "uppercase",
+      fontFamily: "Montserrat",
+    },
     cell: {
+      flex: 1,
+      textAlign: "center",
+      textTransform: "uppercase",
+      fontSize: 10,
+      fontFamily: "Montserrat",
+      fontWeight: "medium",
+    },
+    cell_width: {
+      width: "50%",
       flex: 1,
       textAlign: "center",
       textTransform: "uppercase",
@@ -120,16 +138,7 @@ export const ImprimirPdfViviendasPdf = ({
         <View style={styles.container}>
           {/* Encabezados de la tabla */}
           <View style={styles.row}>
-            <Text
-              style={[
-                styles.header,
-                {
-                  width: "30%",
-                },
-              ]}
-            >
-              Desc.
-            </Text>
+            <Text style={styles.header_width}>Desc.</Text>
             <Text style={styles.header}>Cat</Text>
             <Text style={styles.header}>Prec.</Text>
             <Text style={styles.header}>Cant.</Text>
@@ -140,16 +149,7 @@ export const ImprimirPdfViviendasPdf = ({
           {materiaPrimaActualizado.map((p) => (
             <View key={p.id} style={styles.row}>
               {/* <Text style={styles.cell}>{p.id}</Text> */}
-              <Text
-                style={[
-                  styles.cell,
-                  {
-                    width: "30%",
-                  },
-                ]}
-              >
-                {p.detalle}
-              </Text>
+              <Text style={styles.cell_width}>{p.detalle}</Text>
               <Text style={styles.cell}>{p.categoria}</Text>
               <Text style={styles.cell}>
                 {formatearDinero(Number(p.precio_und))}
