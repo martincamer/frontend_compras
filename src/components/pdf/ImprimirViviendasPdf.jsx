@@ -197,7 +197,7 @@ export const ImprimirPdfViviendasPdf = ({
         <View style={styles.container}>
           {/* Encabezados de la tabla */}
           <View style={styles.row}>
-            <Text style={styles.header}>Detalle</Text>
+            <Text style={styles.header_width}>Detalle</Text>
             <Text style={styles.header}>Categoría</Text>
             <Text style={styles.header}>Precio Und</Text>
             <Text style={styles.header}>Cantidad</Text>
@@ -208,7 +208,7 @@ export const ImprimirPdfViviendasPdf = ({
           {bienesDeUsoActualizado.map((p) => (
             <View key={p.id} style={styles.row}>
               {/* <Text style={styles.cell}>{p.id}</Text> */}
-              <Text style={styles.cell}>{p.detalle}</Text>
+              <Text style={styles.cell_width}>{p.detalle}</Text>
               <Text style={styles.cell}>{p.categoria}</Text>
               <Text style={styles.cell}>
                 {formatearDinero(Number(p.precio_und))}
