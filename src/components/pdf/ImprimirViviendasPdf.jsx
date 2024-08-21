@@ -77,7 +77,7 @@ export const ImprimirPdfViviendasPdf = ({
       <Page
         size="A4"
         style={{
-          padding: "10px 60px",
+          padding: "40px 10px",
           flexDirection: "column",
           display: "flex",
           gap: "10px",
