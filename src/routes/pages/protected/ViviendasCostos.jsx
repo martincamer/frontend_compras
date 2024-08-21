@@ -5,7 +5,10 @@ import { useObtenerId } from "../../../helpers/obtenerId";
 import { useForm } from "react-hook-form";
 import { formatearDinero } from "../../../helpers/formatearDinero";
 import { FaDeleteLeft } from "react-icons/fa6";
-import { showSuccessToast } from "../../../helpers/toast";
+import {
+  showSuccessToast,
+  showSuccessToastError,
+} from "../../../helpers/toast";
 import { IoCloudDone } from "react-icons/io5";
 import client from "../../../api/axios";
 import { PDFViewer } from "@react-pdf/renderer";
@@ -65,7 +68,18 @@ export const ViviendasCostos = () => {
                   <td>{v.id}</td>
                   <td>{v.nombre_modelo}</td>
                   <td>
-                    <div>
+                    <div className="flex gap-2">
+                      <button type="button">
+                        <FaDeleteLeft
+                          onClick={() => {
+                            handleObtenerId(v.id),
+                              document
+                                .getElementById("my_modal_eliminar")
+                                .showModal();
+                          }}
+                          className="text-2xl text-red-500"
+                        />
+                      </button>
                       <button
                         onClick={() => {
                           handleObtenerId(v.id),
@@ -73,7 +87,7 @@ export const ViviendasCostos = () => {
                               .getElementById("my_modal_ver_modelo")
                               .showModal();
                         }}
-                        className="bg-primary py-2 px-4 rounded-md text-white font-semibold"
+                        className="bg-blue-600 py-2 px-4 rounded-md text-white font-semibold"
                       >
                         Ver modelo
                       </button>
@@ -86,8 +100,9 @@ export const ViviendasCostos = () => {
         </div>
       </div>
 
-      <ModalCrearModelo />
+      <ModalCrearModelo setViviendas={setViviendas} />
       <VerModelo idObtenida={idObtenida} />
+      <ModalEliminar idObtenida={idObtenida} setViviendas={setViviendas} />
     </section>
   );
 };
@@ -263,6 +278,7 @@ const VerModelo = ({ idObtenida }) => {
         </div>
 
         <ImprimirPdfVivienda
+          vivienda={vivienda}
           bienesDeUsoActualizado={bienesDeUsoActualizado}
           materiaPrimaActualizado={materiaPrimaActualizado}
           subtotalBienesDeUso={subtotalBienesDeUso}
@@ -273,7 +289,7 @@ const VerModelo = ({ idObtenida }) => {
   );
 };
 
-const ModalCrearModelo = () => {
+const ModalCrearModelo = ({ setViviendas }) => {
   const [productosMateriasPrima, setProductosMateriasPrima] = useState([]);
   const [productosBienesDeUso, setProductosBienesDeUso] = useState([]);
 
@@ -290,10 +306,14 @@ const ModalCrearModelo = () => {
       const res = await client.post("/viviendas", datosProducto);
 
       console.log("datos enviados", res.data);
+      setViviendas(res.data);
 
       document.getElementById("my_modal_modelo").close();
 
       showSuccessToast("Modelo cargado correctamente");
+
+      setProductosBienesDeUso([]);
+      setProductosMateriasPrima([]);
     } catch (error) {
       console.error("Error al enviar el producto:", error);
     }
@@ -985,6 +1005,7 @@ const ImprimirPdfVivienda = ({
   materiaPrimaActualizado,
   subtotalBienesDeUso,
   subtotalMateriaPrima,
+  vivienda,
 }) => {
   return (
     <dialog id="my_modal_imprimir_vivienda" className="modal">
@@ -1000,12 +1021,87 @@ const ImprimirPdfVivienda = ({
         </h3>
         <PDFViewer className="w-full h-[100vh]">
           <ImprimirPdfViviendasPdf
+            vivienda={vivienda}
             bienesDeUsoActualizado={bienesDeUsoActualizado}
             materiaPrimaActualizado={materiaPrimaActualizado}
             subtotalBienesDeUso={subtotalBienesDeUso}
             subtotalMateriaPrima={subtotalMateriaPrima}
           />
         </PDFViewer>
+      </div>
+    </dialog>
+  );
+};
+
+const ModalEliminar = ({ idObtenida, setViviendas }) => {
+  const { handleSubmit } = useForm();
+
+  const onSubmit = async (formData) => {
+    try {
+      const productosData = {
+        datos: {
+          ...formData,
+        },
+      };
+
+      const res = await client.delete(
+        `/viviendas/${idObtenida}`,
+        productosData
+      );
+
+      setViviendas(res.data);
+
+      document.getElementById("my_modal_eliminar").close();
+
+      showSuccessToastError("Eliminado correctamente");
+    } catch (error) {
+      console.error("Error creating product:", error);
+    }
+  };
+
+  return (
+    <dialog id="my_modal_eliminar" className="modal">
+      <div className="modal-box rounded-md max-w-md">
+        <form method="dialog">
+          {/* if there is a button in form, it will close the modal */}
+          <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
+            ✕
+          </button>
+        </form>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <div>
+            <img
+              className="w-44 mx-auto"
+              src="https://app.holded.com/assets/img/document/doc_delete.png"
+            />
+          </div>
+          <div className="font-semibold text-sm text-gray-400 text-center">
+            REFERENCIA {idObtenida}
+          </div>
+          <div className="font-semibold text-[#FD454D] text-lg text-center">
+            Eliminar la vivienda seleccionada..
+          </div>
+          <div className="text-sm text-gray-400 text-center mt-1">
+            La vivienda no podra ser recuperada nunca mas...
+          </div>
+          <div className="mt-4 text-center w-full px-16">
+            <button
+              type="submit"
+              className="bg-red-500 py-1 px-4 text-center font-bold text-white text-sm rounded-md w-full"
+            >
+              Confirmar
+            </button>{" "}
+            <button
+              type="button"
+              onClick={() =>
+                document.getElementById("my_modal_eliminar").close()
+              }
+              className="bg-orange-100 py-1 px-4 text-center font-bold text-orange-600 mt-2 text-sm rounded-md w-full"
+            >
+              Cancelar
+            </button>
+          </div>
+        </form>
       </div>
     </dialog>
   );

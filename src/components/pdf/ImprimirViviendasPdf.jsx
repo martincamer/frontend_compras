@@ -36,6 +36,7 @@ export const ImprimirPdfViviendasPdf = ({
   materiaPrimaActualizado,
   subtotalBienesDeUso,
   subtotalMateriaPrima,
+  vivienda,
 }) => {
   const styles = StyleSheet.create({
     container: {
@@ -118,6 +119,28 @@ export const ImprimirPdfViviendasPdf = ({
               width: "80px",
             }}
           />
+        </View>
+        <View>
+          <Text
+            style={{
+              fontFamily: "Montserrat",
+              fontWeight: "bold",
+              textTransform: "uppercase",
+              fontSize: 12,
+            }}
+          >
+            <Text
+              style={{
+                fontFamily: "Montserrat",
+                fontWeight: "semibold",
+                textTransform: "uppercase",
+                fontSize: 12,
+              }}
+            >
+              Modelo de vivienda
+            </Text>{" "}
+            {vivienda?.nombre_modelo}.
+          </Text>
         </View>
         <View
           style={{
