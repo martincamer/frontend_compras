@@ -77,7 +77,7 @@ export const ImprimirPdfViviendasPdf = ({
       <Page
         size="A4"
         style={{
-          padding: "40px 60px",
+          padding: "10px 60px",
           flexDirection: "column",
           display: "flex",
           gap: "10px",
@@ -120,10 +120,10 @@ export const ImprimirPdfViviendasPdf = ({
         <View style={styles.container}>
           {/* Encabezados de la tabla */}
           <View style={styles.row}>
-            <Text style={styles.header}>Detalle</Text>
-            <Text style={styles.header}>Categoría</Text>
-            <Text style={styles.header}>Precio Und</Text>
-            <Text style={styles.header}>Cantidad</Text>
+            <Text style={styles.header}>Desc.</Text>
+            <Text style={styles.header}>Cat</Text>
+            <Text style={styles.header}>Prec.</Text>
+            <Text style={styles.header}>Cant.</Text>
             <Text style={styles.header}>Subtotal</Text>
           </View>
 
