@@ -61,7 +61,7 @@ export const ImprimirPdfViviendasPdf = ({
     header_width: {
       width: "50%",
       fontWeight: "bold",
-      flex: 1,
+      // flex: 1,
       textAlign: "center",
       fontSize: 10,
       textTransform: "uppercase",
@@ -77,7 +77,7 @@ export const ImprimirPdfViviendasPdf = ({
     },
     cell_width: {
       width: "50%",
-      flex: 1,
+      // flex: 1,
       textAlign: "center",
       textTransform: "uppercase",
       fontSize: 10,
