@@ -6,9 +6,8 @@ export const ModalCompararPrecios = () => {
   const { ordenes } = useOrdenesContext();
   const [fechaInicio, setFechaInicio] = useState("");
   const [fechaFin, setFechaFin] = useState("");
-  const [ordenesFiltradas, setOrdenesFiltradas] = useState([]);
-  const [categoriaSeleccionada, setCategoriaSeleccionada] = useState("");
   const [productosFiltrados, setProductosFiltrados] = useState([]);
+  const [categoriaSeleccionada, setCategoriaSeleccionada] = useState("");
 
   const filtrarPorRangoFecha = () => {
     // Validar que ambas fechas estén seleccionadas
@@ -20,13 +19,51 @@ export const ModalCompararPrecios = () => {
     const fechaInicioObj = new Date(fechaInicio);
     const fechaFinObj = new Date(fechaFin);
 
+    const productosAgrupados = new Map();
+
     // Filtrar las órdenes por el rango de fechas
-    const filtradas = ordenes.filter((orden) => {
+    ordenes.forEach((orden) => {
       const fechaOrden = new Date(orden.created_at);
-      return fechaOrden >= fechaInicioObj && fechaOrden <= fechaFinObj;
+      if (fechaOrden >= fechaInicioObj && fechaOrden <= fechaFinObj) {
+        orden.datos.productoSeleccionado.forEach((producto) => {
+          const key = producto.detalle.toLowerCase();
+          const proveedor = orden.proveedor;
+          const precio_und = parseFloat(producto.precio_und);
+          const fecha = orden.created_at;
+
+          if (productosAgrupados.has(key)) {
+            const existingProducto = productosAgrupados.get(key);
+            const proveedorIndex = existingProducto.proveedores.findIndex(
+              (p) => p.nombre === proveedor.nombre
+            );
+
+            if (proveedorIndex === -1) {
+              existingProducto.proveedores.push({
+                nombre: proveedor,
+                precio_und,
+                fecha,
+              });
+            } else if (
+              precio_und <
+              existingProducto.proveedores[proveedorIndex].precio_und
+            ) {
+              existingProducto.proveedores[proveedorIndex].precio_und =
+                precio_und;
+              existingProducto.proveedores[proveedorIndex].fecha = fecha;
+            }
+          } else {
+            productosAgrupados.set(key, {
+              ...producto,
+              proveedores: [{ nombre: proveedor, precio_und, fecha }],
+              fecha,
+            });
+          }
+        });
+      }
     });
 
-    setOrdenesFiltradas(filtradas);
+    const productos = Array.from(productosAgrupados.values());
+    setProductosFiltrados(productos);
   };
 
   const handleFiltrarClick = (event) => {
@@ -35,57 +72,14 @@ export const ModalCompararPrecios = () => {
   };
 
   const handleCategoriaChange = (event) => {
-    const categoria = event.target.value;
-    setCategoriaSeleccionada(categoria);
-
-    if (categoria !== "") {
-      const productosAgrupados = new Map();
-
-      ordenesFiltradas.forEach((orden) => {
-        orden.datos.productoSeleccionado.forEach((producto) => {
-          if (producto.categoria === categoria) {
-            const key = producto.detalle.toLowerCase();
-            const proveedor = orden.proveedor;
-            const precio_und = parseFloat(producto.precio_und);
-            const fecha = orden.created_at; // Agregar la fecha de la orden de compra
-
-            if (productosAgrupados.has(key)) {
-              const existingProducto = productosAgrupados.get(key);
-              const proveedorIndex = existingProducto.proveedores.findIndex(
-                (p) => p.nombre === proveedor.nombre
-              );
-
-              if (proveedorIndex === -1) {
-                existingProducto.proveedores.push({
-                  nombre: proveedor,
-                  precio_und,
-                  fecha, // Agregar fecha aquí
-                });
-              } else if (
-                precio_und <
-                existingProducto.proveedores[proveedorIndex].precio_und
-              ) {
-                existingProducto.proveedores[proveedorIndex].precio_und =
-                  precio_und;
-                existingProducto.proveedores[proveedorIndex].fecha = fecha; // Actualizar fecha si el precio es menor
-              }
-            } else {
-              productosAgrupados.set(key, {
-                ...producto,
-                proveedores: [{ nombre: proveedor, precio_und, fecha }],
-                fecha, // Inicializar la fecha
-              });
-            }
-          }
-        });
-      });
-
-      const productosFiltrados = Array.from(productosAgrupados.values());
-      setProductosFiltrados(productosFiltrados);
-    } else {
-      setProductosFiltrados([]);
-    }
+    setCategoriaSeleccionada(event.target.value);
   };
+
+  const productosAMostrar = categoriaSeleccionada
+    ? productosFiltrados.filter(
+        (producto) => producto.categoria === categoriaSeleccionada
+      )
+    : productosFiltrados;
 
   return (
     <dialog id="my_modal_comparar_precios" className="modal">
@@ -100,7 +94,7 @@ export const ModalCompararPrecios = () => {
           Filtrar productos de compras, compara precios, etc.
         </h3>
         <p className="pb-5">
-          En esta sección podras filtrar productos comprados y comparar los
+          En esta sección podrás filtrar productos comprados y comparar los
           precios de ellos.
         </p>
 
@@ -111,7 +105,7 @@ export const ModalCompararPrecios = () => {
                 Fecha de inicio:
               </label>
               <input
-                className=" text-sm font-bold outline-none border border-gray-300 rounded-md py-1 px-2"
+                className="text-sm font-bold outline-none border border-gray-300 rounded-md py-1 px-2"
                 type="date"
                 id="fechaInicio"
                 value={fechaInicio}
@@ -123,7 +117,7 @@ export const ModalCompararPrecios = () => {
                 Fecha fin:
               </label>
               <input
-                className=" text-sm font-bold outline-none border border-gray-300 rounded-md py-1 px-2"
+                className="text-sm font-bold outline-none border border-gray-300 rounded-md py-1 px-2"
                 type="date"
                 id="fechaFin"
                 value={fechaFin}
@@ -140,6 +134,7 @@ export const ModalCompararPrecios = () => {
             </div>
           </div>
         </form>
+
         <div className="py-4 flex gap-2 items-center">
           <label htmlFor="categoria" className="font-bold text-sm">
             Seleccionar categoría:
@@ -151,15 +146,14 @@ export const ModalCompararPrecios = () => {
             onChange={handleCategoriaChange}
           >
             <option className="font-bold capitalize text-gray-400" value="">
-              Seleccione una categoría
+              Todas las categorías
             </option>
-            {/* Obtener las categorías únicas de las órdenes filtradas */}
-            {ordenesFiltradas
-              .flatMap((orden) => orden.datos.productoSeleccionado)
+            {/* Obtener las categorías únicas de los productos filtrados */}
+            {productosFiltrados
               .map((producto) => producto.categoria)
               .filter(
                 (categoria, index, self) => self.indexOf(categoria) === index
-              ) // Filtrar categorías únicas
+              )
               .map((categoria, index) => (
                 <option className="font-semibold" key={index} value={categoria}>
                   {categoria}
@@ -178,14 +172,14 @@ export const ModalCompararPrecios = () => {
           </div>
         </div>
 
-        <ul className="flex flex-col gap-2 h-[100vh] overflow-y-scroll scroll-bar px-2">
-          {productosFiltrados.length > 0 ? (
-            productosFiltrados.map((producto) => (
+        <ul className="grid grid-cols-4 gap-2  overflow-y-scroll scroll-bar px-2">
+          {productosAMostrar.length > 0 ? (
+            productosAMostrar.map((producto) => (
               <li
                 key={`${producto.detalle}-${producto.proveedores
                   .map((p) => p.nombre)
                   .join("-")}`}
-                className="border border-gray-200 w-1/3 rounded-lg py-3 px-4 text-sm"
+                className="border border-gray-200 w-full rounded-lg py-3 px-4 text-sm"
               >
                 <div className="flex flex-col gap-1 divide-y divide-gray-200">
                   <p className="font-bold text-gray-800">
@@ -236,7 +230,7 @@ export const ModalCompararPrecios = () => {
         <ModalViewProductos
           fecha={fechaInicio}
           fechaFin={fechaFin}
-          productos={productosFiltrados}
+          productos={productosAMostrar}
         />
       </div>
     </dialog>
