@@ -8,20 +8,18 @@ export const ModalCompararPrecios = () => {
   const [fechaFin, setFechaFin] = useState("");
   const [productosFiltrados, setProductosFiltrados] = useState([]);
   const [categoriaSeleccionada, setCategoriaSeleccionada] = useState("");
+  const [productoSeleccionado, setProductoSeleccionado] = useState("");
 
   const filtrarPorRangoFecha = () => {
-    // Validar que ambas fechas estén seleccionadas
     if (!fechaInicio || !fechaFin) {
       return;
     }
 
-    // Convertir las fechas a objetos Date
     const fechaInicioObj = new Date(fechaInicio);
     const fechaFinObj = new Date(fechaFin);
 
     const productosAgrupados = new Map();
 
-    // Filtrar las órdenes por el rango de fechas
     ordenes.forEach((orden) => {
       const fechaOrden = new Date(orden.created_at);
       if (fechaOrden >= fechaInicioObj && fechaOrden <= fechaFinObj) {
@@ -73,19 +71,29 @@ export const ModalCompararPrecios = () => {
 
   const handleCategoriaChange = (event) => {
     setCategoriaSeleccionada(event.target.value);
+    setProductoSeleccionado(""); // Resetear la selección de producto al cambiar la categoría
   };
 
-  const productosAMostrar = categoriaSeleccionada
+  const handleProductoChange = (event) => {
+    setProductoSeleccionado(event.target.value);
+  };
+
+  const productosFiltradosPorCategoria = categoriaSeleccionada
     ? productosFiltrados.filter(
         (producto) => producto.categoria === categoriaSeleccionada
       )
     : productosFiltrados;
 
+  const productosAMostrar = productoSeleccionado
+    ? productosFiltradosPorCategoria.filter(
+        (producto) => producto.detalle === productoSeleccionado
+      )
+    : productosFiltradosPorCategoria;
+
   return (
     <dialog id="my_modal_comparar_precios" className="modal">
       <div className="modal-box max-w-full h-full max-h-full w-full rounded-none scroll-bar">
         <form method="dialog">
-          {/* if there is a button in form, it will close the modal */}
           <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
             ✕
           </button>
@@ -148,7 +156,6 @@ export const ModalCompararPrecios = () => {
             <option className="font-bold capitalize text-gray-400" value="">
               Todas las categorías
             </option>
-            {/* Obtener las categorías únicas de los productos filtrados */}
             {productosFiltrados
               .map((producto) => producto.categoria)
               .filter(
@@ -160,6 +167,29 @@ export const ModalCompararPrecios = () => {
                 </option>
               ))}
           </select>
+
+          <label htmlFor="producto" className="font-bold text-sm">
+            Seleccionar producto:
+          </label>
+          <select
+            className="border border-gray-300 rounded-md px-2 py-1.5 text-sm font-semibold outline-none uppercase"
+            id="producto"
+            value={productoSeleccionado}
+            onChange={handleProductoChange}
+          >
+            <option className="font-bold uppercase text-gray-400" value="">
+              Todos los productos
+            </option>
+            {productosFiltradosPorCategoria
+              .map((producto) => producto.detalle)
+              .filter((detalle, index, self) => self.indexOf(detalle) === index)
+              .map((detalle, index) => (
+                <option className="font-semibold" key={index} value={detalle}>
+                  {detalle}
+                </option>
+              ))}
+          </select>
+
           <div>
             <button
               onClick={() =>
@@ -200,20 +230,12 @@ export const ModalCompararPrecios = () => {
                         >
                           <p className="capitalize">{proveedor.nombre} - </p>
                           <p className="font-semibold text-blue-500 ml-1">
-                            {Number(proveedor.precio_und).toLocaleString(
-                              "es-AR",
-                              {
-                                style: "currency",
-                                currency: "ARS",
-                              }
-                            )}
+                            {Number(proveedor.precio_und).toFixed(2)} Bs
                           </p>
-                          <span className="text-gray-600">
+                          <p className="text-sm text-gray-600">
                             Fecha:{" "}
-                            {new Date(proveedor.fecha).toLocaleDateString(
-                              "es-AR"
-                            )}
-                          </span>
+                            {new Date(proveedor.fecha).toLocaleDateString()}
+                          </p>
                         </li>
                       ))}
                     </ul>
@@ -222,17 +244,13 @@ export const ModalCompararPrecios = () => {
               </li>
             ))
           ) : (
-            <li className="py-4 px-3 text-gray-600 italic">
-              No hay productos disponibles para la categoría seleccionada.
-            </li>
+            <p className="font-semibold text-gray-500">
+              No se encontraron productos.
+            </p>
           )}
         </ul>
-        <ModalViewProductos
-          fecha={fechaInicio}
-          fechaFin={fechaFin}
-          productos={productosAMostrar}
-        />
       </div>
+      <ModalViewProductos productos={productosAMostrar} />
     </dialog>
   );
 };

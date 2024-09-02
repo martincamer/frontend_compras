@@ -13,40 +13,39 @@ export const ModalCompras = () => {
 
   const { handleObtenerId, idObtenida } = useObtenerId();
 
-  const filtrarPorRangoFecha = () => {
-    // Validar que ambas fechas estén seleccionadas
-    if (!fechaInicio || !fechaFin) {
-      return;
+  const aplicarFiltros = () => {
+    let filtradas = ordenes;
+
+    // Filtrar por rango de fechas si ambas fechas están seleccionadas
+    if (fechaInicio && fechaFin) {
+      const fechaInicioObj = new Date(fechaInicio);
+      const fechaFinObj = new Date(fechaFin);
+
+      filtradas = filtradas.filter((orden) => {
+        const fechaOrden = new Date(orden.created_at);
+        return fechaOrden >= fechaInicioObj && fechaOrden <= fechaFinObj;
+      });
     }
 
-    // Convertir las fechas a objetos Date
-    const fechaInicioObj = new Date(fechaInicio);
-    const fechaFinObj = new Date(fechaFin);
-
-    // Filtrar las órdenes por el rango de fechas
-    const filtradas = ordenes.filter((orden) => {
-      const fechaOrden = new Date(orden.created_at);
-      return fechaOrden >= fechaInicioObj && fechaOrden <= fechaFinObj;
-    });
+    // Filtrar por proveedor si está seleccionado
+    if (proveedorSeleccionado) {
+      filtradas = filtradas.filter(
+        (orden) => orden.proveedor === proveedorSeleccionado
+      );
+    }
 
     setOrdenesFiltradas(filtradas);
   };
 
   const handleFiltrarClick = (event) => {
     event.preventDefault();
-    filtrarPorRangoFecha();
+    aplicarFiltros();
   };
 
   const handleProveedorChange = (event) => {
     const proveedor = event.target.value;
     setProveedorSeleccionado(proveedor);
-
-    // Filtrar las órdenes por proveedor seleccionado
-    const filtradas = proveedor
-      ? ordenes.filter((orden) => orden.proveedor === proveedor)
-      : ordenes;
-
-    setOrdenesFiltradas(filtradas);
+    aplicarFiltros();
   };
 
   // Obtener la lista única de proveedores
@@ -69,6 +68,7 @@ export const ModalCompras = () => {
       )
     );
   }, 0);
+
   return (
     <dialog id="my_modal_compras" className="modal">
       <div className="modal-box max-w-full h-full max-h-full w-full rounded-none scroll-bar">
