@@ -133,7 +133,7 @@ export const OrdenDeCompra = () => {
   return (
     <section className="w-full h-full min-h-screen max-h-full">
       <div className="bg-gray-100 py-10 px-10 flex justify-between items-center max-md:flex-col max-md:gap-3">
-        <p className="font-bold text-gray-900 text-xl">Sector de productos.</p>
+        <p className="font-bold text-gray-900 text-xl">Sector de compras.</p>
         <button
           onClick={() =>
             document
