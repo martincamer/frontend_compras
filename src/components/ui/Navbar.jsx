@@ -29,7 +29,7 @@ export const Navbar = () => {
               className="dropdown-content menu bg-white p-1 rounded-md w-52 text-sm font-medium shadow-xl gap-1"
             >
               <li className="hover:bg-gray-800 hover:text-white rounded-md">
-                <Link to={"/productos"}>Crear nuevos productos</Link>
+                <Link to={"/productos"}>Sector productos</Link>
               </li>{" "}
             </ul>
           </div>
@@ -45,18 +45,20 @@ export const Navbar = () => {
             </div>
             <ul
               tabIndex={0}
-              className="dropdown-content menu bg-white p-1 rounded-md w-52 text-sm font-medium shadow-xl gap-1"
+              className="dropdown-content menu bg-white p-1 rounded-md w-64 text-sm font-medium shadow-xl gap-1"
             >
               <li className="hover:bg-gray-800 hover:text-white rounded-md">
-                <Link to={"/ordenes"}>Cargar ordenes</Link>
+                <Link to={"/ordenes"}>Sector ordenes de compra</Link>
               </li>{" "}
               <li className="hover:bg-gray-800 hover:text-white rounded-md">
-                <Link to={"/presupuestos"}>Presupuestos</Link>
+                <Link to={"/presupuestos"}>Sector de presupuestos</Link>
               </li>{" "}
               {user.fabrica === "parque industrial" && (
                 <>
                   <li className="hover:bg-gray-800 hover:text-white rounded-md">
-                    <Link to={"/viviendas-costos"}>Modelos casas</Link>
+                    <Link to={"/viviendas-costos"}>
+                      Sector modelos de casas
+                    </Link>
                   </li>
                 </>
               )}
@@ -78,17 +80,17 @@ export const Navbar = () => {
               className="dropdown-content menu bg-white p-1 rounded-md w-52 text-sm font-medium shadow-xl gap-1"
             >
               <li className="hover:bg-gray-800 hover:text-white rounded-md">
-                <Link to={"/proveedores"}>Cargar proveedores</Link>
+                <Link to={"/proveedores"}>Sector proveedores</Link>
               </li>{" "}
-              {/* <li className="hover:bg-gray-800 hover:text-white rounded-md">
-                <Link to={"/productos"}>Cargar pagos</Link>
-              </li>{" "} */}
             </ul>
           </div>
         </div>
       </div>
       <div className="flex items-center gap-4">
-        {/* <div className="cursor-pointer bg-gray-500 py-5 px-5 rounded-full"></div>{" "} */}
+        <div className="font-semibold text-blue-500 bg-white px-4 py-1 text-sm rounded-md max-md:hidden">
+          <span className="font-bold text-black">Usuario:</span>{" "}
+          <span className="capitalize">{user.username}</span>
+        </div>
         <button
           onClick={() => signout()}
           className="font-semibold text-white bg-primary px-4 py-1 text-sm rounded-md"

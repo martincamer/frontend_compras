@@ -66,21 +66,16 @@ const meses = [
 
 // Formatear la fecha
 const fechaFormateada = `${diasSemana[diaDeLaSemana]} ${meses[mes]} / ${diaDelMes} / ${ano}`;
-
 export const ListaDePrecios = ({ datos }) => {
-  // Ordena el array 'datos' por la propiedad 'categoria' en orden alfabético
-  const datosOrdenados = datos.sort((a, b) => {
-    const categoriaA = a.categoria.toUpperCase(); // Asegúrate de que la comparación sea insensible a mayúsculas/minúsculas
-    const categoriaB = b.categoria.toUpperCase();
-
-    if (categoriaA < categoriaB) {
-      return -1; // 'a' va antes que 'b'
+  // Agrupa los productos por categoría
+  const productosPorCategoria = datos.reduce((acc, producto) => {
+    const categoria = producto.categoria;
+    if (!acc[categoria]) {
+      acc[categoria] = [];
     }
-    if (categoriaA > categoriaB) {
-      return 1; // 'a' va después de 'b'
-    }
-    return 0; // Son iguales
-  });
+    acc[categoria].push(producto);
+    return acc;
+  }, {});
 
   return (
     <Document
@@ -143,6 +138,7 @@ export const ListaDePrecios = ({ datos }) => {
             </Text>
           </View>
         </View>
+
         <View>
           <Text
             style={{
@@ -166,96 +162,73 @@ export const ListaDePrecios = ({ datos }) => {
               gap: 5,
             }}
           >
-            <View
-              style={{
-                display: "flex",
-                flexDirection: "row",
-                gap: 5,
-                borderBottom: "1px",
-                borderStyle: "solid",
-                borderColor: "#000",
-                paddingBottom: "2px",
-              }}
-            >
-              <Text
-                style={{
-                  width: "40%",
-                  fontFamily: "Montserrat",
-                  fontWeight: "semibold",
-                  fontSize: "10px",
-                  textTransform: "uppercase",
-                }}
-              >
-                Descripción{" "}
-              </Text>
-              <Text
-                style={{
-                  width: "30%",
-                  fontFamily: "Montserrat",
-                  fontWeight: "semibold",
-                  fontSize: "10px",
-                  textTransform: "uppercase",
-                }}
-              >
-                Categoria{" "}
-              </Text>
-              <Text
-                style={{
-                  width: "20%",
-                  fontFamily: "Montserrat",
-                  fontWeight: "semibold",
-                  fontSize: "10px",
-                  textTransform: "uppercase",
-                }}
-              >
-                Precio UND{" "}
-              </Text>
-            </View>
-            {datosOrdenados.map((producto, index) => (
-              <View
-                key={index}
-                style={{
-                  display: "flex",
-                  flexDirection: "row",
-                  gap: 5,
-                }}
-              >
+            {Object.keys(productosPorCategoria).map((categoria, catIndex) => (
+              <View key={catIndex}>
+                {/* Mostrar el nombre de la categoría */}
                 <Text
                   style={{
-                    width: "40%",
-                    fontFamily: "Montserrat",
-                    fontWeight: "semibold",
-                    fontSize: "9px",
-                    textTransform: "uppercase",
-                  }}
-                >
-                  {producto.detalle}
-                </Text>
-                <Text
-                  style={{
-                    width: "30%",
-                    fontFamily: "Montserrat",
-                    fontWeight: "semibold",
-                    fontSize: "9px",
-                    textTransform: "uppercase",
-                  }}
-                >
-                  {producto.categoria}
-                </Text>
-                <Text
-                  style={{
-                    width: "20%",
                     fontFamily: "Montserrat",
                     fontWeight: "bold",
-                    fontSize: "9px",
+                    fontSize: "10px",
                     textTransform: "uppercase",
+                    marginVertical: 5,
                   }}
                 >
-                  {Number(producto.precio_und).toLocaleString("es-AR", {
-                    style: "currency",
-                    currency: "ARS",
-                  })}
+                  {categoria}
                 </Text>
+
+                {/* Mostrar los productos dentro de cada categoría */}
+                {productosPorCategoria[categoria].map((producto, index) => (
+                  <View
+                    key={index}
+                    style={{
+                      display: "flex",
+                      flexDirection: "row",
+                      gap: 5,
+                      borderBottom: "1px",
+                      borderStyle: "solid",
+                      borderColor: "#000",
+                      paddingBottom: "2px",
+                    }}
+                  >
+                    <Text
+                      style={{
+                        width: "40%",
+                        fontFamily: "Montserrat",
+                        fontWeight: "semibold",
+                        fontSize: "9px",
+                        textTransform: "uppercase",
+                      }}
+                    >
+                      {producto.detalle}
+                    </Text>
+                    <Text
+                      style={{
+                        width: "30%",
+                        fontFamily: "Montserrat",
+                        fontWeight: "semibold",
+                        fontSize: "9px",
+                        textTransform: "uppercase",
+                      }}
+                    >
+                      {producto.categoria}
+                    </Text>
+                    <Text
+                      style={{
+                        width: "20%",
+                        fontFamily: "Montserrat",
+                        fontWeight: "bold",
+                        fontSize: "9px",
+                        textTransform: "uppercase",
+                      }}
+                    >
+                      {Number(producto.precio_und).toLocaleString("es-AR", {
+                        style: "currency",
+                        currency: "ARS",
+                      })}
+                    </Text>
+                  </View>
+                ))}
               </View>
             ))}
           </View>

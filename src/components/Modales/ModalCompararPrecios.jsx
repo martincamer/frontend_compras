@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useOrdenesContext } from "../../context/OrdenesProvider";
 import { ModalViewProductos } from "./ModalViewProductos";
+import { formatearDinero } from "../../helpers/formatearDinero";
 
 export const ModalCompararPrecios = () => {
   const { ordenes } = useOrdenesContext();
@@ -228,9 +229,11 @@ export const ModalCompararPrecios = () => {
                           key={`${producto.detalle}-${proveedor.nombre}`}
                           className="flex flex-col py-1"
                         >
-                          <p className="capitalize">{proveedor.nombre} - </p>
+                          <p className="capitalize font-bold">
+                            {proveedor.nombre}
+                          </p>
                           <p className="font-semibold text-blue-500 ml-1">
-                            {Number(proveedor.precio_und).toFixed(2)} Bs
+                            {formatearDinero(proveedor.precio_und)}
                           </p>
                           <p className="text-sm text-gray-600">
                             Fecha:{" "}
@@ -250,7 +253,11 @@ export const ModalCompararPrecios = () => {
           )}
         </ul>
       </div>
-      <ModalViewProductos productos={productosAMostrar} />
+      <ModalViewProductos
+        fecha={fechaInicio}
+        fechaFin={fechaFin}
+        productos={productosAMostrar}
+      />
     </dialog>
   );
 };

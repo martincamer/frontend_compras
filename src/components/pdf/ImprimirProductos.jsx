@@ -94,7 +94,7 @@ export const ImprimirProductos = ({ productos, fechaInicio, fechaFin }) => {
               fontSize: 12,
             }}
           >
-            Fecha incio {fechaInicio}
+            Fecha inicio {fechaInicio}
           </Text>
           <Text
             style={{

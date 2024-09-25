@@ -278,6 +278,7 @@ export const ModalCompras = () => {
           compras={ordenesFiltradas}
           total={precioFinalTotal}
         />
+
         <ModalObtenerOrdenDeCompra idObtenida={idObtenida} />
       </div>
     </dialog>

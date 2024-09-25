@@ -14,6 +14,45 @@ import { useForm } from "react-hook-form";
 import { FaDeleteLeft } from "react-icons/fa6";
 
 export const Presupuestos = () => {
+  const [presupuestos, setPresupuestos] = useState([]);
+
+  useEffect(() => {
+    const loadData = async () => {
+      const res = await client.get("/presupuestos");
+      console.log("prep", res.data);
+      setPresupuestos(res.data);
+    };
+    loadData();
+  }, []);
+
+  const today = new Date();
+  const firstDayOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
+  const lastDayOfMonth = new Date(today.getFullYear(), today.getMonth() + 1, 1);
+
+  // Convertir las fechas en formato YYYY-MM-DD para los inputs tipo date
+  const fechaInicioPorDefecto = firstDayOfMonth.toISOString().split("T")[0];
+  const fechaFinPorDefecto = lastDayOfMonth.toISOString().split("T")[0];
+
+  const [searchTerm, setSearchTerm] = useState("");
+  const [startDate, setStartDate] = useState(fechaInicioPorDefecto);
+  const [endDate, setEndDate] = useState(fechaFinPorDefecto);
+
+  // Filtrar por fabrica_sucursal
+  const filterPresupuestos = presupuestos.filter((orden) =>
+    orden.proveedor.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  // Filtrar pedidos del mes actual
+  const currentMonth = new Date().getMonth() + 1;
+
+  const filteredByDateRange = filterPresupuestos.filter((orden) => {
+    const createdAt = new Date(orden.created_at);
+    return (
+      (!startDate || createdAt >= new Date(startDate)) &&
+      (!endDate || createdAt <= new Date(endDate))
+    );
+  });
+
   return (
     <section className="w-full h-full min-h-screen max-h-full">
       {" "}
@@ -30,6 +69,67 @@ export const Presupuestos = () => {
         >
           Crear nuevo presupuesto
         </button>
+      </div>
+      <div className="bg-white  mx-5 max-md:mx-5 flex max-md:flex-col gap-2 mt-10">
+        <div className="border border-gray-300 flex items-center gap-2 px-2 py-1.5 text-sm rounded-md w-1/5 max-md:w-full">
+          <input
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            type="text"
+            className="outline-none font-medium w-full"
+            placeholder="Buscar por el proveedor..."
+          />
+          <FaSearch className="text-gray-700" />
+        </div>
+
+        <div className="flex gap-2 items-center ">
+          <input
+            className="border border-gray-300 text-sm rounded-md font-medium py-2 max-md:py-1 px-3 outline-none"
+            type="date"
+            value={startDate}
+            onChange={(e) => setStartDate(e.target.value)}
+          />
+          <input
+            className="border border-gray-300 text-sm rounded-md font-medium py-2 max-md:py-1 px-3 outline-none"
+            type="date"
+            value={endDate}
+            onChange={(e) => setEndDate(e.target.value)}
+          />
+        </div>
+      </div>
+      <div>
+        <div className="max-md:overflow-x-auto mx-5 my-6 max-md:h-[100vh] scrollbar-hidden">
+          <table className="table">
+            <thead className="text-left font-bold text-gray-900 text-sm">
+              <tr>
+                <th>Numero</th>
+                <th>Proveedor</th>
+                <th>Fecha de creación</th>
+                <th>Total del presupuesto</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody className="text-xs capitalize font-medium">
+              {filteredByDateRange.map((p) => (
+                <tr className="" key={p.id}>
+                  <td>{p.id}</td>
+                  <td className="uppercase">{p.proveedor}</td>
+                  <td>{new Date(p.created_at).toLocaleDateString("ars")}</td>
+                  <td className="">
+                    <div className="flex">
+                      <p className="bg-green-100/90 py-1.5 rounded text-green-700 font-bold px-3">
+                        {Number(p.precio_final).toLocaleString("es-AR", {
+                          style: "currency",
+                          currency: "ARS",
+                        })}
+                      </p>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
       <ModalCrearPresupuesto />
     </section>
@@ -141,23 +241,20 @@ export const ModalCrearPresupuesto = () => {
 
     const datosOrden = {
       proveedor,
-      //   numero_factura,
-      precio_final: Number(totalFinalSumSinIva),
-      //   fecha_factura,
       localidad,
       provincia,
+      precio_final: Number(totalFinalSumSinIva),
       datos: { productoSeleccionado },
       iva,
     };
 
-    const res = await client.post("/crear-presupuesto", datosOrden);
+    const res = await client.post("/presupuestos", datosOrden);
 
     setOrdenes(res.data.ordenes);
 
     setProductoSeleccionado([]);
     setProveedor("");
     setNumeroFactura("");
-    // setDetalle("");
     setFechaFactura("");
     setLocalidad("");
     setProvincia("");
@@ -271,41 +368,8 @@ export const ModalCrearPresupuesto = () => {
                 placeholder="Escribe la provincia del proveedor."
               />
             </div>
-            {/* <div className="flex flex-col gap-2">
-              <label className="text-sm font-medium">
-                Numero del remito o factura de compra
-              </label>
-              <input
-                value={numero_factura}
-                onChange={(e) => setNumeroFactura(e.target.value)}
-                className="capitalize font-medium text-sm border border-gray-300 rounded-md py-2 px-2 outline-none focus:shadow-md cursor-pointer transition-all"
-                placeholder="Escribe el numero..."
-              />
-            </div>
-            <div className="flex flex-col gap-2">
-              <label className="text-sm font-medium">
-                Fecha del remito o factura de compra
-              </label>
-              <input
-                value={fecha_factura}
-                onChange={(e) => setFechaFactura(e.target.value)}
-                type="date"
-                className="font-medium text-sm border border-gray-300 rounded-md py-2 px-2 outline-none focus:shadow-md cursor-pointer transition-all"
-              />
-            </div> */}
           </div>
-          {/* <div className="flex flex-col gap-2 w-1/6 max-md:w-auto">
-            <label className="text-sm font-bold">
-              Detallar algo mensaje,etc.
-            </label>
-            <textarea
-              value={detalle}
-              onChange={(e) => setDetalle(e.target.value)}
-              type="text"
-              placeholder="Detallar algo de la orden de compra.."
-              className="font-medium text-sm border border-gray-300 rounded-md py-2 px-2 outline-none focus:shadow-md cursor-pointer transition-all"
-            />
-          </div> */}
+
           <div className="flex gap-2 max-md:flex-col">
             <button
               onClick={() =>

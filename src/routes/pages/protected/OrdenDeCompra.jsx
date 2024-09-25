@@ -5,13 +5,13 @@ import { ModalEditarOrdenTotal } from "../../../components/Modales/ModalEditarOr
 import { ModalActualizarOrdenEstado } from "../../../components/Modales/ModalActualizarOrdenEstado";
 import { ModalCompararPrecios } from "../../../components/Modales/ModalCompararPrecios";
 import { ModalCompras } from "../../../components/Modales/ModalCompras";
-import { Link } from "react-router-dom";
-import { CgMenuRightAlt, CgSearch } from "react-icons/cg";
+import { CgMenuRightAlt } from "react-icons/cg";
 import { useProductosContext } from "../../../context/ProductosProvider";
 import { FaEdit, FaSearch } from "react-icons/fa";
 import { formatearDinero } from "../../../helpers/formatearDinero";
 import { useObtenerId } from "../../../helpers/obtenerId";
 import { FaDeleteLeft } from "react-icons/fa6";
+import { Link } from "react-router-dom";
 import {
   showSuccessToast,
   showSuccessToastError,
@@ -19,6 +19,8 @@ import {
 import client from "../../../api/axios";
 import { IoMdAdd } from "react-icons/io";
 import { useForm } from "react-hook-form";
+import { ModalObtenerOrdenDeCompra } from "../../../components/Modales/ModalOrdenDeCompra";
+import { ModalOrdenDeCompraView } from "../../../components/Modales/ModalOrdenDeCompraView";
 
 export const OrdenDeCompra = () => {
   const [isOpenEliminar, setIsOpenEliminar] = useState(false);
@@ -148,8 +150,8 @@ export const OrdenDeCompra = () => {
       </div>
       <div className="bg-white py-5 px-5 mx-0 mt-10 flex gap-3 max-md:my-5 max-md:flex-col max-md:mt-3">
         <div className="dropdown dropdown-bottom dropdown-hover">
-          <button className="font-bold text-sm bg-primary py-1 px-4 text-white rounded">
-            Ver estadisticas de compras
+          <button className="font-bold text-sm bg-primary py-2 px-4 text-white rounded">
+            Ver estadisticas de las ordenes cargadas
           </button>
           <ul
             tabIndex={0}
@@ -186,17 +188,17 @@ export const OrdenDeCompra = () => {
           onClick={() =>
             document.getElementById("my_modal_comparar_precios").showModal()
           }
-          className="font-bold text-sm bg-green-500 py-1 px-4 text-white rounded max-md:hidden"
+          className="font-bold text-sm bg-green-500 py-2 px-4 text-white rounded max-md:hidden"
         >
-          Ver productos/comparar/proveedores/etc
+          Filtrar productos cargados y comparar precios
         </button>
         <button
           onClick={() =>
             document.getElementById("my_modal_compras").showModal()
           }
-          className="font-bold text-sm bg-blue-500 py-1 px-4 text-white rounded max-md:hidden"
+          className="font-bold text-sm bg-blue-500 py-2 px-4 text-white rounded max-md:hidden"
         >
-          Ver ordenes de compra/comparar/filtrar/etc
+          Filtrar ordenes de compra cargadas
         </button>
       </div>
 
@@ -293,6 +295,18 @@ export const OrdenDeCompra = () => {
                         className="dropdown-content z-[1] menu p-1 border border-gray-300 rounded-md bg-white shadow-xl w-52 gap-1"
                       >
                         <li className="text-xs font-semibold hover:bg-gray-800 rounded-md hover:text-white">
+                          <button
+                            onClick={() => {
+                              handleObtenerId(p.id),
+                                document
+                                  .getElementById("my_modal_orden_compra_view")
+                                  .showModal();
+                            }}
+                          >
+                            Descargar orden
+                          </button>
+                        </li>
+                        <li className="text-xs font-semibold hover:bg-gray-800 rounded-md hover:text-white">
                           <span
                             onClick={() => {
                               handleID(p.id), openProductos();
@@ -379,6 +393,8 @@ export const OrdenDeCompra = () => {
       <ModalEliminar idObtenida={idObtenida} />
 
       <ModalActualizarOrdenDeCompra id={idObtenida} />
+
+      <ModalOrdenDeCompraView idObtenida={idObtenida} />
     </section>
   );
 };

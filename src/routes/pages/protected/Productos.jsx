@@ -12,7 +12,7 @@ import {
 import { useForm } from "react-hook-form";
 import { CgMenuRightAlt } from "react-icons/cg";
 import { useObtenerId } from "../../../helpers/obtenerId";
-import { PDFDownloadLink } from "@react-pdf/renderer";
+import { PDFDownloadLink, PDFViewer } from "@react-pdf/renderer";
 import { ListaDePrecios } from "../../../components/pdf/ListaDePrecios";
 
 export const Productos = () => {
@@ -48,6 +48,7 @@ export const Productos = () => {
           Crear nuevo producto
         </button>
       </div>
+
       <div className="px-5 pt-10 flex gap-2">
         {" "}
         <button
@@ -55,17 +56,26 @@ export const Productos = () => {
             document.getElementById("my_modal_categorias").showModal()
           }
           type="button"
-          className="bg-primary py-1 px-4 rounded-md text-white font-semibold text-sm"
+          className="bg-primary py-2 px-4 rounded-md text-white font-semibold text-sm"
         >
           Ver categorias
         </button>
-        <PDFDownloadLink
+        <button
+          onClick={() =>
+            document.getElementById("my_modal_ver_productos").showModal()
+          }
+          type="button"
+          className="bg-blue-500 py-2 px-4 rounded-md text-white font-semibold text-sm"
+        >
+          Ver lista de precios de productos $
+        </button>
+        {/* <PDFDownloadLink
           fileName="Lista de precios-sector-compras."
           document={<ListaDePrecios datos={productos} />}
-          className="bg-blue-500 py-1 px-4 rounded-md text-white font-semibold text-sm"
+          className="bg-blue-500 py-2 px-4 rounded-md text-white font-semibold text-sm"
         >
           Ver lista de precios
-        </PDFDownloadLink>
+        </PDFDownloadLink> */}
       </div>
 
       <div className="mt-5 mx-5 flex gap-2 max-md:flex-col">
@@ -75,7 +85,7 @@ export const Productos = () => {
             onChange={(e) => setSearchTerm(e.target.value)}
             type="text"
             className="outline-none font-medium w-full"
-            placeholder="Buscar por nombre.."
+            placeholder="Buscar por nombre del producto.."
           />
           <FaSearch className="text-gray-700" />
         </div>
@@ -208,6 +218,7 @@ export const Productos = () => {
       <ModalCrearProducto />
       <ModalActualizarProducto idObtenida={idObtenida} />
       <ModalEliminar idObtenida={idObtenida} />
+      <ModalVerProductos productos={productos} />
     </section>
   );
 };
@@ -667,6 +678,25 @@ const ModalEliminar = ({ idObtenida }) => {
             </button>
           </div>
         </form>
+      </div>
+    </dialog>
+  );
+};
+
+const ModalVerProductos = ({ productos }) => {
+  return (
+    <dialog id="my_modal_ver_productos" className="modal">
+      <div className="modal-box rounded-md max-w-full h-full py-10 px-10">
+        <form method="dialog">
+          {/* if there is a button in form, it will close the modal */}
+          <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
+            ✕
+          </button>
+        </form>
+
+        <PDFViewer className="w-full h-full max-md:hidden">
+          {<ListaDePrecios datos={productos} />}
+        </PDFViewer>
       </div>
     </dialog>
   );
