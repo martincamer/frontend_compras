@@ -283,7 +283,7 @@ export const OrdenDeCompra = () => {
                   <td className="whitespace-nowrap px-4 py-4 text-gray-700 uppercase text-xs cursor-pointer">
                     <div className="flex">
                       <p className="bg-gradient-to-r from-pink-500 to-cyan-500 rounded-md text-white font-bold py-1.5 px-3">
-                        {p.tipo_compra}
+                        {p.tipo_compra === "" ? "No tiene ahún" : p.tipo_compra}
                       </p>
                     </div>
                   </td>
