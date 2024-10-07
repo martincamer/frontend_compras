@@ -49,71 +49,48 @@ export const OrdenDeCompra = () => {
   const { ordenes } = useOrdenesContext();
   const today = new Date();
   const firstDayOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
-  const lastDayOfMonth = new Date(today.getFullYear(), today.getMonth() + 1, 1);
+  const lastDayOfMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0); // Last day of the month
 
-  // Convertir las fechas en formato YYYY-MM-DD para los inputs tipo date
+  // Convert dates to YYYY-MM-DD format for date inputs
   const fechaInicioPorDefecto = firstDayOfMonth.toISOString().split("T")[0];
   const fechaFinPorDefecto = lastDayOfMonth.toISOString().split("T")[0];
 
   const [searchTerm, setSearchTerm] = useState("");
   const [startDate, setStartDate] = useState(fechaInicioPorDefecto);
   const [endDate, setEndDate] = useState(fechaFinPorDefecto);
-  const [tipoCompra, setTipoCompra] = useState(""); // Estado para el tipo de compra
+  const [tipoCompra, setTipoCompra] = useState(""); // State for purchase type
 
-  // Opciones de tipo de compra
-  const tiposCompra = ["a", "b", "c", "p"]; // Añade los tipos que tengas disponibles
+  // Options for purchase type
+  const tiposCompra = ["a", "b", "c", "p"]; // Add your available types
 
-  // Filtrar por proveedor
+  // Filter by provider
   const filteredOrdenes = ordenes.filter((orden) =>
     orden.proveedor.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  // Filtrar pedidos del mes actual
-  const currentMonth = new Date().getMonth() + 1;
-  const filteredByMonth = filteredOrdenes.filter((orden) => {
-    const createdAtMonth = new Date(orden.created_at).getMonth() + 1;
-    return createdAtMonth === currentMonth || !startDate; // Includes all if startDate is empty
-  });
-
-  // Filtrar por tipo de compra
-  const filteredByTipoCompra = filteredByMonth.filter((orden) =>
+  // Filter by purchase type
+  const filteredByTipoCompra = filteredOrdenes.filter((orden) =>
     tipoCompra ? orden.tipo_compra === tipoCompra : true
   );
 
-  // Filtrar por rango de fechas
+  // Filter by date range
   const filteredByDateRange = filteredByTipoCompra.filter((orden) => {
     const createdAt = new Date(orden.created_at);
+
     return (
       (!startDate || createdAt >= new Date(startDate)) &&
       (!endDate || createdAt <= new Date(endDate))
     );
   });
 
+  // Sort filtered orders by ID in descending order
+  const sortedFilteredOrders = filteredByDateRange.sort((a, b) => b.id - a.id);
+
   // Calcular total de precios finales
   const totalPrecioFinalFiltradas = filteredByDateRange.reduce(
     (total, orden) => total + parseFloat(orden.precio_final),
     0
   );
-
-  // Filtrar órdenes pendientes y completadas
-  const pendingOrders = filteredByDateRange.filter((orden) =>
-    orden.datos.productoSeleccionado.some(
-      (producto) =>
-        parseInt(producto.cantidad) !== parseInt(producto.cantidadFaltante)
-    )
-  );
-
-  const completedOrders = filteredByDateRange.filter(
-    (orden) =>
-      !orden.datos.productoSeleccionado.some(
-        (producto) =>
-          parseInt(producto.cantidad) !== parseInt(producto.cantidadFaltante)
-      )
-  );
-
-  // Ordenar pendientes y completadas por ID descendente
-  const sortedPendingOrders = pendingOrders.sort((a, b) => b.id - a.id);
-  const sortedCompletedOrders = completedOrders.sort((a, b) => b.id - a.id);
 
   // Concatenar las órdenes ordenadas
   // const sortedOrdenes = [...sortedPendingOrders, ...sortedCompletedOrders];
@@ -268,7 +245,7 @@ export const OrdenDeCompra = () => {
               </tr>
             </thead>
             <tbody className="text-xs capitalize font-medium">
-              {filteredByDateRange.map((p) => (
+              {sortedFilteredOrders.map((p) => (
                 <tr className="" key={p.id}>
                   <td>{p.id}</td>
                   <td className="uppercase">{p.proveedor}</td>
