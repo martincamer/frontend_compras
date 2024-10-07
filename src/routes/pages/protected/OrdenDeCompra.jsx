@@ -72,7 +72,7 @@ export const OrdenDeCompra = () => {
   const currentMonth = new Date().getMonth() + 1;
   const filteredByMonth = filteredOrdenes.filter((orden) => {
     const createdAtMonth = new Date(orden.created_at).getMonth() + 1;
-    return createdAtMonth === currentMonth;
+    return createdAtMonth === currentMonth || !startDate; // Includes all if startDate is empty
   });
 
   // Filtrar por tipo de compra
