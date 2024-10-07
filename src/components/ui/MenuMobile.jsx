@@ -31,15 +31,18 @@ export const MenuMobile = () => {
           isOpen ? "flex justify-between items-center" : ""
         }`}
       >
-        <button className="text-4xl" onClick={handleToggle}>
+        <button
+          className="text-4xl bg-gradient-to-r from-purple-500 to-pink-500 rounded-md px-1"
+          onClick={handleToggle}
+        >
           {isOpen ? (
-            <IoCloseOutline className="text-primary" />
+            <IoCloseOutline className="text-white" />
           ) : (
             <IoMenuOutline className="text-white" />
           )}
         </button>
         {isOpen && (
-          <p className="bg-primary py-1 px-2 rounded-xl text-sm text-white capitalize">
+          <p className="bg-gradient-to-r from-purple-500 to-pink-500 py-1 px-2 rounded-xl text-sm text-white capitalize">
             {user?.username}
           </p>
         )}

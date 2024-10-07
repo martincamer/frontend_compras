@@ -67,8 +67,11 @@ const ApexChart = ({ ordenesMensuales }) => {
   }, 0);
 
   return (
-    <div className="bg-white py-10 px-10 z-[100] border-gray-300 border relative rounded">
-      <div id="chart">
+    <div className="z-[100] relative rounded-2xl">
+      <div
+        id="chart"
+        className="bg-white border border-gray-300 rounded-2xl py-5 px-5"
+      >
         <ReactApexChart
           options={chartOptions}
           series={series}
@@ -76,7 +79,7 @@ const ApexChart = ({ ordenesMensuales }) => {
           height={350}
         />
       </div>
-      <div className="px-20 flex absolute left-0 max-md:px-2 max-md:hidden">
+      {/* <div className="px-20 flex absolute left-0 max-md:px-2 max-md:hidden">
         <div className="border py-3 px-8 shadow-lg bg-white rounded">
           <p className="font-semibold text-base text-gray-500">
             Total final en ordenes
@@ -88,7 +91,7 @@ const ApexChart = ({ ordenesMensuales }) => {
             })}
           </p>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 };

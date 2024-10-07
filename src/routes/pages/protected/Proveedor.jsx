@@ -8,7 +8,7 @@ import { useAuth } from "../../../context/AuthProvider";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 import client from "../../../api/axios";
 import { CgMenuRightAlt } from "react-icons/cg";
-import axios from 'axios'; 
+import axios from "axios";
 import {
   showSuccessToast,
   showSuccessToastError,
@@ -17,6 +17,7 @@ import { useProductosContext } from "../../../context/ProductosProvider";
 import { useObtenerId } from "../../../helpers/obtenerId";
 import { formatearDinero } from "../../../helpers/formatearDinero";
 import { ButtonLink } from "../../../components/ui/ButtonLink";
+import { FaMoneyBillWaveAlt } from "react-icons/fa";
 
 export const Proveedor = () => {
   const { user } = useAuth();
@@ -187,98 +188,59 @@ export const Proveedor = () => {
   return (
     <section className="w-full h-full min-h-screen max-h-full">
       <ButtonLink link={"/proveedores"} />
-      <div className="bg-gray-100 py-10 px-10 flex justify-between items-center max-md:flex-col max-md:gap-3">
-        <p className="font-bold text-gray-900 text-xl flex items-center gap-2">
-          Sector del proveedor{" "}
+      <div className="bg-gray-100 py-10 px-10 mb-10 flex justify-between items-center max-md:flex-col max-md:gap-3 max-md:mb-0">
+        <p className="font-extrabold text-2xl bg-gradient-to-r from-primary to-blue-500 bg-clip-text text-transparent">
+          Sector del proveedor.{" "}
           {/* <FaArrowRight className="text-gray-700 text-2xl" /> */}
         </p>
-        <p className="font-medium text-xl">
-          Proveedor obtenido{" "}
-          <span className="font-bold capitalize text-primary">
-            {datos.proveedor}
+        <p className="font-medium text-xl text-white">
+          <span className="font-extrabold text-2xl bg-gradient-to-r from-blue-500 to-green-500 bg-clip-text text-transparent capitalize">
+            Proveedor {datos.proveedor}.
           </span>
         </p>
       </div>
-      <div className="bg-white py-8 px-5">
-        <div className="dropdown dropdown-bottom dropdown-hover">
-          <button className="font-bold text-sm bg-blue-500 py-2 px-4 text-white rounded">
-            Ver estadisticas de compras
-          </button>
-          <ul
-            tabIndex={0}
-            className="dropdown-content z-[1] menu p-2 mt-0.5 rounded-md bg-gray-800 w-[800px] max-md:w-80"
-          >
-            <div className="py-5 px-5 grid grid-cols-3 gap-5 w-full max-md:grid-cols-1">
-              <div className="flex flex-col gap-1 bg-white rounded-md py-3 px-3">
-                <p className="font-medium text-sm text-blue-500">
-                  Total en comprobantes cargados del mes.
-                </p>
-                <p className="font-bold text-lg">
-                  {totalEnComprobantes.toLocaleString("es-AR", {
-                    style: "currency",
-                    currency: "ARS",
-                  })}
-                </p>
-              </div>
 
-              <div className="flex flex-col gap-1 bg-white rounded-md py-3 px-3">
-                <p className="font-medium text-sm">
-                  Total de deuda del proveedor.
-                </p>
-                <p className="font-bold text-lg text-red-500">
-                  {Number(datos?.total)?.toLocaleString("es-AR", {
-                    style: "currency",
-                    currency: "ARS",
-                  })}
-                </p>
-              </div>
-              <div className="flex flex-col gap-1 bg-white rounded-md py-3 px-3">
-                <p className="font-medium text-sm">
-                  Total en comprobantes filtrados.
-                </p>
-                <p className="font-bold text-lg text-blue-500">
-                  {Number(totalEnComprobantesFiltrados)?.toLocaleString(
-                    "es-AR",
-                    {
-                      style: "currency",
-                      currency: "ARS",
-                    }
-                  )}
-                </p>
-              </div>
-            </div>
-          </ul>
+      <div className="px-5 grid grid-cols-3 gap-2 max-md:grid-cols-1 max-md:pt-5">
+        <div className="bg-gray-800 py-5 px-5 rounded-md flex flex-col justify-center items-center shadow-md gap-2">
+          <p className="text-white font-medium text-xl">
+            Total deuda del proveedor.
+          </p>
+          <p className="font-extrabold text-3xl bg-gradient-to-r from-red-400 to-red-200 bg-clip-text text-transparent">
+            {formatearDinero(Number(datos?.total))}
+          </p>
+        </div>
+        <div className="bg-gray-800 py-5 px-5 rounded-md flex flex-col justify-center items-center shadow-md gap-2">
+          <p className="text-white font-medium text-xl">
+            Total en pagado a proveedor.
+          </p>
+          <p className="font-extrabold text-2xl bg-gradient-to-r from-blue-400 to-green-300 bg-clip-text text-transparent">
+            {formatearDinero(Number(totalEnComprobantesFiltrados))}
+          </p>
+        </div>
+        <div className="bg-gray-800 py-5 px-5 rounded-md flex flex-col justify-center items-center shadow-md gap-2">
+          <p className="text-white font-medium text-xl">
+            Total comprobantes cargados.
+          </p>
+          <p className="font-extrabold text-2xl bg-gradient-to-r from-yellow-400 to-pink-300 bg-clip-text text-transparent">
+            {productosFiltrados.length}
+          </p>
         </div>
       </div>
 
       {user.tipo === "admin" ? (
         ""
       ) : (
-        <div className="mx-5 py-2 flex max-md:flex-col gap-2 items-center max-md:items-start border-b-[1px] border-slate-300 pb-4 max-md:pb-4 max-md:mx-2 max-md:overflow-x-scroll scrollbar-hidden max-md:bg-white max-md:px-5 max-md:py-5 max-md:h-[10vh] max-md:overflow-y-auto">
+        <div className="mx-5 py-2 flex max-md:flex-col gap-2 items-center max-md:items-start border-b-[1px] border-slate-300 pb-4 max-md:pb-4 max-md:mx-2 max-md:overflow-x-scroll scrollbar-hidden max-md:bg-white max-md:px-5 max-md:py-5 max-md:h-[10vh] max-md:overflow-y-auto mt-10 max-md:mt-0">
           <button
-            // onClick={() => openComprobante()}
             onClick={() =>
               document
                 .getElementById("my_modal_cargar_comprobante_de_pago")
                 .showModal()
             }
-            className="text-sm text-white bg-primary py-2 px-6 rounded font-bold max-md:text-xs flex gap-2 items-center transition-all ease-linear"
+            className="bg-gradient-to-r from-primary to-blue-500 py-2 px-4 rounded-md text-white font-semibold text-sm max-md flex gap-2 items-center"
           >
-            Cargar nuevo comprobante de pago
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth={1.5}
-              stroke="currentColor"
-              className="w-6 h-6 max-md:hidden"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M3.75 9.776c.112-.017.227-.026.344-.026h15.812c.117 0 .232.009.344.026m-16.5 0a2.25 2.25 0 0 0-1.883 2.542l.857 6a2.25 2.25 0 0 0 2.227 1.932H19.05a2.25 2.25 0 0 0 2.227-1.932l.857-6a2.25 2.25 0 0 0-1.883-2.542m-16.5 0V6A2.25 2.25 0 0 1 6 3.75h3.879a1.5 1.5 0 0 1 1.06.44l2.122 2.12a1.5 1.5 0 0 0 1.06.44H18A2.25 2.25 0 0 1 20.25 9v.776"
-              />
-            </svg>
+            Cargar nuevo comprobante de pago{" "}
+            <FaMoneyBillWaveAlt className="text-xl" />
           </button>
           {/* <button
             onClick={() => {
@@ -354,7 +316,7 @@ export const Proveedor = () => {
                 </td>
                 <td>
                   {" "}
-                  <span className="bg-green-100/90 text-green-700 font-bold py-1.5 px-5 rounded">
+                  <span className="text-white bg-gradient-to-r from-green-500 to-blue-500 font-bold py-1.5 px-5 rounded">
                     {Number(p.total).toLocaleString("es-AR", {
                       style: "currency",
                       currency: "ARS",
@@ -454,7 +416,7 @@ const ImagenModal = ({ archivo }) => {
   return (
     <>
       <td
-        className="bg-primary text-white py-1.5 px-5 rounded font-bold text-xs cursor-pointer"
+        className="bg-gradient-to-r from-primary to-blue-500 text-white py-1.5 px-5 rounded font-bold text-xs cursor-pointer"
         onClick={() => setShowModal(true)}
       >
         Ver comprobante
@@ -587,16 +549,15 @@ export const ModalCargarComprobanteDePago = ({
     "Tarjeta de Débito",
     "Transferencia Bancaria",
     "Efectivo",
-    "Cheque",
     "Pago Móvil",
     "Criptomoneda",
     "PayPal",
-    "Apple Pay",
-    "Google Pay",
-    "Tarjeta de Regalo",
     "Débito Directo",
-    "Transferencia Electrónica",
-    "Giro Postal",
+    "Cheque",
+    "Cheque electronico",
+    "Cheque propio",
+    "Cheque de terceros",
+    "Depositos",
   ];
 
   return (
@@ -709,24 +670,10 @@ export const ModalCargarComprobanteDePago = ({
 
           <div className="mt-3">
             <button
-              className="py-1.5 px-6 bg-primary hover:shadow-md text-white transition-all rounded-md font-semibold text-sm flex gap-2 items-center mt-6"
+              className="py-1.5 px-4 bg-gradient-to-r from-purple-500 to-pink-500 hover:shadow-md text-white transition-all rounded-md font-semibold text-sm flex gap-2 items-center"
               type="submit"
             >
-              Cargar el pago
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth={1.5}
-                stroke="currentColor"
-                className="w-6 h-6"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M13.19 8.688a4.5 4.5 0 0 1 1.242 7.244l-4.5 4.5a4.5 4.5 0 0 1-6.364-6.364l1.757-1.757m13.35-.622 1.757-1.757a4.5 4.5 0 0 0-6.364-6.364l-4.5 4.5a4.5 4.5 0 0 0 1.242 7.244"
-                />
-              </svg>
+              Cargar el pago <FaMoneyBillWaveAlt className="text-xl" />
             </button>
           </div>
         </form>
@@ -746,6 +693,7 @@ const ModalEliminar = ({ idObtenida, setDatos, setComprobantes }) => {
       setComprobantes(res.data.comprobantes);
       setProveedores(res.data.proveedores);
 
+      console.log(res.data);
       showSuccessToastError("Comprobante eliminado");
 
       document.getElementById("my_modal_eliminar").close();
@@ -773,7 +721,7 @@ const ModalEliminar = ({ idObtenida, setDatos, setComprobantes }) => {
           <div className="font-semibold text-sm text-gray-400 text-center">
             REFERENCIA {idObtenida}
           </div>
-          <div className="font-semibold text-[#FD454D] text-lg text-center">
+          <div className="font-semibold text-lg text-center bg-gradient-to-r from-primary to-blue-500 bg-clip-text text-transparent">
             Eliminar el producto seleccionado..
           </div>
           <div className="text-sm text-gray-400 text-center mt-1">
@@ -783,7 +731,7 @@ const ModalEliminar = ({ idObtenida, setDatos, setComprobantes }) => {
             <button
               onClick={() => handleEliminarOrden(idObtenida)}
               type="button"
-              className="bg-red-500 py-1 px-4 text-center font-bold text-white text-sm rounded-md w-full"
+              className="bg-gradient-to-r from-red-600 to-yellow-500 py-1 px-4 text-center font-bold text-white text-sm rounded-md w-full"
             >
               Confirmar
             </button>{" "}
@@ -792,7 +740,7 @@ const ModalEliminar = ({ idObtenida, setDatos, setComprobantes }) => {
               onClick={() =>
                 document.getElementById("my_modal_eliminar").close()
               }
-              className="bg-orange-100 py-1 px-4 text-center font-bold text-orange-600 mt-2 text-sm rounded-md w-full"
+              className="bg-gradient-to-r from-green-500 to-blue-500 py-1 px-4 text-center font-bold text-white mt-2 text-sm rounded-md w-full"
             >
               Cancelar
             </button>

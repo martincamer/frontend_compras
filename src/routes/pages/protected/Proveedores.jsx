@@ -37,7 +37,10 @@ export const Proveedores = () => {
     return acumulado + totalNum;
   }, 0); // Inicia la acumulación desde cero
 
-  console.log(totalAcumulado);
+  const totalDeuda = proveedores.reduce((acumulado, item) => {
+    const totalNum = parseFloat(item.total); // Convertir a número
+    return acumulado + totalNum;
+  }, 0); // Inicia la acumulación desde cero
 
   const fechaActual = new Date();
   const numeroDiaActual = fechaActual.getDay(); // Obtener el día del mes actual
@@ -122,8 +125,8 @@ export const Proveedores = () => {
 
   return (
     <section className="w-full h-full min-h-screen max-h-full">
-      <div className="bg-gray-100 py-10 px-10 flex justify-between items-center max-md:flex-col max-md:gap-3">
-        <p className="font-bold text-gray-900 text-xl">
+      <div className="bg-gray-100 py-10 px-10 mb-10 flex justify-between items-center max-md:flex-col max-md:gap-3 max-md:mb-0">
+        <p className="font-extrabold text-2xl bg-gradient-to-r from-primary to-blue-500 bg-clip-text text-transparent">
           Sector de proveedores.
         </p>
         <button
@@ -131,57 +134,16 @@ export const Proveedores = () => {
             document.getElementById("my_modal_crear_proveedor").showModal()
           }
           type="button"
-          className="bg-primary py-1 px-4 rounded-md text-white font-semibold text-sm"
+          className="bg-gradient-to-r from-primary to-blue-500 py-2 px-4 rounded-md text-white font-semibold text-sm max-md:hidden"
         >
-          Crear nuevo proveedor
+          Cargar nuevo proveedor
         </button>
       </div>
 
-      <div className="bg-white py-5 px-5 my-5">
-        <div className="dropdown dropdown-bottom dropdown-hover">
-          <button className="font-bold text-sm bg-blue-500 py-2 px-4 text-white rounded">
-            Ver estadisticas de los proveedores
-          </button>
-          <ul
-            tabIndex={0}
-            className="dropdown-content z-[1] menu p-2 mt-0.5 bg-gray-800 rounded-md w-[800px] border max-md:w-80"
-          >
-            <div className="py-5 px-5 grid grid-cols-3 gap-5 w-full max-md:grid-cols-1">
-              <div className="flex flex-col gap-1 bg-white py-3 px-3 rounded-md">
-                <p className="font-medium text-sm">
-                  Total en proveedores/deuda
-                </p>
-                <p className="font-bold text-lg text-red-500">
-                  {precioTotal.toLocaleString("es-AR", {
-                    style: "currency",
-                    currency: "ARS",
-                  })}
-                </p>
-              </div>
-              <div className="flex flex-col gap-1 bg-white py-3 px-3 rounded-md">
-                <p className="font-medium text-sm">Total en comprobantes</p>
-                <p className="font-bold text-lg text-blue-500">
-                  {totalAcumulado.toLocaleString("es-AR", {
-                    style: "currency",
-                    currency: "ARS",
-                  })}
-                </p>
-              </div>{" "}
-              <div className="flex flex-col gap-1 bg-white py-3 px-3 rounded-md">
-                <p className="font-medium text-sm">Total de proveedores</p>
-                <p className="font-bold text-lg text-blue-500">
-                  {proveedores.length}
-                </p>
-              </div>
-            </div>
-          </ul>
-        </div>
-      </div>
-
-      <div className="mx-5 flex gap-2 items-center max-md:flex-col max-md:items-start border-b-[1px] border-slate-300 pb-4 max-md:pb-4 max-md:mx-5 max-md:bg-white max-md:px-4 max-md:py-5 max-md:h-[10vh] max-md:overflow-y-auto">
+      <div className="flex px-5 gap-2 pt-10 max-md:flex-col max-md:pt-5">
         <PDFDownloadLink
           fileName="PROVEEDORES - SALDOS."
-          className="text-white bg-green-500 py-1.5 px-6 rounded font-bold max-md:text-xs flex gap-2 items-center transition-all ease-linear text-sm"
+          className="bg-gradient-to-r from-purple-500 to-blue-500 py-2 px-4 rounded-md text-white font-semibold text-sm flex gap-2 items-center"
           document={<PdfProveedores datos={proveedores} />}
         >
           Descargar lista de proveedores
@@ -202,7 +164,7 @@ export const Proveedores = () => {
         </PDFDownloadLink>
 
         <button
-          className="text-white bg-primary py-2 px-6 rounded font-bold max-md:text-xs flex gap-2 items-center transition-all ease-linear text-sm"
+          className="bg-gradient-to-r from-green-400 to-blue-500 py-2.5 px-4 rounded-md text-white font-semibold text-sm"
           onClick={() =>
             document.getElementById("my_modal_proveedores").showModal()
           }
@@ -248,9 +210,9 @@ export const Proveedores = () => {
                   <span
                     className={`${
                       p.total > 0
-                        ? "bg-red-100/90 text-red-700"
-                        : "bg-green-100/90 text-green-700"
-                    } py-1 px-3 rounded font-bold`}
+                        ? "bg-gradient-to-r from-red-500 to-purple-500"
+                        : "bg-gradient-to-r from-green-500 to-blue-500"
+                    } py-1 px-3 rounded font-bold text-white`}
                   >
                     {Number(p.total).toLocaleString("es-AR", {
                       style: "currency",
@@ -263,9 +225,9 @@ export const Proveedores = () => {
                     <p
                       className={`${
                         p.total > 0
-                          ? "bg-orange-100/90 text-orange-700"
-                          : "bg-green-100/90 text-green-700"
-                      } py-1.5 px-3 rounded`}
+                          ? "bg-gradient-to-r from-red-500 to-purple-500"
+                          : "bg-gradient-to-r from-green-500 to-blue-500"
+                      } py-1.5 px-3 rounded text-white`}
                     >
                       {p.total > 0
                         ? "Deudas con el proveedor, pagar ahora"
@@ -278,9 +240,9 @@ export const Proveedores = () => {
                     <p
                       className={`${
                         p.total > 0
-                          ? "bg-orange-100 text-orange-500"
-                          : "bg-green-100 text-green-500"
-                      } py-1 px-3 rounded`}
+                          ? "bg-gradient-to-r from-red-500 to-purple-500"
+                          : "bg-gradient-to-r from-green-500 to-blue-500"
+                      } py-1 px-3 rounded text-white`}
                     >
                       {p.total > 0 ? "Debe" : "Limpio"}
                     </p>
@@ -354,6 +316,17 @@ export const Proveedores = () => {
             ))}
           </tbody>
         </table>
+      </div>
+
+      <div className="px-5 fixed bottom-3 right-0">
+        <div className="bg-gray-800 py-5 px-5 rounded-md">
+          <p className="font-semibold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
+            Deuda total proveedores.
+          </p>
+          <p className="font-extrabold bg-gradient-to-r from-red-400 to-purple-400 bg-clip-text text-transparent text-2xl">
+            {formatearDinero(totalDeuda)}
+          </p>
+        </div>
       </div>
 
       <ModalCrearProveedor />
@@ -528,7 +501,7 @@ export const ModalCrearProveedor = () => {
           <div>
             <button
               type="submit"
-              className="py-1.5 px-6 bg-primary hover:shadow-md text-white transition-all rounded-md font-semibold text-sm"
+              className="py-1.5 px-6 bg-gradient-to-r from-purple-500 to-pink-500 hover:shadow-md text-white transition-all rounded-md font-semibold text-sm"
             >
               Cargar el proveedor
             </button>
@@ -586,7 +559,7 @@ const ModalEliminar = ({ idObtenida }) => {
           <div className="font-semibold text-sm text-gray-400 text-center">
             REFERENCIA {idObtenida}
           </div>
-          <div className="font-semibold text-[#FD454D] text-lg text-center">
+          <div className="font-semibold text-lg text-center bg-gradient-to-r from-primary to-blue-500 bg-clip-text text-transparent">
             Eliminar el proveedor seleccionado..
           </div>
           <div className="tex´t-sm text-gray-400 text-center mt-1">
@@ -595,7 +568,7 @@ const ModalEliminar = ({ idObtenida }) => {
           <div className="mt-4 text-center w-full px-16">
             <button
               type="submit"
-              className="bg-red-500 py-1 px-4 text-center font-bold text-white text-sm rounded-md w-full"
+              className="bg-gradient-to-r from-red-600 to-yellow-500 py-1 px-4 text-center font-bold text-white text-sm rounded-md w-full"
             >
               Confirmar
             </button>{" "}
@@ -604,7 +577,7 @@ const ModalEliminar = ({ idObtenida }) => {
               onClick={() =>
                 document.getElementById("my_modal_eliminar").close()
               }
-              className="bg-orange-100 py-1 px-4 text-center font-bold text-orange-600 mt-2 text-sm rounded-md w-full"
+              className="bg-gradient-to-r from-green-500 to-blue-500 py-1 px-4 text-center font-bold text-white mt-2 text-sm rounded-md w-full"
             >
               Cancelar
             </button>

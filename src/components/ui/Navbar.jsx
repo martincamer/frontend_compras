@@ -87,13 +87,13 @@ export const Navbar = () => {
         </div>
       </div>
       <div className="flex items-center gap-4">
-        <div className="font-semibold text-blue-500 bg-white px-4 py-1 text-sm rounded-md max-md:hidden">
-          <span className="font-bold text-black">Usuario:</span>{" "}
-          <span className="capitalize">{user.username}</span>
+        <div className="font-semibold text-white bg-gradient-to-r from-yellow-500 to-pink-400 px-4 py-1 text-sm rounded-md max-md:hidden">
+          <span className="font-bold text-gray-700">Usuario</span>{" "}
+          <span className="capitalize">{user.username}.</span>
         </div>
         <button
           onClick={() => signout()}
-          className="font-semibold text-white bg-primary px-4 py-1 text-sm rounded-md"
+          className="font-semibold bg-gradient-to-r from-purple-500 to-pink-500 text-white px-4 py-1 text-sm rounded-md"
         >
           Salir de la cuenta
         </button>

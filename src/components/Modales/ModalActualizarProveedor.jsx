@@ -199,7 +199,7 @@ export const ModalActualizarProveedor = ({ idObtenida }) => {
           <div>
             <button
               type="submit"
-              className="py-1.5 px-6 bg-primary hover:shadow-md text-white transition-all rounded-md font-semibold text-sm"
+              className="py-1.5 px-6 bg-gradient-to-r from-purple-500 to-pink-500 hover:shadow-md text-white transition-all rounded-md font-semibold text-sm"
             >
               Actualizar el proveedor
             </button>

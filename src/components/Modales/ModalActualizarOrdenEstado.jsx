@@ -61,9 +61,9 @@ export const ModalActualizarOrdenEstado = ({ idObtenida }) => {
               <option value={"pendiente"} className="capitalize font-semibold">
                 Pendiente
               </option>
-              {/* <option value={"rechazada"} className="capitalize font-semibold">
+              <option value={"rechazada"} className="capitalize font-semibold">
                 Rechazada
-              </option> */}
+              </option>
               <option value={"aceptada"} className="capitalize font-semibold">
                 Aceptada
               </option>
@@ -71,7 +71,7 @@ export const ModalActualizarOrdenEstado = ({ idObtenida }) => {
           </div>
 
           <div className="mt-2">
-            <button className="bg-red-500/90 font-semibold text-white py-2 px-6 rounded-md  text-sm flex justify-between hover:bg-red-500">
+            <button className="py-1.5 px-6 bg-gradient-to-r from-primary to-pink-500 hover:shadow-md text-white transition-all rounded-md font-semibold text-sm">
               Actualizar el estado
             </button>
           </div>

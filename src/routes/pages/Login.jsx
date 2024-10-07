@@ -22,10 +22,10 @@ export const Login = () => {
   });
 
   return (
-    <section className="flex items-center gap-12 h-screen  bg-white relative max-md:px-5">
+    <section className="flex items-center gap-12 h-screen bg-white relative max-md:px-2">
       <form
         onSubmit={onSubmit}
-        className="rounded-md max-md:border-none max-md:w-full max-md:shadow-none max-md:px-1 flex w-1/3 flex-col gap-4 bg-white  px-10 py-12 border border-gray-300 mx-auto"
+        className="rounded-2xl max-md:w-full max-md:shadow-none flex w-1/3 flex-col gap-4 bg-gray-800  px-10 py-12 mx-auto max-md:px-4"
       >
         <div className="flex justify-center">
           <img
@@ -34,19 +34,25 @@ export const Login = () => {
           />
         </div>
         <div className="flex justify-center">
-          <h4 className="font-semibold text-2xl text-gray-900">
+          <h4 className="font-semibold text-2xl text-white max-md:text-xl">
             Te damos la bienvenida 👋
           </h4>
         </div>
-        <div className="text-base font-medium text-slate-500 text-center">
-          Ingresa al sistema de compras de{" "}
-          <span className="font-bold text-slate-600">Tecnohouse</span>.
+        <div className="text-xl font-medium text-center max-md:text-sm text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 to-violet-300">
+          Ingresa al sistema de Compras de{" "}
+          <span className="font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-blue-300">
+            Tecnohouse
+          </span>
+          .
         </div>
         {
-          <div>
-            <div className="flex flex-col gap-1">
+          <div className="w-full flex justify-center">
+            <div className="flex flex-col gap-1 items-start justify-center">
               {error?.map((e) => (
-                <span className="bg-red-100 rounded-xl px-3 text-center uppercase py-3 text-red-800 text-sm">
+                <span
+                  key={e}
+                  className="bg-gradient-to-r from-red-400 to-red-100 rounded-xl px-3 text-center uppercase py-3 text-red-900 text-sm font-extrabold "
+                >
                   {e}
                 </span>
               ))}
@@ -72,7 +78,7 @@ export const Login = () => {
         <div className="flex max-md:w-full">
           <Button type={"submit"} titulo={"Iniciar Sesión"} />
         </div>
-        <div className="text-sm font-medium text-center mt-5 w-1/2 mx-auto max-md:w-full">
+        <div className="text-sm font-medium text-center mt-5 w-1/2 mx-auto max-md:w-full text-gray-400">
           Si, pide a tu administrador que te cree un usuario 👀.
         </div>
       </form>

@@ -61,8 +61,11 @@ const ApexChartComprobantes = ({ comprobantes, total }) => {
   ];
 
   return (
-    <div className="bg-white py-10 px-10 z-[100] border-gray-300 border relative rounded">
-      <div id="chart">
+    <div className="z-[100] relative rounded-2xl">
+      <div
+        id="chart"
+        className="bg-white py-5 px-5 rounded-2xl border border-gray-300"
+      >
         <ReactApexChart
           options={chartOptions}
           series={series}
@@ -70,7 +73,7 @@ const ApexChartComprobantes = ({ comprobantes, total }) => {
           height={450}
         />
       </div>
-      <div className="px-20 flex absolute left-0 bottom-[-34px] max-md:hidden">
+      {/* <div className="px-20 flex absolute left-0 bottom-[-34px] max-md:hidden">
         <div className="border py-3 px-8 shadow-lg bg-white rounded">
           <p className="font-semibold text-base text-gray-500">
             Total final en pagos/comprobantes
@@ -82,7 +85,7 @@ const ApexChartComprobantes = ({ comprobantes, total }) => {
             })}
           </p>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 };

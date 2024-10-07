@@ -16,6 +16,8 @@ import { FaDeleteLeft } from "react-icons/fa6";
 export const Presupuestos = () => {
   const [presupuestos, setPresupuestos] = useState([]);
 
+  const { handleObtenerId, idObtenida } = useObtenerId();
+
   useEffect(() => {
     const loadData = async () => {
       const res = await client.get("/presupuestos");
@@ -125,18 +127,34 @@ export const Presupuestos = () => {
                       </p>
                     </div>
                   </td>
+                  <td>
+                    <div className="flex gap-2">
+                      <button
+                        onClick={() => {
+                          handleObtenerId(p.id),
+                            document
+                              .getElementById("my_modal_ver_presupuesto")
+                              .showModal();
+                        }}
+                        className="bg-primary py-2 px-4 rounded-md text-white font-bold"
+                      >
+                        Ver presupuesto
+                      </button>
+                    </div>
+                  </td>
                 </tr>
               ))}
             </tbody>
           </table>
         </div>
       </div>
-      <ModalCrearPresupuesto />
+      <ModalCrearPresupuesto setPresupuestos={setPresupuestos} />
+      <ModalVerPresupuesto />
     </section>
   );
 };
 
-export const ModalCrearPresupuesto = () => {
+export const ModalCrearPresupuesto = ({ setPresupuestos }) => {
   const { setOrdenes } = useOrdenesContext();
 
   const { proveedores, setProveedores } = useProductosContext();
@@ -250,7 +268,7 @@ export const ModalCrearPresupuesto = () => {
 
     const res = await client.post("/presupuestos", datosOrden);
 
-    setOrdenes(res.data.ordenes);
+    setPresupuestos(res.data.ordenes);
 
     setProductoSeleccionado([]);
     setProveedor("");
@@ -259,9 +277,9 @@ export const ModalCrearPresupuesto = () => {
     setLocalidad("");
     setProvincia("");
 
-    showSuccessToast("Orden finalizada..");
+    showSuccessToast("Presupuesto cargado correctamente..");
 
-    document.getElementById("my_modal_crear_orden_de_compra").close();
+    document.getElementById("my_modal_crear_presupuesto").close();
   };
 
   const [isOpenProducto, setIsOpenProducto] = useState(false);
@@ -585,6 +603,39 @@ export const ModalCrearPresupuesto = () => {
           setProductoSeleccionado={setProductoSeleccionado}
         />
         <ModalCrearProducto />
+      </div>
+    </dialog>
+  );
+};
+
+export const ModalVerPresupuesto = ({ idObtenida }) => {
+  const [presupuesto, setPresupuesto] = useState([]);
+
+  useEffect(() => {
+    const loadData = async () => {
+      const respuesta = await client.get(`/presupuestos/${idObtenida}`);
+
+      setPresupuesto(respuesta.data);
+    };
+    loadData();
+  }, [idObtenida]);
+
+  return (
+    <dialog id="my_modal_ver_presupuesto" className="modal">
+      <div className="modal-box max-w-full h-full scrollbar-hidden rounded-md  max-md:h-full max-md:w-full max-md:max-h-full max-md:rounded-none">
+        <form method="dialog">
+          {/* if there is a button in form, it will close the modal */}
+          <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
+            ✕
+          </button>
+        </form>
+        <div>
+          <div>
+            <p className="border border-gray-300 py-2 px-4 rounded-md font-bold">
+              Fecha de carga {presupuesto.created_at}
+            </p>
+          </div>
+        </div>
       </div>
     </dialog>
   );

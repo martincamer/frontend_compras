@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useOrdenesContext } from "../../context/OrdenesProvider";
 import { ModalViewProductos } from "./ModalViewProductos";
 import { formatearDinero } from "../../helpers/formatearDinero";
+import { FaFilePdf } from "react-icons/fa";
 
 export const ModalCompararPrecios = () => {
   const { ordenes } = useOrdenesContext();
@@ -108,8 +109,8 @@ export const ModalCompararPrecios = () => {
         </p>
 
         <form onSubmit={handleFiltrarClick}>
-          <div className="flex space-x-4">
-            <div className="border border-gray-300 rounded-md flex items-center gap-2 px-2 py-2">
+          <div className="flex space-x-4 max-md:flex-col max-md:gap-2 max-md:space-x-0">
+            <div className="border border-gray-300 rounded-md flex items-center gap-2 px-2 py-2 max-md:border-none max-md:py-0 max-md:px-0">
               <label className="text-sm font-bold" htmlFor="fechaInicio">
                 Fecha de inicio:
               </label>
@@ -121,7 +122,7 @@ export const ModalCompararPrecios = () => {
                 onChange={(e) => setFechaInicio(e.target.value)}
               />
             </div>
-            <div className="border border-gray-300 rounded-md flex items-center gap-2 px-2 py-2">
+            <div className="border border-gray-300 rounded-md flex items-center gap-2 px-2 py-2 max-md:border-none max-md:py-0 max-md:px-0">
               <label className="text-sm font-bold" htmlFor="fechaFin">
                 Fecha fin:
               </label>
@@ -136,7 +137,7 @@ export const ModalCompararPrecios = () => {
             <div className="flex items-center">
               <button
                 type="submit"
-                className="text-sm font-bold bg-primary py-2 px-4 text-white rounded-md"
+                className="text-sm font-bold bg-gradient-to-r from-primary to-purple-500 py-2 px-4 text-white rounded-md"
               >
                 Filtrar precios, compras.
               </button>
@@ -144,12 +145,12 @@ export const ModalCompararPrecios = () => {
           </div>
         </form>
 
-        <div className="py-4 flex gap-2 items-center">
+        <div className="py-4 flex gap-2 items-center max-md:flex-col max-md:items-start max-md:gap-3">
           <label htmlFor="categoria" className="font-bold text-sm">
             Seleccionar categoría:
           </label>
           <select
-            className="border border-gray-300 rounded-md px-2 py-1.5 text-sm font-semibold outline-none uppercase"
+            className="border border-gray-300 rounded-md px-2 py-1.5 text-sm font-semibold outline-none uppercase max-md:w-full"
             id="categoria"
             value={categoriaSeleccionada}
             onChange={handleCategoriaChange}
@@ -173,7 +174,7 @@ export const ModalCompararPrecios = () => {
             Seleccionar producto:
           </label>
           <select
-            className="border border-gray-300 rounded-md px-2 py-1.5 text-sm font-semibold outline-none uppercase"
+            className="border border-gray-300 rounded-md px-2 py-1.5 text-sm font-semibold outline-none uppercase max-md:w-full"
             id="producto"
             value={productoSeleccionado}
             onChange={handleProductoChange}
@@ -196,14 +197,14 @@ export const ModalCompararPrecios = () => {
               onClick={() =>
                 document.getElementById("my_modal_view_productos").showModal()
               }
-              className="font-semibold text-sm border-blue-500 text-blue-500 border rounded-md py-1.5 px-4 hover:shadow transition-all hover:border-primary hover:text-primary"
+              className="font-semibold text-sm  rounded-md py-1.5 px-4 hover:shadow transition-all text-white bg-gradient-to-r from-blue-500 to-purple-500 flex gap-2 items-center"
             >
-              Descargar o imprimir
+              Descargar o imprimir <FaFilePdf className="text-xl" />
             </button>
           </div>
         </div>
 
-        <ul className="grid grid-cols-4 gap-2  overflow-y-scroll scroll-bar px-2">
+        <ul className="grid grid-cols-4 gap-2  overflow-y-scroll scroll-bar px-2 max-md:grid-cols-1">
           {productosAMostrar.length > 0 ? (
             productosAMostrar.map((producto) => (
               <li

@@ -72,8 +72,11 @@ const ApexChartColumnProveedores = ({ proveedores, totalProveedores }) => {
   ];
 
   return (
-    <div className="bg-white py-10 px-10 z-[100] border-gray-300 border relative rounded">
-      <div className="overflow-y-scroll h-[50vh] scroll-bar" id="chart">
+    <div className=" z-[100] relative rounded-2xl">
+      <div
+        className="overflow-y-scroll h-[55vh] scroll-bar bg-white py-5 px-5 rounded-2xl border border-grary-300"
+        id="chart"
+      >
         <ReactApexChart
           options={chartOptions}
           series={series}
@@ -82,7 +85,7 @@ const ApexChartColumnProveedores = ({ proveedores, totalProveedores }) => {
         />
       </div>
 
-      <div className="px-20 flex absolute left-0 max-md:hidden">
+      {/* <div className="px-20 flex absolute left-0 max-md:hidden">
         <div className="border py-3 px-8 shadow-lg bg-white rounded">
           <p className="font-semibold text-base text-gray-500">
             Total deuda con proveedores
@@ -94,7 +97,7 @@ const ApexChartColumnProveedores = ({ proveedores, totalProveedores }) => {
             })}
           </p>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 };

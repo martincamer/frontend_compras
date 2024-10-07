@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useProductosContext } from "../../../context/ProductosProvider";
-import { FaSearch } from "react-icons/fa";
+import { FaEdit, FaSearch } from "react-icons/fa";
 import { FaDeleteLeft } from "react-icons/fa6";
 import { IoMdAdd } from "react-icons/io";
 import { formatearDinero } from "../../../helpers/formatearDinero";
@@ -14,6 +14,7 @@ import { CgMenuRightAlt } from "react-icons/cg";
 import { useObtenerId } from "../../../helpers/obtenerId";
 import { PDFDownloadLink, PDFViewer } from "@react-pdf/renderer";
 import { ListaDePrecios } from "../../../components/pdf/ListaDePrecios";
+import { MdDelete } from "react-icons/md";
 
 export const Productos = () => {
   const { productos, categorias } = useProductosContext();
@@ -36,27 +37,37 @@ export const Productos = () => {
 
   return (
     <section className="w-full h-full min-h-screen max-h-full">
-      <div className="bg-gray-100 py-10 px-10 flex justify-between items-center max-md:flex-col max-md:gap-3">
-        <p className="font-bold text-gray-900 text-xl">Sector de productos.</p>
+      <div className="bg-gray-100 py-10 px-10 mb-10 flex justify-between items-center max-md:flex-col max-md:gap-3 max-md:mb-0">
+        <p className="font-extrabold text-2xl bg-gradient-to-r from-primary to-blue-500 bg-clip-text text-transparent">
+          Sector de productos.
+        </p>
         <button
           onClick={() =>
             document.getElementById("my_modal_crear_producto").showModal()
           }
           type="button"
-          className="bg-primary py-1 px-4 rounded-md text-white font-semibold text-sm"
+          className="bg-gradient-to-r from-primary to-blue-500 py-2 px-4 rounded-md text-white font-semibold text-sm max-md:hidden"
         >
-          Crear nuevo producto
+          Cargar nuevo producto
         </button>
       </div>
 
-      <div className="px-5 pt-10 flex gap-2">
-        {" "}
+      <div className="px-5 pt-5 max-md:pt-0 flex gap-2 max-md:flex-col">
+        <button
+          onClick={() =>
+            document.getElementById("my_modal_crear_producto").showModal()
+          }
+          type="button"
+          className="bg-gradient-to-r from-primary to-blue-500 py-2 px-4 rounded-md text-white font-semibold text-sm md:hidden"
+        >
+          Cargar nuevo producto
+        </button>{" "}
         <button
           onClick={() =>
             document.getElementById("my_modal_categorias").showModal()
           }
           type="button"
-          className="bg-primary py-2 px-4 rounded-md text-white font-semibold text-sm"
+          className="bg-gradient-to-r from-purple-500 to-blue-500 py-2 px-4 rounded-md text-white font-semibold text-sm"
         >
           Ver categorias
         </button>
@@ -65,17 +76,10 @@ export const Productos = () => {
             document.getElementById("my_modal_ver_productos").showModal()
           }
           type="button"
-          className="bg-blue-500 py-2 px-4 rounded-md text-white font-semibold text-sm"
+          className="bg-gradient-to-r from-green-400 to-blue-500 py-2 px-4 rounded-md text-white font-semibold text-sm"
         >
           Ver lista de precios de productos $
         </button>
-        {/* <PDFDownloadLink
-          fileName="Lista de precios-sector-compras."
-          document={<ListaDePrecios datos={productos} />}
-          className="bg-blue-500 py-2 px-4 rounded-md text-white font-semibold text-sm"
-        >
-          Ver lista de precios
-        </PDFDownloadLink> */}
       </div>
 
       <div className="mt-5 mx-5 flex gap-2 max-md:flex-col">
@@ -109,7 +113,7 @@ export const Productos = () => {
       </div>
 
       <div>
-        <div className="max-md:overflow-x-auto mx-5 my-10 max-md:h-[100vh] scrollbar-hidden">
+        <div className="max-md:overflow-x-auto px-5 py-6 max-md:h-[100vh] scrollbar-hidden">
           <table className="table">
             <thead className="text-left font-bold text-gray-900 text-sm">
               <tr className="">
@@ -142,26 +146,26 @@ export const Productos = () => {
                       <button
                         type="button"
                         onClick={() => {
-                          handleObtenerId(p.id),
-                            document
-                              .getElementById("my_modal_actualizar_producto")
-                              .showModal();
+                          handleObtenerId(p.id);
+                          document
+                            .getElementById("my_modal_actualizar_producto")
+                            .showModal();
                         }}
-                        className="bg-blue-500 py-1 px-2 rounded-md text-xs font-semibold text-white"
+                        className="bg-gradient-to-r from-blue-800 to-blue-400 py-1 px-2 rounded-md text-xl font-semibold text-white"
                       >
-                        Actualizar
+                        <FaEdit />
                       </button>
                       <button
                         type="button"
                         onClick={() => {
-                          handleObtenerId(p.id),
-                            document
-                              .getElementById("my_modal_eliminar")
-                              .showModal();
+                          handleObtenerId(p.id);
+                          document
+                            .getElementById("my_modal_eliminar")
+                            .showModal();
                         }}
-                        className="bg-red-500 py-1 px-2 rounded-md text-xs font-semibold text-white"
+                        className="bg-gradient-to-r from-red-800 to-red-500 py-1 px-2 rounded-md text-xl font-semibold text-white"
                       >
-                        Eliminar
+                        <MdDelete />
                       </button>
                     </div>
                   </td>
@@ -352,7 +356,7 @@ export const ModalCrearProducto = () => {
           <div>
             <button
               type="submit"
-              className="py-1.5 px-6 bg-primary hover:shadow-md text-white transition-all rounded-md font-semibold text-sm"
+              className="py-1.5 px-6 bg-gradient-to-r from-purple-500 to-pink-500 hover:shadow-md text-white transition-all rounded-md font-semibold text-sm"
             >
               Crear nuevo producto
             </button>
@@ -493,7 +497,7 @@ export const ModalActualizarProducto = ({ idObtenida }) => {
           <div>
             <button
               type="submit"
-              className="py-1.5 px-6 bg-primary hover:shadow-md text-white transition-all rounded-md font-semibold text-sm"
+              className="py-1.5 px-6 bg-gradient-to-r from-purple-500 to-pink-500 hover:shadow-md text-white transition-all rounded-md font-semibold text-sm"
             >
               Actualizar el producto
             </button>
@@ -543,7 +547,7 @@ export const ModalCrearCategoria = () => {
           <div>
             <button
               type="submit"
-              className="py-1.5 px-6 bg-blue-500 hover:shadow-md text-white transition-all rounded-md font-semibold text-sm"
+              className="py-1.5 px-6 bg-gradient-to-r from-purple-500 to-pink-500 hover:shadow-md text-white transition-all rounded-md font-semibold text-sm"
             >
               Guardar la categoria
             </button>
@@ -588,7 +592,7 @@ export const ModalCategorias = () => {
               document.getElementById("my_modal_crear_categoria").showModal()
             }
             type="button"
-            className="bg-primary py-1 px-4 rounded-md text-white font-semibold text-sm"
+            className="py-1.5 px-6 bg-gradient-to-r from-purple-500 to-pink-500 hover:shadow-md text-white transition-all rounded-md font-semibold text-sm"
           >
             Crear nueva categoria
           </button>
@@ -598,8 +602,8 @@ export const ModalCategorias = () => {
           {categorias.map((c) => (
             <div className="flex gap-2 py-1 px-2 border border-gray-300 rounded-md text-sm font-bold uppercase justify-between items-center">
               {c.detalle}{" "}
-              <FaDeleteLeft
-                className="text-red-600 text-xl cursor-pointer"
+              <MdDelete
+                className="text-red-500 text-xl cursor-pointer"
                 onClick={() => HandleEliminarCategoria(c.id)}
               />
             </div>
@@ -654,7 +658,7 @@ const ModalEliminar = ({ idObtenida }) => {
           <div className="font-semibold text-sm text-gray-400 text-center">
             REFERENCIA {idObtenida}
           </div>
-          <div className="font-semibold text-[#FD454D] text-lg text-center">
+          <div className="font-semibold text-lg text-center bg-gradient-to-r from-primary to-blue-500 bg-clip-text text-transparent">
             Eliminar el producto seleccionado..
           </div>
           <div className="text-sm text-gray-400 text-center mt-1">
@@ -663,16 +667,16 @@ const ModalEliminar = ({ idObtenida }) => {
           <div className="mt-4 text-center w-full px-16">
             <button
               type="submit"
-              className="bg-red-500 py-1 px-4 text-center font-bold text-white text-sm rounded-md w-full"
+              className="bg-gradient-to-r from-red-600 to-yellow-500 py-1 px-4 text-center font-bold text-white text-sm rounded-md w-full"
             >
               Confirmar
-            </button>{" "}
+            </button>
             <button
               type="button"
               onClick={() =>
                 document.getElementById("my_modal_eliminar").close()
               }
-              className="bg-orange-100 py-1 px-4 text-center font-bold text-orange-600 mt-2 text-sm rounded-md w-full"
+              className="bg-gradient-to-r from-green-500 to-blue-500 py-1 px-4 text-center font-bold text-white mt-2 text-sm rounded-md w-full"
             >
               Cancelar
             </button>

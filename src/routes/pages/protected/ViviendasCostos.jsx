@@ -29,12 +29,14 @@ export const ViviendasCostos = () => {
 
   return (
     <section className="w-full h-full min-h-screen max-h-full">
-      <div className="bg-gray-100 py-10 px-10 flex justify-between items-center max-md:flex-col max-md:gap-3">
-        <p className="font-bold text-gray-900 text-xl">Sector de modelos.</p>
+      <div className="bg-gray-100 py-10 px-10 mb-10 flex justify-between items-center max-md:flex-col max-md:gap-3 max-md:mb-0">
+        <p className="font-extrabold text-2xl bg-gradient-to-r from-primary to-blue-500 bg-clip-text text-transparent">
+          Sector de modelos.
+        </p>
         <button
           onClick={() => document.getElementById("my_modal_modelo").showModal()}
           type="button"
-          className="bg-primary py-1 px-4 rounded-md text-white font-semibold text-sm"
+          className="bg-gradient-to-r from-primary to-blue-500 py-2 px-4 rounded-md text-white font-semibold text-sm max-md:hidden"
         >
           Crear nuevo modelo
         </button>
@@ -87,7 +89,7 @@ export const ViviendasCostos = () => {
                               .getElementById("my_modal_ver_modelo")
                               .showModal();
                         }}
-                        className="bg-blue-600 py-2 px-4 rounded-md text-white font-semibold"
+                        className="bg-gradient-to-r from-pink-500 to-cyan-500 rounded-md text-white font-bold py-1.5 px-3"
                       >
                         Ver modelo
                       </button>

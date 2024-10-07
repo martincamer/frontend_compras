@@ -125,6 +125,11 @@ export const ImprirmirComprobanteCompra = ({ datos }) => {
             style={{
               border: "1px solid #000",
               padding: "5px 12px",
+              display: "flex",
+              flexDirection: "column",
+              gap: "2",
+              justifyContent: "center",
+              alignItems: "center",
             }}
           >
             <Text
@@ -134,7 +139,17 @@ export const ImprirmirComprobanteCompra = ({ datos }) => {
                 fontFamily: "Montserrat",
               }}
             >
-              ORDEN DE COMPRAS
+              ORDEN DE COMPRA
+            </Text>
+            <Text
+              style={{
+                fontSize: "12px",
+                fontWeight: "bold",
+                fontFamily: "Montserrat",
+                textTransform: "uppercase",
+              }}
+            >
+              {datos.tipo_compra}
             </Text>
           </View>
           <View
