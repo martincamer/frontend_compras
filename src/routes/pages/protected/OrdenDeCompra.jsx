@@ -168,7 +168,7 @@ export const OrdenDeCompra = () => {
             Total ordenes cargados.
           </p>
           <p className="font-extrabold text-2xl bg-gradient-to-r from-yellow-400 to-pink-300 bg-clip-text text-transparent">
-            {filteredOrdenes.length}
+            {filteredByDateRange.length}
           </p>
         </div>
       </div>
