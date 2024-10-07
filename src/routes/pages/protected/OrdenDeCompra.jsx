@@ -116,7 +116,7 @@ export const OrdenDeCompra = () => {
   const sortedCompletedOrders = completedOrders.sort((a, b) => b.id - a.id);
 
   // Concatenar las órdenes ordenadas
-  const sortedOrdenes = [...sortedPendingOrders, ...sortedCompletedOrders];
+  // const sortedOrdenes = [...sortedPendingOrders, ...sortedCompletedOrders];
 
   const [isOpen, setIsOpen] = useState(false);
 
@@ -268,7 +268,7 @@ export const OrdenDeCompra = () => {
               </tr>
             </thead>
             <tbody className="text-xs capitalize font-medium">
-              {sortedOrdenes.map((p) => (
+              {filteredByDateRange.map((p) => (
                 <tr className="" key={p.id}>
                   <td>{p.id}</td>
                   <td className="uppercase">{p.proveedor}</td>
