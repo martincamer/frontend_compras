@@ -106,12 +106,12 @@ export const Home = () => {
   return (
     <section className="w-full min-h-full max-h-full flex flex-col gap-12 max-md:gap-8 h-[100vh] overflow-y-scroll scroll-bar max-md:h-auto">
       <div>
-        <div className="bg-gray-100 py-10 px-10 mb-10 flex justify-between items-center max-md:flex-col max-md:gap-3 max-md:mb-0">
+        <div className="bg-gray-100 py-10 px-10 mb-10 flex justify-between items-center max-md:flex-col max-md:gap-3 max-md:mb-0 ">
           <p className="font-extrabold text-2xl bg-gradient-to-r from-primary to-blue-500 bg-clip-text text-transparent ">
             Panel de compras.
           </p>
         </div>
-        <div className="flex gap-2 mb-5 w-1/4 max-md:w-full px-10">
+        <div className="flex gap-2 mb-5 w-1/4 max-md:w-full px-10 max-md:px-5 max-md:pt-5">
           <input
             value={fechaInicio}
             onChange={handleFechaInicioChange}
@@ -128,7 +128,7 @@ export const Home = () => {
           />
         </div>
 
-        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 md:gap-2 xl:grid-cols-3 px-10">
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 md:gap-2 xl:grid-cols-3 px-10 max-md:px-5">
           {/* Tarjeta 1 */}
           <Card
             description="Total en compras."

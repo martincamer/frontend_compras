@@ -53,7 +53,9 @@ export const MenuMobile = () => {
             onClick={() => setIsOpen(!isOpen)}
             to={"/"}
             className={`${
-              location.pathname === "/" ? "bg-primary text-white" : "bg-none"
+              location.pathname === "/"
+                ? "bg-gradient-to-r from-purple-500 to-pink-500 text-white"
+                : "bg-none"
             }   font-bold text-sm transition-all py-3 px-3`}
           >
             Inicio panel de compras
@@ -66,7 +68,7 @@ export const MenuMobile = () => {
               to={"/productos"}
               className={`${
                 location.pathname === "/productos"
-                  ? "bg-primary text-white"
+                  ? "bg-gradient-to-r from-purple-500 to-pink-500 text-white"
                   : "bg-none"
               }   font-bold text-sm transition-all py-3 px-3`}
             >
@@ -78,7 +80,7 @@ export const MenuMobile = () => {
             to={"/ordenes"}
             className={`${
               location.pathname === "/ordenes"
-                ? "bg-primary text-white"
+                ? "bg-gradient-to-r from-purple-500 to-pink-500 text-white"
                 : "bg-none"
             }   font-bold text-sm transition-all py-3 px-3`}
           >
@@ -89,7 +91,7 @@ export const MenuMobile = () => {
             to={"/proveedores"}
             className={`${
               location.pathname === "/proveedores"
-                ? "bg-primary text-white"
+                ? "bg-gradient-to-r from-purple-500 to-pink-500 text-white"
                 : "bg-none"
             }   font-bold text-sm transition-all py-3 px-3`}
           >
