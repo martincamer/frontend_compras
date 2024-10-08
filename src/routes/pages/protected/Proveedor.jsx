@@ -5,7 +5,12 @@ import { ModalComprobante } from "../../../components/Modales/ModalComprobante";
 import { ModalObtenerCompra } from "../../../components/Modales/ModalObtenerCompra";
 import { ModalEditarSaldoProveedor } from "../../../components/Modales/ModalEditarSaldoProveedor";
 import { useAuth } from "../../../context/AuthProvider";
-import { FaArrowLeft, FaArrowRight, FaCashRegister } from "react-icons/fa";
+import {
+  FaArrowLeft,
+  FaArrowRight,
+  FaCashRegister,
+  FaFile,
+} from "react-icons/fa";
 import client from "../../../api/axios";
 import { CgMenuRightAlt } from "react-icons/cg";
 import axios from "axios";
@@ -18,7 +23,7 @@ import { useObtenerId } from "../../../helpers/obtenerId";
 import { formatearDinero } from "../../../helpers/formatearDinero";
 import { ButtonLink } from "../../../components/ui/ButtonLink";
 import { FaMoneyBillWaveAlt } from "react-icons/fa";
-import { PDFViewer } from "@react-pdf/renderer";
+import { PDFDownloadLink, PDFViewer } from "@react-pdf/renderer";
 import { ImprimirPdfResumen } from "../../../components/pdf/ImprimirPdfResumen";
 
 export const Proveedor = () => {
@@ -252,7 +257,7 @@ export const Proveedor = () => {
       {user.tipo === "admin" ? (
         ""
       ) : (
-        <div className="mx-5 py-2 flex max-md:flex-col gap-2 items-center max-md:items-start border-b-[1px] border-slate-300 pb-4 max-md:pb-4 max-md:mx-2 max-md:overflow-x-scroll scrollbar-hidden max-md:bg-white max-md:px-5 max-md:py-5 max-md:h-[10vh] max-md:overflow-y-auto mt-10 max-md:mt-0">
+        <div className="mx-5 py-2 flex max-md:flex-col gap-2 items-center max-md:items-start border-b-[1px] border-slate-300 pb-4 max-md:pb-4 max-md:mx-2  max-md:bg-white max-md:px-5 max-md:py-5 mt-10 max-md:mt-0">
           <button
             onClick={() =>
               document
@@ -281,27 +286,27 @@ export const Proveedor = () => {
         </p>
       </div>
 
-      <div className="flex gap-4 mb-1 mt-6 mx-9 max-md:mx-5 items-center max-md:bg-white max-md:px-5 max-md:py-5">
-        <div className="flex gap-2 border-r pr-4 border-gray-300">
+      <div className="flex gap-4 mb-1 mt-6 mx-9 max-md:mx-0 items-center max-md:bg-white max-md:px-5 max-md:py-5 max-md:flex-col">
+        <div className="flex gap-2 border-r pr-4 border-gray-300 max-md:border-none max-md:pr-0 max-md:w-full">
           <input
             type="date"
             value={fechaInicial}
             onChange={(e) => setFechaInicial(e.target.value)}
-            className="px-4 py-2 border border-gray-300 rounded text-sm uppercase font-semibold outline-none"
+            className="px-4 py-2 border border-gray-300 rounded text-sm uppercase font-semibold outline-none max-md:w-full"
           />
 
           <input
             type="date"
             value={fechaFinal}
             onChange={(e) => setFechaFinal(e.target.value)}
-            className="px-4 py-2 border border-gray-300 rounded text-sm uppercase font-semibold outline-none"
+            className="px-4 py-2 border border-gray-300 rounded text-sm uppercase font-semibold outline-none max-md:w-full"
           />
         </div>
-        <div className="border-r pr-4 border-gray-300">
+        <div className="border-r pr-4 border-gray-300 max-md:border-none max-md:pr-0 max-md:w-full">
           <select
             value={filtroTipoPago}
             onChange={(e) => setFiltroTipoPago(e.target.value)}
-            className="px-4 py-2 border border-gray-300 rounded text-sm uppercase font-semibold outline-none"
+            className="px-4 py-2 border border-gray-300 rounded text-sm uppercase font-semibold outline-none max-md:w-full"
           >
             <option value="">Todos</option>
             {paymentTypes.map((tipo) => (
@@ -311,13 +316,13 @@ export const Proveedor = () => {
             ))}
           </select>
         </div>
-        <div>
+        <div className="max-md:w-full">
           <button
             onClick={() => {
               document.getElementById("my_modal_resumen_pagos").showModal();
             }}
             type="button"
-            className="font-bold bg-gradient-to-r from-pink-500 to-purple-500 text-white py-2 px-4 rounded-md text-sm flex gap-2 items-center"
+            className="font-bold bg-gradient-to-r from-pink-500 to-purple-500 text-white py-2 px-4 rounded-md text-sm flex gap-2 items-center max-md:w-full justify-between"
           >
             Descargar resumen de pagos <FaCashRegister className="text-xl" />
           </button>
@@ -506,7 +511,7 @@ export const ModalResumenPagos = ({
 }) => {
   return (
     <dialog id="my_modal_resumen_pagos" className="modal">
-      <div className="modal-box rounded-md max-w-6xl">
+      <div className="modal-box rounded-md max-w-6xl max-md:h-full max-md:max-h-full max-md:w-full max-md:rounded-none">
         <form method="dialog">
           {/* if there is a button in form, it will close the modal */}
           <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
@@ -514,14 +519,14 @@ export const ModalResumenPagos = ({
           </button>
         </form>
         <div className="py-8">
-          <div className="flex justify-between w-full">
+          <div className="flex justify-between w-full max-md:flex-col">
             <p className="font-bold text-lg">Descargar el resumen.</p>{" "}
             <p className="font-bold text-blue-500">
               <span className="text-gray-800">Desde</span> {fechaIncio}{" "}
               <span className="text-gray-800">Hasta</span> {fechFin}.
             </p>
           </div>
-          <PDFViewer className="h-[50vh] w-full mt-5">
+          <PDFViewer className="h-[50vh] w-full mt-5 max-md:hidden">
             <ImprimirPdfResumen
               proveedor={proveedor}
               datos={datos}
@@ -530,6 +535,23 @@ export const ModalResumenPagos = ({
               total={total}
             />
           </PDFViewer>
+          <div className="mt-5">
+            <PDFDownloadLink
+              fileName={`Resumen desde ${fechaIncio} hasta ${fechFin}`}
+              document={
+                <ImprimirPdfResumen
+                  proveedor={proveedor}
+                  datos={datos}
+                  fechaFin={fechFin}
+                  fechaInicio={fechaIncio}
+                  total={total}
+                />
+              }
+              className="bg-gradient-to-r from-primary to-blue-500 text-white px-2 py-1 rounded-md md:hidden flex gap-2  items-center justify-between font-semibold"
+            >
+              Descargar documento <FaFile className="text-xl" />
+            </PDFDownloadLink>
+          </div>
         </div>
       </div>
     </dialog>

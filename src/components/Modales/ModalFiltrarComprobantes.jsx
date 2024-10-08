@@ -1,4 +1,4 @@
-import { PDFViewer } from "@react-pdf/renderer";
+import { PDFDownloadLink, PDFViewer } from "@react-pdf/renderer";
 import { useState } from "react";
 import { ImprimirComprantePdf } from "../pdf/ImprimirComprantePdf";
 import client from "../../../src/api/axios";
@@ -123,7 +123,7 @@ export const ModalFiltrarComprobantes = ({}) => {
             </button>
           </div>
         </div>
-        <div className="w-full h-full mt-10">
+        <div className="w-full h-full mt-10 max-md:hidden">
           <PDFViewer className="w-full h-full">
             <ImprimirComprantePdf
               datos={agrupadosPorProveedor}
@@ -132,7 +132,7 @@ export const ModalFiltrarComprobantes = ({}) => {
             />
           </PDFViewer>
         </div>{" "}
-        <div className="w-full h-full mt-10">
+        <div className="w-full h-full mt-10 max-md:hidden">
           <PDFViewer className="w-full h-full">
             <ImprimirTodosLosComprobantes
               datos={ordenesBuscadas}
@@ -141,6 +141,33 @@ export const ModalFiltrarComprobantes = ({}) => {
               fechaInicio={fechaInicio}
             />
           </PDFViewer>
+        </div>
+        <div className="flex flex-col mt-5 gap-2">
+          <PDFDownloadLink
+            className="bg-gradient-to-r from-primary to-blue-500 text-white px-2 py-1 rounded-md md:hidden font-semibold text-center"
+            document={
+              <ImprimirComprantePdf
+                datos={agrupadosPorProveedor}
+                fechaFin={fechaFin}
+                fechaInicio={fechaInicio}
+              />
+            }
+          >
+            Descargar proveedor pagos
+          </PDFDownloadLink>
+          <PDFDownloadLink
+            className="bg-gradient-to-r from-green-500 to-blue-500 text-white px-2 py-1 rounded-md md:hidden font-semibold text-center"
+            document={
+              <ImprimirComprantePdf
+                datos={agrupadosPorProveedor}
+                fechaFin={fechaFin}
+                fechaInicio={fechaInicio}
+              />
+            }
+          >
+            {" "}
+            Descargar comprobantes pagados{" "}
+          </PDFDownloadLink>
         </div>
       </div>
     </dialog>
