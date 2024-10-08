@@ -25,7 +25,7 @@ export const Proveedores = () => {
 
   useEffect(() => {
     const obtenerDatos = async () => {
-      const respuesta = await client.get("/comprobantes-mes");
+      const respuesta = await client.get("/comprobantes");
 
       setComprobantesMensuales(respuesta.data);
     };
@@ -146,7 +146,7 @@ export const Proveedores = () => {
           className="bg-gradient-to-r from-purple-500 to-blue-500 py-2 px-4 rounded-md text-white font-semibold text-sm flex gap-2 items-center"
           document={<PdfProveedores datos={proveedores} />}
         >
-          Descargar lista de proveedores
+          Descargar saldos deudores
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -331,7 +331,7 @@ export const Proveedores = () => {
 
       <ModalCrearProveedor />
 
-      <ModalFiltrarComprobantes />
+      <ModalFiltrarComprobantes comprobantesMensuales={comprobantesMensuales} />
       <ModalActualizarProveedor idObtenida={idObtenida} />
       <ModalEliminar idObtenida={idObtenida} />
       <ModalVerDatos idObtenida={idObtenida} />

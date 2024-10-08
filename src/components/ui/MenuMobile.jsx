@@ -60,6 +60,7 @@ export const MenuMobile = () => {
           >
             Inicio panel de compras
           </Link>
+
           {user.tipo === "admin" ? (
             ""
           ) : (
@@ -75,6 +76,7 @@ export const MenuMobile = () => {
               Sector de productos
             </Link>
           )}
+
           <Link
             onClick={() => setIsOpen(!isOpen)}
             to={"/ordenes"}
@@ -86,6 +88,7 @@ export const MenuMobile = () => {
           >
             Sector ordenes de compra
           </Link>
+
           <Link
             onClick={() => setIsOpen(!isOpen)}
             to={"/proveedores"}

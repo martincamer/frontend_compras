@@ -5,7 +5,7 @@ import { ModalComprobante } from "../../../components/Modales/ModalComprobante";
 import { ModalObtenerCompra } from "../../../components/Modales/ModalObtenerCompra";
 import { ModalEditarSaldoProveedor } from "../../../components/Modales/ModalEditarSaldoProveedor";
 import { useAuth } from "../../../context/AuthProvider";
-import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
+import { FaArrowLeft, FaArrowRight, FaCashRegister } from "react-icons/fa";
 import client from "../../../api/axios";
 import { CgMenuRightAlt } from "react-icons/cg";
 import axios from "axios";
@@ -18,11 +18,16 @@ import { useObtenerId } from "../../../helpers/obtenerId";
 import { formatearDinero } from "../../../helpers/formatearDinero";
 import { ButtonLink } from "../../../components/ui/ButtonLink";
 import { FaMoneyBillWaveAlt } from "react-icons/fa";
+import { PDFViewer } from "@react-pdf/renderer";
+import { ImprimirPdfResumen } from "../../../components/pdf/ImprimirPdfResumen";
 
 export const Proveedor = () => {
   const { user } = useAuth();
   const [datos, setDatos] = useState([]);
+
   const [comprobantes, setComprobantes] = useState([]);
+
+  const [filtroTipoPago, setFiltroTipoPago] = useState("");
 
   const [isOpenComprobante, setOpenComprobante] = useState(false);
   const [isOpenComprobanteEliminar, setOpenComprobanteEliminar] =
@@ -122,22 +127,23 @@ export const Proveedor = () => {
     return pageNumbers;
   };
 
-  const filtrarPorFecha = (producto) => {
-    if (!fechaInicial || !fechaFinal) {
-      return true;
-    }
-
+  const filtrarPorFechaYTipoPago = (producto) => {
     const fechaProducto = new Date(producto.created_at).getTime();
     const fechaInicialTimestamp = new Date(fechaInicial).getTime();
     const fechaFinalTimestamp = new Date(fechaFinal).getTime();
 
-    return (
-      fechaProducto >= fechaInicialTimestamp &&
-      fechaProducto <= fechaFinalTimestamp
-    );
+    const cumpleFecha =
+      (!fechaInicial || fechaProducto >= fechaInicialTimestamp) &&
+      (!fechaFinal || fechaProducto <= fechaFinalTimestamp);
+
+    const cumpleTipoPago = !filtroTipoPago || producto.tipo === filtroTipoPago;
+
+    return cumpleFecha && cumpleTipoPago;
   };
 
-  const productosFiltrados = sortedComprobantes.filter(filtrarPorFecha);
+  const productosFiltrados = sortedComprobantes.filter(
+    filtrarPorFechaYTipoPago
+  );
 
   const resetFechas = () => {
     setFechaFinal("");
@@ -184,6 +190,22 @@ export const Proveedor = () => {
   const handleID = (id) => setObtenerId(id);
 
   const { handleObtenerId, idObtenida } = useObtenerId();
+
+  const paymentTypes = [
+    "Tarjeta de Crédito",
+    "Tarjeta de Débito",
+    "Transferencia Bancaria",
+    "Efectivo",
+    "Pago Móvil",
+    "Criptomoneda",
+    "PayPal",
+    "Débito Directo",
+    "Cheque",
+    "Cheque electronico",
+    "Cheque propio",
+    "Cheque de terceros",
+    "Depositos",
+  ];
 
   return (
     <section className="w-full h-full min-h-screen max-h-full">
@@ -242,28 +264,14 @@ export const Proveedor = () => {
             Cargar nuevo comprobante de pago{" "}
             <FaMoneyBillWaveAlt className="text-xl" />
           </button>
-          {/* <button
-            onClick={() => {
-              handleID(params.id), openModal();
-            }}
-            className=" text-sm text-white bg-green-500 py-2 px-6 rounded font-semibold max-md:text-xs flex gap-2 items-center transition-all ease-linear"
+          <button
+            onClick={() =>
+              document.getElementById("my_modal_filtrar_pagos").showModal()
+            }
+            className="bg-gradient-to-r from-green-500 to-blue-500 py-2 px-4 rounded-md text-white font-semibold text-sm max-md flex gap-2 items-center"
           >
-            Editar el saldo del proveedor
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth={1.5}
-              stroke="currentColor"
-              className="w-6 h-6 max-md:hidden"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M12 6v12m-3-2.818.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.003-.659-1.106-.879-1.106-2.303 0-3.182s2.9-.879 4.006 0l.415.33M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
-              />
-            </svg>
-          </button> */}
+            Filtrar pagos por categoria{" "}
+          </button>
         </div>
       )}
 
@@ -274,19 +282,46 @@ export const Proveedor = () => {
       </div>
 
       <div className="flex gap-4 mb-1 mt-6 mx-9 max-md:mx-5 items-center max-md:bg-white max-md:px-5 max-md:py-5">
-        <input
-          type="date"
-          value={fechaInicial}
-          onChange={(e) => setFechaInicial(e.target.value)}
-          className="px-4 py-2 border border-gray-300 rounded text-sm uppercase font-semibold"
-        />
+        <div className="flex gap-2 border-r pr-4 border-gray-300">
+          <input
+            type="date"
+            value={fechaInicial}
+            onChange={(e) => setFechaInicial(e.target.value)}
+            className="px-4 py-2 border border-gray-300 rounded text-sm uppercase font-semibold outline-none"
+          />
 
-        <input
-          type="date"
-          value={fechaFinal}
-          onChange={(e) => setFechaFinal(e.target.value)}
-          className="px-4 py-2 border border-gray-300 rounded text-sm uppercase font-semibold"
-        />
+          <input
+            type="date"
+            value={fechaFinal}
+            onChange={(e) => setFechaFinal(e.target.value)}
+            className="px-4 py-2 border border-gray-300 rounded text-sm uppercase font-semibold outline-none"
+          />
+        </div>
+        <div className="border-r pr-4 border-gray-300">
+          <select
+            value={filtroTipoPago}
+            onChange={(e) => setFiltroTipoPago(e.target.value)}
+            className="px-4 py-2 border border-gray-300 rounded text-sm uppercase font-semibold outline-none"
+          >
+            <option value="">Todos</option>
+            {paymentTypes.map((tipo) => (
+              <option className="font-semibold text-xs" key={tipo} value={tipo}>
+                {tipo}
+              </option>
+            ))}
+          </select>
+        </div>
+        <div>
+          <button
+            onClick={() => {
+              document.getElementById("my_modal_resumen_pagos").showModal();
+            }}
+            type="button"
+            className="font-bold bg-gradient-to-r from-pink-500 to-purple-500 text-white py-2 px-4 rounded-md text-sm flex gap-2 items-center"
+          >
+            Descargar resumen de pagos <FaCashRegister className="text-xl" />
+          </button>
+        </div>
       </div>
 
       <div className="max-md:overflow-x-auto mx-5 my-5 max-md:h-[100vh] scrollbar-hidden">
@@ -399,6 +434,13 @@ export const Proveedor = () => {
         idObtenida={idObtenida}
         setDatos={setDatos}
       />
+      <ModalResumenPagos
+        datos={productosFiltrados}
+        fechFin={fechaFinal}
+        fechaIncio={fechaInicial}
+        proveedor={datos}
+        total={totalEnComprobantesFiltrados}
+      />
     </section>
   );
 };
@@ -452,6 +494,45 @@ const ImagenModal = ({ archivo }) => {
         </div>
       )}
     </>
+  );
+};
+
+export const ModalResumenPagos = ({
+  datos,
+  fechaIncio,
+  fechFin,
+  proveedor,
+  total,
+}) => {
+  return (
+    <dialog id="my_modal_resumen_pagos" className="modal">
+      <div className="modal-box rounded-md max-w-6xl">
+        <form method="dialog">
+          {/* if there is a button in form, it will close the modal */}
+          <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
+            ✕
+          </button>
+        </form>
+        <div className="py-8">
+          <div className="flex justify-between w-full">
+            <p className="font-bold text-lg">Descargar el resumen.</p>{" "}
+            <p className="font-bold text-blue-500">
+              <span className="text-gray-800">Desde</span> {fechaIncio}{" "}
+              <span className="text-gray-800">Hasta</span> {fechFin}.
+            </p>
+          </div>
+          <PDFViewer className="h-[50vh] w-full mt-5">
+            <ImprimirPdfResumen
+              proveedor={proveedor}
+              datos={datos}
+              fechaFin={fechFin}
+              fechaInicio={fechaIncio}
+              total={total}
+            />
+          </PDFViewer>
+        </div>
+      </div>
+    </dialog>
   );
 };
 

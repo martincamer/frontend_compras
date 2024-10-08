@@ -8,6 +8,13 @@ export const formatearFecha = (fecha) =>
     second: "2-digit",
   });
 
+export const formatearFechaNormal = (fecha) =>
+  new Date(fecha).toLocaleString("es-AR", {
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  });
+
 export const formatearMesAño = (fecha) =>
   new Date(fecha).toLocaleString("es-AR", {
     year: "numeric",

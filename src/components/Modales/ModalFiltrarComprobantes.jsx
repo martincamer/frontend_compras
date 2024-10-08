@@ -2,6 +2,7 @@ import { PDFViewer } from "@react-pdf/renderer";
 import { useState } from "react";
 import { ImprimirComprantePdf } from "../pdf/ImprimirComprantePdf";
 import client from "../../../src/api/axios";
+import { ImprimirTodosLosComprobantes } from "../pdf/ImprimirTodosLosComprobantes";
 
 export const ModalFiltrarComprobantes = ({}) => {
   const fechaActual = new Date();
@@ -64,7 +65,6 @@ export const ModalFiltrarComprobantes = ({}) => {
     return acc;
   }, []);
 
-  console.log(agrupadosPorProveedor);
   return (
     <dialog id="my_modal_proveedores" className="modal">
       <div className="modal-box max-w-6xl h-full rounded-md scrollbar-hidden">
@@ -127,6 +127,16 @@ export const ModalFiltrarComprobantes = ({}) => {
           <PDFViewer className="w-full h-full">
             <ImprimirComprantePdf
               datos={agrupadosPorProveedor}
+              fechaFin={fechaFin}
+              fechaInicio={fechaInicio}
+            />
+          </PDFViewer>
+        </div>{" "}
+        <div className="w-full h-full mt-10">
+          <PDFViewer className="w-full h-full">
+            <ImprimirTodosLosComprobantes
+              datos={ordenesBuscadas}
+              datosAgrupados={agrupadosPorProveedor}
               fechaFin={fechaFin}
               fechaInicio={fechaInicio}
             />
