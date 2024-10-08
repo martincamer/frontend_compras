@@ -51,8 +51,13 @@ export const Navbar = () => {
                 <Link to={"/ordenes"}>Sector ordenes de compra</Link>
               </li>{" "}
               <li className="hover:bg-gray-800 hover:text-white rounded-md">
-                <Link to={"/presupuestos"}>Sector de presupuestos</Link>
+                <Link to={"/productos-comparativas"}>
+                  Sector productos comparativas
+                </Link>
               </li>{" "}
+              {/* <li className="hover:bg-gray-800 hover:text-white rounded-md">
+                <Link to={"/presupuestos"}>Sector de presupuestos</Link>
+              </li>{" "} */}
               {user.fabrica === "parque industrial" && (
                 <>
                   <li className="hover:bg-gray-800 hover:text-white rounded-md">

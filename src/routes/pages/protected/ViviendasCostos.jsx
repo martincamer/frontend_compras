@@ -79,7 +79,7 @@ export const ViviendasCostos = () => {
                                 .getElementById("my_modal_eliminar")
                                 .showModal();
                           }}
-                          className="text-2xl text-red-500"
+                          className="text-4xl rounded-md bg-gradient-to-r  text-white px-2 py-2 from-yellow-400 to-red-500"
                         />
                       </button>
                       <button
@@ -188,12 +188,12 @@ const VerModelo = ({ idObtenida }) => {
         </form>
         <h3 className="font-bold text-lg">
           Modelo obtenido{" "}
-          <span className="text-primary capitalize">
+          <span className="bg-gradient-to-r from-primary to-blue-500 bg-clip-text text-transparent capitalize">
             {vivienda.nombre_modelo}.
           </span>
         </h3>
 
-        <h2 className="mt-4 underline font-bold text-blue-500 text-lg">
+        <h2 className="mt-4 font-bold bg-gradient-to-r bg-clip-text text-transparent from-blue-500 to-green-500 text-lg">
           Materia Prima
         </h2>
         <table className="table">
@@ -227,7 +227,7 @@ const VerModelo = ({ idObtenida }) => {
           </span>
         </div>
 
-        <h2 className="mt-4 underline font-bold text-blue-500 text-lg">
+        <h2 className="mt-4 font-bold bg-gradient-to-r bg-clip-text text-transparent from-blue-500 to-green-500 text-lg">
           Bienes de uso
         </h2>
         <table className="table">
@@ -261,9 +261,8 @@ const VerModelo = ({ idObtenida }) => {
           </span>
         </div>
 
-        <div className="mt-4 bg-gray-800 py-5 px-5">
-          <strong className="text-white">Subtotal Bienes de uso: </strong>
-          <span className="bg-blue-50 text-blue-500 py-1 px-2 rounded-md font-bold">
+        <div className="mt-4 bg-gray-800 py-5 px-5 rounded-md">
+          <span className="bg-gradient-to-r from-green-400 to-blue-300 bg-clip-text text-transparent rounded-md font-extrabold text-2xl">
             {formatearDinero(subtotalBienesDeUso + subtotalMateriaPrima)}
           </span>
         </div>
@@ -273,7 +272,7 @@ const VerModelo = ({ idObtenida }) => {
             onClick={() =>
               document.getElementById("my_modal_imprimir_vivienda").showModal()
             }
-            className="font-bold bg-primary py-2 px-4 rounded-md text-white flex gap-2 items-center"
+            className="font-bold bg-gradient-to-r from-pink-500 to-blue-500 py-2 px-4 rounded-md text-white flex gap-2 items-center"
           >
             Descargar e imprimir pdf <IoCloudDone className="text-xl" />
           </button>
@@ -403,7 +402,7 @@ const ModalCrearModelo = ({ setViviendas }) => {
                   .getElementById("my_modal_seleccionar_producto_materia_prima")
                   .showModal()
               }
-              className="bg-primary py-2 px-4 rounded-md text-white font-semibold text-sm"
+              className="font-bold bg-gradient-to-r from-blue-500 to-green-500 py-2 px-4 rounded-md text-white flex gap-2 items-center text-sm"
               type="button"
             >
               Seleccionar producto materia prima
@@ -434,7 +433,7 @@ const ModalCrearModelo = ({ setViviendas }) => {
                     <td>{p.categoria}</td>
                     <td>
                       <div className="flex">
-                        <p className="font-bold bg-primary py-1 px-4 rounded-md text-white">
+                        <p className="font-bold  bg-gradient-to-r from-pink-500 to-yellow-500 py-1 px-4 rounded-md text-white">
                           {formatearDinero(Number(p.precio_und))}
                         </p>
                       </div>
@@ -460,7 +459,7 @@ const ModalCrearModelo = ({ setViviendas }) => {
                   .getElementById("my_modal_seleccionar_producto_bienes_de_uso")
                   .showModal()
               }
-              className="bg-primary py-2 px-4 rounded-md text-white font-semibold text-sm"
+              className="font-bold bg-gradient-to-r from-blue-500 to-green-500 py-2 px-4 rounded-md text-white flex gap-2 items-center text-sm"
               type="button"
             >
               Seleccionar producto bienes de uso
@@ -491,7 +490,7 @@ const ModalCrearModelo = ({ setViviendas }) => {
                     <td>{p.categoria}</td>
                     <td>
                       <div className="flex">
-                        <p className="font-bold bg-primary py-1 px-4 rounded-md text-white">
+                        <p className="font-bold  bg-gradient-to-r from-pink-500 to-yellow-500 py-1 px-4 rounded-md text-white">
                           {formatearDinero(Number(p.precio_und))}
                         </p>
                       </div>
@@ -520,10 +519,10 @@ const ModalCrearModelo = ({ setViviendas }) => {
           </div>
           <div className="mt-5">
             <button
-              className="bg-blue-500 py-2 px-4 rounded-md text-white font-bold text-sm"
+              className="font-bold bg-gradient-to-r from-pink-500 to-blue-500 py-2 px-4 rounded-md text-white flex gap-2 items-center"
               type="submit"
             >
-              Crear modelo de vivienda.
+              Cargar el modelo de vivienda
             </button>
           </div>
         </form>
@@ -1080,7 +1079,7 @@ const ModalEliminar = ({ idObtenida, setViviendas }) => {
           <div className="font-semibold text-sm text-gray-400 text-center">
             REFERENCIA {idObtenida}
           </div>
-          <div className="font-semibold text-[#FD454D] text-lg text-center">
+          <div className="font-semibold text-lg text-center bg-gradient-to-r from-primary to-blue-500 bg-clip-text text-transparent">
             Eliminar la vivienda seleccionada..
           </div>
           <div className="text-sm text-gray-400 text-center mt-1">
@@ -1089,7 +1088,7 @@ const ModalEliminar = ({ idObtenida, setViviendas }) => {
           <div className="mt-4 text-center w-full px-16">
             <button
               type="submit"
-              className="bg-red-500 py-1 px-4 text-center font-bold text-white text-sm rounded-md w-full"
+              className="bg-gradient-to-r from-red-600 to-yellow-500 py-1 px-4 text-center font-bold text-white text-sm rounded-md w-full"
             >
               Confirmar
             </button>{" "}
@@ -1098,7 +1097,7 @@ const ModalEliminar = ({ idObtenida, setViviendas }) => {
               onClick={() =>
                 document.getElementById("my_modal_eliminar").close()
               }
-              className="bg-orange-100 py-1 px-4 text-center font-bold text-orange-600 mt-2 text-sm rounded-md w-full"
+              className="bg-gradient-to-r from-green-500 to-blue-500 py-1 px-4 text-center font-bold text-white mt-2 text-sm rounded-md w-full"
             >
               Cancelar
             </button>
