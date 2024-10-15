@@ -98,8 +98,8 @@ export const ModalCompararPrecios = () => {
     const dataParaExportar = productosAMostrar
       .map((producto) => {
         return producto.proveedores.map((proveedor) => ({
-          DESCRIPCIÓN: producto.detalle,
-          PROVEEDOR: proveedor.nombre,
+          DESCRIPCIÓN: producto.detalle.toUpperCase(),
+          PROVEEDOR: proveedor.nombre.toUpperCase(),
           "PRECIO UNITARIO": proveedor.precio_und,
           FECHA: new Date(proveedor.fecha).toLocaleDateString(),
         }));
