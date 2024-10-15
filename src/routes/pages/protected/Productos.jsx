@@ -114,7 +114,7 @@ export const Productos = () => {
 
       <div>
         <div className="max-md:overflow-x-auto px-5 py-6 max-md:h-[100vh] scrollbar-hidden">
-          <table className="table">
+          <table className="table bg-gray-200 rounded-t-xl">
             <thead className="text-left font-bold text-gray-900 text-sm">
               <tr className="">
                 <th>Codigo</th>
@@ -125,9 +125,12 @@ export const Productos = () => {
               </tr>
             </thead>
 
-            <tbody className="text-xs capitalize font-medium">
+            <tbody className="text-xs font-medium capitalize bg-white">
               {filteredProducts.map((p) => (
-                <tr key={p.id}>
+                <tr
+                  className="hover:bg-gray-100/40 transition-all cursor-pointer"
+                  key={p.id}
+                >
                   <td>{p.id}</td>
                   <td className="uppercase">{p.detalle}</td>
                   <td className="uppercase">{p.categoria}</td>

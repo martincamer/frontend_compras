@@ -230,7 +230,7 @@ export const OrdenDeCompra = () => {
 
       <div>
         <div className="max-md:overflow-x-auto mx-5 my-10 max-md:h-[100vh] scrollbar-hidden">
-          <table className="table">
+          <table className="table bg-gray-200 rounded-t-xl">
             <thead className="text-left font-bold text-gray-900 text-sm">
               <tr>
                 <th>Numero</th>
@@ -244,9 +244,12 @@ export const OrdenDeCompra = () => {
                 <th>Acciones</th>
               </tr>
             </thead>
-            <tbody className="text-xs capitalize font-medium">
+            <tbody className="text-xs font-medium capitalize bg-white">
               {sortedFilteredOrders.map((p) => (
-                <tr className="" key={p.id}>
+                <tr
+                  className="hover:bg-gray-100/40 transition-all cursor-pointer"
+                  key={p.id}
+                >
                   <td>{p.id}</td>
                   <td className="uppercase">{p.proveedor}</td>
                   <td>N° {p.numero_factura}</td>

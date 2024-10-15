@@ -6,7 +6,6 @@ import { NotFound } from "./routes/pages/protected/NotFound";
 import { Login } from "./routes/pages/Login";
 import { Register } from "./routes/pages/Register";
 import { Home } from "./routes/pages/protected/Home";
-import { SideBar } from "./components/sidebar/Sidebar";
 import { ProductosProvider } from "./context/ProductosProvider";
 import { Productos } from "./routes/pages/protected/Productos";
 import { NavbarStatick } from "./components/ui/NavbarStatick";
@@ -28,11 +27,7 @@ import { Presupuestos } from "./routes/pages/protected/Presupuestos";
 ////////////////////////////////////ADMIN//////////////////////////////////////////////
 import { HomeAdmin } from "./routes/pages/protectedAdmin/HomeAdmin";
 import { OrdenDeCompraAdmin } from "./routes/pages/protectedAdmin/OrdenDeCompraAdmin";
-import { OrdenDeCompraRegistrosAdmin } from "./routes/pages/protectedAdmin/OrdenDeCompraRegistrosAdmin";
-import { OrdenDeCompraCheckoutAdmin } from "./routes/pages/protectedAdmin/OrdenDeCompraCheckoutAdmin";
 import { ProveedoresAdmin } from "./routes/pages/protectedAdmin/ProveedoresAdmin";
-import { ProductosOrdenesFiltradorAdmin } from "./routes/pages/protectedAdmin/ProductosOrdenesFiltradorAdmin";
-import { OrdenDeCompraRegistrosDosAdmin } from "./routes/pages/protectedAdmin/OrdenDeCompraRegistrosDosAdmin";
 import { AdministrarCuentas } from "./routes/pages/protectedAdmin/AdministrarCuentas";
 ///////////////////////////////////ADMIN//////////////////////////////////////////////
 
@@ -45,6 +40,7 @@ import { MenuMobile } from "./components/ui/MenuMobile";
 import { Navbar } from "./components/ui/Navbar";
 import { ViviendasCostos } from "./routes/pages/protected/ViviendasCostos";
 import { ProductosComparativas } from "./routes/pages/protected/ProductosComparativas";
+import { FaXRay } from "react-icons/fa";
 
 function App() {
   const { isAuth, user } = useAuth();
@@ -73,33 +69,6 @@ function App() {
       <Route index path="/orden/:id" element={<ViewOrden />} />
       <Route index path="/proveedores" element={<ProveedoresAdmin />} />
       <Route index path="/proveedores/:id" element={<Proveedor />} />
-      <Route index path="/pdf-productos" element={<ViewPdfProducto />} />
-      <Route
-        index
-        path="/pdf-comprobante/:id"
-        element={<ViewComprobantePdf />}
-      />
-      <Route
-        index
-        path="/ordenes-checkout"
-        element={<OrdenDeCompraCheckoutAdmin />}
-      />
-      <Route index path="/orden-checkout/:id" element={<ViewOrdenCheckout />} />
-      <Route
-        index
-        path="/registro-ordenes"
-        element={<OrdenDeCompraRegistrosAdmin />}
-      />
-      <Route
-        index
-        path="/registro-ordenes-checkout"
-        element={<OrdenDeCompraRegistrosDosAdmin />}
-      />
-      <Route
-        index
-        path="/productos-ordenes"
-        element={<ProductosOrdenesFiltradorAdmin />}
-      />
     </>
   );
 

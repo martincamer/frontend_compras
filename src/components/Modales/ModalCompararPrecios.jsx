@@ -3,6 +3,7 @@ import { useOrdenesContext } from "../../context/OrdenesProvider";
 import { ModalViewProductos } from "./ModalViewProductos";
 import { formatearDinero } from "../../helpers/formatearDinero";
 import { FaFilePdf } from "react-icons/fa";
+import XLSX from "xlsx";
 
 export const ModalCompararPrecios = () => {
   const { ordenes } = useOrdenesContext();
@@ -91,6 +92,32 @@ export const ModalCompararPrecios = () => {
         (producto) => producto.detalle === productoSeleccionado
       )
     : productosFiltradosPorCategoria;
+
+  // Función para exportar productos a Excel
+  const exportarAExcel = () => {
+    const dataParaExportar = productosAMostrar
+      .map((producto) => {
+        return producto.proveedores.map((proveedor) => ({
+          DESCRIPCIÓN: producto.detalle,
+          PROVEEDOR: proveedor.nombre,
+          "PRECIO UNITARIO": proveedor.precio_und,
+          FECHA: new Date(proveedor.fecha).toLocaleDateString(),
+        }));
+      })
+      .flat(); // Usamos flat() para aplanar el array de arrays
+
+    // Crear una hoja de cálculo a partir de los datos
+    const hojaDeCalculo = XLSX.utils.json_to_sheet(dataParaExportar);
+
+    // Crear un nuevo libro de Excel
+    const libroDeExcel = XLSX.utils.book_new();
+
+    // Agregar la hoja de cálculo al libro
+    XLSX.utils.book_append_sheet(libroDeExcel, hojaDeCalculo, "Productos");
+
+    // Generar el archivo Excel y descargarlo
+    XLSX.writeFile(libroDeExcel, "productos-comparativa.xlsx");
+  };
 
   return (
     <dialog id="my_modal_comparar_precios" className="modal">
@@ -192,7 +219,7 @@ export const ModalCompararPrecios = () => {
               ))}
           </select>
 
-          <div>
+          <div className="flex gap-2">
             <button
               onClick={() =>
                 document.getElementById("my_modal_view_productos").showModal()
@@ -200,6 +227,12 @@ export const ModalCompararPrecios = () => {
               className="font-semibold text-sm  rounded-md py-1.5 px-4 hover:shadow transition-all text-white bg-gradient-to-r from-blue-500 to-purple-500 flex gap-2 items-center"
             >
               Descargar o imprimir <FaFilePdf className="text-xl" />
+            </button>
+            <button
+              onClick={exportarAExcel}
+              className="font-semibold text-sm  rounded-md py-1.5 px-4 hover:shadow transition-all text-white bg-gradient-to-r from-blue-500 to-green-500 flex gap-2 items-center"
+            >
+              Exportar a Excel
             </button>
           </div>
         </div>
